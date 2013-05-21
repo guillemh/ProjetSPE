@@ -2,7 +2,7 @@
 #define _FLUIDE_HPP_
 
 #include <vector>
-using namespace std;
+using std::vector;
 #include <iostream>
 #include "materiau.hpp"
 #include "vecteur.hpp"
