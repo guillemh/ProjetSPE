@@ -47,6 +47,14 @@ public :
      * Destructeur d'un objet de type vecteur
      */
     ~Vecteur<Dim> () ;
+
+  /* ** Methodes ** */
+
+  /**
+   * Calcul de la norme d'un vecteur
+   * \return norme du vecteur
+   */
+  double norme() const;  
   
     //
     // Opérateurs d'accès

@@ -1,4 +1,4 @@
-#include "vecteur.hpp"
+#include "../core/vecteur.hpp"
 
 #include <cstdio>
 #include <cstdlib>
@@ -7,8 +7,8 @@
 using std::cout;
 using std::endl;
 
-int main () {
-
+int test_vecteur() {
+    
     cout << "-- 1. Test de l'opérateur d'accession --" << endl ;
     cout << "Construction d'un vecteur a trois elements : " << endl ;
     Vecteur<3> v1 ;
@@ -70,5 +70,13 @@ int main () {
     } else {
 	cout << "Erreur : non egalite des vecteurs" << endl ;
 	exit (-1) ;
-    }    
+    }   
+
+    cout << "-- 7. Test du calcul de la norme --" << endl ;
+    cout << v2 << endl;
+    cout << v2.norme() << endl;
+
+    cout << v3 << endl;
+    cout << v3.norme() << endl;
+   
 }

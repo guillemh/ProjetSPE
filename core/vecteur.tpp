@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <cmath>
 
 using namespace std ;
 
@@ -60,9 +61,24 @@ Vecteur<Dim>::Vecteur (const Vecteur<Dim> &v) {
 
 template <unsigned int Dim>
 Vecteur<Dim>::~Vecteur<Dim> () {
-    if (t != NULL) {
+    if (t != NULL) {	    
 	delete t ;
     }
+}
+
+template <unsigned int Dim>
+double  Vecteur<Dim>::norme () const {
+    switch(Dim)
+	{
+	case 2:
+	    {
+		return sqrt(pow((*this)(1),2) + pow((*this)(2),2));
+	    }
+	case 3:
+	    {
+		return sqrt(pow((*this)(1),2) + pow((*this)(2),2) + pow((*this)(3),2));
+	    }
+	}		  
 }
 
 template <unsigned int Dim>
