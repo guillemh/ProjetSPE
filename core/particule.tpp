@@ -4,7 +4,8 @@
 
 /* ** Constructeurs ** */
 
-Particule::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p)
+template<unsigned int Dim>
+Particule<Dim>::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p)
     : mat(ma),
     position(pos),
     masse_volumique(rho),
@@ -13,77 +14,77 @@ Particule::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p)
 }
 
 
-
-/* ** Methodes ** */
-
-Particule::~Particule()
-{
+template<unsigned int Dim>
+Particule<Dim>::~Particule() {
 }
 
 
-const Vecteur<Dim> & Particule::getPosition() const
-{
+
+/* ** Methodes ** */
+
+template<unsigned int Dim>
+const Vecteur<Dim> & Particule<Dim>::getPosition() const {
     return position;
 }
 
 
-const Vecteur<Dim> & Particule::getVitesse() const
-{
+template<unsigned int Dim>
+const Vecteur<Dim> & Particule<Dim>::getVitesse() const {
     return vitesse;
 }
 
 
-double Particule::getMasseVolumique() const
-{
+template<unsigned int Dim>
+double Particule<Dim>::getMasseVolumique() const {
     return masse_volumique;
 }
 
 
-double Particule::getPression() const
-{
+template<unsigned int Dim>
+double Particule<Dim>::getPression() const {
     return pression;
 }
 
 
-void Particule::setPosition(const Vecteur<Dim> &pos)
-{
+template<unsigned int Dim>
+void Particule<Dim>::setPosition(const Vecteur<Dim> &pos) {
     position = pos;
 }
 
 
-void Particule::setVelocity(const Vecteur<Dim> &vit)
-{    
+template<unsigned int Dim>
+void Particule<Dim>::setVelocity(const Vecteur<Dim> &vit) {    
     velocity = vit;
 }
 
 
-void Particule::setMasseVolumique(double rho)
-{
+template<unsigned int Dim>
+void Particule<Dim>::setMasseVolumique(double rho) {
     masse_volumique = rho;
 }
 
 
-void Particule::setPression(double p)
-{    
+template<unsigned int Dim>
+void Particule<Dim>::setPression(double p) {    
     pression = p;
 }
 
 
-void Particule::incrPosition(const Vecteur<Dim> &pos)
-{
+template<unsigned int Dim>
+void Particule<Dim>::incrPosition(const Vecteur<Dim> &pos) {
     position += pos;
 }
 
 
-void Particule::incrVelocity(const Vecteur<Dim> &vit)
-{
+template<unsigned int Dim>
+void Particule<Dim>::incrVelocity(const Vecteur<Dim> &vit) {
     vitesse += vit;
 }
 
 
 /*
-void Particule::draw() const
-{
+template<unsigned int Dim>
+void Particule<Dim>::draw() const {
     glPushMatrix();
     glTranslatef(position.x, position.y, position.z);
     glutSolidSphere(radius, 12, 12);
@@ -93,8 +94,8 @@ void Particule::draw() const
 */
 
 
-std::ostream& operator<<(std::ostream& os, const Particule& p)
-{
+template<unsigned int Dim>
+std::ostream& operator<<(std::ostream& os, const Particule<Dim>& p) {
     os << "pos (" << p.getPosition() << "), vit (" << p.getVitesse() << ")" << std::endl
        << "m_v (" << p.getMasseVolumique() << "), pre (" << p.getPression() << ")" << std::endl;
     return os;

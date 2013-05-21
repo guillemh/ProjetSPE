@@ -29,7 +29,7 @@ public:
       * \param rho mase volumique initiale
       * \param p pression initiale
       */
-    Particle(Vecteur<Dim> pos, Vecteur<Dim> vit, Materiau * ma, double ro, double p);
+    Particle(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p);
     
     /**
       * Destructeur
@@ -104,7 +104,8 @@ public:
 /**
   * Operateur d'affichage des composantes de la particule
   */
-std::ostream& operator<<(std::ostream& os, const Particule& p);
+template<unsigned int Dim>
+std::ostream& operator<<(std::ostream& os, const Particule<Dim>& p);
 
 
 #include "particule.tpp"
