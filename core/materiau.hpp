@@ -25,7 +25,7 @@ enum TypeFluide {
  */
 
 template <unsigned int Dim>
-class Materiau : {
+class Materiau {
 
 private:
     /* Propriétés communes à tous les fluides */

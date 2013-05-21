@@ -1,7 +1,7 @@
-#include "materiau.hpp"
+#include "../core/materiau.hpp"
 
-int main() {
-    Materiau<3> mateau = Materiau(EAU);
-    Materiau<2> matmucus = Materiau(MUCUS);
-    Materiau<3> matvapeur = Materiau(VAPEUR);
+void test_materiau() {
+    Materiau<3> mateau = Materiau<3>(EAU);
+    Materiau<2> matmucus = Materiau<2>(MUCUS);
+    Materiau<3> matvapeur = Materiau<3>(VAPEUR);
 }
