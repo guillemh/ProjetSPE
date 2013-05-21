@@ -1,0 +1,24 @@
+#version 130
+
+//uniform : variables constantes pour tout les vertex
+//attributes : variables specifiques a chaque vertex
+//  in : parametre dentree
+//  out : paremetres sorties
+
+in vec4 vertex;
+in vec4 color;
+uniform mat4 matrixpmv; //matrix projection model view
+
+//smooth means smooth_color is an output from vertex shader and input to fragment shader
+smooth out vec4 smooth_color;
+
+void main(void)
+{
+    //Le vertex shader : premier shader appele sur chaque sommet du polygone affiche
+    //Input : position(required) + color, normal, ...
+    //Output : position(required) + ...
+
+    //gl_Position : renvoie la position du vertex apres transformation
+    smooth_color = color;
+    gl_Position = matrixpmv * vertex;
+}
