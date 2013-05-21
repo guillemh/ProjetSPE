@@ -1,6 +1,10 @@
+#include "test_particules.cpp"
 #include <iostream>
+using std::cout;
+using std::endl;
 
 int main()
 {
-    std::cout << "hello world" << std::endl;
+    cout << "***** Test particules : *****" << endl;
+    tests_unitaires_particules();
 }

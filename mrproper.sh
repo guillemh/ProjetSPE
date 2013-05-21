@@ -3,23 +3,27 @@
 # Remove files created by qtcreator, Makefiles
 # and building directory (release, debug)
 
-rm Makefile
-rm SPH2D.pro.user
+rm -f Makefile
+rm -f SPH2D.pro.user
+rm -f *~
 
 cd core
-rm Makefile Makefile.Release Makefile.Debug
-rm -r debug
-rm -r release
+rm -f Makefile Makefile.Release Makefile.Debug
+rm -f -r debug
+rm -f -r release
+rm -f *~
 cd ..
 
 cd run
-rm Makefile Makefile.Release Makefile.Debug
-rm -r debug
-rm -r release
+rm -f Makefile Makefile.Release Makefile.Debug
+rm -f -r debug
+rm -f -r release
+rm -f *~
 cd ..
 
 cd test
-rm Makefile Makefile.Release Makefile.Debug
-rm -r debug
-rm -r release
+rm -f Makefile Makefile.Release Makefile.Debug
+rm -f -r debug
+rm -f -r release
+rm -f *~
 cd ..
