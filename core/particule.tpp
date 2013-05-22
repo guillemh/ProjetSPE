@@ -6,8 +6,8 @@
 
 template<unsigned int Dim>
 Particule<Dim>::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p)
-    : mat(ma),
-    position(pos),
+    : position(pos),
+    vitesse(vit),
     masse_volumique(rho),
     pression(p)
 {
@@ -53,8 +53,8 @@ void Particule<Dim>::setPosition(const Vecteur<Dim> &pos) {
 
 
 template<unsigned int Dim>
-void Particule<Dim>::setVelocity(const Vecteur<Dim> &vit) {    
-    velocity = vit;
+void Particule<Dim>::setVitesse(const Vecteur<Dim> &vit) {    
+    vitesse = vit;
 }
 
 
@@ -77,7 +77,7 @@ void Particule<Dim>::incrPosition(const Vecteur<Dim> &pos) {
 
 
 template<unsigned int Dim>
-void Particule<Dim>::incrVelocity(const Vecteur<Dim> &vit) {
+void Particule<Dim>::incrVitesse(const Vecteur<Dim> &vit) {
     vitesse += vit;
 }
 
@@ -97,6 +97,7 @@ void Particule<Dim>::draw() const {
 template<unsigned int Dim>
 std::ostream& operator<<(std::ostream& os, const Particule<Dim>& p) {
     os << "pos (" << p.getPosition() << "), vit (" << p.getVitesse() << ")" << std::endl
-       << "m_v (" << p.getMasseVolumique() << "), pre (" << p.getPression() << ")" << std::endl;
+       << "m_v (" << p.getMasseVolumique() << "), pre (" << p.getPression() << ")";
     return os;
 }
+

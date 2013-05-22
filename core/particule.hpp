@@ -28,12 +28,12 @@ public:
       * \param rho mase volumique initiale
       * \param p pression initiale
       */
-    Particle(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p);
+    Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p);
     
     /**
       * Destructeur
       */
-    ~Particle();
+    ~Particule();
 
 
     /* ** Methodes ** */
@@ -51,12 +51,12 @@ public:
     /**
       * \return la masse volumique de la particule
       */
-    const Vecteur<Dim> & getMasseVolumique() const;
+    double getMasseVolumique() const;
 
     /**
       * \return la pression de la particule
       */
-    const Vecteur<Dim> & getPression() const;
+    double getPression() const;
 
     /**
       * Modifie la position de la particule
