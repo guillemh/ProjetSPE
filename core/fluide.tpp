@@ -1,6 +1,8 @@
 #include <GL/glut.h>
 #include "fluide.hpp"
 #include "vecteur.hpp"
+using std::cout;
+using std::endl;
 
 
 /* ** Constructeurs ** */
@@ -48,7 +50,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         }
         
     } else {
-        std::cerr << "Erreur (Fluide) : la dimension de l'espace doit être 2 ou 3" << std::endl;
+        cout << "Erreur (Fluide) : la dimension de l'espace doit être 2 ou 3" << endl;
+        exit(1);
     }
 }
 

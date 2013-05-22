@@ -12,15 +12,15 @@ int main()
     cout << "***** Test vecteur : *****" << endl;
     test_vecteur();
     
-    cout << "***** Test particules : *****" << endl;
-    tests_unitaires_particules();
+//    cout << "***** Test particules : *****" << endl;
+//    tests_unitaires_particules();
 
-    cout << "***** Test materiau : *****" << endl;
-    test_materiau();
-    
-    cout << "***** Test Fluide : *****" << endl;
-    tests_unitaires_fluide();
+//    cout << "***** Test materiau : *****" << endl;
+//    test_materiau();
+//    
+//    cout << "***** Test Fluide : *****" << endl;
+//    tests_unitaires_fluide();
 
-    cout << "***** Test noyauLissage : *****" << endl;
-    test_noyauLissage();    
+//    cout << "***** Test noyauLissage : *****" << endl;
+//    test_noyauLissage();    
 }

@@ -12,7 +12,6 @@ class Vecteur {
 
     /* ** Attributs ** */
 public:
-    int d;
     double* t;
 
 
@@ -77,7 +76,7 @@ public:
      * \return Référence sur l'élément situé dans la case numero i - 1 du vecteur
      *
      */
-    double & operator()(int i);
+    double & operator()(unsigned int i);
 
     /**
      * \brief Operateur d'accès en lecture à un élément du vecteur
@@ -88,7 +87,7 @@ public:
      * \return L'élément situe dans la case numero i - 1 du vecteur
      *
      */	
-    double operator()(int i) const;
+    double operator()(unsigned int i) const;
 
     //
     // Opérations internes
