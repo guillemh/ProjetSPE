@@ -1,6 +1,7 @@
 #include <GL/glut.h>
 #include "particule.hpp"
 
+#define PI 3.1415926535
 
 /* ** Constructeurs ** */
 
@@ -17,7 +18,6 @@ Particule<Dim>::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double
 template<unsigned int Dim>
 Particule<Dim>::~Particule() {
 }
-
 
 
 /* ** Methodes ** */
@@ -81,17 +81,23 @@ void Particule<Dim>::incrVitesse(const Vecteur<Dim> &vit) {
     vitesse += vit;
 }
 
-
-/*
 template<unsigned int Dim>
-void Particule<Dim>::draw() const {
+void Particule<Dim>::draw(Materiau<Dim> *mat) const {
     glPushMatrix();
-    glTranslatef(position.x, position.y, position.z);
-    glutSolidSphere(radius, 12, 12);
+    glColor3f(0.0, 0.0, 1.0);
+    glTranslatef(position(1), position(2), position(3));
+    /* Calcul du rayon de la sphère :
+     * r = racine cubique (3 * m / (4 * PI * rho)) 
+     *     avec m masse de la particule
+     *     et rho masse volumique du fluide
+     * On a p * V = k constante de raideur du fluide, avec p pression
+     * Or V = m / rho, donc m = rho * V = rho * k / p
+     * ce qui simplifie le calcul
+     */
+    double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * pression), 1.0/3.0);
+    glutSolidSphere(rayon, 12, 12);
     glPopMatrix();
-
 }
-*/
 
 
 template<unsigned int Dim>

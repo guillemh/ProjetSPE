@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "vecteur.hpp"
-
+#include "materiau.hpp"
 
 /** \class Particule : classe des particules constituants le texte
  * Dim : Dimension de l'espace
@@ -25,7 +25,7 @@ public:
       * Constructeur
       * \param pos position initiale
       * \param vit vitesse initiale
-      * \param rho mase volumique initiale
+      * \param rho masse volumique initiale
       * \param p pression initiale
       */
     Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0);
@@ -97,7 +97,7 @@ public:
     /**
       * Fonction d'affichage de la particule
       */
-    //void draw() const;
+    void draw(Materiau<Dim> *mat) const;
 };
 
 /**

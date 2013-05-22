@@ -61,7 +61,6 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
 template<unsigned int Dim>
 Fluide<Dim>::~Fluide() {
     typename vector<Particule<Dim> *>::iterator it;
-
     // On libere toutes les particules
     for (it = particules.begin(); it != particules.end();) {
         delete (*it);
@@ -124,12 +123,12 @@ void Fluide<Dim>::majPositionVitesse() {
         // Calcul des forces de pression, de viscosite et de surface
         for (it2 = particules.begin(); it2 != particules.end(); it2++) {
             if (it1 != it2) {
-                fPression -= (((*it1)->getPression() + (*it2)->getPression())
-                             / (*it2)->getMasseVolumique())
-                             * noyauPression.gradient((*it1)->getPosition() - (*it2)->getPosition()));
+                fPression -= noyauPression.gradient((*it1)->getPosition() - (*it2)->getPosition())
+                             * ((*it1)->getPression() + (*it2)->getPression())
+                             / (*it2)->getMasseVolumique();
                 
                 fViscosite += ((*it2)->getVitesse() - (*it1)->getVitesse())
-                              / (*it2)->getMasseVolumique
+                              / (*it2)->getMasseVolumique()
                               * noyauViscosite.laplacien((*it1)->getPosition() - (*it2)->getPosition());
                               
                 colorfield += noyauDefaut.laplacien((*it1)->getPosition() - (*it2)->getPosition())
@@ -145,7 +144,7 @@ void Fluide<Dim>::majPositionVitesse() {
         double norme = fSurface.norme();
         if (norme >= mat->getSeuilSurface()) {
             colorfield *= mat->getMasseParticules();
-            fSurface *= colorfield * mat->getTensionSurface() * mat->getMasseParticules() / norme
+            fSurface *= colorfield * mat->getTensionSurface() * mat->getMasseParticules() / norme;
         } else {
             fSurface = Vecteur<Dim>();
         }
@@ -173,12 +172,13 @@ void Fluide<Dim>::majPositionVitesse() {
 }
 
 
-/*
 template<unsigned int Dim>
 void Fluide<Dim>::draw() const {
-
+    typename vector<Particule<Dim> *>::const_iterator it;
+    for (it = particules.begin () ; it != particules.end () ; it++) {
+        (*it)->draw (mat);
+    }
 }
-*/
 
 
 template<unsigned int Dim>

@@ -7,7 +7,6 @@ using std::endl;
 
 template <unsigned int Dim>
 Vecteur<Dim>::Vecteur () {
-    cout << "Appel constructeur par défaut" << endl ;
 	t = new double [Dim] ;
 	for (unsigned int i = 0 ; i < Dim ; i++) {
 		t[i] = 0.0 ;
