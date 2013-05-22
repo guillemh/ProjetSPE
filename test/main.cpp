@@ -10,7 +10,7 @@ using std::endl;
 int main()
 {
     cout << "***** Test vecteur : *****" << endl;
-    test_vecteur();
+    //    test_vecteur();
     
 //    cout << "***** Test particules : *****" << endl;
 //    tests_unitaires_particules();
@@ -22,5 +22,5 @@ int main()
 //    tests_unitaires_fluide();
 
 //    cout << "***** Test noyauLissage : *****" << endl;
-//    test_noyauLissage();    
+    test_noyauLissage();    
 }
