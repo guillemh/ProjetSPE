@@ -88,19 +88,61 @@ public:
     Materiau(TypeFluide type);
 
     /* Accesseurs */
+    /**
+     * @return L'accélération de la gravitation
+     */
     Vecteur<Dim> getAccGrav();
+    /**
+     * @return Le pas de temps pour le schéma intégrateur
+     */
     double getPasTemps();
+    /**
+     * @return La température du milieu
+     */
     double getTemperature();
+    /**
+     * @return La pression atmosphérique
+     */
     double getPression();
+    /**
+     * @return La masse volumique au repos
+     */
     double getDensiteRepos();
+    /**
+     * @return La masse des particules
+     */
     double getMasseParticules();
+    /**
+     * @return Le coefficient de flottabilité
+     */
     double getCoeffFlott();
+    /**
+     * @return La viscosité du fluide
+     */
     double getViscosite();
+    /**
+     * @return La tension de surface
+     */
     double getTensionSurface();
+    /**
+     * @return Seuil pour le calcul des force de surface
+     */
     double getSeuilSurface();
+    /**
+     * @return Le coefficient de rigidité pour les gaz
+     */
     double getRigiditeGaz();
+    /**
+     * @return Le coefficient de restitution pour les collisions
+     */
     double getCoeffRestitution();
+    /**
+     * @return Le nombre de particules dans la sphère du noyau de lissage
+     */
     unsigned int getNbrPartNoyau();
+    /**
+     * @return Le rayon du noyau de lissage
+     */
     double getRayonNoyau();
 
 

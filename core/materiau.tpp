@@ -4,21 +4,21 @@ using std::endl;
 
 template<unsigned int Dim>
 Materiau<Dim>::Materiau(
-               Vecteur<Dim> g, 
-                           double dt,
-                           double t,
-                           double p,
-                           double rho,
-                           double mp,
-                           double b,
-                           double mu,
-                           double sigma,
-                           double l,
-                           double k,
-                           double cr,
-                           unsigned int x,
-                           double h
-                           ) {
+			Vecteur<Dim> g, 
+			double dt,
+			double t,
+			double p,
+			double rho,
+			double mp,
+			double b,
+			double mu,
+			double sigma,
+			double l,
+			double k,
+			double cr,
+			unsigned int x,
+			double h
+			) {
     acc_gravitation = g;
     pas_temps = dt;
     temperature = t;

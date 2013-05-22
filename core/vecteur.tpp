@@ -54,7 +54,9 @@ Vecteur<Dim>::Vecteur(const Vecteur<Dim> &v) {
 
 template <unsigned int Dim>
 Vecteur<Dim>::~Vecteur<Dim>() {      
-    delete t;
+    if (t != NULL) {
+	delete t;
+    }
 }
 
 
