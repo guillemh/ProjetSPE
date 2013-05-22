@@ -53,7 +53,7 @@ Vecteur<Dim>::Vecteur(const Vecteur<Dim> &v) {
 
 
 template <unsigned int Dim>
-Vecteur<Dim>::~Vecteur<Dim>() {      
+Vecteur<Dim>::~Vecteur<Dim>() {
     delete [] t;
 }
 
