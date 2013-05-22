@@ -131,13 +131,14 @@ Vecteur<Dim> & Vecteur<Dim>::operator*=(const double &valeur) {
 
 template <unsigned int Dim>
 Vecteur<Dim> & Vecteur<Dim>::operator/=(const double &valeur) {
-    if (valeur == 0.0) {
+    if (valeur != 0.0) {
     Vecteur<Dim> &a = *this;
     for (unsigned int i = 1; i <= Dim; i++) {
         a(i) /= valeur;
     }
     return a;
     } else {
+		cout << "* 2 = 0 ! *" << endl ;
         cout << "Vecteur<Dim> & Vecteur<Dim>::operator/=(const double &valeur) :" << endl;
         cout << "Erreur : division par zéro" << endl;
         exit(-1);
