@@ -78,5 +78,4 @@ void test_vecteur() {
 
     cout << v3 << endl;
     cout << v3.norme() << endl;
-   
 }

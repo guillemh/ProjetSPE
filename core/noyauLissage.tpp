@@ -17,7 +17,7 @@ NoyauLissage<Dim>::~NoyauLissage() {
 /* ** Methodes ** */
 
 template<unsigned int Dim>
-double & NoyauLissage<Dim>::getRayon() const {
+double NoyauLissage<Dim>::getRayon() const {
     return h;
 }
 
@@ -43,6 +43,11 @@ double NoyauLissage<Dim>::defaut(const Vecteur<Dim> r, const double h, const int
         return ((15/(2*M_PI*pow(h,3)))*(-(pow(r.norme(),3)/(2*pow(h,3)))+
                 (pow(r.norme(),2)/pow(h,2))+(h/(2*r.norme()))-1));
     }
+    default:
+    {
+        std::cerr << "Erreur (noyauLissage) : Le type du noyau doit être compris entre 0 et 2" << endl;
+        exit(1);
+    }
     } 
 }
 
@@ -61,15 +66,20 @@ Vecteur<Dim> NoyauLissage<Dim>::gradient(const Vecteur<Dim> r, const double h, c
     }
     case 2:
     {
-        double coef = (15/(2*M_PI*pow(h,3)))*((-(3*r.norme())/(2*pow(h,3)))+(2/(pow(h,2)))-(h/(2*pow(r,3))));
+        double coef = (15/(2*M_PI*pow(h,3)))*((-(3*r.norme())/(2*pow(h,3)))+(2/(pow(h,2)))-(h/(2*pow(r.norme(),3))));
         return coef*r;
     }
+    default:
+    {
+        std::cerr << "Erreur (noyauLissage) : Le type du noyau doit être compris entre 0 et 2" << endl;
+        exit(1);
     }
+    } 
 }
 
 template<unsigned int Dim>
 double NoyauLissage<Dim>::laplacien(const Vecteur<Dim> r, const double h, const int type_noyau) const {
-     switch(type_noyau)
+    switch(type_noyau)
     {
     case 0:
     {
@@ -83,6 +93,11 @@ double NoyauLissage<Dim>::laplacien(const Vecteur<Dim> r, const double h, const 
     case 2:
     {
         return ((45/(M_PI*pow(h,6)))*(h-r.norme()));
+    }
+    default:
+    {
+        std::cerr << "Erreur (noyauLissage) : Le type du noyau doit être compris entre 0 et 2" << endl;
+        exit(1);
     }
     }
 

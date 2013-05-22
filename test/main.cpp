@@ -22,5 +22,5 @@ int main()
     tests_unitaires_fluide();
 
     cout << "***** Test noyauLissage : *****" << endl;
-    //test_noyauLissage();    
+    test_noyauLissage();    
 }
