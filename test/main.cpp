@@ -10,17 +10,21 @@ using std::endl;
 int main()
 {
     cout << "***** Test vecteur : *****" << endl;
-    //    test_vecteur();
+    test_vecteur();
     
-//    cout << "***** Test particules : *****" << endl;
-//    tests_unitaires_particules();
+    cout << endl << endl;
+    cout << "***** Test particules : *****" << endl;
+    tests_unitaires_particules();
 
-//    cout << "***** Test materiau : *****" << endl;
-//    test_materiau();
-//    
-//    cout << "***** Test Fluide : *****" << endl;
-//    tests_unitaires_fluide();
+    cout << endl << endl;
+    cout << "***** Test materiau : *****" << endl;
+    test_materiau();
+    
+    cout << endl << endl;
+    cout << "***** Test Fluide : *****" << endl;
+    tests_unitaires_fluide();
 
-//    cout << "***** Test noyauLissage : *****" << endl;
+    cout << endl << endl;
+    cout << "***** Test noyauLissage : *****" << endl;
     test_noyauLissage();    
 }

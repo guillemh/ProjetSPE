@@ -1,6 +1,8 @@
 #La sortie de la compilation sera un executable
 TEMPLATE = app
 
+CXXFLAGS = -g -Wall
+
 #Creation de deux dossiers debug / release selon la compilation choisie
 CONFIG += debug_and_release
 CONFIG(release, debug|release){

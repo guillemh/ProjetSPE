@@ -28,7 +28,7 @@ public:
       * \param rho mase volumique initiale
       * \param p pression initiale
       */
-    Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p);
+    Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0);
     
     /**
       * Destructeur
