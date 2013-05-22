@@ -5,6 +5,7 @@
 using std::vector;
 #include <iostream>
 #include "materiau.hpp"
+#include "particule.hpp"
 #include "vecteur.hpp"
 
 
@@ -65,7 +66,7 @@ public:
     /**
       * Fonction d'affichage du fluide
       */
-    //void draw() const;
+    void draw() const;
 
     /**
       * Affichage des particules du fluide

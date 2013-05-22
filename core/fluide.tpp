@@ -99,12 +99,14 @@ void Fluide<Dim>::majDensitePression() {
 }
 
 
-/*
 template<unsigned int Dim>
 void Fluide<Dim>::draw() const {
-
+    typename vector<Particule<Dim> *>::const_iterator it ;
+    for (it = particules.begin () ; it != particules.end () ; it++) {
+	(*it)->draw (mat) ;
+    }
 }
-*/
+
 
 
 template<unsigned int Dim>
