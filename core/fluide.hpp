@@ -36,7 +36,7 @@ public:
       * \param rho masse volumique initiale des particules
       * \param p pression initiale des particules
       */
-    Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p);
+    Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho = 0, double p = 0);
     
     /**
       * Destructeur
@@ -51,6 +51,11 @@ public:
       * \param part la particule à ajouter
       */
     void ajouteParticule(Particule<Dim> * part);
+    
+    /**
+      * Met à jour la densité et la pression de toutes les particules
+      */
+    void majDensitePression();
     
     /**
       * Fonction d'affichage du fluide
