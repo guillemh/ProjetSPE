@@ -59,7 +59,6 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
 template<unsigned int Dim>
 Fluide<Dim>::~Fluide() {
     typename vector<Particule<Dim> *>::iterator it;
-    
     // On libere toutes les particules
     for (it = particules.begin(); it != particules.end(); it++)
         delete (*it);

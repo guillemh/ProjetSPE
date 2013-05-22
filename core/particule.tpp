@@ -19,7 +19,6 @@ Particule<Dim>::~Particule() {
 }
 
 
-
 /* ** Methodes ** */
 
 template<unsigned int Dim>
