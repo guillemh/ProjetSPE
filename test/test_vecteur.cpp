@@ -73,9 +73,9 @@ void test_vecteur() {
     }   
 
     cout << "-- 7. Test du calcul de la norme --" << endl;
-    cout << v2 << endl;
-    cout << v2.norme() << endl;
+    cout << "Vecteur 2D : " <<  v2 << endl;
+    cout << "Valeur de la norme : " << v2.norme() << endl;
 
-    cout << v3 << endl;
-    cout << v3.norme() << endl;
+    cout << "Vecteur 3D : " << v3 << endl;
+    cout << "Valeur de la norme : " << v3.norme() << endl;
 }
