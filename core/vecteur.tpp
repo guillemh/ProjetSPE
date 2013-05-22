@@ -331,9 +331,10 @@ Vecteur<Dim> operator-(const Vecteur<Dim> &v) {
 
 template <unsigned int Dim>
 std::ostream & operator<<(std::ostream &O, Vecteur<Dim> const &v) {
-    for (unsigned int i = 1; i <= Dim; i++) {
+    for (unsigned int i = 1; i < Dim; i++) {
         O << v(i) << " ";
     }
+    O << v(Dim);
     return O;
 }
 
