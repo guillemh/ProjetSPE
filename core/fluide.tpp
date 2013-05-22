@@ -9,7 +9,8 @@ using std::endl;
 
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m)
-    : mat(m)
+    : mat(m),
+    debutAnim(true)
 {
     // Initilisation du vector vide
     particules = vector<Particule<Dim> *> ();
@@ -18,7 +19,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
 
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p)
-    : mat(m)
+    : mat(m),
+    debutAnim(true)
 {
     // Initialisation du vector vide
     particules = vector<Particule<Dim> *> ();
@@ -97,6 +99,77 @@ void Fluide<Dim>::majDensitePression() {
         double diff = (*it1)->getPression() - mat->getDensiteRepos();
         (*it1)->setPression((mat->getRigiditeGaz())*diff);
     }
+}
+
+
+template<unsigned int Dim>
+void Fluide<Dim>::majPositionVitesse() {
+
+    typename vector<Particule<Dim> *>::iterator it1;
+    typename vector<Particule<Dim> *>::iterator it2;
+    NoyauLissage<Dim> noyauDefaut = NoyauLissage<Dim>(mat->getRayonNoyau(), DEFAUT);
+    NoyauLissage<Dim> noyauPression = NoyauLissage<Dim>(mat->getRayonNoyau(), PRESSION);
+    NoyauLissage<Dim> noyauViscosite = NoyauLissage<Dim>(mat->getRayonNoyau(), VISCOSITE);
+    
+    // On boucles sur toutes les particules
+    for (it1 = particules.begin(); it1 != particules.end(); it1++) {
+        
+        // Definition de toutes les forces
+        Vecteur<Dim> fPression = Vecteur<Dim>();
+        Vecteur<Dim> fViscosite = Vecteur<Dim>();
+        Vecteur<Dim> fGravite = Vecteur<Dim>();
+        Vecteur<Dim> fSurface = Vecteur<Dim>();
+        double colorfield = 0;
+        
+        // Calcul des forces de pression, de viscosite et de surface
+        for (it2 = particules.begin(); it2 != particules.end(); it2++) {
+            if (it1 != it2) {
+                fPression -= (((*it1)->getPression() + (*it2)->getPression())
+                             / (*it2)->getMasseVolumique())
+                             * noyauPression.gradient((*it1)->getPosition() - (*it2)->getPosition()));
+                
+                fViscosite += ((*it2)->getVitesse() - (*it1)->getVitesse())
+                              / (*it2)->getMasseVolumique
+                              * noyauViscosite.laplacien((*it1)->getPosition() - (*it2)->getPosition());
+                              
+                colorfield += noyauDefaut.laplacien((*it1)->getPosition() - (*it2)->getPosition())
+                              / (*it2)->getMasseVolumique();
+                              
+                fSurface -= noyauDefaut.gradient((*it1)->getPosition() - (*it2)->getPosition())
+                            / (*it2)->getMasseVolumique();
+            }
+        }
+        
+        fPression *= mat->getMasseParticules() / 2;
+        fViscosite *= mat->getViscosite() * mat->getMasseParticules();
+        double norme = fSurface.norme();
+        if (norme >= mat->getSeuilSurface()) {
+            colorfield *= mat->getMasseParticules();
+            fSurface *= colorfield * mat->getTensionSurface() * mat->getMasseParticules() / norme
+        } else {
+            fSurface = Vecteur<Dim>();
+        }
+        
+        // Calcul de la force de gravite
+        fGravite = (*it1)->getMasseVolumique() * mat->getAccGrav();
+        
+        // Calcul de l'acceleration
+        Vecteur<Dim> acceleration = Vecteur<Dim>(fPression + fViscosite + fGravite + fSurface);
+        acceleration /= (*it1)->getMasseVolumique();
+        
+        // Calcul de la nouvelle vitesse (qu'on retient au temps t+Dt/2)
+        if (debutAnim) {
+            (*it1)->incrVitesse(mat->getPasTemps() * acceleration / 2);
+            debutAnim = false;
+        } else {
+            (*it1)->incrVitesse(mat->getPasTemps() * acceleration);
+        }
+        
+        // Calcul de la nouvelle position (au temps t+Dt)
+        (*it1)->incrPosition(mat->getPasTemps() * (*it1)->getVitesse());
+        
+    }
+
 }
 
 

@@ -10,9 +10,12 @@ NoyauLissage<Dim>::NoyauLissage(double rayon, TypeNoyau t)
 {
 }
 
+
 template<unsigned int Dim>
 NoyauLissage<Dim>::~NoyauLissage() {
 }
+
+
 
 /* ** Methodes ** */
 
@@ -20,6 +23,7 @@ template<unsigned int Dim>
 double NoyauLissage<Dim>::getRayon() const {
     return h;
 }
+
 
 template<unsigned int Dim>
 double NoyauLissage<Dim>::defaut(const Vecteur<Dim> r) const {
@@ -51,6 +55,7 @@ double NoyauLissage<Dim>::defaut(const Vecteur<Dim> r) const {
     } 
 }
 
+
 template<unsigned int Dim>
 Vecteur<Dim> NoyauLissage<Dim>::gradient(const Vecteur<Dim> r) const {
     switch(type) {
@@ -77,10 +82,10 @@ Vecteur<Dim> NoyauLissage<Dim>::gradient(const Vecteur<Dim> r) const {
     } 
 }
 
+
 template<unsigned int Dim>
 double NoyauLissage<Dim>::laplacien(const Vecteur<Dim> r) const {
-    switch(type)
-    {
+    switch(type) {
     case DEFAUT:
     {
         double coef = -(945/(32*M_PI*pow(h,9)))*(pow(h,2)-pow(r.norme(),2));
