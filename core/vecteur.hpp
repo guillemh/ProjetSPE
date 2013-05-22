@@ -24,6 +24,12 @@ public :
     Vecteur();
 
     /**
+     * \brief Constructeur
+     * Constructeur d'un vecteur comportant une valeur de remplissage par défaut
+     */
+    Vecteur(double def);
+
+    /**
      * \brief Constructeur 
      * Constructeur par défaut du vecteur bidimensionnel
      *
