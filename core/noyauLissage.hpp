@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+
 /** \class NoyauLissage : classe représentant un noyau de lissage
  * Dim : Dimension de l'espace
  */
@@ -18,7 +19,7 @@ private:
 public:
   /**
    * Constructeur
-   * \param h rayon de support
+   * \param rayon rayon de support
    */
   NoyauLissage(double rayon);
 

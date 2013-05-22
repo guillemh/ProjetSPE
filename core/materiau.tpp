@@ -2,22 +2,23 @@
 using std::cerr;
 using std::endl;
 
-template<unsigned int Dim> Materiau<Dim>::Materiau(
-						   Vecteur<Dim> g, 
-						   double dt,
-						   double t,
-						   double p,
-						   double rho,
-						   double mp,
-						   double b,
-						   double mu,
-						   double sigma,
-						   double l,
-						   double k,
-						   double cr,
-						   unsigned int x,
-						   double h
-						   ) {
+template<unsigned int Dim>
+Materiau<Dim>::Materiau(
+               Vecteur<Dim> g, 
+                           double dt,
+                           double t,
+                           double p,
+                           double rho,
+                           double mp,
+                           double b,
+                           double mu,
+                           double sigma,
+                           double l,
+                           double k,
+                           double cr,
+                           unsigned int x,
+                           double h
+                           ) {
     acc_gravitation = g;
     pas_temps = dt;
     temperature = t;
@@ -35,17 +36,19 @@ template<unsigned int Dim> Materiau<Dim>::Materiau(
     rayon_noyau = h;
 }
 
-template<unsigned int Dim> Materiau<Dim>::Materiau(TypeFluide type) {
+template<unsigned int Dim>
+Materiau<Dim>::Materiau(TypeFluide type) {
     switch(Dim) {
     case 2 :
-	acc_gravitation = Vecteur<Dim>(0, -9.82);
-	break;
+        acc_gravitation = Vecteur<Dim>(0, -9.82);
+        break;
     case 3 :
-	acc_gravitation = Vecteur<Dim>(0, 0, -9.82);
-	break;
+        acc_gravitation = Vecteur<Dim>(0, 0, -9.82);
+        break;
     default :
-	cerr << "Gestion qu'en dimensions 2 ou 3" << endl;
-	exit(EXIT_FAILURE);
+        cerr << "Gestion qu'en dimensions 2 ou 3" << endl;
+        exit(EXIT_FAILURE);
+        break;
     }
     pas_temps = 0.01;
     temperature = 293.15;
@@ -53,45 +56,45 @@ template<unsigned int Dim> Materiau<Dim>::Materiau(TypeFluide type) {
 
     switch(type) {
     case EAU :
-	densite_repos = 998.29;
-	masse_particules = 0.02;
-	coeff_flottabilite = 0;
-	viscosite = 3.5;
-	tension_surface = 0.0728;
-	seuil_surface = 7.065;
-	rigidite_gaz = 3;
-	coeff_restitution = 0;
-	nbr_noyau = 20;
-	rayon_noyau = 0.0457;
-	break;
+        densite_repos = 998.29;
+        masse_particules = 0.02;
+        coeff_flottabilite = 0;
+        viscosite = 3.5;
+        tension_surface = 0.0728;
+        seuil_surface = 7.065;
+        rigidite_gaz = 3;
+        coeff_restitution = 0;
+        nbr_noyau = 20;
+        rayon_noyau = 0.0457;
+        break;
     case MUCUS :
-	densite_repos = 1000;
-	masse_particules = 0.04;
-	coeff_flottabilite = 0;
-	viscosite = 36;
-	tension_surface = 6;
-	seuil_surface = 5;
-	rigidite_gaz = 5;
-	coeff_restitution = 0.5;
-	nbr_noyau = 40;
-	rayon_noyau = 0.0726;
-	break;
+        densite_repos = 1000;
+        masse_particules = 0.04;
+        coeff_flottabilite = 0;
+        viscosite = 36;
+        tension_surface = 6;
+        seuil_surface = 5;
+        rigidite_gaz = 5;
+        coeff_restitution = 0.5;
+        nbr_noyau = 40;
+        rayon_noyau = 0.0726;
+        break;
     case VAPEUR :
-	densite_repos = 0.59;
-	masse_particules = 0.00005;
-	coeff_flottabilite = 5;
-	viscosite = 0.01;
-	tension_surface = 0;
-	seuil_surface = -1;
-	rigidite_gaz = 4;
-	coeff_restitution = 0;
-	nbr_noyau = 12;
-	rayon_noyau = 0.0624;
-	break;
+        densite_repos = 0.59;
+        masse_particules = 0.00005;
+        coeff_flottabilite = 5;
+        viscosite = 0.01;
+        tension_surface = 0;
+        seuil_surface = -1;
+        rigidite_gaz = 4;
+        coeff_restitution = 0;
+        nbr_noyau = 12;
+        rayon_noyau = 0.0624;
+        break;
     default :
-	cerr << "Type de fluide non existant" << endl;
-	exit(EXIT_FAILURE);
-	break;
+        cerr << "Type de fluide non existant" << endl;
+        exit(EXIT_FAILURE);
+        break;
     }
 }
 

@@ -16,8 +16,8 @@ class Fluide {
 
     /* ** Attributs ** */
 private:
-    Materiau * mat;                      // Materiau du fluide (avec toutes les constantes)
-    Vector<Particule<Dim> *> particules; // Ensemble des particules
+    Materiau<Dim> * mat;                      // Materiau du fluide (avec toutes les constantes)
+    vector<Particule<Dim> *> particules; // Ensemble des particules
 
 
     /* ** Constructeurs ** */
@@ -26,7 +26,7 @@ public:
       * Constructeur par defaut
       * \param m matériau du fluide
       */
-    Fluide(Materiau * m);
+    Fluide(Materiau<Dim> * m);
 
     /**
       * Constructeur avec initialisation d'un parallèlépipède de particules
@@ -36,7 +36,7 @@ public:
       * \param rho masse volumique initiale des particules
       * \param p pression initiale des particules
       */
-    Fluide(Materiau * m, double nb[Dim], double ecart, double rho, double p);
+    Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p);
     
     /**
       * Destructeur
@@ -48,13 +48,20 @@ public:
 public:
     /**
       * Ajoute une particule à l'ensemble des particules
+      * \param part la particule à ajouter
       */
-    void ajouteParticule(Particule<Dim> * part) const;
+    void ajouteParticule(Particule<Dim> * part);
     
     /**
       * Fonction d'affichage du fluide
       */
     //void draw() const;
+
+    /**
+      * Affichage des particules du fluide
+      */
+    void affiche();
+
 };
 
 

@@ -6,20 +6,20 @@
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
-Fluide<Dim>::Fluide(Materiau * m)
+Fluide<Dim>::Fluide(Materiau<Dim> * m)
     : mat(m)
 {
     // Initilisation du vector vide
-    particules = Vector<Particule<Dim> *> ();
+    particules = vector<Particule<Dim> *> ();
 }
 
 
 template<unsigned int Dim>
-Fluide<Dim>::Fluide(Materiau * m, double nb[Dim], double ecart, double rho, double p)
+Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p)
     : mat(m)
 {
     // Initialisation du vector vide
-    particules = Vector<Particule<Dim> *> ();
+    particules = vector<Particule<Dim> *> ();
     
     if (Dim == 2) {
     
@@ -55,7 +55,7 @@ Fluide<Dim>::Fluide(Materiau * m, double nb[Dim], double ecart, double rho, doub
 
 template<unsigned int Dim>
 Fluide<Dim>::~Fluide() {
-    Vector<Particule<Dim> *>::iterator it;
+    typename vector<Particule<Dim> *>::iterator it;
     
     // On libere toutes les particules
     for (it = particules.begin(); it != particules.end(); it++)
@@ -68,7 +68,7 @@ Fluide<Dim>::~Fluide() {
 /* ** Methodes ** */
 
 template<unsigned int Dim>
-void Fluide<Dim>::ajouteParticule(Particule<Dim> * part) const {
+void Fluide<Dim>::ajouteParticule(Particule<Dim> * part) {
     particules.push_back(part);
 }
 
@@ -79,5 +79,13 @@ void Fluide<Dim>::draw() const {
 
 }
 */
+
+
+template<unsigned int Dim>
+void Fluide<Dim>::affiche() {
+    typename vector<Particule<Dim> *>::iterator it;
+    for (it = particules.begin(); it != particules.end(); it++)
+        cout << (*it) << endl;
+}
 
 

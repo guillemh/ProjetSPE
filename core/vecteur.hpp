@@ -1,20 +1,28 @@
 #ifndef _VECTEUR_HPP_
 #define _VECTEUR_HPP_
 
-using namespace std ;
-
 #include <iostream>
 
+
+/** \class NoyauLissage : classe représentant un noyau de lissage
+ * Dim : Dimension de l'espace
+ */
 template <unsigned int Dim>
 class Vecteur {
 
-public :
+    /* ** Attributs ** */
+public:
+    int d;
+    double* t;
 
+
+    /* ** Constructeurs ** */
+public :
     /**
      * \brief Constructeur
      * Constructeur d'un vecteur nul bidimensionnel ou tridimensionnel
      */
-    Vecteur<Dim> () ;
+    Vecteur();
 
     /**
      * \brief Constructeur 
@@ -23,7 +31,7 @@ public :
      * \param x Première composante du vecteur
      * \param y Deuxième composante du vecteur
      */
-    Vecteur<Dim> (double x, double y) ;
+    Vecteur(double x, double y);
 
     /**
      * \brief Constructeur 
@@ -33,28 +41,29 @@ public :
      * \param y Deuxième composante du vecteur
      * \param z Troisième composante du vecteur
      */
-    Vecteur<Dim> (double x, double y, double z) ;
+    Vecteur(double x, double y, double z);
 
     /**
      * \brief Constructeur
      * Constructeur par recopie d'un autre vecteur
      *
      * \param v Référence sur le vecteur recopié */
-    Vecteur<Dim> (const Vecteur<Dim> &v) ;
+    Vecteur(const Vecteur<Dim> &v);
 
     /**
      * \brief Destructeur
      * Destructeur d'un objet de type vecteur
      */
-    ~Vecteur<Dim> () ;
+    ~Vecteur();
+
 
   /* ** Methodes ** */
-
-  /**
-   * Calcul de la norme d'un vecteur
-   * \return norme du vecteur
-   */
-  double norme() const;  
+public:
+    /**
+     * Calcul de la norme d'un vecteur
+     * \return norme du vecteur
+     */
+    double norme() const;  
   
     //
     // Opérateurs d'accès
@@ -68,7 +77,7 @@ public :
      * \return Référence sur l'élément situé dans la case numero i - 1 du vecteur
      *
      */
-    double & operator () (int i);
+    double & operator()(int i);
 
     /**
      * \brief Operateur d'accès en lecture à un élément du vecteur
@@ -79,7 +88,7 @@ public :
      * \return L'élément situe dans la case numero i - 1 du vecteur
      *
      */	
-    double operator () (int i) const;
+    double operator()(int i) const;
 
     //
     // Opérations internes
@@ -94,7 +103,7 @@ public :
      * \return Référence sur le Vecteur créé par addition de l'argument et de l'existant
      *
      */
-    Vecteur<Dim> & operator +=(const double &valeur);
+    Vecteur & operator+=(const double &valeur);
 
     /*!
      * \brief Soustraction interne par un réel
@@ -105,7 +114,7 @@ public :
      * \return Référence sur le Vecteur créé par addition de l'argument et de l'existant
      *
      */
-    Vecteur<Dim> & operator -=(const double &valeur);
+    Vecteur & operator-=(const double &valeur);
 
     /*!
      * \brief Multiplication interne par un réel
@@ -116,7 +125,7 @@ public :
      * \return Référence sur le Vecteur créé par addition de l'argument et de l'existant
      *
      */
-    Vecteur<Dim> & operator *=(const double &valeur);
+    Vecteur & operator*=(const double &valeur);
 
     /*!
      * \brief Division interne par un réel
@@ -127,7 +136,7 @@ public :
      * \return Référence sur le Vecteur créé par addition de l'argument et de l'existant
      *
      */
-    Vecteur<Dim> & operator /=(const double &valeur);
+    Vecteur & operator/=(const double &valeur);
 
     /*!
      * \brief Addition interne par un vecteur
@@ -138,7 +147,7 @@ public :
      * \return Référence sur le Vecteur créé par addition ou un message d'erreur si vecteurs de tailles différentes
      *
      */
-    Vecteur<Dim> & operator +=(const Vecteur<Dim> &v);
+    Vecteur & operator+=(const Vecteur<Dim> &v);
 
     /*!
      * \brief Soustraction interne par un vecteur
@@ -149,7 +158,7 @@ public :
      * \return Référence sur le Vecteur créé par soustraction ou un message d'erreur si vecteurs de tailles différentes
      *
      */ 
-    Vecteur<Dim> & operator -=(const Vecteur<Dim> &v);
+    Vecteur & operator-=(const Vecteur<Dim> &v);
 
 
     /*!
@@ -161,7 +170,7 @@ public :
      * \return Référence sur le Vecteur créé par multiplication ou un message d'erreur si vecteurs de tailles différentes
      *
      */
-    Vecteur<Dim> & operator *=(const Vecteur<Dim> &v);
+    Vecteur & operator*=(const Vecteur<Dim> &v);
 
     /*!
      * \brief Division interne par un vecteur
@@ -172,7 +181,7 @@ public :
      * \return Référence sur le Vecteur créé par division ou un message d'erreur si division par zéro ou si vecteurs de tailles différentes
      *
      */
-    Vecteur<Dim> & operator /=(const Vecteur<Dim> &v);
+    Vecteur & operator/=(const Vecteur<Dim> &v);
 
     /*!
      * \brief Opérateur d'affectation
@@ -182,7 +191,7 @@ public :
      * \return Référence sur le Vecteur obtenu
      *
      */
-    Vecteur<Dim> & operator =(const Vecteur<Dim> &v);
+    Vecteur & operator=(const Vecteur<Dim> &v);
 
     /*!
      * \brief Operateur de comparaison a un autre Vecteur
@@ -195,10 +204,7 @@ public :
      * \return Booleen contenant le résultat de la comparaison
      *
      */
-    bool operator == (Vecteur<Dim> &v) ;
-
-    int d ;
-    double* t ;
+    bool operator==(Vecteur<Dim> &v);
 };
 
 
@@ -219,7 +225,7 @@ public :
  *
  */
 template <unsigned int Dim>
-Vecteur<Dim> operator + (double r, const Vecteur<Dim> &v) ;
+Vecteur<Dim> operator+(double r, const Vecteur<Dim> &v);
 
 
 /*!
@@ -234,7 +240,7 @@ Vecteur<Dim> operator + (double r, const Vecteur<Dim> &v) ;
  *
  */
 template <unsigned int Dim>
-Vecteur<Dim> operator + (const Vecteur<Dim> &v, double r) ;
+Vecteur<Dim> operator+(const Vecteur<Dim> &v, double r);
 
 /*!
  * \brief Soustraction par un réel
@@ -248,7 +254,7 @@ Vecteur<Dim> operator + (const Vecteur<Dim> &v, double r) ;
  *
  */
 template <unsigned int Dim>
-Vecteur<Dim> operator - (double r, const Vecteur<Dim> &v) ;
+Vecteur<Dim> operator-(double r, const Vecteur<Dim> &v);
 
 /*!
  * \brief Soustraction par un réel
@@ -262,7 +268,7 @@ Vecteur<Dim> operator - (double r, const Vecteur<Dim> &v) ;
  *
  */
 template <unsigned int Dim>
-Vecteur<Dim> operator - (const Vecteur<Dim> &D, double r) ;
+Vecteur<Dim> operator-(const Vecteur<Dim> &D, double r);
 
 /*!
  * \brief Multiplication par un réel
@@ -276,7 +282,7 @@ Vecteur<Dim> operator - (const Vecteur<Dim> &D, double r) ;
  *
  */
 template <unsigned int Dim>
-Vecteur<Dim> operator * (double r, const Vecteur<Dim> &v) ;
+Vecteur<Dim> operator*(double r, const Vecteur<Dim> &v);
 
 /*!
  * \brief Multiplication par un réel
@@ -290,7 +296,7 @@ Vecteur<Dim> operator * (double r, const Vecteur<Dim> &v) ;
  *
  */
 template <unsigned int Dim>
-Vecteur<Dim> operator * (const Vecteur<Dim> &v, double r) ;
+Vecteur<Dim> operator*(const Vecteur<Dim> &v, double r);
 
 /*!
  * \brief Division par un réel
@@ -303,7 +309,7 @@ Vecteur<Dim> operator * (const Vecteur<Dim> &v, double r) ;
  *
  */
 template <unsigned int Dim>
-Vecteur<Dim> operator / (const Vecteur<Dim> &v, double r) ;
+Vecteur<Dim> operator/(const Vecteur<Dim> &v, double r);
 
 /*!
  * \brief Division d'un réel
@@ -316,7 +322,7 @@ Vecteur<Dim> operator / (const Vecteur<Dim> &v, double r) ;
  *
  */
 template <unsigned int Dim>
-Vecteur<Dim> operator / (double r, const Vecteur<Dim> &v) ;
+Vecteur<Dim> operator/(double r, const Vecteur<Dim> &v);
 
 /*!
  * \brief Addition de deux objets de classe Vecteur
@@ -329,7 +335,7 @@ Vecteur<Dim> operator / (double r, const Vecteur<Dim> &v) ;
  *
  */
 template <unsigned int Dim>
-Vecteur<Dim> operator + (const Vecteur<Dim> &v1, const Vecteur<Dim> &v2) ;
+Vecteur<Dim> operator+(const Vecteur<Dim> &v1, const Vecteur<Dim> &v2);
 
 
 /*!
@@ -343,7 +349,7 @@ Vecteur<Dim> operator + (const Vecteur<Dim> &v1, const Vecteur<Dim> &v2) ;
  *
  */
 template <unsigned int Dim>
-Vecteur<Dim> operator - (const Vecteur<Dim> &v1, const Vecteur<Dim> &v2) ;
+Vecteur<Dim> operator-(const Vecteur<Dim> &v1, const Vecteur<Dim> &v2);
 
 /*!
  * \brief Multiplication de deux objets de classe Vecteur
@@ -356,7 +362,7 @@ Vecteur<Dim> operator - (const Vecteur<Dim> &v1, const Vecteur<Dim> &v2) ;
  *
  */
 template <unsigned int Dim>
-Vecteur<Dim> operator * (const Vecteur<Dim> &v1, const Vecteur<Dim> &v2) ;
+Vecteur<Dim> operator*(const Vecteur<Dim> &v1, const Vecteur<Dim> &v2);
 
 /*!
  * \brief Division de deux objets de classe Vecteur
@@ -369,7 +375,7 @@ Vecteur<Dim> operator * (const Vecteur<Dim> &v1, const Vecteur<Dim> &v2) ;
  *
  */
 template <unsigned int Dim>
-Vecteur<Dim> operator / (const Vecteur<Dim> &v1, const Vecteur<Dim> &v2) ;
+Vecteur<Dim> operator/(const Vecteur<Dim> &v1, const Vecteur<Dim> &v2);
 
 /*!
  * \brief Moins unaire sur un objet de classe Vecteur
@@ -381,7 +387,7 @@ Vecteur<Dim> operator / (const Vecteur<Dim> &v1, const Vecteur<Dim> &v2) ;
  *
  */
 template <unsigned int Dim>
-Vecteur<Dim> operator - (const Vecteur<Dim> &v) ;
+Vecteur<Dim> operator-(const Vecteur<Dim> &v);
 
 /*!
  * \brief Procedure de lecture des entrées d'un Vecteur
@@ -396,7 +402,7 @@ Vecteur<Dim> operator - (const Vecteur<Dim> &v) ;
  *
  */
 template <unsigned int Dim>
-ostream & operator << (ostream &O, const Vecteur<Dim> &v) ;
+std::ostream & operator<<(std::ostream &O, const Vecteur<Dim> &v);
 
 #include "vecteur.tpp"
 

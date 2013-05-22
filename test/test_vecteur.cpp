@@ -7,7 +7,7 @@
 using std::cout;
 using std::endl;
 
-int test_vecteur() {
+void test_vecteur() {
     
     cout << "-- 1. Test de l'opérateur d'accession --" << endl ;
     cout << "Construction d'un vecteur a trois elements : " << endl ;
