@@ -33,7 +33,7 @@ public:
   /**
    * \return le rayon du noyau de lissage
    */
-    double & getRayon() const;
+    double getRayon() const;
 
   /**
    *  Implémente la méthode par défaut de noyau de lissage

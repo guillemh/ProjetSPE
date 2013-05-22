@@ -17,7 +17,7 @@ NoyauLissage<Dim>::~NoyauLissage() {
 /* ** Methodes ** */
 
 template<unsigned int Dim>
-double & NoyauLissage<Dim>::getRayon() const {
+double NoyauLissage<Dim>::getRayon() const {
       return h;
 }
 
@@ -63,7 +63,7 @@ Vecteur<Dim> NoyauLissage<Dim>::gradient(const Vecteur<Dim> r, const double h, c
       }
       case 2:
       {
-	  double coef = (15/(2*M_PI*pow(h,3)))*((-(3*r.norme())/(2*pow(h,3)))+(2/(pow(h,2)))-(h/(2*pow(r,3))));
+	  double coef = (15/(2*M_PI*pow(h,3)))*((-(3*r.norme())/(2*pow(h,3)))+(2/(pow(h,2)))-(h/(2*pow(r.norme(),3))));
 	  return coef*r;
       }
       } 

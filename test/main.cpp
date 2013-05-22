@@ -15,7 +15,7 @@ int main()
     //test_materiau();
     
     cout <<  "***** Test vecteur : *****" << endl;
-    test_vecteur();
+    //test_vecteur();
 
     cout <<  "***** Test noyauLissage : *****" << endl;
     test_noyauLissage();    
