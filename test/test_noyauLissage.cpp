@@ -35,34 +35,34 @@ void test_noyauLissage() {
   cout << "-- 4. Test du noyau de lissage par défaut pour le noyau pression --" << endl ;
   NoyauLissage<3> w2 = NoyauLissage<3>(5,PRESSION);
   double res4 = w2.defaut(r);
-  //assert((res4 <= ) && (res4 >= ));
+  assert((res4 <= 0.0043) && (res4 >= 0.0042));
   cout << "Resultat : " << res4 << endl;
 
   cout << "-- 5. Test du noyau de lissage gradient pour le noyau pression --" << endl ;
   Vecteur<3> res5 = w2.gradient(r);
-  //assert((res2 <= ) && (res2 >= ));
+  assert((res5(1) <= -0.003) && (res5(1) >= -0.0031));
   cout << "Resultat : " << res5 << endl;
     
   cout << "-- 6. Test du noyau de lissage laplacien pour le noyau pression --" << endl ;
   double res6 = w2.laplacien(r);
-  //assert((res2 <= ) && (res2 >= ));
+  assert((res6 <= 0.00034) && (res6 >= 0.00033));
   cout << "Resultat : " << res6 << endl;
 
     
   cout << "-- 7. Test du noyau de lissage par defaut pour le noyau viscosite --" << endl ;
   NoyauLissage<3> w3 = NoyauLissage<3>(5,VISCOSITE);
   double res7 = w3.defaut(r);
-  //assert((res2 <= ) && (res2 >= ));
+  assert((res7 <= 0.0031) && (res7 >= 0.0030));
   cout << "Resultat : " << res7 << endl;
 
   cout << "-- 8. Test du noyau de lissage laplacien pour le noyau pression --" << endl ;
   Vecteur<3> res8 = w3.gradient(r);
-  // assert((res2 <= ) && (res2 >= ));
+  assert((res8(1) <= -0.0026) && (res8(1) >= -0.0027));
   cout << "Resultat : " << res8 << endl;
 
   cout << "-- 9. Test du noyau de lissage laplacien pour le noyau pression --" << endl ;
   double res9 = w3.laplacien(r);
-  //assert((res2 <= ) && (res2 >= ));
+  assert((res9 <= 0.0023) && (res9 >= 0.0022));
   cout << "Resultat : " << res9 << endl;
     
 }
