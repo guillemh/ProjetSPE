@@ -58,6 +58,11 @@ public:
     void majDensitePression();
     
     /**
+      * Met à jour la densité et la pression de toutes les particules
+      */
+    void majForces();
+    
+    /**
       * Fonction d'affichage du fluide
       */
     //void draw() const;

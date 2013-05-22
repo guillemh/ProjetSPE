@@ -24,6 +24,12 @@ public :
     Vecteur();
 
     /**
+     * \brief Constructeur
+     * Constructeur d'un vecteur comportant une valeur de remplissage par défaut
+     */
+    Vecteur(double def);
+
+    /**
      * \brief Constructeur 
      * Constructeur par défaut du vecteur bidimensionnel
      *
@@ -76,7 +82,7 @@ public:
      * \return Référence sur l'élément situé dans la case numero i - 1 du vecteur
      *
      */
-    double & operator()(unsigned int i);
+    double & operator () (unsigned int i);
 
     /**
      * \brief Operateur d'accès en lecture à un élément du vecteur

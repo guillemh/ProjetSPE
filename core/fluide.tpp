@@ -82,7 +82,7 @@ void Fluide<Dim>::majDensitePression() {
 
     typename vector<Particule<Dim> *>::iterator it1;
     typename vector<Particule<Dim> *>::iterator it2;
-    NoyauLissage noyau = NoyauLissage(mat->getRayonNoyau(), DEFAUT);
+    NoyauLissage<Dim> noyau = NoyauLissage<Dim>(mat->getRayonNoyau(), DEFAUT);
     
     // On boucles sur toutes les particules
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {

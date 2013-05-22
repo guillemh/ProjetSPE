@@ -3,6 +3,15 @@
 
 #include <iostream>
 
+/**
+ * @enum TypeNoyau permettant de définir des types de noyau de lissage
+ */
+enum TypeNoyau {
+  DEFAUT,
+  PRESSION,
+  VISCOSITE
+};
+
 
 /** \class NoyauLissage : classe représentant un noyau de lissage
  * Dim : Dimension de l'espace
@@ -13,7 +22,7 @@ class NoyauLissage {
   /* ** Attributs ** */
 private:
   double h; // Rayon de support du noyau de lissage
-
+  TypeNoyau type;
 
   /* ** Constructeurs ** */
 public:
@@ -21,7 +30,7 @@ public:
    * Constructeur
    * \param rayon rayon de support
    */
-  NoyauLissage(double rayon);
+  NoyauLissage(double rayon, TypeNoyau t);
 
   /**
    * Destructeur
@@ -40,28 +49,20 @@ public:
    *  Implémente la méthode par défaut de noyau de lissage
    * \param r position de la particule
    * \param h rayon de support
-   * \param type_noyau le type du noyau (0: par defaut, 1: pression, 
-   *        2: viscosité)
    */
-  double defaut(const Vecteur<Dim> r, const double h, const int type_noyau) const;
+  double defaut(const Vecteur<Dim> r) const;
 
   /**
    *  Implémente la méthode de noyau de lissage avec le gradient
    * \param r position de la particule
-   * \param h rayon de support
-   * \param type_noyau le type du noyau (0: par defaut, 1: pression, 
-   *        2: viscosité)
    */
-  Vecteur<Dim> gradient(const Vecteur<Dim> r, const double h, const int type_noyau) const;
+  Vecteur<Dim> gradient(const Vecteur<Dim> r) const;
 
   /**
    *  Implémente la méthode de noyau de lissage avec le laplacien
    * \param r position de la particule
-   * \param h rayon de support
-   * \param type_noyau le type du noyau (0: par defaut, 1: pression, 
-   *        2: viscosité)
    */
-  double laplacien(const Vecteur<Dim> r, const double h, const int type_noyau) const;
+  double laplacien(const Vecteur<Dim> r) const;
   
 
 };
