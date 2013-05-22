@@ -9,7 +9,7 @@ template <unsigned int Dim>
 Vecteur<Dim>::Vecteur () {
     cout << "Appel constructeur par défaut" << endl ;
 	t = new double [Dim] ;
-	for (int i = 0 ; i < Dim ; i++) {
+	for (unsigned int i = 0 ; i < Dim ; i++) {
 		t[i] = 0.0 ;
 	}
 }
@@ -81,6 +81,10 @@ double & Vecteur<Dim>::operator()(unsigned int i) {
 	        cout << "Erreur : i n'est pas dans l'intervalle attendu" << endl;
 	        exit(-1);
 	    }
+	} else {
+	    cout << "double & Vecteur<Dim>::operator()(unsigned int i) :" << endl;
+	    cout << "Erreur : tentative de déréférencement d'un pointeur nul" << endl;
+	    exit(-1);		
 	}
 }
 
@@ -95,6 +99,10 @@ double Vecteur<Dim>::operator()(unsigned int i) const {
     	    cout << "Erreur : i n'est pas dans l'intervalle attendu" << endl;
     	    exit(-1);
     	}
+	} else {
+	    cout << "double & Vecteur<Dim>::operator()(unsigned int i) :" << endl;
+	    cout << "Erreur : tentative de déréférencement d'un pointeur nul" << endl;
+	    exit(-1);		
 	}
 }
 
@@ -131,13 +139,14 @@ Vecteur<Dim> & Vecteur<Dim>::operator*=(const double &valeur) {
 
 template <unsigned int Dim>
 Vecteur<Dim> & Vecteur<Dim>::operator/=(const double &valeur) {
-    if (valeur == 0.0) {
+    if (valeur != 0.0) {
     Vecteur<Dim> &a = *this;
     for (unsigned int i = 1; i <= Dim; i++) {
         a(i) /= valeur;
     }
     return a;
     } else {
+		cout << "* 2 = 0 ! *" << endl ;
         cout << "Vecteur<Dim> & Vecteur<Dim>::operator/=(const double &valeur) :" << endl;
         cout << "Erreur : division par zéro" << endl;
         exit(-1);
