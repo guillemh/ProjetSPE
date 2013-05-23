@@ -101,6 +101,37 @@ void Fluide<Dim>::majDensitePression() {
 }
 
 
+// Fonction interne appelee lors de la detection de collisions
+// Elle detecte une collision avec les plans X=-5, X=5, Y=-5, Y=5 et Z=0
+// Elle renvoie le point de contact s'il y a collision, le Vecteur v sinon
+template<unsigned int Dim>
+Vecteur<Dim> collision(const Vecteur<Dim> & v) {
+    Vecteur<Dim> res = Vecteur<Dim>(v);
+
+    if (Dim == 2) {
+        if (v(1) < -5)
+            res(1) = -5;
+        if (v(1) > 5)
+            res(1) = 5;
+        if (v(2) < 0)
+            res(2) = 0;
+    } else {
+        if (v(1) < -5)
+            res(1) = -5;
+        if (v(1) > 5)
+            res(1) = 5;
+        if (v(2) < -5)
+            res(2) = -5;
+        if (v(2) > 5)
+            res(2) = 5;
+        if (v(3) < 0)
+            res(3) = 0;
+    }
+    
+    return res;
+}
+
+
 template<unsigned int Dim>
 void Fluide<Dim>::majPositionVitesse() {
 
@@ -120,7 +151,7 @@ void Fluide<Dim>::majPositionVitesse() {
         Vecteur<Dim> fSurface = Vecteur<Dim>();
         double colorfield = 0;
         
-        // Calcul des forces de pression, de viscosite et de surface
+        // Calcul des sommes utiles aux forces de pression, de viscosite et de surface
         for (it2 = particules.begin(); it2 != particules.end(); it2++) {
             if (it1 != it2) {
                 fPression -= noyauPression.gradient((*it1)->getPosition() - (*it2)->getPosition())
@@ -139,6 +170,8 @@ void Fluide<Dim>::majPositionVitesse() {
             }
         }
         
+        // Calcul des forces de gravité, de pression, de viscosite et de surface
+        fGravite = (*it1)->getMasseVolumique() * mat->getAccGrav();
         fPression *= mat->getMasseParticules() / 2;
         fViscosite *= mat->getViscosite() * mat->getMasseParticules();
         double norme = fSurface.norme();
@@ -149,24 +182,46 @@ void Fluide<Dim>::majPositionVitesse() {
             fSurface = Vecteur<Dim>();
         }
         
-        // Calcul de la force de gravite
-        fGravite = (*it1)->getMasseVolumique() * mat->getAccGrav();
-        
         // Calcul de l'acceleration
-        Vecteur<Dim> acceleration = Vecteur<Dim>(fPression + fViscosite + fGravite + fSurface);
-        acceleration /= (*it1)->getMasseVolumique();
+        (*it1)->setAcceleration((fPression + fViscosite + fGravite + fSurface) / (*it1)->getMasseVolumique());
+        
+    }
+    
+    
+    // On boucles une nouvelle fois sur toutes les particules pour mettre leur position
+    // et leur vitesse a jour et tester les collisions
+    for (it1 = particules.begin(); it1 != particules.end(); it1++) {
         
         // Calcul de la nouvelle vitesse (qu'on retient au temps t+Dt/2)
         if (debutAnim) {
-            (*it1)->incrVitesse(mat->getPasTemps() * acceleration / 2);
+            (*it1)->incrVitesse(mat->getPasTemps() * (*it1)->getAcceleration() / 2);
             debutAnim = false;
         } else {
-            (*it1)->incrVitesse(mat->getPasTemps() * acceleration);
+            (*it1)->incrVitesse(mat->getPasTemps() * (*it1)->getAcceleration());
         }
         
         // Calcul de la nouvelle position (au temps t+Dt)
         (*it1)->incrPosition(mat->getPasTemps() * (*it1)->getVitesse());
+    
+        // Detection des collisions
+        Vecteur<Dim> pos = (*it1)->getPosition();
+        Vecteur<Dim> contact = collision(pos);
         
+        // Si il y a collision, on met a jour la position et la vitesse
+        if (contact != pos) {
+            pos = contact - pos;
+            double dist = pos.norme();
+            Vecteur<Dim> normale = pos / dist;
+        
+            // Mise a jour de la position
+            (*it1)->setPosition(contact);
+            
+            // Mise a jour de la vitesse
+            (*it1)->setVitesse((*it1)->getVitesse()
+                               - (1 + dist / (mat->getPasTemps() * ((*it1)->getVitesse()).norme()))
+                               * (((*it1)->getVitesse()).scalaire(normale)) * normale);
+        }
+    
     }
 
 }

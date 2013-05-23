@@ -71,6 +71,13 @@ public:
      * \return norme du vecteur
      */
     double norme() const;  
+    
+    /**
+     * Calcul du produit scalaire de deux vecteurs
+     * \param v le vecteur avec lequel faire le produit scalaire
+     * \return le produit scalaire des deux vecteurs
+     */
+    double scalaire(Vecteur<Dim> & v) const;  
   
     //
     // Opérateurs d'accès
@@ -84,7 +91,7 @@ public:
      * \return Référence sur l'élément situé dans la case numero i - 1 du vecteur
      *
      */
-    double & operator () (unsigned int i);
+    double & operator()(unsigned int i);
 
     /**
      * \brief Operateur d'accès en lecture à un élément du vecteur
@@ -203,15 +210,20 @@ public:
     /*!
      * \brief Operateur de comparaison a un autre Vecteur
      * 
-     * Si D et this sont de taille différentes, on renvoie false.
-     * Sinon, tous les éléments du membre d[] sont comparés terme a terme.
-     * Si au moins l'un des éléments differe dans l'un ou l'autre d[], false est renvoyé, true sinon.
-     *
      * \param v réference constante sur un Vecteur
      * \return Booleen contenant le résultat de la comparaison
      *
      */
     bool operator==(Vecteur<Dim> &v);
+
+    /*!
+     * \brief Operateur de difference a un autre Vecteur
+     * 
+     * \param v réference constante sur un Vecteur
+     * \return Booleen valant true si les vecteurs ne sont pas égaux
+     *
+     */
+    bool operator!=(Vecteur<Dim> &v);
 };
 
 

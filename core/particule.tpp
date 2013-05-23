@@ -35,6 +35,12 @@ const Vecteur<Dim> & Particule<Dim>::getVitesse() const {
 
 
 template<unsigned int Dim>
+const Vecteur<Dim> & Particule<Dim>::getAcceleration() const {
+    return acceleration;
+}
+
+
+template<unsigned int Dim>
 double Particule<Dim>::getMasseVolumique() const {
     return masse_volumique;
 }
@@ -55,6 +61,12 @@ void Particule<Dim>::setPosition(const Vecteur<Dim> &pos) {
 template<unsigned int Dim>
 void Particule<Dim>::setVitesse(const Vecteur<Dim> &vit) {    
     vitesse = vit;
+}
+
+
+template<unsigned int Dim>
+void Particule<Dim>::setAcceleration(const Vecteur<Dim> &acc) {    
+    acceleration = acc;
 }
 
 
@@ -80,6 +92,7 @@ template<unsigned int Dim>
 void Particule<Dim>::incrVitesse(const Vecteur<Dim> &vit) {
     vitesse += vit;
 }
+
 
 template<unsigned int Dim>
 void Particule<Dim>::draw(Materiau<Dim> *mat) const {

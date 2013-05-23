@@ -15,6 +15,7 @@ class Particule {
 private:
     Vecteur<Dim> position;  // Position de la particule (m)
     Vecteur<Dim> vitesse;   // Vitesse de la particule (m.s^-1)
+    Vecteur<Dim> acceleration;   // Acceleration de la particule (m.s^-2)
     double masse_volumique; // Masse volumique de la particule (kg.m^-3)
     double pression;        // Pression de la particule (Pa)
 
@@ -47,6 +48,11 @@ public:
       * \return la vitesse de la particule
       */
     const Vecteur<Dim> & getVitesse() const;
+
+    /**
+      * \return l'accélération de la particule
+      */
+    const Vecteur<Dim> & getAcceleration() const;
     
     /**
       * \return la masse volumique de la particule
@@ -66,9 +72,15 @@ public:
 
     /**
       * Modifie la vitesse de la particule
-      * \param pos nouvelle vitesse de la particule
+      * \param vit nouvelle vitesse de la particule
       */
     void setVitesse(const Vecteur<Dim> &vit);
+
+    /**
+      * Modifie l'accélération de la particule
+      * \param acc nouvelle accélération de la particule
+      */
+    void setAcceleration(const Vecteur<Dim> &acc);
 
     /**
       * Modifie la masse volumique de la particule

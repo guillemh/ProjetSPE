@@ -14,6 +14,6 @@ DESTDIR = $${DBGNAME}
 
 QT += xml opengl
 
-HEADERS += 
+HEADERS += fluide.hpp materiau.hpp noyauLissage.hpp particule.hpp vecteur.hpp
 SOURCES += 
 

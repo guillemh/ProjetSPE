@@ -53,8 +53,18 @@ Vecteur<Dim>::~Vecteur<Dim>() {
 template <unsigned int Dim>
 double  Vecteur<Dim>::norme() const {
     double somme = 0;
-    for (unsigned int i = 1; i <= Dim; i++) {
-        somme += pow((*this)(i),2);
+    for (unsigned int i = 0; i < Dim; i++) {
+        somme += pow(t[i],2);
+    }
+    return sqrt(somme);
+}
+
+
+template <unsigned int Dim>
+double Vecteur<Dim>::scalaire(Vecteur<Dim> & v) const {
+    double somme = 0;
+    for (unsigned int i = 0; i < Dim; i++) {
+        somme += t[i] * v.t[i];
     }
     return sqrt(somme);
 }
@@ -173,6 +183,7 @@ Vecteur<Dim> & Vecteur<Dim>::operator=(const Vecteur<Dim> &v) {
     return(*this);
 }
 
+
 template <unsigned int Dim>
 bool Vecteur<Dim>::operator==(Vecteur<Dim> &v) {
     for (unsigned int i = 1; i <= Dim; i++) {
@@ -181,6 +192,11 @@ bool Vecteur<Dim>::operator==(Vecteur<Dim> &v) {
         }
     }
     return true;
+}
+
+template <unsigned int Dim>
+bool Vecteur<Dim>::operator!=(Vecteur<Dim> &v) {
+    return not ((*this) == v);
 }
 
 
