@@ -17,8 +17,9 @@ class Fluide {
 
     /* ** Attributs ** */
 private:
-    Materiau<Dim> * mat;                      // Materiau du fluide (avec toutes les constantes)
+    Materiau<Dim> * mat;                 // Materiau du fluide (avec toutes les constantes)
     vector<Particule<Dim> *> particules; // Ensemble des particules
+    bool debutAnim;                      // Indique si on est au debut de l'animation
 
 
     /* ** Constructeurs ** */
@@ -61,7 +62,7 @@ public:
     /**
       * Met à jour la densité et la pression de toutes les particules
       */
-    void majForces();
+    void majPositionVitesse();
     
     /**
       * Fonction d'affichage du fluide

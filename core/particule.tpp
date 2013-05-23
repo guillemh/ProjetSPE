@@ -84,7 +84,7 @@ void Particule<Dim>::incrVitesse(const Vecteur<Dim> &vit) {
 template<unsigned int Dim>
 void Particule<Dim>::draw(Materiau<Dim> *mat) const {
     glPushMatrix();
-    glColor3f (0.0, 0.0, 1.0) ;
+    glColor3f(0.0, 0.0, 1.0);
     glTranslatef(position(1), position(2), position(3));
     /* Calcul du rayon de la sphère :
      * r = racine cubique (3 * m / (4 * PI * rho)) 
@@ -94,8 +94,8 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
      * Or V = m / rho, donc m = rho * V = rho * k / p
      * ce qui simplifie le calcul
      */
-    double rayon = pow ((3 * mat->getRigiditeGaz())/(4 * PI * pression), 1.0/3.0) ;
-    glutSolidSphere (rayon, 12, 12) ;
+    double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * pression), 1.0/3.0);
+    glutSolidSphere(rayon, 12, 12);
     glPopMatrix();
 }
 
