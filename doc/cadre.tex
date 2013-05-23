@@ -1,4 +1,4 @@
-\documentclass[a4paper,10pt]{article}
+\documentclass[12pt]{article}
 \setlength{\textwidth}{17cm}
 \setlength{\textheight}{25cm}
 \setlength{\oddsidemargin}{-.7cm}
@@ -24,31 +24,33 @@
 
 \maketitle
 
-Introduction [...]
-
+Dans ce document, nous présentons les méthodes de travail que nous allons utiliser dans le cadre de notre projet de spécialité, consistant en le développement d'un modèle d'animation de fluides. C'est pourquoi nous allons débuter ce document par une présentation du projet et des objectifs que nous nous sommes fixés. Nous aborderons ensuite les questions d'organisation de l'équipe, de planning, avant d'évoquer notre gestion du planning, mais aussi des ressources humaines et des compétences qui nous sont propres.
 
 \section{Présentation du projet}
 
-- projet orienté recherche
-- objectifs techniques : implémenter un modèle SPH d'animation temps-réel de liquides
-	- implémenter le modèle physique correspondant
-	- d'un point de vue informatique, optimisation les calculs
-	- réalisme et esthétique du résultat
-- objectifs de délai : date de fin de projet, obtenir un exécutable fonctionnel avec des résultats acceptables
+Ce projet de spécialité est davantage orienté vers la recherche que vers le génie logiciel. Il consiste en l'implémentation d'un modèle SPH {\em (Smoothed-Particle Hydrodynamics)} pour l'animation de fluides en temps réel. Ce modèle consiste à représenter un liquide ou un gaz sous la forme d'un ensemble de particules autonomes mais physiquement soumises à des forces et interagissant avec les particules qui lui sont voisines. La finalité de ce projet consiste en l'obtention d'une animation 3D la plus réaliste possible d'un fluide. La contrainte temps-réel impose un temps de calcul minimal pour un résultat quasi-instantané et favorisant l'interaction avec un tiers. Un exemple d'application possible de ce modèle est l'animation d'une cascade dans un jeu vidéo. \\
 
+Techniquement, cet objectif s'articule autour de trois points : \\
+
+\begin{itemize}
+\item tout d'abord, l'implémentation du système et du modèle physique, ce qui passe par le calcul des forces et l'intégration de la seconde loi de Newton pour animer le fluide ;
+\item d'un point de vue informatique, au vu de la complexité du calcul, et du nombre de particules considérées pour approximer un fluide, un objectif essentiel consiste en l'optimisation du calcul précédent, ce qui sous-entend par exemple l'utilisation de structures de données adéquates et performantes ;
+\item enfin, nous devons veiller à obtenir un résultat réaliste, tant du point de vue physique qu'esthétique. Ceci consiste à construire un modèle partant de l'ensemble des particules et construisant la surface en mouvement. \\
+\end{itemize}
+
+Nous suivrons dans ce projet une démarche incrémentale dans notre amélioration du rendu et de la simulation, nous y reviendrons plus en détail ci-dessous. \\
+
+Concernant le rendu de ce projet, le temps nous est insuffisant pour essayer plusieurs modèles physiques et implémenter toutes les optimisations possibles sur ce genre de problèmes. Notre objectif est donc, d'ici la date de fin du projet, d'obtenir un exécutable fonctionnel fournissant des résultats acceptables. Ces résultats incluent l'aspect visuel, l'aspect physique, mais aussi la recherche des meilleures performances. De plus, notre projet est par la suite susceptible d'être réutilisé par nos encadrants et des chercheurs pour des travaux ultérieurs, ce qui impose des contraintes de clarté, dans le code comme dans notre documentation. 
 
 \section{Organisation et communication}
 
-Organisation de l'équipe :
-- 4 membres (équipe projet) et 2 encadrants (équipe étendue)
-- parallélisation des tâches
+Notre équipe projet se compose de nous quatre, qui étudions tous en filière MMIS (Modélisation Mathématique, Images et Simulation). Deux encadrants, Pierre-Luc Manteaux et Marie-Paule Cani, sont nos principaux interlocuteurs en cas de difficultés sur le plan technique et forment l'équipe étendue. \\
 
-Communication :
-- mails de suivi, rencontres avec le prof (deux fois par semaine)
-- séances de travail à 4 à l'école, le plus souvent (travail isolé réprouvé)
-- dépôt Git
-- éventuelle collaboration avec l'autre équipe
+Nos procédés de communication sont les suivants. Nous avons l'intention de travailler tous ensemble à l'Ensimag sur des tâches parallèles, éventuellement seuls ou en binômes. Pour des raisons d'efficacité et de compréhension des autres membres de l'équipe vis-à-vis des changements apportés au projet, nous avons tendance à réprouver le travail en solitaire, effectué le soir ou le week-end chez soi, quitte à rallonger nos horaires de présence à l'école en journée. \\
 
+Pour synchroniser notre travail, nous utilisons un dépôt Git auquel les encadrants ont également accès, ce qui leur permet de contrôler notre travail et d'y revenir avec une plus grande connaissance lors de nos réunions de suivi. Concernant ces réunions justement, nous avons choisi d'adopter un rythme de deux suivis par semaine. Nous leur communiquons également par mail notre avancement et les éventuels problèmes rencontrés. \\
+
+Par ailleurs, une autre équipe travaille sur un projet similaire. Une partie de notre travail est donc commune, ce qui rend possible un échange entre les deux équipes sur des points précis de l'algorithme.
 
 \section{Planning}
 
