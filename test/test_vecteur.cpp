@@ -28,6 +28,16 @@ void test_vecteur() {
     cout << "On ajoute 2 :" << endl;
     Vecteur<3> v4 = 2.0 + v3;
     cout << v4 << endl;
+    
+    cout << "- Test de la soustraction par un reel : on a v = ";
+    cout << v3 << endl;
+    cout << "On soustrait 2 :" << endl;
+    v4 = v3 - 2.0;
+    cout << v4 << endl;
+    
+    cout << "On fait l'inverse :" << endl;
+    v4 = 2.0 - v3;
+    cout << v4 << endl;
 
     cout << "On ajoute encore 2 en utilisant la commutativité de l'addition :" << endl;
     Vecteur<3> v5 = v4 + 2.0;
@@ -46,13 +56,16 @@ void test_vecteur() {
     cout << v8 << endl;
 
     cout << "-- 5. Test des operateurs +=, -=, *=, /= --" << endl;
-    cout << "On part de v1 :" << endl;
-    cout << v1 << endl;
+    cout << "On part de v4 :" << endl;
+    cout << v4 << endl;
     cout << "Et de v3 :" << endl;
     cout << v3 << endl;
     cout << "On realise une addition de vecteur a vecteur. Resultat :" << endl;
-    v1 += v3;
-    cout << v1 << endl;
+    v4 += v3;
+    cout << v4 << endl;
+    cout << "On resoustrait pour réobtenir v4. Resultat :" << endl;
+    v4 -= v3;
+    cout << v4 << endl;
 
     cout << "-- 6. Test de l'operateur d'affectation = --" << endl;
     cout << "On va affecter le vecteur :" << endl;
@@ -65,7 +78,7 @@ void test_vecteur() {
     cout << endl;
 
     cout << "Comparons les membres gauche et droit de l'affectation precedente" << endl;
-    if(v1 == v3) {
+    if (v1 == v3) {
 	cout << "Ils sont bien egaux" << endl;
     } else {
 	cout << "Erreur : non egalite des vecteurs" << endl;

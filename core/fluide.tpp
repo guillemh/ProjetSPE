@@ -83,7 +83,7 @@ void Fluide<Dim>::majDensitePression() {
 
     typename vector<Particule<Dim> *>::iterator it1;
     typename vector<Particule<Dim> *>::iterator it2;
-    NoyauLissage<Dim> noyau = NoyauLissage<Dim>(mat->getRayonNoyau(), DEFAUT);
+    NoyauLissageDefaut<Dim> noyau = NoyauLissageDefaut<Dim>(mat->getRayonNoyau());
     
     // On boucles sur toutes les particules
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
@@ -106,9 +106,9 @@ void Fluide<Dim>::majPositionVitesse() {
 
     typename vector<Particule<Dim> *>::iterator it1;
     typename vector<Particule<Dim> *>::iterator it2;
-    NoyauLissage<Dim> noyauDefaut = NoyauLissage<Dim>(mat->getRayonNoyau(), DEFAUT);
-    NoyauLissage<Dim> noyauPression = NoyauLissage<Dim>(mat->getRayonNoyau(), PRESSION);
-    NoyauLissage<Dim> noyauViscosite = NoyauLissage<Dim>(mat->getRayonNoyau(), VISCOSITE);
+    NoyauLissageDefaut<Dim> noyauDefaut = NoyauLissageDefaut<Dim>(mat->getRayonNoyau());
+    NoyauLissagePression<Dim> noyauPression = NoyauLissagePression<Dim>(mat->getRayonNoyau());
+    NoyauLissageViscosite<Dim> noyauViscosite = NoyauLissageViscosite<Dim>(mat->getRayonNoyau());
     
     // On boucles sur toutes les particules
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {

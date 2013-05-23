@@ -11,7 +11,7 @@ using std::endl;
 void test_noyauLissage() {
   cout << "-- 1. Test du noyau de lissage par défaut pour le noyau par défaut --" << endl ;
   cout << "Construction d'un noyau de dimension 3 : " << endl ;
-  NoyauLissage<3> w = NoyauLissage<3>(5,DEFAUT);
+  NoyauLissageDefaut<3> w = NoyauLissageDefaut<3>(5);
   cout << "Construction d'un vecteur a trois elements : " << endl ;
   Vecteur<3> r;
   r(1) = 1.5;
@@ -33,7 +33,7 @@ void test_noyauLissage() {
   cout << "Resultat : " << res3 << endl;
 
   cout << "-- 4. Test du noyau de lissage par défaut pour le noyau pression --" << endl ;
-  NoyauLissage<3> w2 = NoyauLissage<3>(5,PRESSION);
+  NoyauLissagePression<3> w2 = NoyauLissagePression<3>(5);
   double res4 = w2.defaut(r);
   assert((res4 <= 0.0043) && (res4 >= 0.0042));
   cout << "Resultat : " << res4 << endl;
@@ -50,7 +50,7 @@ void test_noyauLissage() {
 
     
   cout << "-- 7. Test du noyau de lissage par defaut pour le noyau viscosite --" << endl ;
-  NoyauLissage<3> w3 = NoyauLissage<3>(5,VISCOSITE);
+  NoyauLissageViscosite<3> w3 = NoyauLissageViscosite<3>(5);
   double res7 = w3.defaut(r);
   assert((res7 <= 0.0031) && (res7 >= 0.0030));
   cout << "Resultat : " << res7 << endl;

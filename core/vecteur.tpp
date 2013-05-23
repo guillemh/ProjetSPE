@@ -6,45 +6,36 @@ using std::endl;
 /* ** Constructeurs ** */
 
 template <unsigned int Dim>
-Vecteur<Dim>::Vecteur () {
-	t = new double [Dim] ;
-	for (unsigned int i = 0 ; i < Dim ; i++) {
-		t[i] = 0.0 ;
+Vecteur<Dim>::Vecteur() {
+	for (unsigned int i = 0; i < Dim; i++) {
+		t[i] = 0.0;
+	}
+}
+
+template <unsigned int Dim>
+Vecteur<Dim>::Vecteur(double def) {
+	for (unsigned int i = 0; i < Dim; i++) {
+		t[i] = def;
 	}
 }
 
 template <unsigned int Dim>
 Vecteur<Dim>::Vecteur(double x, double y) {
-    if (Dim != 2) {
-        cout << "Vecteur<Dim>::Vecteur<Dim>(double x, double y) :" << endl; 
-        cout << "Erreur : Construction d'un vecteur non bidimensionnel avec spécification de 2 coordonnées" << endl;
-        exit(-1);
-    } else {
-        t = new double[Dim];
-        t[0] = x;
-        t[1] = y;
-    }
+    t[0] = x;
+    t[1] = y;
 }
 
 
 template <unsigned int Dim>
 Vecteur<Dim>::Vecteur(double x, double y, double z) {
-    if (Dim != 3) {
-        cout << "Vecteur<Dim>::Vecteur<Dim>(double x, double y, double z) :" << endl; 
-        cout << "Erreur : Construction d'un vecteur non tridimensionnel avec spécification de 3 coordonnées" << endl;
-        exit(-1);
-    } else {
-        t = new double[Dim];
-        t[0] = x;
-        t[1] = y;
-        t[2] = z;
-    }
+    t[0] = x;
+    t[1] = y;
+    t[2] = z;
 }
 
 
 template <unsigned int Dim>
 Vecteur<Dim>::Vecteur(const Vecteur<Dim> &v) {
-    t = new double[Dim];
     for (unsigned int i = 0; i < Dim; i++) {
         t[i] = v.t[i];
     }
@@ -53,7 +44,6 @@ Vecteur<Dim>::Vecteur(const Vecteur<Dim> &v) {
 
 template <unsigned int Dim>
 Vecteur<Dim>::~Vecteur<Dim>() {
-    delete [] t;
 }
 
 
@@ -72,37 +62,13 @@ double  Vecteur<Dim>::norme() const {
 
 template <unsigned int Dim>
 double & Vecteur<Dim>::operator()(unsigned int i) {
-	if (t != NULL) {
-	    if (1 <= i && i <= Dim) {
-	        return t[i - 1];
-	    } else {
-	        cout << "double & Vecteur<Dim>::operator()(unsigned int i) :" << endl;
-	        cout << "Erreur : i n'est pas dans l'intervalle attendu" << endl;
-	        exit(-1);
-	    }
-	} else {
-	    cout << "double & Vecteur<Dim>::operator()(unsigned int i) :" << endl;
-	    cout << "Erreur : tentative de déréférencement d'un pointeur nul" << endl;
-	    exit(-1);		
-	}
+    return t[i - 1];
 }
 
 
 template <unsigned int Dim>
 double Vecteur<Dim>::operator()(unsigned int i) const {
-	if (t != NULL) {
-   		if (1 <= i && i <= Dim) {
-    	    return t[i - 1];
-    	} else {
-    	    cout << "double Vecteur<Dim>::operator()(unsigned int i) const :" << endl;
-    	    cout << "Erreur : i n'est pas dans l'intervalle attendu" << endl;
-    	    exit(-1);
-    	}
-	} else {
-	    cout << "double & Vecteur<Dim>::operator()(unsigned int i) :" << endl;
-	    cout << "Erreur : tentative de déréférencement d'un pointeur nul" << endl;
-	    exit(-1);		
-	}
+    return t[i - 1];
 }
 
 
@@ -139,11 +105,11 @@ Vecteur<Dim> & Vecteur<Dim>::operator*=(const double &valeur) {
 template <unsigned int Dim>
 Vecteur<Dim> & Vecteur<Dim>::operator/=(const double &valeur) {
     if (valeur != 0.0) {
-    Vecteur<Dim> &a = *this;
-    for (unsigned int i = 1; i <= Dim; i++) {
-        a(i) /= valeur;
-    }
-    return a;
+        Vecteur<Dim> &a = *this;
+        for (unsigned int i = 1; i <= Dim; i++) {
+            a(i) /= valeur;
+        }
+        return a;
     } else {
 		cout << "* 2 = 0 ! *" << endl ;
         cout << "Vecteur<Dim> & Vecteur<Dim>::operator/=(const double &valeur) :" << endl;
@@ -201,10 +167,6 @@ Vecteur<Dim> & Vecteur<Dim>::operator/=(const Vecteur<Dim> &v) {
 
 template <unsigned int Dim>
 Vecteur<Dim> & Vecteur<Dim>::operator=(const Vecteur<Dim> &v) {
-    if (t != NULL) {
-        delete [] t;
-    }
-    t = new double[Dim];
     for (unsigned int i = 1; i <= Dim; i++) {
         (*this)(i) = v(i);
     }
@@ -232,27 +194,29 @@ Vecteur<Dim> operator+(double r, const Vecteur<Dim> &v) {
 
 template <unsigned int Dim>
 Vecteur<Dim> operator+(const Vecteur<Dim> &v, double r) {
-    return(r + v);
+    return (r + v);
 }
 
 
 template <unsigned int Dim>
 Vecteur<Dim> operator-(double r, const Vecteur<Dim> &v) {
-    Vecteur <Dim> a(v);
-    a -= r;
+    Vecteur<Dim> a(r);
+    a -= v;
     return a;
 }
 
 
 template <unsigned int Dim>
 Vecteur<Dim> operator-(const Vecteur<Dim> &v, double r) {
-    return(r - v);
+    Vecteur<Dim> a(v);
+    a -= r;
+    return a;
 }
 
 
 template <unsigned int Dim>
 Vecteur<Dim> operator*(double r, const Vecteur<Dim> &v) {
-    Vecteur <Dim> a(v);
+    Vecteur<Dim> a(v);
     a *= r;
     return a;
 }
@@ -260,7 +224,7 @@ Vecteur<Dim> operator*(double r, const Vecteur<Dim> &v) {
 
 template <unsigned int Dim>
 Vecteur<Dim> operator*(const Vecteur<Dim> &v, double r) {
-    return(r * v);
+    return (r * v);
 }
 
 
@@ -280,11 +244,8 @@ Vecteur<Dim> operator/(const Vecteur<Dim> &v, double r) {
 
 template <unsigned int Dim>
 Vecteur<Dim> operator/(double r, const Vecteur<Dim> &v) {
-    Vecteur<Dim> b ;
-    for (unsigned int i = 1; i <= Dim; i++) {
-        b(i) = r;
-    }
-    return(b / v);
+    Vecteur<Dim> b(r);
+    return (b / v);
 }
 
 
@@ -322,10 +283,11 @@ Vecteur<Dim> operator/(const Vecteur<Dim> &v1, const Vecteur<Dim> &v2) {
 
 template <unsigned int Dim>
 Vecteur<Dim> operator-(const Vecteur<Dim> &v) {
-    Vecteur<Dim> b(v);
-    Vecteur<Dim> a ;
-    a -= b;
-    return a;
+    Vecteur<Dim> b;
+    for (unsigned int i = 1; i <= Dim; i++) {
+        b(i) = -v(i);
+    }
+    return b;
 }
 
 

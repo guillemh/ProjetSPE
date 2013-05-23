@@ -12,7 +12,7 @@ class Vecteur {
 
     /* ** Attributs ** */
 public:
-    double* t;
+    double t[Dim];
 
 
     /* ** Constructeurs ** */
@@ -26,6 +26,8 @@ public :
     /**
      * \brief Constructeur
      * Constructeur d'un vecteur comportant une valeur de remplissage par défaut
+     *
+     * \param def la valeur a entrer dans le vecteur
      */
     Vecteur(double def);
 
