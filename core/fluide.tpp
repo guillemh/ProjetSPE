@@ -219,7 +219,8 @@ void Fluide<Dim>::majPositionVitesse() {
             
             // Mise a jour de la vitesse
             (*it1)->setVitesse((*it1)->getVitesse()
-                               - (1 + dist / (mat->getPasTemps() * ((*it1)->getVitesse()).norme()))
+                               - (1 + mat->getCoeffRestitution() * dist
+                               / (mat->getPasTemps() * ((*it1)->getVitesse()).norme()))
                                * (((*it1)->getVitesse()).scalaire(normale)) * normale);
         }
     

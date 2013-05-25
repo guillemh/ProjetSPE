@@ -66,7 +66,7 @@ double Vecteur<Dim>::scalaire(Vecteur<Dim> & v) const {
     for (unsigned int i = 0; i < Dim; i++) {
         somme += t[i] * v.t[i];
     }
-    return sqrt(somme);
+    return somme;
 }
 
 

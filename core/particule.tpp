@@ -107,7 +107,7 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
      * Or V = m / rho, donc m = rho * V = rho * k / p
      * ce qui simplifie le calcul
      */
-    double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * pression), 1.0/3.0);
+    double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * mat->getPression()), 1.0/3.0);
     glutSolidSphere(rayon, 12, 12);
     glPopMatrix();
 }
