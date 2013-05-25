@@ -50,6 +50,8 @@ class Viewer : public QGLViewer
      * Représentation de la scène à l'écran
      */
     virtual void draw();
+    
+    virtual void animate();
 
     bool toogleWireframe; /*!< Booléen indiquant ou non si on dessine la scène sous une forme de maillage ou de faces pleines */
     bool toogleLight; /*!< Booléen indiquant si le modèle d'illumination d'OpenGL (modèle de Phong) doit être respecté */

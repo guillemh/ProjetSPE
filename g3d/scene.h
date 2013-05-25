@@ -18,16 +18,18 @@ class Scene {
     Scene () ;
 
     /**
+     * \brief Destructeur
+     */
+    ~Scene () ;
+
+    /**
      * \brief Représentation
      *
      * Représentation de la scène
      */
     void draw() ;
-
-    /**
-     * \brief Destructeur
-     */
-    ~Scene () ;
+    
+    void animate() ;
 
  private :
     Fluide<3> *f ; /*!< Pointeur sur un fluide */
