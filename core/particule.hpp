@@ -108,6 +108,7 @@ public:
     
     /**
       * Fonction d'affichage de la particule
+      * \param mat le matériau du fluide auquel appartient la particule
       */
     void draw(Materiau<Dim> *mat) const;
 };

@@ -159,13 +159,13 @@ void Fluide<Dim>::majPositionVitesse() {
                              / (*it2)->getMasseVolumique();
                 
                 fViscosite += ((*it2)->getVitesse() - (*it1)->getVitesse())
-                              / (*it2)->getMasseVolumique()
-                              * noyauViscosite.laplacien((*it1)->getPosition() - (*it2)->getPosition());
+                              * noyauViscosite.laplacien((*it1)->getPosition() - (*it2)->getPosition())
+                              / (*it2)->getMasseVolumique();
                               
                 colorfield += noyauDefaut.laplacien((*it1)->getPosition() - (*it2)->getPosition())
                               / (*it2)->getMasseVolumique();
                               
-                fSurface -= noyauDefaut.gradient((*it1)->getPosition() - (*it2)->getPosition())
+                fSurface += noyauDefaut.gradient((*it1)->getPosition() - (*it2)->getPosition())
                             / (*it2)->getMasseVolumique();
             }
         }
@@ -174,10 +174,11 @@ void Fluide<Dim>::majPositionVitesse() {
         fGravite = (*it1)->getMasseVolumique() * mat->getAccGrav();
         fPression *= mat->getMasseParticules() / 2;
         fViscosite *= mat->getViscosite() * mat->getMasseParticules();
+        fSurface *= mat->getMasseParticules();
         double norme = fSurface.norme();
         if (norme >= mat->getSeuilSurface()) {
             colorfield *= mat->getMasseParticules();
-            fSurface *= colorfield * mat->getTensionSurface() * mat->getMasseParticules() / norme;
+            fSurface *= -colorfield * mat->getTensionSurface() / norme;
         } else {
             fSurface = Vecteur<Dim>();
         }
