@@ -187,7 +187,8 @@ Vecteur<Dim> & Vecteur<Dim>::operator=(const Vecteur<Dim> &v) {
 template <unsigned int Dim>
 bool Vecteur<Dim>::operator==(const Vecteur<Dim> &v) const {
     for (unsigned int i = 1; i <= Dim; i++) {
-        if ((*this)(i) != v(i)) {
+        // Etant donne que ce sont des double, on teste la difference plutot que l'egalite !
+        if (std::abs((*this)(i) - v(i)) > 0.0000000001) {
             return false;
         }
     }

@@ -195,7 +195,7 @@ void test_vecteur() {
 
     cout << "-- 4. Test du calcul du produit scalaire --" << endl;
     v3 = Vecteur<3>(6.0, 12.3, 1.2);
-    if (v3.scalaire(v1) == 60.9)
+    if (std::abs(v3.scalaire(v1) - 60.9) < 0.0000000001)
         cout<<"OK"<<endl;
     else
         cout<<"ERREUR !"<<endl;
