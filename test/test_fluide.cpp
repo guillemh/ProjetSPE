@@ -8,6 +8,9 @@ using std::endl;
 
 void tests_unitaires_fluide() {
 
+    cout << "## Rq : ce test ne peut pas vérifier les résultats mais ##" << endl
+         << "## seulement la bonne exécution (décommenter affiche()) ##" << endl;
+
     Vecteur<2> vec2d1 = Vecteur<2>(5.0, 8.0);
     Vecteur<2> vec2d2 = Vecteur<2>(1.0, 3.0);
     Particule<2> * p1 = new Particule<2>(vec2d1, vec2d2, 1000, 100000);
@@ -21,73 +24,89 @@ void tests_unitaires_fluide() {
     Materiau<3> mateau3d = Materiau<3>(EAU);
 
 
-    cout << "1 − Creation d'un fluide 2D vide :" << endl;
+    cout << "1 − Creation d'un fluide 2D vide : ";
     Fluide<2> f1 = Fluide<2>(&mateau2d);
-    f1.affiche();
+    cout<<"OK"<<endl;
+    //f1.affiche();
     
-    cout << "->Ajout d'une particule :" << endl;
+    cout << "->Ajout d'une particule : ";
     f1.ajouteParticule(p1);
-    f1.affiche();
+    cout<<"OK"<<endl;
+    //f1.affiche();
     
-    cout << "->Mise a jour de la pression et de la masse volumique :" << endl;
+    cout << "->Mise a jour de la pression et de la masse volumique : ";
     f1.majDensitePression();
-    f1.affiche();
+    cout<<"OK"<<endl;
+    //f1.affiche();
     
-    cout << "->Mise a jour de la position et de la vitesse :" << endl;
+    cout << "->Mise a jour de la position et de la vitesse : ";
     f1.majPositionVitesse();
-    f1.affiche();
+    cout<<"OK"<<endl;
+    //f1.affiche();
 
 
-    cout << "2 − Creation d'un fluide 2D carré :" << endl;
+    cout << "2 − Creation d'un fluide 2D carré : ";
     int tab2d[2] = {3, 3};
     Fluide<2> f2 = Fluide<2>(&mateau2d, tab2d, 1.0);
-    f2.affiche();
+    cout<<"OK"<<endl;
+    //f2.affiche();
     
-    cout << "->Ajout d'une particule :" << endl;
+    cout << "->Ajout d'une particule : ";
     f2.ajouteParticule(p3);
-    f2.affiche();
+    cout<<"OK"<<endl;
+    //f2.affiche();
     
-    cout << "->Mise a jour de la pression et de la masse volumique :" << endl;
+    cout << "->Mise a jour de la pression et de la masse volumique : ";
     f2.majDensitePression();
-    f2.affiche();
+    cout<<"OK"<<endl;
+    //f2.affiche();
     
-    cout << "->Mise a jour de la position et de la vitesse :" << endl;
+    cout << "->Mise a jour de la position et de la vitesse : ";
     f2.majPositionVitesse();
-    f2.affiche();
+    cout<<"OK"<<endl;
+    //f2.affiche();
     
     
-    cout << "3 − Creation d'un fluide 3D vide :" << endl;
+    cout << "3 − Creation d'un fluide 3D vide : ";
     Fluide<3> f3 = Fluide<3>(&mateau3d);
-    f3.affiche();
+    cout<<"OK"<<endl;
+    //f3.affiche();
     
-    cout << "->Ajout d'une particule :" << endl;
+    cout << "->Ajout d'une particule : ";
     f3.ajouteParticule(p2);
-    f3.affiche();
+    cout<<"OK"<<endl;
+    //f3.affiche();
     
-    cout << "->Mise a jour de la pression et de la masse volumique :" << endl;
+    cout << "->Mise a jour de la pression et de la masse volumique : ";
     f3.majDensitePression();
-    f3.affiche();
+    cout<<"OK"<<endl;
+    //f3.affiche();
     
-    cout << "->Mise a jour de la position et de la vitesse :" << endl;
+    cout << "->Mise a jour de la position et de la vitesse : ";
     f3.majPositionVitesse();
-    f3.affiche();
+    cout<<"OK"<<endl;
+    //f3.affiche();
 
 
-    cout << "4 − Creation d'un fluide 3D carré :" << endl;
+    cout << "4 − Creation d'un fluide 3D carré : ";
     int tab3d[3] = {3, 3, 3};
     Fluide<3> f4 = Fluide<3>(&mateau3d, tab3d, 1.0, 900.0, 100000.0);
-    f4.affiche();
+    cout<<"OK"<<endl;
+    //f4.affiche();
     
-    cout << "->Ajout d'une particule :" << endl;
+    cout << "->Ajout d'une particule : ";
     f4.ajouteParticule(p4);
-    f4.affiche();
+    cout<<"OK"<<endl;
+    //f4.affiche();
     
-    cout << "->Mise a jour de la pression et de la masse volumique :" << endl;
+    cout << "->Mise a jour de la pression et de la masse volumique : ";
     f4.majDensitePression();
-    f4.affiche();
+    cout<<"OK"<<endl;
+    //f4.affiche();
     
-    cout << "->Mise a jour de la position et de la vitesse :" << endl;
+    cout << "->Mise a jour de la position et de la vitesse : ";
     f4.majPositionVitesse();
-    f4.affiche();
+    cout<<"OK"<<endl;
+    //f4.affiche();
 
 }

@@ -185,7 +185,7 @@ Vecteur<Dim> & Vecteur<Dim>::operator=(const Vecteur<Dim> &v) {
 
 
 template <unsigned int Dim>
-bool Vecteur<Dim>::operator==(Vecteur<Dim> &v) {
+bool Vecteur<Dim>::operator==(const Vecteur<Dim> &v) const {
     for (unsigned int i = 1; i <= Dim; i++) {
         if ((*this)(i) != v(i)) {
             return false;
@@ -195,7 +195,7 @@ bool Vecteur<Dim>::operator==(Vecteur<Dim> &v) {
 }
 
 template <unsigned int Dim>
-bool Vecteur<Dim>::operator!=(Vecteur<Dim> &v) {
+bool Vecteur<Dim>::operator!=(const Vecteur<Dim> &v) const {
     return not ((*this) == v);
 }
 

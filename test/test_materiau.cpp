@@ -7,53 +7,64 @@ void test_materiau() {
 
     cout << "1 - Création du matériau eau" << endl;
     Materiau<3> mateau = Materiau<3>(EAU);
-    cout << "gravité      : " << mateau.getAccGrav() << endl;
-    cout << "pas          : " << mateau.getPasTemps() << endl;
-    cout << "temperature  : " << mateau.getTemperature() << endl;
-    cout << "pression     : " << mateau.getPression() << endl;
-    cout << "densité      : " << mateau.getDensiteRepos() << endl;
-    cout << "masse        : " << mateau.getMasseParticules() << endl;
-    cout << "flottabilité : " << mateau.getCoeffFlott() << endl;
-    cout << "viscosité    : " << mateau.getViscosite() << endl;
-    cout << "tension surf : " << mateau.getTensionSurface() << endl;
-    cout << "seuil surf   : " << mateau.getSeuilSurface() << endl;
-    cout << "rigidité gaz : " << mateau.getRigiditeGaz() << endl;
-    cout << "restitution  : " << mateau.getCoeffRestitution() << endl;
-    cout << "part noyau   : " << mateau.getNbrPartNoyau() << endl;
-    cout << "rayon noyau  : " << mateau.getRayonNoyau() << endl;
+    Vecteur<3> v1 = Vecteur<3>(0, 0, -9.82);
+    if (mateau.getAccGrav() == v1
+     && mateau.getPasTemps() == 0.01
+     && mateau.getTemperature() == 293.15
+     && mateau.getPression() == 101325
+     && mateau.getDensiteRepos() == 998.29
+     && mateau.getMasseParticules() == 0.02
+     && mateau.getCoeffFlott() == 0
+     && mateau.getViscosite() == 3.5
+     && mateau.getTensionSurface() == 0.0728
+     && mateau.getSeuilSurface() == 7.065
+     && mateau.getRigiditeGaz() == 3
+     && mateau.getCoeffRestitution() == 0
+     && mateau.getNbrPartNoyau() == 20
+     && mateau.getRayonNoyau() == 0.0457)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
     
     cout << "2 - Création du matériau mucus" << endl;
     Materiau<2> matmucus = Materiau<2>(MUCUS);
-    cout << "gravité      : " << matmucus.getAccGrav() << endl;
-    cout << "pas          : " << matmucus.getPasTemps() << endl;
-    cout << "temperature  : " << matmucus.getTemperature() << endl;
-    cout << "pression     : " << matmucus.getPression() << endl;
-    cout << "densité      : " << matmucus.getDensiteRepos() << endl;
-    cout << "masse        : " << matmucus.getMasseParticules() << endl;
-    cout << "flottabilité : " << matmucus.getCoeffFlott() << endl;
-    cout << "viscosité    : " << matmucus.getViscosite() << endl;
-    cout << "tension surf : " << matmucus.getTensionSurface() << endl;
-    cout << "seuil surf   : " << matmucus.getSeuilSurface() << endl;
-    cout << "rigidité gaz : " << matmucus.getRigiditeGaz() << endl;
-    cout << "restitution  : " << matmucus.getCoeffRestitution() << endl;
-    cout << "part noyau   : " << matmucus.getNbrPartNoyau() << endl;
-    cout << "rayon noyau  : " << matmucus.getRayonNoyau() << endl;
+    Vecteur<2> v2 = Vecteur<2>(0, -9.82);
+    if (matmucus.getAccGrav() == v2
+     && matmucus.getPasTemps() == 0.01
+     && matmucus.getTemperature() == 293.15
+     && matmucus.getPression() == 101325
+     && matmucus.getDensiteRepos() == 1000
+     && matmucus.getMasseParticules() == 0.04
+     && matmucus.getCoeffFlott() == 0
+     && matmucus.getViscosite() == 36
+     && matmucus.getTensionSurface() == 6
+     && matmucus.getSeuilSurface() == 5
+     && matmucus.getRigiditeGaz() == 5
+     && matmucus.getCoeffRestitution() == 0.5
+     && matmucus.getNbrPartNoyau() == 40
+     && matmucus.getRayonNoyau() == 0.0726)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
     
     cout << "3 - Création du matériau vapeur" << endl;
     Materiau<3> matvapeur = Materiau<3>(VAPEUR);
-    cout << "gravité      : " << matvapeur.getAccGrav() << endl;
-    cout << "pas          : " << matvapeur.getPasTemps() << endl;
-    cout << "temperature  : " << matvapeur.getTemperature() << endl;
-    cout << "pression     : " << matvapeur.getPression() << endl;
-    cout << "densité      : " << matvapeur.getDensiteRepos() << endl;
-    cout << "masse        : " << matvapeur.getMasseParticules() << endl;
-    cout << "flottabilité : " << matvapeur.getCoeffFlott() << endl;
-    cout << "viscosité    : " << matvapeur.getViscosite() << endl;
-    cout << "tension surf : " << matvapeur.getTensionSurface() << endl;
-    cout << "seuil surf   : " << matvapeur.getSeuilSurface() << endl;
-    cout << "rigidité gaz : " << matvapeur.getRigiditeGaz() << endl;
-    cout << "restitution  : " << matvapeur.getCoeffRestitution() << endl;
-    cout << "part noyau   : " << matvapeur.getNbrPartNoyau() << endl;
-    cout << "rayon noyau  : " << matvapeur.getRayonNoyau() << endl;
+    if (matvapeur.getAccGrav() == v1
+     && matvapeur.getPasTemps() == 0.01
+     && matvapeur.getTemperature() == 293.15
+     && matvapeur.getPression() == 101325
+     && matvapeur.getDensiteRepos() == 0.59
+     && matvapeur.getMasseParticules() == 0.00005
+     && matvapeur.getCoeffFlott() == 5
+     && matvapeur.getViscosite() == 0.01
+     && matvapeur.getTensionSurface() == 0
+     && matvapeur.getSeuilSurface() == -1
+     && matvapeur.getRigiditeGaz() == 4
+     && matvapeur.getCoeffRestitution() == 0
+     && matvapeur.getNbrPartNoyau() == 12
+     && matvapeur.getRayonNoyau() == 0.0624)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
     
 }

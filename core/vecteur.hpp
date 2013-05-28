@@ -77,7 +77,7 @@ public:
      * \param v le vecteur avec lequel faire le produit scalaire
      * \return le produit scalaire des deux vecteurs
      */
-    double scalaire(Vecteur<Dim> & v) const;  
+    double scalaire(Vecteur<Dim> & v) const;
   
     //
     // Opérateurs d'accès
@@ -214,7 +214,7 @@ public:
      * \return Booleen contenant le résultat de la comparaison
      *
      */
-    bool operator==(Vecteur<Dim> &v);
+    bool operator==(const Vecteur<Dim> &v) const;
 
     /*!
      * \brief Operateur de difference a un autre Vecteur
@@ -223,7 +223,7 @@ public:
      * \return Booleen valant true si les vecteurs ne sont pas égaux
      *
      */
-    bool operator!=(Vecteur<Dim> &v);
+    bool operator!=(const Vecteur<Dim> &v) const;
 };
 
 

@@ -4,7 +4,7 @@
     <foregroundColor red="180" blue="180" green="180"/>
     <backgroundColor red="51" blue="51" green="51"/>
   </State>
-  <Display axisIsDrawn="true" gridIsDrawn="false" FPSIsDisplayed="false" cameraIsEdited="false"/>
+  <Display axisIsDrawn="false" gridIsDrawn="false" FPSIsDisplayed="false" cameraIsEdited="false"/>
   <Geometry fullScreen="false" width="1845" posX="58" height="1046" posY="24"/>
   <Camera>
     <Parameters fieldOfView="0.785398" sceneRadius="20" Type="PERSPECTIVE" zNearCoefficient="0.005" orthoCoef="0.414214" zClippingCoefficient="1.73205">
@@ -12,8 +12,8 @@
     </Parameters>
     <Stereo distToScreen="0.5" focusDistance="48.2843" physScreenWidth="0.4" IODist="0.062"/>
     <ManipulatedCameraFrame>
-      <position x="-14.7964" y="-12.7439" z="6.74136"/>
-      <orientation q0="-0.493178" q1="0.302136" q2="0.246967" q3="-0.777494"/>
+      <position x="-2.32069" y="-1.41991" z="-1.13242"/>
+      <orientation q0="-0.712268" q1="0.412984" q2="0.257625" q3="-0.505715"/>
       <ManipulatedParameters transSens="1" rotSens="1" wheelSens="1" spinSens="0.3"/>
       <ManipulatedCameraParameters flySpeed="0.2">
         <flyUpVector x="0" y="1" z="0"/>

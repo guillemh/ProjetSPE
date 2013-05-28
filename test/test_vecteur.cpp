@@ -9,86 +9,194 @@ using std::endl;
 
 void test_vecteur() {
     
-    cout << "-- 1. Test de l'opérateur d'accession --" << endl;
-    cout << "Construction d'un vecteur a trois elements : " << endl;
+    cout << "-- 1. Test des opérateurs d'accession, d'affectation et de comparaison --" << endl;
     Vecteur<3> v1;
-    cout << "On va acceder a ces elements en utilisant les opérateurs () et <<" << endl;
-    cout << v1 << endl;
-
-    Vecteur<2> v2;
-    v2(1) = 1.5;
-    v2(2) = 0.5;
+    v1(2);
+    Vecteur<3> v2;
     Vecteur<3> v3;
     v3(1) = 2.5;
     v3(3) = -1;
-
-    cout << "-- 2. Test des opérateurs standard --" << endl;
-    cout << "- Test de l'addition par un reel : on a v = ";
-    cout << v3 << endl;
-    cout << "On ajoute 2 :" << endl;
-    Vecteur<3> v4 = 2.0 + v3;
-    cout << v4 << endl;
+    v2 = v3;
     
-    cout << "- Test de la soustraction par un reel : on a v = ";
-    cout << v3 << endl;
-    cout << "On soustrait 2 :" << endl;
+    Vecteur<3> vcomp = Vecteur<3>(2.5, 0, -1);
+    if (v3 == vcomp && v3 != v1 && not (v3 == v1) && v2 == v3)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+    
+
+    cout << "-- 2. Test des opérateurs standards --" << endl;
+    
+    cout << "- Moins unaire : ";
+    v3 = Vecteur<3>(-2.5, 0, 1);
+    Vecteur<3> v4 = -v3;
+    vcomp = Vecteur<3>(2.5, 0, -1);
+    if (v4 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+    
+    cout << "- Addition par un reel : ";
+    v3 = Vecteur<3>(2.5, 0, -1);
+    v4 = v3 + 2.0;
+    vcomp = Vecteur<3>(4.5, 2, 1);
+    if (v4 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+        
+    cout << "- Addition depuis un réel :";
+    v3 = Vecteur<3>(2.5, 0, -1);
+    v4 = 2.0 + v3;
+    if (v4 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+    
+    cout << "- Soustraction par un reel : ";
+    v3 = Vecteur<3>(2.5, 0, -1);
     v4 = v3 - 2.0;
-    cout << v4 << endl;
+    vcomp = Vecteur<3>(0.5, -2, -3);
+    if (v4 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
     
-    cout << "On fait l'inverse :" << endl;
+    cout << "- Soustraction depuis un réel :";
+    v3 = Vecteur<3>(2.5, 0, -1);
     v4 = 2.0 - v3;
-    cout << v4 << endl;
+    vcomp = -vcomp;
+    if (v4 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
 
-    cout << "On ajoute encore 2 en utilisant la commutativité de l'addition :" << endl;
-    Vecteur<3> v5 = v4 + 2.0;
-    cout << v5 << endl;
-    cout << "On va diviser un réel (25.0) par le vecteur precedent :" << endl;
-    Vecteur<3> v6 = 25.0 / v5;
-    cout << v6 << endl;
-    cout << endl;
+    cout << "- Multiplication par un réel : ";
+    v3 = Vecteur<3>(7, 0, 10);
+    v4 = v3 * 4;
+    vcomp = Vecteur<3>(28, 0, 40);
+    if (v4 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+    
+    cout << "- Multiplication depuis un réel : ";
+    v3 = Vecteur<3>(2, 3, 6);
+    v4 = 4 * v3;
+    vcomp = Vecteur<3>(8, 12, 24);
+    if (v4 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
 
-    cout << "- Test de l'addition de deux vecteurs :" << endl;
-    cout << "Test avec deux vecteurs de tailles egales :" << endl;
-    Vecteur<3> v7 = v1 + v3;
-    cout << v7 << endl;
-    cout << "- Test du moins unaire :" << endl;
-    Vecteur<3> v8 = -v7;
-    cout << v8 << endl;
+    cout << "- Division par un réel : ";
+    v3 = Vecteur<3>(25, 0, 150);
+    v4 = v3 / 25.0;
+    vcomp = Vecteur<3>(1, 0, 6);
+    if (v4 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+    
+    cout << "- Division depuis un réel : ";
+    v3 = Vecteur<3>(2, 3, 6);
+    v4 = 12 / v3;
+    vcomp = Vecteur<3>(6, 4, 2);
+    if (v4 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
 
-    cout << "-- 5. Test des operateurs +=, -=, *=, /= --" << endl;
-    cout << "On part de v4 :" << endl;
-    cout << v4 << endl;
-    cout << "Et de v3 :" << endl;
-    cout << v3 << endl;
-    cout << "On realise une addition de vecteur a vecteur. Resultat :" << endl;
-    v4 += v3;
-    cout << v4 << endl;
-    cout << "On resoustrait pour réobtenir v4. Resultat :" << endl;
-    v4 -= v3;
-    cout << v4 << endl;
+    cout << "- Addition de deux vecteurs :";
+    v1 = Vecteur<3>(3.3, 2, 1.2);
+    v3 = Vecteur<3>(4.2, 5.1, 0.3);
+    vcomp = Vecteur<3>(7.5, 7.1, 1.5);
+    v4 = v1 + v3;
+    if (v4 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
 
-    cout << "-- 6. Test de l'operateur d'affectation = --" << endl;
-    cout << "On va affecter le vecteur :" << endl;
-    cout << v3;
-    cout << "au vecteur :" << endl;
-    cout << v1;
-    cout << "Le resultat :" << endl;
-    v1 = v3;
-    cout << v1 << endl;
-    cout << endl;
+    cout << "- Soustraction de deux vecteurs :";
+    v4 = v4 - v3;
+    if (v4 == v1)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
 
-    cout << "Comparons les membres gauche et droit de l'affectation precedente" << endl;
-    if (v1 == v3) {
-	cout << "Ils sont bien egaux" << endl;
-    } else {
-	cout << "Erreur : non egalite des vecteurs" << endl;
-	exit(-1);
-    }   
+    cout << "- Multiplication de deux vecteurs :";
+    v1 = Vecteur<3>(3, 2, 1);
+    v3 = Vecteur<3>(4, 5, 0);
+    vcomp = Vecteur<3>(12, 10, 0);
+    v4 = v1 * v3;
+    if (v4 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
 
-    cout << "-- 7. Test du calcul de la norme --" << endl;
-    cout << "Vecteur 2D : " <<  v2 << endl;
-    cout << "Valeur de la norme : " << v2.norme() << endl;
+    cout << "- Division de deux vecteurs :";
+    v1 = Vecteur<3>(33, 20, 1);
+    v3 = Vecteur<3>(11, 10, 1);
+    vcomp = Vecteur<3>(3, 2, 1);
+    v4 = v1 / v3;
+    if (v4 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
 
-    cout << "Vecteur 3D : " << v3 << endl;
-    cout << "Valeur de la norme : " << v3.norme() << endl;
+    cout << "- Opérateur += :";
+    v1 = Vecteur<3>(3.3, 2, 1.2);
+    v3 = Vecteur<3>(-4.2, 5.1, 0.3);
+    vcomp = Vecteur<3>(-0.9, 7.1, 1.5);
+    v1 += v3;
+    if (v1 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+
+    cout << "- Opérateur -= :";
+    v1 = Vecteur<3>(3.2, 2, 1.2);
+    v3 = Vecteur<3>(4.1, 5.1, 0.2);
+    vcomp = Vecteur<3>(-0.9, -3.1, 1);
+    v1 -= v3;
+    if (v1 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+
+    cout << "- Opérateur *= :";
+    v1 = Vecteur<3>(3, 2, 1);
+    v3 = Vecteur<3>(4, 5, 0);
+    vcomp = Vecteur<3>(12, 10, 0);
+    v1 *= v3;
+    if (v1 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+
+    cout << "- Opérateur /= :";
+    v1 = Vecteur<3>(33, 20, 1);
+    v3 = Vecteur<3>(11, 10, 1);
+    vcomp = Vecteur<3>(3, 2, 1);
+    v1 /= v3;
+    if (v1 == vcomp)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+    
+
+    cout << "-- 3. Test du calcul de la norme --" << endl;
+    v1 = Vecteur<3>(4, 3, 0);
+    if (v1.norme() == 5)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+    
+
+    cout << "-- 4. Test du calcul du produit scalaire --" << endl;
+    v3 = Vecteur<3>(6.0, 12.3, 1.2);
+    if (v3.scalaire(v1) == 60.9)
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
 }

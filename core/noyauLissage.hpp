@@ -13,6 +13,9 @@ class NoyauLissage {
     /* ** Attributs ** */
 protected:
     double h; // Rayon de support du noyau de lissage
+    double coefDefaut;
+    double coefGradient;
+    double coefLaplacien;
 
 
     /* ** Constructeurs ** */
@@ -67,6 +70,11 @@ public:
  */
 template<unsigned int Dim>
 class NoyauLissageDefaut : public NoyauLissage<Dim> {
+
+    /* ** Attributs ** */
+private:
+    double hCarre;
+
 
     /* ** Constructeurs ** */
 public:
@@ -163,6 +171,12 @@ public:
  */
 template<unsigned int Dim>
 class NoyauLissageViscosite : public NoyauLissage<Dim> {
+
+    /* ** Attributs ** */
+private:
+    double hCarre;
+    double hCube;
+    
 
     /* ** Constructeurs ** */
 public:
