@@ -7,7 +7,12 @@ using std::vector;
 #include "materiau.hpp"
 #include "particule.hpp"
 #include "vecteur.hpp"
+// using std::unordered_map;
+// using std::function;
 
+// hash_function(Vecteur<Dim>& pos) {
+
+// }
 
 /** 
  * \class Fluide
@@ -23,6 +28,10 @@ private:
     Materiau<Dim> * mat;                 // Materiau du fluide (avec toutes les constantes)
     vector<Particule<Dim> *> particules; // Ensemble des particules
     bool debutAnim;                      // Indique si on est au debut de l'animation
+    // unordered_map<Vecteur<Dim>,
+    // 		  Particule<Dim>,
+    // 		  function<size_t(Vecteur<Dim>& pos)>
+    // 		  > hash(nbr_part, hash_function);
 
 
     /* ** Constructeurs ** */
