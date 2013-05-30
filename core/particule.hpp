@@ -16,12 +16,11 @@ class Particule {
 
     /* ** Attributs ** */
 private:
-    Vecteur<Dim> position;  // Position de la particule (m)
-    Vecteur<Dim> vitesse;   // Vitesse de la particule (m.s^-1)
+    Vecteur<Dim> position;       // Position de la particule (m)
+    Vecteur<Dim> vitesse;        // Vitesse de la particule (m.s^-1)
     Vecteur<Dim> acceleration;   // Acceleration de la particule (m.s^-2)
-    Materiau<Dim> *mat;          // Pointeur sur le type de matériau dans lequel évolue la particule
-    double masse_volumique; // Masse volumique de la particule (kg.m^-3)
-    double pression;        // Pression de la particule (Pa)
+    double masse_volumique;      // Masse volumique de la particule (kg.m^-3)
+    double pression;             // Pression de la particule (Pa)
 
     /* ** Constructeurs ** */
 public:
@@ -29,11 +28,10 @@ public:
       * Constructeur
       * \param pos position initiale
       * \param vit vitesse initiale
-      * \param m pointeur sur le type de matériau utilisé
       * \param rho masse volumique initiale
       * \param p pression initiale
       */
-    Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, Materiau<Dim> *m, double rho = 0, double p = 0);
+    Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0);
     
     /**
       * Destructeur
@@ -101,8 +99,10 @@ public:
     /**
      * Met à jour la pression en fonction de la masse volumique de la particule
      * Prototype éventuellement à reprendre
+     * \param son la vitesse du son
+     * \param dens la densité au repos
      */
-    void majPression();
+    void majPression(double son, double dens);
 
     /**
       * Incrémente la position de la particule
