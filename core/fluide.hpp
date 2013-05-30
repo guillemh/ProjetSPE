@@ -9,7 +9,10 @@ using std::vector;
 #include "vecteur.hpp"
 
 
-/** \class Fluide : gestion de l'ensemble des particules constituant le fluide
+/** 
+ * \class Fluide
+ * @brief Gestion de l'ensemble des particules constituant le fluide
+ * 
  * Dim : Dimension de l'espace
  */
 template<unsigned int Dim>
