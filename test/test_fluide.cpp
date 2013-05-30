@@ -11,17 +11,17 @@ void tests_unitaires_fluide() {
     cout << "## Rq : ce test ne peut pas vérifier les résultats mais ##" << endl
          << "## seulement la bonne exécution (décommenter affiche()) ##" << endl;
 
+    Materiau<2> mateau2d = Materiau<2>(EAU);
     Vecteur<2> vec2d1 = Vecteur<2>(5.0, 8.0);
     Vecteur<2> vec2d2 = Vecteur<2>(1.0, 3.0);
-    Particule<2> * p1 = new Particule<2>(vec2d1, vec2d2, 1000, 100000);
-    Particule<2> * p3 = new Particule<2>(vec2d1, vec2d2, 1000, 100000);
-    Materiau<2> mateau2d = Materiau<2>(EAU);
+    Particule<2> * p1 = new Particule<2>(vec2d1, vec2d2, &mateau2d, 1000, 100000);
+    Particule<2> * p3 = new Particule<2>(vec2d1, vec2d2, &mateau2d, 1000, 100000);
     
+    Materiau<3> mateau3d = Materiau<3>(EAU);
     Vecteur<3> vec3d1 = Vecteur<3>(2.0, 1.0, 3.0);
     Vecteur<3> vec3d2 = Vecteur<3>();
-    Particule<3> * p2 = new Particule<3>(vec3d1, vec3d2, 950, 101558);
-    Particule<3> * p4 = new Particule<3>(vec3d1, vec3d2, 950, 101558);
-    Materiau<3> mateau3d = Materiau<3>(EAU);
+    Particule<3> * p2 = new Particule<3>(vec3d1, vec3d2, &mateau3d, 950, 101558);
+    Particule<3> * p4 = new Particule<3>(vec3d1, vec3d2, &mateau3d, 950, 101558);
 
 
     cout << "1 − Creation d'un fluide 2D vide : ";

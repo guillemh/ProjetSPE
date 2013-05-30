@@ -1,5 +1,6 @@
 #include "../core/particule.hpp"
 #include "../core/vecteur.hpp"
+#include "../core/materiau.hpp"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -21,9 +22,10 @@ void tests_unitaires_particules() {
     Vecteur<3> vec3d6 = Vecteur<3>(-2.5, 6.0, 3.0);
     Vecteur<3> vec3d7 = Vecteur<3>(5.0, -1.2, 8.1);
 
+    Materiau<2>* mat = new Materiau<2>(EAU);
 
     cout << "1 − Particule en dimension 2 :" << endl;
-    Particule<2> p1 = Particule<2>(vec2d1, vec2d2, 1000, 100000);
+    Particule<2> p1 = Particule<2>(vec2d1, vec2d2, mat, 1000, 100000);
     
     cout << "->Création de la particule :";
     if (p1.getPosition() == vec2d1 && p1.getVitesse() == vec2d2
@@ -83,7 +85,9 @@ void tests_unitaires_particules() {
     
     
     cout << "2 - Creation d'une particule en dimension 3 :" << endl;
-    Particule<3> p2 = Particule<3>(vec3d1, vec3d2, 950, 101558);
+
+    Materiau<3>* mat2 = new Materiau<3>(EAU);
+    Particule<3> p2 = Particule<3>(vec3d1, vec3d2, mat2, 950, 101558);
     
     cout << "->Création de la particule : ";
     if (p2.getPosition() == vec3d1 && p2.getVitesse() == vec3d2
@@ -140,5 +144,7 @@ void tests_unitaires_particules() {
         cout<<"OK"<<endl;
     else
         cout<<"ERREUR !"<<endl;
-    
+ 
+    delete mat;
+    delete mat2;   
 }
