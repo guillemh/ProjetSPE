@@ -32,7 +32,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         for (int i = 0; i < nb[0]; i++) {
             for (int j = 0; j < nb[1]; j++) {
                 Vecteur<Dim> vec = Vecteur<Dim>(i*ecart, j*ecart);
-                Particule<Dim> * part = new Particule<Dim>(vec, Vecteur<Dim>(), rho, p);
+                Particule<Dim> *part = new Particule<Dim>(vec, Vecteur<Dim>(), m, rho, p);
                 particules.push_back(part);
             }
         }
@@ -45,7 +45,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
             for (int j = 0; j < nb[1]; j++) {
                 for (int k = 0; k < nb[2]; k++) {
                     Vecteur<Dim> vec = Vecteur<Dim>(i*ecart, j*ecart, k*ecart);
-                    Particule<Dim> * part = new Particule<Dim>(vec, Vecteur<Dim>(), rho, p);
+                    Particule<Dim> *part = new Particule<Dim>(vec, Vecteur<Dim>(), m, rho, p);
                     particules.push_back(part);
                 }
             }
@@ -95,8 +95,9 @@ void Fluide<Dim>::majDensitePression() {
         (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
         
         // On met leur pression à jour
-        double diff = (*it1)->getPression() - mat->getDensiteRepos();
-        (*it1)->setPression((mat->getRigiditeGaz())*diff);
+        // double diff = (*it1)->getPression() - mat->getDensiteRepos();
+        // (*it1)->setPression((mat->getRigiditeGaz())*diff);
+	(*it1)->majPression ();
     }
 }
 

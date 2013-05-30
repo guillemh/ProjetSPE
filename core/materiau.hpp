@@ -45,7 +45,7 @@ private:
     double coeff_restitution;         // n/a
     unsigned int nbr_noyau;           // n/a
     double rayon_noyau;               // m
-
+    double celerite_son;              // m.s-1
 public:
 
     /**
@@ -64,6 +64,7 @@ public:
      * @param cr      Coefficient de restitution
      * @param x       Nombre de particules dans la sphère du noyau de lissage
      * @param h       Rayon du noyau de lissage
+     * @param cs      Célérité du son dans le fluide
      */
     Materiau(Vecteur<Dim> g, 
 	     double dt,
@@ -78,7 +79,8 @@ public:
 	     double k,
 	     double cr,
 	     unsigned int x,
-	     double h
+	     double h,
+	     double cs
 	     );
 
     /**
@@ -144,7 +146,10 @@ public:
      * @return Le rayon du noyau de lissage
      */
     double getRayonNoyau();
-
+    /**
+     * @return La célérité du son dans le fluide
+     */
+    double getCeleriteSon();
 
 };
 
