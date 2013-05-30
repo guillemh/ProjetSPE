@@ -7,10 +7,9 @@
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
-Particule<Dim>::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, Materiau<Dim> *m, double rho, double p)
+Particule<Dim>::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p)
     : position(pos),
       vitesse(vit),
-      mat(m),
       masse_volumique(rho),
       pression(p)
 {
@@ -84,13 +83,13 @@ void Particule<Dim>::setPression(double p) {
 }
 
 template<unsigned int Dim>
-void Particule<Dim>::majPression () {
+void Particule<Dim>::majPression (double son, double dens) {
     /* Calcul de la pression appliquée à une particule selon l'équation de Tait
      * (cf. Becker-Teschner, "Weakly compressible SPH for free surface flows")
      */
     double gamma = 7.0;
-    double B = mat->getDensiteRepos() * pow(mat->getCeleriteSon (), 2.0) / gamma;
-    pression = B * (pow (masse_volumique / mat->getDensiteRepos (), gamma) - 1);
+    double B = dens * pow(son, 2.0) / gamma;
+    pression = B * (pow (masse_volumique / dens, gamma) - 1);
 }
 
 template<unsigned int Dim>

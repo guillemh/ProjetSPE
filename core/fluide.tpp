@@ -23,7 +23,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
     debutAnim(true)
 {
     // Initialisation du vector vide
-    particules = vector<Particule<Dim> *> ();
+    particules = vector<Particule<Dim> *>();
     
     if (Dim == 2) {
     
@@ -32,7 +32,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         for (int i = 0; i < nb[0]; i++) {
             for (int j = 0; j < nb[1]; j++) {
                 Vecteur<Dim> vec = Vecteur<Dim>(i*ecart, j*ecart);
-                Particule<Dim> *part = new Particule<Dim>(vec, Vecteur<Dim>(), m, rho, p);
+                Particule<Dim> *part = new Particule<Dim>(vec, Vecteur<Dim>(), rho, p);
                 particules.push_back(part);
             }
         }
@@ -44,8 +44,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         for (int i = 0; i < nb[0]; i++) {
             for (int j = 0; j < nb[1]; j++) {
                 for (int k = 0; k < nb[2]; k++) {
-                    Vecteur<Dim> vec = Vecteur<Dim>(i*ecart, j*ecart, k*ecart);
-                    Particule<Dim> *part = new Particule<Dim>(vec, Vecteur<Dim>(), m, rho, p);
+                    Vecteur<Dim> vec = Vecteur<Dim>(i*ecart, j*ecart, k*ecart + 0.1);
+                    Particule<Dim> *part = new Particule<Dim>(vec, Vecteur<Dim>(), rho, p);
                     particules.push_back(part);
                 }
             }
@@ -97,7 +97,7 @@ void Fluide<Dim>::majDensitePression() {
         // On met leur pression à jour
         // double diff = (*it1)->getPression() - mat->getDensiteRepos();
         // (*it1)->setPression((mat->getRigiditeGaz())*diff);
-	(*it1)->majPression ();
+        (*it1)->majPression(mat->getCeleriteSon(), mat->getDensiteRepos());
     }
 }
 
@@ -116,6 +116,8 @@ Vecteur<Dim> collision(const Vecteur<Dim> & v) {
             res(1) = 5;
         if (v(2) < 0)
             res(2) = 0;
+        if (v(2) > 5)
+            res(2) = 5;
     } else {
         if (v(1) < -5)
             res(1) = -5;
@@ -127,6 +129,8 @@ Vecteur<Dim> collision(const Vecteur<Dim> & v) {
             res(2) = 5;
         if (v(3) < 0)
             res(3) = 0;
+        if (v(3) > 5)
+            res(3) = 5;
     }
     
     return res;
@@ -206,24 +210,24 @@ void Fluide<Dim>::majPositionVitesse() {
         (*it1)->incrPosition(mat->getPasTemps() * (*it1)->getVitesse());
     
         // Detection des collisions
-        Vecteur<Dim> pos = (*it1)->getPosition();
-        Vecteur<Dim> contact = collision(pos);
+        // Vecteur<Dim> pos = (*it1)->getPosition();
+        // Vecteur<Dim> contact = collision(pos);
         
-        // Si il y a collision, on met a jour la position et la vitesse
-        if (contact != pos) {
-            pos = contact - pos;
-            double dist = pos.norme();
-            Vecteur<Dim> normale = pos / dist;
+        // // Si il y a collision, on met a jour la position et la vitesse
+        // if (contact != pos) {
+        //     pos = contact - pos;
+        //     double dist = pos.norme();
+        //     Vecteur<Dim> normale = pos / dist;
         
-            // Mise a jour de la position
-            (*it1)->setPosition(contact);
+        //     // Mise a jour de la position
+        //     (*it1)->setPosition(contact);
             
-            // Mise a jour de la vitesse
-            (*it1)->setVitesse((*it1)->getVitesse()
-                               - (1 + mat->getCoeffRestitution() * dist
-                               / (mat->getPasTemps() * ((*it1)->getVitesse()).norme()))
-                               * (((*it1)->getVitesse()).scalaire(normale)) * normale);
-        }
+        //     // Mise a jour de la vitesse
+        //     (*it1)->setVitesse((*it1)->getVitesse()
+        //                        - (1 + mat->getCoeffRestitution() * dist
+        //                        / (mat->getPasTemps() * ((*it1)->getVitesse()).norme()))
+        //                        * (((*it1)->getVitesse()).scalaire(normale)) * normale);
+        // }
     
     }
 
