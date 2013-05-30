@@ -3,9 +3,9 @@
 
 /**
  * @file materiau.hpp
- * @author 
+ * @author
  * @date 21/05/2013
- * @brief Ensemble des paramètres définissant le fluide, et le système
+ * @brief Classe pour définir l'ensemble des paramètres définissant le fluide, et le système
  */
 
 #include "vecteur.hpp"
