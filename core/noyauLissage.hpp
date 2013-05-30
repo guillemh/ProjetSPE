@@ -4,7 +4,10 @@
 #include <iostream>
 
 
-/** \class NoyauLissage : classe abstraite représentant un noyau de lissage
+/** 
+ * \class NoyauLissage
+ * @brief Classe abstraite représentant un noyau de lissage
+ * 
  * Dim : Dimension de l'espace
  */
 template<unsigned int Dim>
@@ -12,10 +15,10 @@ class NoyauLissage {
 
     /* ** Attributs ** */
 protected:
-    double h; // Rayon de support du noyau de lissage
-    double coefDefaut;
-    double coefGradient;
-    double coefLaplacien;
+    double h;                  /*!< Rayon de support du noyau de lissage */
+    double coefDefaut;         /*!< Coefficient constant pour le calcul de la valeur par défaut */
+    double coefGradient;       /*!< Coefficient constant pour le calcul du gradient */
+    double coefLaplacien;      /*!< Coefficient constant pour le calcul du laplacien */
 
 
     /* ** Constructeurs ** */
@@ -65,7 +68,10 @@ public:
 };
 
 
-/** \class NoyauLissageDefaut : classe représentant un noyau de lissage par défaut
+/** 
+ * \class NoyauLissageDefaut
+ * @brief Classe représentant un noyau de lissage par défaut
+ * 
  * Dim : Dimension de l'espace
  */
 template<unsigned int Dim>
@@ -118,7 +124,10 @@ public:
 };
 
 
-/** \class NoyauLissagePression : classe représentant un noyau de lissage de pression
+/** 
+ * \class NoyauLissagePression 
+ * @brief Classe représentant un noyau de lissage de pression
+ * 
  * Dim : Dimension de l'espace
  */
 template<unsigned int Dim>
@@ -166,7 +175,10 @@ public:
 };
 
 
-/** \class NoyauLissageViscosite : classe représentant un noyau de lissage de viscosité
+/** 
+ * \class NoyauLissageViscosite
+ * @brief Classe représentant un noyau de lissage de viscosité
+ * 
  * Dim : Dimension de l'espace
  */
 template<unsigned int Dim>

@@ -12,5 +12,8 @@
 *.la
 *.a
 
+# Documentation Doxygen
+doc
+
 Memoire.pdf
 WCSPH*

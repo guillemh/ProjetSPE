@@ -5,7 +5,10 @@
 #include "vecteur.hpp"
 #include "materiau.hpp"
 
-/** \class Particule : classe des particules constituants le texte
+/** 
+ * \class Particule 
+ * @brief Classe des particules constituant le fluide
+ * 
  * Dim : Dimension de l'espace
  */
 template<unsigned int Dim>

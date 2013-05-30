@@ -4,7 +4,10 @@
 #include <iostream>
 
 
-/** \class NoyauLissage : classe représentant un noyau de lissage
+/** 
+ * \class Vecteur
+ * @brief Classe représentant un noyau de lissage 
+ * 
  * Dim : Dimension de l'espace
  */
 template <unsigned int Dim>
@@ -12,7 +15,7 @@ class Vecteur {
 
     /* ** Attributs ** */
 public:
-    double t[Dim];
+    double t[Dim];      /*!< Tableau des coordonnées du vecteur */
 
 
     /* ** Constructeurs ** */
