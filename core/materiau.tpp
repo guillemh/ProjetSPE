@@ -17,7 +17,8 @@ Materiau<Dim>::Materiau(
 			double k,
 			double cr,
 			unsigned int x,
-			double h
+			double h,
+			double cs
 			) {
     acc_gravitation = g;
     pas_temps = dt;
@@ -34,6 +35,7 @@ Materiau<Dim>::Materiau(
     coeff_restitution = cr;
     nbr_noyau = x;
     rayon_noyau = h;
+    celerite_son = cs;
 }
 
 template<unsigned int Dim>
@@ -66,6 +68,7 @@ Materiau<Dim>::Materiau(TypeFluide type) {
         coeff_restitution = 0;
         nbr_noyau = 20;
         rayon_noyau = 0.0457;
+	celerite_son = 1480;
         break;
     case MUCUS :
         densite_repos = 1000;
@@ -78,6 +81,7 @@ Materiau<Dim>::Materiau(TypeFluide type) {
         coeff_restitution = 0.5;
         nbr_noyau = 40;
         rayon_noyau = 0.0726;
+	celerite_son = 1480; // approximation
         break;
     case VAPEUR :
         densite_repos = 0.59;
@@ -90,6 +94,9 @@ Materiau<Dim>::Materiau(TypeFluide type) {
         coeff_restitution = 0;
         nbr_noyau = 12;
         rayon_noyau = 0.0624;
+	celerite_son = 340; 
+	// approximation : on récupère la vitesse du son dans l'atmosphère en
+	// se prévalant du fait que l'hygrométrie influence peu dans le calcul pratique
         break;
     default :
         cerr << "Type de fluide non existant" << endl;
@@ -167,3 +174,9 @@ template <unsigned int Dim>
 double Materiau<Dim>::getRayonNoyau() {
     return rayon_noyau;
 }
+
+template <unsigned int Dim>
+double Materiau<Dim>::getCeleriteSon() {
+    return celerite_son;
+}
+

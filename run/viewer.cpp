@@ -63,8 +63,8 @@ void Viewer::initializeGL()
     model.setToIdentity();
 
     //Initialization Shader
-    m_program.addShaderFromSourceFile(QGLShader::Vertex, "./../../shaders/vertex_shader.gl");
-    m_program.addShaderFromSourceFile(QGLShader::Fragment, "./../../shaders/fragment_shader.gl");
+    m_program.addShaderFromSourceFile(QGLShader::Vertex, "./../shaders/vertex_shader.gl");
+    m_program.addShaderFromSourceFile(QGLShader::Fragment, "./../shaders/fragment_shader.gl");
     //Link between shader -> pipeline building
     if (!m_program.link())
     {
