@@ -206,24 +206,24 @@ void Fluide<Dim>::majPositionVitesse() {
         (*it1)->incrPosition(mat->getPasTemps() * (*it1)->getVitesse());
     
         // Detection des collisions
-        Vecteur<Dim> pos = (*it1)->getPosition();
-        Vecteur<Dim> contact = collision(pos);
+        // Vecteur<Dim> pos = (*it1)->getPosition();
+        // Vecteur<Dim> contact = collision(pos);
         
-        // Si il y a collision, on met a jour la position et la vitesse
-        if (contact != pos) {
-            pos = contact - pos;
-            double dist = pos.norme();
-            Vecteur<Dim> normale = pos / dist;
+        // // Si il y a collision, on met a jour la position et la vitesse
+        // if (contact != pos) {
+        //     pos = contact - pos;
+        //     double dist = pos.norme();
+        //     Vecteur<Dim> normale = pos / dist;
         
-            // Mise a jour de la position
-            (*it1)->setPosition(contact);
+        //     // Mise a jour de la position
+        //     (*it1)->setPosition(contact);
             
-            // Mise a jour de la vitesse
-            (*it1)->setVitesse((*it1)->getVitesse()
-                               - (1 + mat->getCoeffRestitution() * dist
-                               / (mat->getPasTemps() * ((*it1)->getVitesse()).norme()))
-                               * (((*it1)->getVitesse()).scalaire(normale)) * normale);
-        }
+        //     // Mise a jour de la vitesse
+        //     (*it1)->setVitesse((*it1)->getVitesse()
+        //                        - (1 + mat->getCoeffRestitution() * dist
+        //                        / (mat->getPasTemps() * ((*it1)->getVitesse()).norme()))
+        //                        * (((*it1)->getVitesse()).scalaire(normale)) * normale);
+        // }
     
     }
 

@@ -1,6 +1,9 @@
 #include "noyauLissage.hpp"
 #include <cmath>
 
+using std::cout;
+using std::endl;
+
 /* ** Constructeurs classe mère ** */
 
 template<unsigned int Dim>
@@ -100,7 +103,6 @@ NoyauLissagePression<Dim>::NoyauLissagePression()
     this->coefLaplacien = 2*this->coefGradient;
 }
 
-
 template<unsigned int Dim>
 NoyauLissagePression<Dim>::NoyauLissagePression(double rayon)
     : NoyauLissage<Dim>(rayon)
@@ -195,12 +197,15 @@ Vecteur<Dim> NoyauLissageViscosite<Dim>::gradient(const Vecteur<Dim> r) const {
            + (2 / (pow(this->h, 2))) - (this->h / (2*pow(r.norme(), 3)))) * r);
 }
 
-
 template<unsigned int Dim>
 double NoyauLissageViscosite<Dim>::laplacien(const Vecteur<Dim> r) const {
     if (r.norme() > this->h)
         return 0;
-    return (this->coefLaplacien * (this->h - r.norme()));
+    double res = (this->coefLaplacien * (this->h - r.norme()));
+    if (res > 10000000) {
+	cout << "FIRE !!" << endl;
+    }
+    return res;
 }
 
 
