@@ -203,7 +203,7 @@ double NoyauLissageViscosite<Dim>::laplacien(const Vecteur<Dim> r) const {
         return 0;
     double res = (this->coefLaplacien * (this->h - r.norme()));
     if (res > 10000000) {
-	cout << "FIRE !!" << endl;
+	cout << "!! Valeur de NoyauViscosite.laplacien : " << res << endl;
     }
     return res;
 }

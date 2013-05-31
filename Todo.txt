@@ -1,0 +1,9 @@
+- Implémentation des nouvelles forces de pression, viscosité, etc.
+- Trouver les bons paramètres pour le modèle
+- Recherche des plus proches voisins
+- ARPS
+- Changer les noyaux
+- Rendu de la scène
+- SHEME
+- Shaders
+- Rendu réaliste de la scène : marching cubes, splatting images
