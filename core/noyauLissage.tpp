@@ -209,3 +209,79 @@ double NoyauLissageViscosite<Dim>::laplacien(const Vecteur<Dim> r) const {
 }
 
 
+/*
+ * Noyau de Monaghan
+ * Implémentation
+ *
+ */
+template<unsigned int Dim>
+NoyauLissageMonaghan<Dim>::NoyauLissageMonaghan ()
+    : NoyauLissage<Dim>()
+{
+    // Attributs inutilisés
+    this->coefDefaut = 0;
+    this->coefGradient = 0;
+    this->coefLaplacien = 0;
+}
+
+template<unsigned int Dim>
+NoyauLissageMonaghan<Dim>::NoyauLissageMonaghan (double rayon)
+    : NoyauLissage<Dim>(rayon)
+{
+    // Attributs inutilisés
+    this->coefDefaut = 0;
+    this->coefGradient = 0;
+    this->coefLaplacien = 0;
+}
+
+template<unsigned int Dim>
+NoyauLissageMonaghan<Dim>::~NoyauLissageMonaghan () {
+}
+
+template<unsigned int Dim>
+double NoyauLissageMonaghan<Dim>::defaut(const Vecteur<Dim> r) const {
+    double q = r.norme()/(this->h);
+    double res;
+    if (q <= 1) {
+	res = (pow(2 - q, 3) - 4.0 * pow(1 - q, 3)) / 6.0;
+    } else if (q <= 2) {
+	res = pow(2 - q, 3) / 6.0;
+    } else {
+	res = 0;
+    }
+    return res;
+}
+
+template<unsigned int Dim>
+Vecteur<Dim> NoyauLissageMonaghan<Dim>::gradient(const Vecteur<Dim> r) const {
+    double q = r.norme()/(this->h);
+    Vecteur<Dim> res;
+    if (q < 0.001) {
+	res = Vecteur<Dim>();
+    } else if (q <= 1) {
+	res = (-3.0 * (r / r.norme()) * pow (2 - q, 2)
+	       + 12.0 * (r / r.norme()) * pow (1 - q, 2)) / 6.0;
+    } else if (q <= 2) {
+	res = (-3.0 * (r / r.norme()) * pow (2 - q, 2));
+    } else {
+	res = Vecteur<Dim>();
+    }
+    return res;
+}
+
+template<unsigned int Dim>
+double NoyauLissageMonaghan<Dim>::laplacien(const Vecteur<Dim> r) const {
+    double q = r.norme()/(this->h);
+    double res;
+    if (q < 0.001) {
+	res = 0;
+    } else if (q <= 1) {
+	res = (-6.0 * (2 - q) * (2 - 2*q) / r.norme()
+	       + 24.0 * (1 - q) * (1 - 2*q) / r.norme()) / 6.0;
+    } else if (q <= 2) {
+	res = (-6.0 * (2 - q) * (2 - 2*q) / r.norme()) / 6.0;
+    } else {
+	res = 0;
+    }
+    return res;
+}
