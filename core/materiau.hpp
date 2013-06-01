@@ -46,6 +46,7 @@ private:
     unsigned int nbr_noyau;           // n/a
     double rayon_noyau;               // m
     double celerite_son;              // m.s-1
+    double alpha;                     // 1
 public:
 
     /**
@@ -65,6 +66,7 @@ public:
      * @param x       Nombre de particules dans la sphère du noyau de lissage
      * @param h       Rayon du noyau de lissage
      * @param cs      Célérité du son dans le fluide
+     * @param a       Constante de viscosité
      */
     Materiau(Vecteur<Dim> g, 
 	     double dt,
@@ -80,7 +82,8 @@ public:
 	     double cr,
 	     unsigned int x,
 	     double h,
-	     double cs
+	     double cs,
+	     double a
 	     );
 
     /**
@@ -150,7 +153,11 @@ public:
      * @return La célérité du son dans le fluide
      */
     double getCeleriteSon();
-
+    /**
+     * @return La constante de viscosité alpha dans le calcul du facteur nu
+     * intervenant dans le calcul de la force de viscosité
+     */
+    double getConstanteViscosite();
 };
 
 #include "materiau.tpp"

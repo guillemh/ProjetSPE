@@ -232,6 +232,58 @@ public:
 
 };
 
+
+/** 
+ * \class NoyauLissageMonaghan
+ * @brief Classe représentant le noyau de lissage utilisé par Monaghan
+ * dans l'article "Smooth Particle Hydrodynamics" (2005)
+ * 
+ * Dim : Dimension de l'espace
+ */
+template<unsigned int Dim>
+class NoyauLissageMonaghan : public NoyauLissage<Dim> {
+
+    /* ** Constructeurs ** */
+public:
+    /**
+     * Constructeur par defaut, met h à 0
+     */
+    NoyauLissageMonaghan();
+    
+    /**
+     * Constructeur
+     * \param rayon rayon de support
+     */
+    NoyauLissageMonaghan(double rayon);
+
+    /**
+     * Destructeur
+     */
+    ~NoyauLissageMonaghan();
+
+
+    /* ** Methodes ** */
+public:
+    /**
+     * Implémente la méthode par défaut de noyau de lissage
+     * \param r position de la particule
+     */
+    virtual double defaut(const Vecteur<Dim> r) const;
+
+    /**
+     * Implémente la méthode de noyau de lissage avec le gradient
+     * \param r position de la particule
+     */
+    virtual Vecteur<Dim> gradient(const Vecteur<Dim> r) const;
+
+    /**
+     * Implémente la méthode de noyau de lissage avec le laplacien
+     * \param r position de la particule
+     */
+    virtual double laplacien(const Vecteur<Dim> r) const;
+
+};
+
 #include "noyauLissage.tpp"
 
 #endif

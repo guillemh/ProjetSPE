@@ -174,10 +174,14 @@ void Fluide<Dim>::majPositionVitesse() {
     typename vector<Particule<Dim> *>::iterator it1;
     typename vector<Particule<Dim> *>::iterator it2;
     NoyauLissageDefaut<Dim> noyauDefaut = NoyauLissageDefaut<Dim>(mat->getRayonNoyau());
-    NoyauLissagePression<Dim> noyauPression = NoyauLissagePression<Dim>(mat->getRayonNoyau());
-    NoyauLissageViscosite<Dim> noyauViscosite = NoyauLissageViscosite<Dim>(mat->getRayonNoyau());
-    
+    NoyauLissageMonaghan<Dim> noyauMonaghan = NoyauLissageMonaghan<Dim>(mat->getRayonNoyau());
+
     // On boucles sur toutes les particules
+    // Ci-dessous, factorisation de calculs
+    double masse = mat->getMasseParticules();
+    double masse_2 = pow(mat->getMasseParticules(), 2);
+    double nu_numerateur = 2*mat->getRayonNoyau()*mat->getConstanteViscosite()*mat->getCeleriteSon();
+
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
         
         // Definition de toutes les forces
@@ -187,40 +191,53 @@ void Fluide<Dim>::majPositionVitesse() {
         Vecteur<Dim> fSurface = Vecteur<Dim>();
         double colorfield = 0;
         
-        // Calcul des sommes utiles aux forces de pression, de viscosite et de surface
+        // Calcul des sommes utiles aux forces de pression, de viscosite et de surface,
+	// selon l'article de Becker et Teschner (WCSPH). Ci-dessous, quelques variables
+	// ayant pour but la factorisation des calculs, même si le résultat peut sembler
+	// moins clair qu'en écrivant des choses (*it1)->... dans les calculs 
+
+	double termePressionDensite_a = (*it1)->getPression() / pow((*it1)->getMasseVolumique(), 2);
+	double masseVolumique_a = (*it1)->getMasseVolumique() ;
+
         for (it2 = particules.begin(); it2 != particules.end(); it2++) {
             if (it1 != it2) {
-                fPression -= noyauPression.gradient((*it1)->getPosition() - (*it2)->getPosition())
-                             * ((*it1)->getPression() + (*it2)->getPression())
-                             / (*it2)->getMasseVolumique();
-                
-                fViscosite += ((*it2)->getVitesse() - (*it1)->getVitesse())
-                              * noyauViscosite.laplacien((*it1)->getPosition() - (*it2)->getPosition())
-                              / (*it2)->getMasseVolumique();
-                              
-                colorfield += noyauDefaut.laplacien((*it1)->getPosition() - (*it2)->getPosition())
-                              / (*it2)->getMasseVolumique();
-                              
-                fSurface += noyauDefaut.gradient((*it1)->getPosition() - (*it2)->getPosition())
-                            / (*it2)->getMasseVolumique();
+
+		// Quelques variables locales pour factoriser le calcul
+		Vecteur<Dim> x_ab = (*it1)->getPosition() - (*it2)->getPosition();
+		Vecteur<Dim> v_ab = (*it1)->getVitesse() - (*it2)->getVitesse();
+		double termePressionDensite_b = (*it2)->getPression() / pow((*it2)->getMasseVolumique(), 2);
+		double masseVolumique_b = (*it2)->getMasseVolumique();
+
+		// Expression des forces
+                fPression -= noyauMonaghan.gradient(x_ab) * (termePressionDensite_a + termePressionDensite_b);
+
+		double prodScal = (v_ab).scalaire(x_ab);
+		if (prodScal < 0) {
+		    double nu = nu_numerateur / (masseVolumique_a + masseVolumique_b);
+		    fViscosite += noyauMonaghan.gradient(x_ab) * nu * (prodScal / (0.0001 + pow(x_ab.norme(), 2)));
+		}
+
+                colorfield += noyauDefaut.laplacien(x_ab) / masseVolumique_b;
+          
+                fSurface += noyauDefaut.gradient(x_ab) / masseVolumique_b;
             }
         }
         
         // Calcul des forces de gravité, de pression, de viscosite et de surface
-        fGravite = (*it1)->getMasseVolumique() * mat->getAccGrav();
-        fPression *= mat->getMasseParticules() / 2;
-        fViscosite *= mat->getViscosite() * mat->getMasseParticules();
-        fSurface *= mat->getMasseParticules();
+        fGravite = masseVolumique_a * mat->getAccGrav();
+        fPression *= masse_2;
+        fViscosite *= masse_2;
+        fSurface *= masse;
         double norme = fSurface.norme();
         if (norme >= mat->getSeuilSurface()) {
-            colorfield *= mat->getMasseParticules();
+            colorfield *= masse;
             fSurface *= -colorfield * mat->getTensionSurface() / norme;
         } else {
             fSurface = Vecteur<Dim>();
         }
         
         // Calcul de l'acceleration
-        (*it1)->setAcceleration((fPression + fViscosite + fGravite + fSurface) / (*it1)->getMasseVolumique());
+        (*it1)->setAcceleration((fPression + fViscosite + fGravite + fSurface) / masseVolumique_a);
         
     }
     
@@ -241,24 +258,24 @@ void Fluide<Dim>::majPositionVitesse() {
         (*it1)->incrPosition(mat->getPasTemps() * (*it1)->getVitesse());
     
         // Detection des collisions
-        // Vecteur<Dim> pos = (*it1)->getPosition();
-        // Vecteur<Dim> contact = collision(pos);
+        Vecteur<Dim> pos = (*it1)->getPosition();
+        Vecteur<Dim> contact = collision(pos);
         
-        // // Si il y a collision, on met a jour la position et la vitesse
-        // if (contact != pos) {
-        //     pos = contact - pos;
-        //     double dist = pos.norme();
-        //     Vecteur<Dim> normale = pos / dist;
+        // Si il y a collision, on met a jour la position et la vitesse
+        if (contact != pos) {
+            pos = contact - pos;
+            double dist = pos.norme();
+            Vecteur<Dim> normale = pos / dist;
         
-        //     // Mise a jour de la position
-        //     (*it1)->setPosition(contact);
+            // Mise a jour de la position
+            (*it1)->setPosition(contact);
             
-        //     // Mise a jour de la vitesse
-        //     (*it1)->setVitesse((*it1)->getVitesse()
-        //                        - (1 + mat->getCoeffRestitution() * dist
-        //                        / (mat->getPasTemps() * ((*it1)->getVitesse()).norme()))
-        //                        * (((*it1)->getVitesse()).scalaire(normale)) * normale);
-        // }
+            // Mise a jour de la vitesse
+            (*it1)->setVitesse((*it1)->getVitesse()
+                               - (1 + mat->getCoeffRestitution() * dist
+                               / (mat->getPasTemps() * ((*it1)->getVitesse()).norme()))
+                               * (((*it1)->getVitesse()).scalaire(normale)) * normale);
+        }
     
     }
 
