@@ -1,9 +1,10 @@
-\documentclass[12pt]{article}
+\documentclass[a4paper,11pt]{article}
 \setlength{\textwidth}{17cm}
 \setlength{\textheight}{25cm}
 \setlength{\oddsidemargin}{-.7cm}
 \setlength{\evensidemargin}{-.7cm}
 \setlength{\topmargin}{-2cm}
+\setcounter{secnumdepth}{5}
 
 \usepackage[french]{babel}
 \usepackage[T1]{fontenc}
@@ -16,15 +17,15 @@
 \usepackage{mathrsfs}
 
 % titre, auteur et date
-\title{Grenoble INP - Ensimag \\ Gestion de projet de spécialité : Document de cadrage \\ Animation temps-réel de liquides}
-\author{ALLAIN Anne-Hermine, BAUCHET Jean-Philippe, CICCONE Loïc, GUILLEMAUD Héloïse}
-\date{\today}
+\title{\normalsize Grenoble INP - Ensimag \\ Gestion de projet de spécialité : Document de cadrage \\ Animation temps-réel de liquides}
+\author{\small ALLAIN Anne-Hermine, BAUCHET Jean-Philippe, CICCONE Loïc, GUILLEMAUD Héloïse}
+\date{\small \today}
 
 \begin{document}
 
 \maketitle
 
-Dans ce document, nous présentons les méthodes de travail que nous allons utiliser dans le cadre de notre projet de spécialité, consistant en le développement d'un modèle d'animation de fluides. C'est pourquoi nous allons débuter ce document par une présentation du projet et des objectifs que nous nous sommes fixés. Nous aborderons ensuite les questions d'organisation de l'équipe, de planning, avant d'évoquer notre gestion du planning, mais aussi des ressources humaines et des compétences qui nous sont propres.
+Dans ce document, nous présentons les méthodes de travail que nous allons mettre en oeuvre au cours de notre projet de spécialité dont l'objectif est de développer un modèle temps-réel d'animation de fluides. Nous débutons ce document par une présentation du projet et des objectifs fixés. Nous abordons ensuite les questions d'organisation de l'équipe, de planning, avant d'évoquer notre gestion du planning, des ressources humaines et des compétences qui nous sont propres.
 
 \section{Présentation du projet}
 
@@ -40,27 +41,27 @@ Techniquement, cet objectif s'articule autour de trois points : \\
 
 Nous suivrons dans ce projet une démarche incrémentale dans notre amélioration du rendu et de la simulation, nous y reviendrons plus en détail ci-dessous. \\
 
-Concernant le rendu de ce projet, le temps nous est insuffisant pour essayer plusieurs modèles physiques et implémenter toutes les optimisations possibles sur ce genre de problèmes. Notre objectif est donc, d'ici la date de fin du projet, d'obtenir un exécutable fonctionnel fournissant des résultats acceptables. Ces résultats incluent l'aspect visuel, l'aspect physique, mais aussi la recherche des meilleures performances. De plus, notre projet est par la suite susceptible d'être réutilisé par nos encadrants et des chercheurs pour des travaux ultérieurs, ce qui impose des contraintes de clarté, dans le code comme dans notre documentation. 
+Concernant le rendu de ce projet, le temps nous est insuffisant pour essayer plusieurs modèles physiques et implémenter toutes les optimisations possibles pour ce type de problème. Aussi, notre objectif est, d'ici la date de fin du projet, d'obtenir un exécutable fonctionnel fournissant des résultats acceptables. Ces résultats incluent l'aspect visuel, l'aspect physique, mais aussi la recherche des meilleures performances. De plus, notre projet étant susceptible, par la suite, d'être réutilisé par nos encadrants et des chercheurs pour des travaux ultérieurs, des contraintes de clarté s'imposent, et ce, autant au sein du code que de la documentation du projet. 
 
 \section{Organisation et communication}
 
-Notre équipe projet se compose de nous quatre, qui étudions tous en filière MMIS (Modélisation Mathématique, Images et Simulation). Deux encadrants, Pierre-Luc Manteaux et Marie-Paule Cani, sont nos principaux interlocuteurs en cas de difficultés sur le plan technique et forment l'équipe étendue. \\
+Notre équipe est composée de quatre étudiants, tous issus de la filière MMIS (Modélisation Mathématique, Images et Simulation). Deux encadrants, Marie-Paule Cani et Pierre-Luc Manteaux, sont nos principaux interlocuteurs en cas de difficultés sur le plan technique et forment l'équipe étendue. \\
 
-Nos procédés de communication sont les suivants. Nous avons l'intention de travailler tous ensemble à l'Ensimag sur des tâches parallèles, éventuellement seuls ou en binômes. Pour des raisons d'efficacité et de compréhension des autres membres de l'équipe vis-à-vis des changements apportés au projet, nous avons tendance à réprouver le travail en solitaire, effectué le soir ou le week-end chez soi, quitte à rallonger nos horaires de présence à l'école en journée. \\
+Du point de vue de la communication, nous choisissons de travailler tous ensemble à l'Ensimag sur des tâches parallèles, éventuellement seuls ou en binômes. Pour des raisons d'efficacité et de compréhension des autres membres de l'équipe vis-à-vis des changements apportés au projet, nous avons tendance à réprouver le travail en solitaire, effectué le soir ou le week-end chez soi, quitte à rallonger nos horaires de présence à l'école en journée. \\
 
-Pour synchroniser notre travail, nous utilisons un dépôt Git auquel les encadrants ont également accès, ce qui leur permet de contrôler notre travail et d'y revenir avec une plus grande connaissance lors de nos réunions de suivi. Concernant ces réunions justement, nous avons choisi d'adopter un rythme de deux suivis par semaine. Nous leur communiquons également par mail notre avancement et les éventuels problèmes rencontrés. \\
+Pour synchroniser notre travail, nous utilisons un répertoire partagé auquel les encadrants ont également accès, ce qui leur permet de contrôler notre travail et d'y faire référence avec une plus grande pertinence lors de nos réunions de suivi. Après concertation avec les encadrants, il a été décidé d'adopter un rythme de deux réunions de suivi par semaine. Nous leur communiquons également par mail notre avancement et les éventuels problèmes rencontrés. \\
 
-Par ailleurs, une autre équipe travaille sur un projet similaire. Une partie de notre travail est donc commune, ce qui rend possible un échange entre les deux équipes sur des points précis de l'algorithme.
+Par ailleurs, une autre équipe travaillant sur un projet similaire, une partie de nos travaux est donc commune. Cela rend possible un échange entre les deux équipes sur des points précis du projet en cas de difficultés.
 
 \section{Planning}
 
 Pour mener à bien ce projet nous décidons de mettre en place une approche incrémentale vis-à-vis des objectifs définis précédemment. Dans un premier temps, une étude approfondie de la littérature à été nécessaire pour assurer une compréhension poussée du modèle à implémenter. Au fur et à mesure du déroulement du projet, d'autres lectures seront nécessaires pour améliorer le modèle de base.\\
 
-L'étude de la littérature a permis de mettre en exergue des étapes successives d'implémentation. Tout d'abord, un modèle physique ``basique'' pour permettre le mouvement d'un fluide modélisé à partir de particules. Cela comprend les forces qui agissent sur ces particules ainsi que la gestion des collisions. Une fois ce bloc de base fonctionnel, nous pourrons nous intéresser au rendu visuel du liquide. Ceci définit la deuxième grande partie du projet, notre équipe devra sans doute se diviser à partir de ce moment. Chaque sous-groupe pourra passer à l'amélioration de sa partie, notamment au niveau des performances du logiciel. Ces améliorations se baseront sur des publications, proposant de nouvelles méthodes d'implémentation.\\
+L'étude de la littérature a permis de mettre en exergue des étapes successives d'implémentation. Tout d'abord, un modèle physique ``basique'' pour permettre le mouvement d'un fluide modélisé à partir de particules. Cela comprend les forces qui agissent sur ces particules ainsi que la gestion des collisions. Une fois ce bloc de base fonctionnel, il s'agit de s'intéresser au rendu visuel du liquide. Ceci définit la deuxième grande partie du projet, notre équipe devra sans doute se diviser à partir de ce moment. Chaque sous-groupe pourra passer à l'amélioration de sa partie, notamment au niveau des performances du logiciel. Ces améliorations se baseront sur des publications, proposant de nouvelles méthodes d'implémentation.\\
 
-Nous devrions donc obtenir successivement des animations de liquides de plus en plus rapides et réalistes. Il ne faut pas oublier non plus que pour le rendu final, nous devrons livrer un logiciel qui fonctionne, afin d'avoir un résultat concret à montrer.\\
+Nous devrions donc obtenir successivement des animations de liquides de plus en plus rapides et réalistes. Néanmoins, il est primordial de noter que, pour le rendu final, nous devrons livrer un logiciel qui fonctionne, afin d'avoir un résultat concret à montrer. Le rendu final sera donc celui correspondant à la dernière itération fonctionnelle du projet.\\
 
-À ne pas négliger non plus, les différentes étapes de suivi du projet. Nous prévoyons de rencontrer nos encadrants deux fois par semaine, nous devrons prendre du temps pour préparer ces rendez-vous, notamment avec des questions et un résumé de notre avancement depuis la dernière rencontre. \\
+Les différentes étapes de suivi du projet sont également autant de moments clés à ne pas négliger. Nous prévoyons de rencontrer nos encadrants deux fois par semaine, nous devrons prendre du temps pour préparer ces rendez-vous, notamment avec des questions et un résumé de notre avancement depuis la dernière rencontre. \\
 
 Planning :
 - examens : du 24 au 29 pour la moitié de l'équipe, au 30 pour l'autre
@@ -72,11 +73,13 @@ Description des étapes du projet :
 
 \section{Ressources et contraintes}
 
-Ressources :
-- salle E301...
-- documents fournis par le prof
-- prérequis scolaires : cours de G3D, d'EDP
-- contraintes : examens...
+Du point de vue logistique, la salle E301 nous est mise à disposition durant la durée du projet.\\
+
+Les documents de référence associés au sujet nous ont été fournis dès le début du projet par les encadrants. La compréhension de ces documents nécessite la mise en oeuvre des connaissances aquises tout au long de notre scolarité à l'Ensimag dans des domaines tels que l'algorithmique, l'animation 3D, les équations aux dérivées partielles,... La communication permanente entre chacun des membres de l'équipe permet la mise en commun des connaissances selon les spécialités respectives et assure une compréhension efficace.\\
+
+Une des contraintes majeure liée au projet est celle de l'indisponibilité partielle de chacun des membres durant les deux premières semaines due aux soutenances et à la session d'examens. Un avancement régulier ne peut être maintenu durant cette période et peut entrainer un retard dans le projet. Les membres ayant la possibilité de contribuer au projet durant cette période doivent alors en informer régulièrement les autres via des bilans détaillés pour permettre le suivi global du projet par l'équipe.\\
+
+\section{Gestion des risques}
 
 Risques :
 - utilisation de QMake imprécise
