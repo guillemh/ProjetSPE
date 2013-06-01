@@ -16,8 +16,14 @@ int Premier<Dim>::getPremier(const int x) const
 	return calculPremier(x);
     }
 
-    while (lookup[tmp] > x)
+    int cpt = 0;
+
+    while (lookup[tmp] > x) {
 	tmp--;
+	cpt ++;
+    }
+
+    //cout << "Nombre d'acces a la table : " << cpt << endl;
 
     if (lookup[tmp] < x)
 	tmp++;
