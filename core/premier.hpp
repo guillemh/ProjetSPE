@@ -11,7 +11,7 @@
  */
 template <unsigned int Dim>
 class Premier {
-public:
+
     /* ** Attributs ** */
     const int lookup[NUM_LOOKUP];
 public:
@@ -9608,9 +9608,6 @@ public:
 	    ,99989
 	    ,99991} {} // Table contenant les NUM_LOOKUP nombres premiers
 
-
-    /* ** Constructeurs ** */
-public:
     
     /**
      * Destructeur
@@ -9625,6 +9622,7 @@ public:
      */
     int getPremier(const int x) const;
 
+private:
     /**
      * \return calcul du nombre premier supérieur ou égal à x
      */
@@ -9635,6 +9633,7 @@ public:
      */
     bool estPremier(const int x) const;
     
+    friend void test_performances_premier();
 };
 
 #include "premier.tpp"

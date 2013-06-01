@@ -3,7 +3,7 @@
 #include "noyauLissage.hpp"
 using std::cout;
 using std::endl;
-
+using std::pair;
 
 /* ** Constructeurs ** */
 
@@ -12,6 +12,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
     : mat(m),
       nbrParticules(0),
       debutAnim(true),
+      table(),
       hash_voisins()
 {
     // Initialisation du vector vide
@@ -23,6 +24,7 @@ template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p)
     : mat(m),
       debutAnim(true),
+      table(),
       hash_voisins()
 {
     // Initialisation du vector vide
@@ -38,6 +40,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                 Vecteur<Dim> vec = Vecteur<Dim>(i*ecart, j*ecart);
                 Particule<Dim> *part = new Particule<Dim>(vec, Vecteur<Dim>(), rho, p);
                 particules.push_back(part);
+		hash_voisins.insert(pair<int, Particule<Dim> >(fonction_hashage(part->getPosition()), *part));
             }
         }
         
@@ -52,7 +55,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                     Vecteur<Dim> vec = Vecteur<Dim>(i*ecart, j*ecart, k*ecart + 0.1);
                     Particule<Dim> *part = new Particule<Dim>(vec, Vecteur<Dim>(), rho, p);
                     particules.push_back(part);
-                }
+		    hash_voisins.insert(pair<int, Particule<Dim> >(fonction_hashage(part->getPosition()), *part));               
+		}
             }
         }
         
@@ -71,6 +75,7 @@ Fluide<Dim>::~Fluide() {
         delete (*it);
         particules.erase(it);
     }
+    hash_voisins.clear();
 }
 
 /* Fonction de hashage */
@@ -80,9 +85,10 @@ int Fluide<2>::fonction_hashage(Vecteur<2> pos) {
 			   int(floor(pos(2)/mat->getRayonNoyau()))};
     int p1 = 73856093;
     int p2 = 19349663;
+    int modulo = table.getPremier(2*nbrParticules);
     return (noeud_grille[0]*p1 
 	    ^ noeud_grille[1]*p2) 
-	% (2*nbrParticules+1);
+	% modulo;
 }
 
 template<>
@@ -93,10 +99,11 @@ int Fluide<3>::fonction_hashage(Vecteur<3> pos) {
     int p1 = 73856093;
     int p2 = 19349663;
     int p3 = 83492791;
+    int modulo = table.getPremier(2*nbrParticules);
     return (noeud_grille[0]*p1 
 	    ^ noeud_grille[1]*p2
 	    ^ noeud_grille[2]*p3) 
-	% (2*nbrParticules+1);
+	% modulo;
 }
 
 template<unsigned int Dim>
@@ -110,6 +117,7 @@ template<unsigned int Dim>
 void Fluide<Dim>::ajouteParticule(Particule<Dim> * part) {
     ++nbrParticules;
     particules.push_back(part);
+    hash_voisins.insert(pair<int, Particule<Dim> >(fonction_hashage(part->getPosition()), *part));
 }
 
 

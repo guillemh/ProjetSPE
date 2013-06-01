@@ -8,7 +8,8 @@ using std::vector;
 #include "materiau.hpp"
 #include "particule.hpp"
 #include "vecteur.hpp"
-using std::map;
+#include "premier.hpp"
+using std::multimap;
 
 /** 
  * \class Fluide
@@ -25,7 +26,8 @@ private:
     vector<Particule<Dim> *> particules; // Ensemble des particules
     int nbrParticules;                   // Nombre de particules du fluide
     bool debutAnim;                      // Indique si on est au debut de l'animation
-    map<int, Particule<Dim> > hash_voisins;
+    Premier<Dim> table;                  // Table pour la dimension de la table de hachage
+    multimap<int, Particule<Dim> > hash_voisins;
 
     /* Fonction de hashage */
     int fonction_hashage(Vecteur<Dim>);

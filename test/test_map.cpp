@@ -8,7 +8,7 @@ using std::cout;
 using std::endl;
 using std::pair;
 
-typedef map<int, Particule<3> > mymap;
+typedef multimap<int, Particule<3> > mymap;
 
 void test_map() {
 
@@ -34,46 +34,20 @@ void test_map() {
 
     cout << endl;
 
-    pair<mymap::iterator, bool> test;
     int hash;
     hash = f3.fonction_hashage(p2->getPosition());
-    cout << hash << endl;
-    test = f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p2));
-    if (test.second) {
-	cout << "insertion ok" << endl;
-    } else {
-	cout << "insertion KO" << endl;
-    }    
+    cout << "Clé insertion : " << hash << endl;
+    f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p2));
     hash = f3.fonction_hashage(p4->getPosition());
-    cout << hash << endl;
-    test = f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p4));
-    if (test.second) {
-	cout << "insertion ok" << endl;
-    } else {
-	cout << "insertion KO" << endl;
-    }    
+    cout << "Clé insertion : " << hash << endl;
+    f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p4));
     hash = f3.fonction_hashage(p6->getPosition());
-    cout << hash << endl;
-    test = f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p6));
-    if (test.second) {
-	cout << "insertion ok" << endl;
-    } else {
-	cout << "insertion KO" << endl;
-    }    
+    cout << "Clé insertion : " << hash << endl;
+    f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p6));
     hash = f3.fonction_hashage(p8->getPosition());
-    cout << hash << endl;
-    test = f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p8));
-    if (test.second) {
-	cout << "insertion ok" << endl;
-    } else {
-	cout << "insertion KO" << endl;
-    }    
+    cout << "Clé insertion : " << hash << endl;
+    f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p8));
     hash = f3.fonction_hashage(p10->getPosition());
-    cout << hash << endl;
-    test = f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p10));
-    if (test.second) {
-	cout << "insertion ok" << endl;
-    } else {
-	cout << "insertion KO" << endl;
-    }    
+    cout << "Clé insertion : " << hash << endl;
+    f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p10));
 }
