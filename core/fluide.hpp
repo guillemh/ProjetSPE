@@ -4,14 +4,11 @@
 #include <vector>
 using std::vector;
 #include <iostream>
-#include <unordered_map>
-#include <functional>
+#include <map>
 #include "materiau.hpp"
 #include "particule.hpp"
 #include "vecteur.hpp"
-using std::unordered_map;
-using std::function;
-
+using std::map;
 
 /** 
  * \class Fluide
@@ -28,11 +25,12 @@ private:
     vector<Particule<Dim> *> particules; // Ensemble des particules
     int nbrParticules;                   // Nombre de particules du fluide
     bool debutAnim;                      // Indique si on est au debut de l'animation
-    unordered_map<Vecteur<Dim>, Particule<Dim>, function<size_t(Vecteur<Dim>& pos)> > hash_voisins;
+    map<int, Particule<Dim> > hash_voisins;
 
-    size_t fonction_hash(Vecteur<Dim>& pos, double rayon);
+    /* Fonction de hashage */
+    int fonction_hashage(Vecteur<Dim>);
 
-/* ** Constructeurs ** */
+    /* ** Constructeurs ** */
 public:
     /**
       * Constructeur par defaut
@@ -84,6 +82,7 @@ public:
       */
     void affiche();
 
+    friend void test_map();
 };
 
 

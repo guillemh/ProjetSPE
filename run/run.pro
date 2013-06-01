@@ -13,7 +13,6 @@ QT += xml opengl
 LIBS += -L./../core/$${DBGNAME}/ -lcore
 #Linking flags
 QMAKE_LFLAGS += -Wl,-rpath,./../../core/release/
-QMAKE_CXXFLAGS += -std=c++0x
 
 INCLUDEPATH += ..
 DEPENDPATH += .. #check si les fichiers ont été modifiés
