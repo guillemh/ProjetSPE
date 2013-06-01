@@ -10,17 +10,18 @@ int Premier<Dim>::getPremier(const int x) const
     int tmp;
     if (x < NUM_LOOKUP-1) {
 	tmp = x;
-    } else if(x <= 99991) {
+    } else if (x <= 99991) {
 	tmp = NUM_LOOKUP-1;
     } else {
 	return calculPremier(x);
     }
 
-    while (lookup[tmp] > x){
+    while (lookup[tmp] > x)
 	tmp--;
-    }
+
     if (lookup[tmp] < x)
 	tmp++;
+
     return lookup[tmp];
 }
 
