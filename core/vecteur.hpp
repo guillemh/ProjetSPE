@@ -21,13 +21,11 @@ public:
     /* ** Constructeurs ** */
 public :
     /**
-     * \brief Constructeur
      * Constructeur d'un vecteur nul bidimensionnel ou tridimensionnel
      */
     Vecteur();
 
     /**
-     * \brief Constructeur
      * Constructeur d'un vecteur comportant une valeur de remplissage par défaut
      *
      * \param def la valeur a entrer dans le vecteur
@@ -35,7 +33,6 @@ public :
     Vecteur(double def);
 
     /**
-     * \brief Constructeur 
      * Constructeur par défaut du vecteur bidimensionnel
      *
      * \param x Première composante du vecteur
@@ -44,7 +41,6 @@ public :
     Vecteur(double x, double y);
 
     /**
-     * \brief Constructeur 
      * Constructeur par défaut du point tridimensionnel
      *
      * \param x Première composante du vecteur
@@ -54,14 +50,12 @@ public :
     Vecteur(double x, double y, double z);
 
     /**
-     * \brief Constructeur
      * Constructeur par recopie d'un autre vecteur
      *
      * \param v Référence sur le vecteur recopié */
     Vecteur(const Vecteur<Dim> &v);
 
     /**
-     * \brief Destructeur
      * Destructeur d'un objet de type vecteur
      */
     ~Vecteur();

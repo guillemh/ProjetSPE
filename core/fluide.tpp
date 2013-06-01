@@ -10,7 +10,9 @@ using std::endl;
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m)
     : mat(m),
-    debutAnim(true)
+      nbrParticules(0),
+      debutAnim(true),
+      hash_voisins(fonction_hash)
 {
     // Initilisation du vector vide
     particules = vector<Particule<Dim> *> ();
@@ -20,13 +22,15 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p)
     : mat(m),
-    debutAnim(true)
+      debutAnim(true),
+      hash_voisins(fonction_hash)
 {
     // Initialisation du vector vide
     particules = vector<Particule<Dim> *>();
     
     if (Dim == 2) {
     
+	nbrParticules = nb[0]*nb[1];
         // Ici, on est en dimension 2
         // On va ajouter des particules regulierement disposees sur les deux dimensions
         for (int i = 0; i < nb[0]; i++) {
@@ -39,6 +43,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         
     } else if (Dim == 3) {
     
+	nbrParticules = nb[0]*nb[1]*nb[2];
         // Ici, on est en dimension 3
         // On va ajouter des particules regulierement disposees sur les trois dimensions
         for (int i = 0; i < nb[0]; i++) {
@@ -68,9 +73,35 @@ Fluide<Dim>::~Fluide() {
     }
 }
 
+/* ** Fonctions de hashage ** */
+template<>
+size_t Fluide<2>::fonction_hash(Vecteur<2>& pos, double rayon) {
+    int noeud_grille[2] = {int(floor(pos(1)/rayon)), 
+			   int(floor(pos(2)/rayon))};
+    int p1 = 73856093;
+    int p2 = 19349663;
+    return ((noeud_grille[0]*p1) ^ (noeud_grille[1]*p2)) % nbrParticules;
+}
 
+template<>
+size_t Fluide<3>::fonction_hash(Vecteur<3>& pos, double rayon) {
+    int noeud_grille[3] = {int(floor(pos(1)/rayon)), 
+			   int(floor(pos(2)/rayon)),
+			   int(floor(pos(3)/rayon))};
+    int p1 = 73856093;
+    int p2 = 19349663;
+    int p3 = 83492791;
+    return ((noeud_grille[0]*p1) 
+	    ^ (noeud_grille[1]*p2) 
+	    ^ (noeud_grille[2]*p3)) % nbrParticules;
+}
 
-/* ** Methodes ** */
+template<unsigned int Dim>
+size_t Fluide<Dim>::fonction_hash(Vecteur<Dim>& pos, double rayon) {
+    return 0;
+}
+
+/* ** Méthodes ** */
 
 template<unsigned int Dim>
 void Fluide<Dim>::ajouteParticule(Particule<Dim> * part) {

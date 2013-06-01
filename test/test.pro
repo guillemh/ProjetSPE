@@ -1,7 +1,7 @@
 #La sortie de la compilation sera un executable
 TEMPLATE = app
 
-CXXFLAGS = -g -Wall
+CXXFLAGS = -g -Wall -std=c++0x
 
 #Creation de deux dossiers debug / release selon la compilation choisie
 CONFIG += debug_and_release
@@ -16,7 +16,7 @@ DESTDIR = $${DBGNAME}
 
 QT += xml opengl
 LIBS += -lqglviewer-qt4 -L./../core/$${DBGNAME}/ -lcore
-
+QMAKE_CXXFLAGS += -std=c++0x
 
 INCLUDEPATH += ..
 DEPENDPATH += .. #check si les fichiers ont été modifiés

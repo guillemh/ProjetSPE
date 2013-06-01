@@ -4,15 +4,14 @@
 #include <vector>
 using std::vector;
 #include <iostream>
+#include <unordered_map>
+#include <functional>
 #include "materiau.hpp"
 #include "particule.hpp"
 #include "vecteur.hpp"
-// using std::unordered_map;
-// using std::function;
+using std::unordered_map;
+using std::function;
 
-// hash_function(Vecteur<Dim>& pos) {
-
-// }
 
 /** 
  * \class Fluide
@@ -22,19 +21,18 @@ using std::vector;
  */
 template<unsigned int Dim>
 class Fluide {
-
+    
     /* ** Attributs ** */
 private:
     Materiau<Dim> * mat;                 // Materiau du fluide (avec toutes les constantes)
     vector<Particule<Dim> *> particules; // Ensemble des particules
+    int nbrParticules;                   // Nombre de particules du fluide
     bool debutAnim;                      // Indique si on est au debut de l'animation
-    // unordered_map<Vecteur<Dim>,
-    // 		  Particule<Dim>,
-    // 		  function<size_t(Vecteur<Dim>& pos)>
-    // 		  > hash(nbr_part, hash_function);
+    unordered_map<Vecteur<Dim>, Particule<Dim>, function<size_t(Vecteur<Dim>& pos)> > hash_voisins;
 
+    size_t fonction_hash(Vecteur<Dim>& pos, double rayon);
 
-    /* ** Constructeurs ** */
+/* ** Constructeurs ** */
 public:
     /**
       * Constructeur par defaut
@@ -44,11 +42,11 @@ public:
 
     /**
       * Constructeur avec initialisation d'un parallèlépipède de particules
-      * \param m matériau du fluide
-      * \param nb tableau du nombre de particules sur chacune des dimensions
-      * \param ecart écart entre les particules
-      * \param rho masse volumique initiale des particules
-      * \param p pression initiale des particules
+      * \param m Matériau du fluide
+      * \param nb Tableau du nombre de particules sur chacune des dimensions
+      * \param ecart Écart entre les particules
+      * \param rho Masse volumique initiale des particules
+      * \param p Pression initiale des particules
       */
     Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho = 0, double p = 0);
     
@@ -62,7 +60,7 @@ public:
 public:
     /**
       * Ajoute une particule à l'ensemble des particules
-      * \param part la particule à ajouter
+      * \param part La particule à ajouter
       */
     void ajouteParticule(Particule<Dim> * part);
     
