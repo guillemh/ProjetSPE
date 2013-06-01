@@ -8,7 +8,7 @@ using std::cout;
 using std::endl;
 using std::pair;
 
-typedef multimap<int, Particule<3> > mymap;
+typedef multimap<int, Particule<3>*> mymap;
 
 void test_map() {
 
@@ -37,17 +37,17 @@ void test_map() {
     int hash;
     hash = f3.fonction_hashage(p2->getPosition());
     cout << "Clé insertion : " << hash << endl;
-    f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p2));
+    f3.hash_voisins.insert(pair<int, Particule<3>*>(hash, p2));
     hash = f3.fonction_hashage(p4->getPosition());
     cout << "Clé insertion : " << hash << endl;
-    f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p4));
+    f3.hash_voisins.insert(pair<int, Particule<3>*>(hash, p4));
     hash = f3.fonction_hashage(p6->getPosition());
     cout << "Clé insertion : " << hash << endl;
-    f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p6));
+    f3.hash_voisins.insert(pair<int, Particule<3>*>(hash, p6));
     hash = f3.fonction_hashage(p8->getPosition());
     cout << "Clé insertion : " << hash << endl;
-    f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p8));
+    f3.hash_voisins.insert(pair<int, Particule<3>*>(hash, p8));
     hash = f3.fonction_hashage(p10->getPosition());
     cout << "Clé insertion : " << hash << endl;
-    f3.hash_voisins.insert(pair<int, Particule<3> >(hash, *p10));
+    f3.hash_voisins.insert(pair<int, Particule<3>*>(hash, p10));
 }
