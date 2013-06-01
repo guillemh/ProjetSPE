@@ -249,6 +249,11 @@ double NoyauLissageMonaghan<Dim>::defaut(const Vecteur<Dim> r) const {
     } else {
 	res = 0;
     }
+    if (Dim == 2) {
+	res *= 15/(14*PI*pow(this->h, 2));
+    } else if (Dim == 3) {
+	res *= 1/(4*PI*pow(this->h, 3));
+    }
     return res;
 }
 
@@ -266,6 +271,11 @@ Vecteur<Dim> NoyauLissageMonaghan<Dim>::gradient(const Vecteur<Dim> r) const {
     } else {
 	res = Vecteur<Dim>();
     }
+    if (Dim == 2) {
+	res *= 15/(14*PI*pow(this->h, 2));
+    } else if (Dim == 3) {
+	res *= 1/(4*PI*pow(this->h, 3));
+    }
     return res;
 }
 
@@ -282,6 +292,11 @@ double NoyauLissageMonaghan<Dim>::laplacien(const Vecteur<Dim> r) const {
 	res = (-6.0 * (2 - q) * (2 - 2*q) / r.norme()) / 6.0;
     } else {
 	res = 0;
+    }
+    if (Dim == 2) {
+	res *= 15/(14*PI*pow(this->h, 2));
+    } else if (Dim == 3) {
+	res *= 1/(4*PI*pow(this->h, 3));
     }
     return res;
 }
