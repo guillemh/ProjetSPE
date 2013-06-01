@@ -5,11 +5,13 @@
 using std::vector;
 #include <iostream>
 #include <map>
+#include <list>
 #include "materiau.hpp"
 #include "particule.hpp"
 #include "vecteur.hpp"
 #include "premier.hpp"
 using std::multimap;
+using std::list;
 
 /** 
  * \class Fluide
@@ -27,10 +29,13 @@ private:
     int nbrParticules;                   // Nombre de particules du fluide
     bool debutAnim;                      // Indique si on est au debut de l'animation
     Premier<Dim> table;                  // Table pour la dimension de la table de hachage
-    multimap<int, Particule<Dim> > hash_voisins;
+    multimap<int, Particule<Dim>*> hash_voisins;
 
     /* Fonction de hashage */
     int fonction_hashage(Vecteur<Dim>);
+
+    /* Fonction d'accès au voisinage d'une particule */
+    list<Particule<Dim>*> voisinage(Particule<Dim>&);
 
     /* ** Constructeurs ** */
 public:
@@ -48,7 +53,7 @@ public:
       * \param rho Masse volumique initiale des particules
       * \param p Pression initiale des particules
       */
-    Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho = 0, double p = 0);
+    Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p);
     
     /**
       * Destructeur

@@ -40,7 +40,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                 Vecteur<Dim> vec = Vecteur<Dim>(i*ecart, j*ecart);
                 Particule<Dim> *part = new Particule<Dim>(vec, Vecteur<Dim>(), rho, p);
                 particules.push_back(part);
-		hash_voisins.insert(pair<int, Particule<Dim> >(fonction_hashage(part->getPosition()), *part));
+		hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(part->getPosition()), part));
             }
         }
         
@@ -55,7 +55,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                     Vecteur<Dim> vec = Vecteur<Dim>(i*ecart, j*ecart, k*ecart + 0.1);
                     Particule<Dim> *part = new Particule<Dim>(vec, Vecteur<Dim>(), rho, p);
                     particules.push_back(part);
-		    hash_voisins.insert(pair<int, Particule<Dim> >(fonction_hashage(part->getPosition()), *part));               
+		    hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(part->getPosition()), part));               
 		}
             }
         }
@@ -80,7 +80,7 @@ Fluide<Dim>::~Fluide() {
 
 /* Fonction de hashage */
 template<>
-int Fluide<2>::fonction_hashage(Vecteur<2> pos) {
+inline int Fluide<2>::fonction_hashage(Vecteur<2> pos) {
     int noeud_grille[2] = {int(floor(pos(1)/mat->getRayonNoyau())),
 			   int(floor(pos(2)/mat->getRayonNoyau()))};
     int p1 = 73856093;
@@ -92,7 +92,7 @@ int Fluide<2>::fonction_hashage(Vecteur<2> pos) {
 }
 
 template<>
-int Fluide<3>::fonction_hashage(Vecteur<3> pos) {
+inline int Fluide<3>::fonction_hashage(Vecteur<3> pos) {
     int noeud_grille[3] = {int(floor(pos(1)/mat->getRayonNoyau())),
 			   int(floor(pos(2)/mat->getRayonNoyau())),
 			   int(floor(pos(3)/mat->getRayonNoyau()))};
@@ -106,40 +106,118 @@ int Fluide<3>::fonction_hashage(Vecteur<3> pos) {
 	% modulo;
 }
 
-template<unsigned int Dim>
-int Fluide<Dim>::fonction_hashage(Vecteur<Dim> pos) {
-    return 0;
-}
-
 /* ** Méthodes ** */
 
 template<unsigned int Dim>
 void Fluide<Dim>::ajouteParticule(Particule<Dim> * part) {
     ++nbrParticules;
     particules.push_back(part);
-    hash_voisins.insert(pair<int, Particule<Dim> >(fonction_hashage(part->getPosition()), *part));
+    hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(part->getPosition()), part));
 }
 
+
+template<>
+inline list<Particule<2>*> Fluide<2>::voisinage(Particule<2>& p) {
+    list<Particule<2>*> res;
+    double rnoyau = mat->getRayonNoyau();
+    /* Noeuds correspondant à la bounding box de la particule */
+    int bbmin[2] = {int(floor((p.getPosition()(1)-rnoyau)/rnoyau)),
+		    int(floor((p.getPosition()(2)-rnoyau)/rnoyau))};
+    int bbmax[2] = {int(floor((p.getPosition()(1)+rnoyau)/rnoyau)),
+		    int(floor((p.getPosition()(2)+rnoyau)/rnoyau))};
+    /* Paire d'itérateurs (début et fin) sur les particules de clé hash_key */
+    pair<multimap<int, Particule<2>*>::iterator,  multimap<int, Particule<2>*>::iterator> part_pit;
+    multimap<int, Particule<2>*>::iterator part_it;
+    int hash_key;
+
+    /* On boucle sur tous les noeuds de la bounding box */
+    for (int i = bbmin[0]; i <= bbmax[0]; ++i) {
+	for (int j = bbmin[1]; j <= bbmax[1]; ++j) {
+	    hash_key = fonction_hashage(Vecteur<2>(i, j));
+	    part_pit = hash_voisins.equal_range(hash_key);
+
+	    /* On rajoute les particules trouvées dans la liste */
+	    for (part_it = part_pit.first; part_it != part_pit.second; ++part_it) {
+		res.push_back(part_it->second);
+	    }
+	}
+    }
+
+    /* Dans ces voisins, on ne garde que ceux qui sont dans la sphère */
+    list<Particule<2>*>::iterator liste_it;
+    for (liste_it = res.begin(); liste_it != res.end(); ) {
+	if ((p.getPosition() - (*liste_it)->getPosition()).norme() > rnoyau) {
+	    liste_it = res.erase(liste_it);
+	} else {
+	    ++liste_it;
+	}
+    }
+    return res;
+}
+
+template<>
+inline list<Particule<3>*> Fluide<3>::voisinage(Particule<3>& p) {
+    list<Particule<3>*> res;
+    double rnoyau = mat->getRayonNoyau();
+    /* Noeuds correspondant à la bounding box de la particule */
+    int bbmin[3] = {int(floor((p.getPosition()(1)-rnoyau)/rnoyau)),
+		    int(floor((p.getPosition()(2)-rnoyau)/rnoyau)),
+		    int(floor((p.getPosition()(3)-rnoyau)/rnoyau))};
+    int bbmax[3] = {int(floor((p.getPosition()(1)+rnoyau)/rnoyau)),
+		    int(floor((p.getPosition()(2)+rnoyau)/rnoyau)),
+		    int(floor((p.getPosition()(3)-rnoyau)/rnoyau))};
+    /* Paire d'itérateurs (début et fin) sur les particules de clé hash_key */
+    pair<multimap<int, Particule<3>*>::iterator,  multimap<int, Particule<3>*>::iterator> part_pit;
+    multimap<int, Particule<3>*>::iterator part_it;
+    int hash_key;
+
+    /* On boucle sur tous les noeuds de la bounding box */
+    for (int i = bbmin[0]; i <= bbmax[0]; ++i) {
+	for (int j = bbmin[1]; j <= bbmax[1]; ++j) {
+	    for (int k = bbmin[2]; k <= bbmax[2]; ++k) {
+		hash_key = fonction_hashage(Vecteur<3>(i, j, k));
+		part_pit = hash_voisins.equal_range(hash_key);
+
+		/* On rajoute les particules trouvées dans la liste */
+		for (part_it = part_pit.first; part_it != part_pit.second; ++part_it) {
+		    res.push_back(part_it->second);
+		}
+	    }
+	}
+    }
+
+    /* Dans ces voisins, on ne garde que ceux qui sont dans la sphère */
+    list<Particule<3>*>::iterator liste_it;
+    for (liste_it = res.begin(); liste_it != res.end(); ) {
+	if ((p.getPosition() - (*liste_it)->getPosition()).norme() > rnoyau) {
+	    liste_it = res.erase(liste_it);
+	} else {
+	    ++liste_it;
+	}
+    }
+    return res;
+}
 
 template<unsigned int Dim>
 void Fluide<Dim>::majDensitePression() {
 
     typename vector<Particule<Dim> *>::iterator it1;
-    typename vector<Particule<Dim> *>::iterator it2;
     NoyauLissageDefaut<Dim> noyau = NoyauLissageDefaut<Dim>(mat->getRayonNoyau());
-    
+    list<Particule<Dim>*> voisins;    
+    typename list<Particule<Dim>*>::iterator it2;
+
     // On boucles sur toutes les particules
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
     
         // On met leur masse volumique à jour
         double somme = 0;
-        for (it2 = particules.begin(); it2 != particules.end(); it2++)
+	voisins = voisinage(*(*it1));
+        for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
             somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
-        (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
+	if (somme != 0)
+	    (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
         
         // On met leur pression à jour
-        // double diff = (*it1)->getPression() - mat->getDensiteRepos();
-        // (*it1)->setPression((mat->getRigiditeGaz())*diff);
         (*it1)->majPression(mat->getCeleriteSon(), mat->getDensiteRepos());
     }
 }
@@ -184,7 +262,6 @@ template<unsigned int Dim>
 void Fluide<Dim>::majPositionVitesse() {
 
     typename vector<Particule<Dim> *>::iterator it1;
-    typename vector<Particule<Dim> *>::iterator it2;
     NoyauLissageDefaut<Dim> noyauDefaut = NoyauLissageDefaut<Dim>(mat->getRayonNoyau());
     NoyauLissageMonaghan<Dim> noyauMonaghan = NoyauLissageMonaghan<Dim>(mat->getRayonNoyau());
 
@@ -193,6 +270,9 @@ void Fluide<Dim>::majPositionVitesse() {
     double masse = mat->getMasseParticules();
     double masse_2 = pow(mat->getMasseParticules(), 2);
     double nu_numerateur = 2*mat->getRayonNoyau()*mat->getConstanteViscosite()*mat->getCeleriteSon();
+
+    list<Particule<Dim>*> voisins;    
+    typename list<Particule<Dim>*>::iterator it2;
 
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
         
@@ -207,32 +287,30 @@ void Fluide<Dim>::majPositionVitesse() {
 	// selon l'article de Becker et Teschner (WCSPH). Ci-dessous, quelques variables
 	// ayant pour but la factorisation des calculs, même si le résultat peut sembler
 	// moins clair qu'en écrivant des choses (*it1)->... dans les calculs 
-
 	double termePressionDensite_a = (*it1)->getPression() / pow((*it1)->getMasseVolumique(), 2);
-	double masseVolumique_a = (*it1)->getMasseVolumique() ;
+	double masseVolumique_a = (*it1)->getMasseVolumique();
 
-        for (it2 = particules.begin(); it2 != particules.end(); it2++) {
-            if (it1 != it2) {
+	voisins = voisinage(*(*it1));
+        for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
 
-		// Quelques variables locales pour factoriser le calcul
-		Vecteur<Dim> x_ab = (*it1)->getPosition() - (*it2)->getPosition();
-		Vecteur<Dim> v_ab = (*it1)->getVitesse() - (*it2)->getVitesse();
-		double termePressionDensite_b = (*it2)->getPression() / pow((*it2)->getMasseVolumique(), 2);
-		double masseVolumique_b = (*it2)->getMasseVolumique();
+	    // Quelques variables locales pour factoriser le calcul
+	    Vecteur<Dim> x_ab = (*it1)->getPosition() - (*it2)->getPosition();
+	    Vecteur<Dim> v_ab = (*it1)->getVitesse() - (*it2)->getVitesse();
+	    double termePressionDensite_b = (*it2)->getPression() / pow((*it2)->getMasseVolumique(), 2);
+	    double masseVolumique_b = (*it2)->getMasseVolumique();
 
-		// Expression des forces
-                fPression -= noyauMonaghan.gradient(x_ab) * (termePressionDensite_a + termePressionDensite_b);
+	    // Expression des forces
+	    fPression -= noyauMonaghan.gradient(x_ab) * (termePressionDensite_a + termePressionDensite_b);
 
-		double prodScal = (v_ab).scalaire(x_ab);
-		if (prodScal < 0) {
-		    double nu = nu_numerateur / (masseVolumique_a + masseVolumique_b);
-		    fViscosite += noyauMonaghan.gradient(x_ab) * nu * (prodScal / (0.0001 + pow(x_ab.norme(), 2)));
-		}
+	    double prodScal = (v_ab).scalaire(x_ab);
+	    if (prodScal < 0) {
+		double nu = nu_numerateur / (masseVolumique_a + masseVolumique_b);
+		fViscosite += noyauMonaghan.gradient(x_ab) * nu * (prodScal / (0.0001 + pow(x_ab.norme(), 2)));
+	    }
 
-                colorfield += noyauDefaut.laplacien(x_ab) / masseVolumique_b;
+	    colorfield += noyauDefaut.laplacien(x_ab) / masseVolumique_b;
           
-                fSurface += noyauDefaut.gradient(x_ab) / masseVolumique_b;
-            }
+	    fSurface += noyauDefaut.gradient(x_ab) / masseVolumique_b;
         }
         
         // Calcul des forces de gravité, de pression, de viscosite et de surface
@@ -289,6 +367,15 @@ void Fluide<Dim>::majPositionVitesse() {
                                * (((*it1)->getVitesse()).scalaire(normale)) * normale);
         }
     
+    }
+
+
+    /* On met la table de hachage à jour */
+    hash_voisins.clear();
+    int hash_key;
+    for (it1 = particules.begin(); it1 != particules.end(); it1++) {
+	hash_key = fonction_hashage((*it1)->getPosition());
+	hash_voisins.insert(pair<int, Particule<Dim>*>(hash_key, *it1));
     }
 
 }

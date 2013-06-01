@@ -47,7 +47,7 @@ void tests_unitaires_fluide() {
 
     cout << "2 − Creation d'un fluide 2D carré : ";
     int tab2d[2] = {3, 3};
-    Fluide<2> f2 = Fluide<2>(&mateau2d, tab2d, 1.0);
+    Fluide<2> f2 = Fluide<2>(&mateau2d, tab2d, 1.0, mateau2d.getDensiteRepos(), mateau2d.getPression());
     cout<<"OK"<<endl;
     //f2.affiche();
     
