@@ -260,14 +260,17 @@ Vecteur<Dim> NoyauLissageMonaghan<Dim>::gradient(const Vecteur<Dim> r) const {
 	res = Vecteur<Dim>();
     } else if (q <= 1) {
 	res = (-3.0 * (r / r.norme()) * pow (2 - q, 2)
-	       + 12.0 * (r / r.norme()) * pow (1 - q, 2)) / 6.0;
+	       + 12.0 * (r / r.norme()) * pow (1 - q, 2)) / (6.0 * this->h);
     } else if (q <= 2) {
-	res = (-3.0 * (r / r.norme()) * pow (2 - q, 2));
+	res = (-3.0 * (r / r.norme()) * pow (2 - q, 2)) / (6.0 * this->h);
     } else {
 	res = Vecteur<Dim>();
     }
     return res;
 }
+
+// À revoir car probablement faux... 
+// J'ai voulu m'inspirer du Kelager mais j'ai un gros doute sur la fiabilité du résultat
 
 template<unsigned int Dim>
 double NoyauLissageMonaghan<Dim>::laplacien(const Vecteur<Dim> r) const {
