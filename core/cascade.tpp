@@ -158,3 +158,11 @@ void Cascade<Dim>::animate() {
     f->majDensitePression();
     f->majPositionVitesse();
 }
+
+/*
+ * Pente : a pour équation x*sin(alpha) + (z - bassin_z)*cos(alpha) = 0
+ * -> en fonction de y, gérer le cas où on a x*sin() + (z - b_z)*cos() <= 0
+ *
+ * Les autres plans s'expriment simplement
+ */
+
