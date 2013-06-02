@@ -23,9 +23,10 @@ template<unsigned int Dim>
 class Fluide {
     
     /* ** Attributs ** */
-private:
+public:
     Materiau<Dim> * mat;                 // Materiau du fluide (avec toutes les constantes)
     vector<Particule<Dim> *> particules; // Ensemble des particules
+private:
     int nbrParticules;                   // Nombre de particules du fluide
     bool debutAnim;                      // Indique si on est au debut de l'animation
     Premier<Dim> table;                  // Table pour la dimension de la table de hachage
