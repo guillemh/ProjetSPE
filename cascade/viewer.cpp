@@ -5,14 +5,14 @@
 #include "viewer.h"
 #include "sceneCascade.h"
 
-using std::list ;
+using std::list;
 
 Viewer::Viewer () {}
 
 
 Viewer::~Viewer()
 {
-    delete s ;
+    delete s;
 }
 
 
@@ -45,7 +45,7 @@ void Viewer::init()
 void Viewer::draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glPushMatrix() ;
+    glPushMatrix();
     s->draw();
     glPopMatrix();
     if (toogleRecord) {
@@ -57,9 +57,9 @@ void Viewer::draw()
 void Viewer::animate()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glPushMatrix () ;
+    glPushMatrix ();
     s->animate();
-    glPopMatrix () ;
+    glPopMatrix ();
 }
 
 

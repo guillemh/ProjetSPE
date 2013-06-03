@@ -3,6 +3,7 @@
 
 #include <GL/glut.h>
 #include "../core/cascade.hpp"
+#include "skybox.h"
 
 /**
  * \class SceneCascade Classe contenant les objets représentés sur la scène et une cascade
@@ -14,23 +15,24 @@ class SceneCascade {
      *
      * Constructeur par défaut d'un objet de classe Scène
      */
-    SceneCascade () ;
+    SceneCascade();
 
     /**
      * \brief Destructeur
      */
-    ~SceneCascade () ;
+    ~SceneCascade();
 
     /**
      * \brief Représentation
      *
      * Représentation de la scène
      */
-    void draw() ;
+    void draw();
     
-    void animate() ;
+    void animate();
 
  private :
-    Cascade<3> *c ;
+    Cascade<3> *c;
+    Skybox *s;
 };
 #endif

@@ -28,11 +28,27 @@ public :
 	    double _obstacle_x, double _obstacle_y, double _obstacle_z, 
 	    double _pente_angle, double _pente_x, double _pente_y, double _pente_z);
 
+
     ~Cascade();
 
     void draw();
 
     void animate();
+
+    /**
+      * \return la position en x du bassin
+      */
+    const double & getBassinX() const;
+
+    /**
+      * \return la position en y du bassin
+      */
+    const double & getBassinY() const;
+
+    /**
+      * \return la position en z du bassin
+      */
+    const double & getBassinZ() const;
 };
 
 #include "cascade.tpp"
