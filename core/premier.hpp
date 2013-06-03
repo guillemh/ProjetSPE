@@ -35,7 +35,6 @@ private:
      */
     bool estPremier(const int x) const;
     
-    //friend void test_performances_premier();
 };
 
 #include "premier.tpp"
