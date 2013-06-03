@@ -87,6 +87,21 @@ public :
      * Anime physiquement les particules de l'objet de type Cascade
      */
     void animate();
+
+    /**
+      * \return la position en x du bassin
+      */
+    const double & getBassinX() const;
+
+    /**
+      * \return la position en y du bassin
+      */
+    const double & getBassinY() const;
+
+    /**
+      * \return la position en z du bassin
+      */
+    const double & getBassinZ() const;
 };
 
 #include "cascade.tpp"

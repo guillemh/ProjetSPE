@@ -3,8 +3,8 @@
 template<unsigned int Dim>
 Cascade<Dim>::Cascade(Fluide<Dim> *_f) {
     f = _f ;
-    bassin_x = 2.0;
-    bassin_y = 2.0;
+    bassin_x = 3.0;
+    bassin_y = 3.0;
     bassin_z = 1.0;
     obstacle_x = 0.1 * bassin_x ;
     obstacle_y = 0.15 * bassin_y ;
@@ -244,6 +244,26 @@ void Cascade<Dim>::animate() {
     f->majDensitePression();
     f->majPositionVitesse();
 }
+
+template<unsigned int Dim>
+const double & Cascade<Dim>::getBassinX() const
+{
+    return bassin_x;
+}
+
+template<unsigned int Dim>
+const double & Cascade<Dim>::getBassinY() const
+{
+    return bassin_y;
+}
+
+template<unsigned int Dim>
+const double & Cascade<Dim>::getBassinZ() const
+{
+    return bassin_z;
+}
+
+
 
 /*
  * Pente : a pour équation x*sin(alpha) + (z - bassin_z)*cos(alpha) = 0

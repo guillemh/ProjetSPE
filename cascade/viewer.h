@@ -29,7 +29,7 @@ class Viewer : public QGLViewer
      * 
      * Constructeur par défaut d'un objet de classe Viewer
      */
-    Viewer () ;
+    Viewer ();
 
     /**
      * \brief Destructeur
@@ -65,7 +65,6 @@ class Viewer : public QGLViewer
      */
     virtual void keyPressEvent(QKeyEvent *e);
 
-    // Scene *s ;
     SceneCascade *s;
 };
 
