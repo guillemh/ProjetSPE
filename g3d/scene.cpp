@@ -1,5 +1,7 @@
 #include <iostream>
 #include <GL/glut.h>
+#include <cstdlib>
+#include <ctime>
 
 #include "scene.h"
 #include "../core/fluide.hpp"
@@ -12,10 +14,10 @@ using namespace std;
 Scene::Scene() {
     m = new Materiau<3>(EAU);
 
-//    int d [3] = {5, 5, 5};
-//    f = new Fluide<3>(m, d, 0.03, m->getDensiteRepos(), m->getPression());
+    int d [3] = {1, 1, 200};
+    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression());
     
-    
+    srand (time (NULL));    
 //    Vecteur<3> vec0 = Vecteur<3>();
 //    
 //    Vecteur<3> vec1 = Vecteur<3>(0, 0, 0.1);
@@ -53,14 +55,14 @@ Scene::Scene() {
 //    f->ajouteParticule(p10);
 
 
-    Vecteur<3> vInit = Vecteur<3> (0, 0.1, 0);
-    Vecteur<3> pos1 = Vecteur<3> (0, -0.02, 0);
-    Vecteur<3> pos2 = Vecteur<3> (0, 0.02, 0);
-    Particule<3> *p1 = new Particule<3> (pos1, Vecteur<3>(), m->getDensiteRepos(), m->getPression());
-    Particule<3> *p2 = new Particule<3> (pos2, Vecteur<3>(), m->getDensiteRepos(), m->getPression());
-    f = new Fluide<3> (m);
-    f->ajouteParticule(p1);
-    f->ajouteParticule(p2);
+//    Vecteur<3> vInit = Vecteur<3> (0, 0.1, 0);
+//    Vecteur<3> pos1 = Vecteur<3> (0, -0.02, 0);
+//    Vecteur<3> pos2 = Vecteur<3> (0, 0.02, 0);
+//    Particule<3> *p1 = new Particule<3> (pos1, Vecteur<3>(), m->getDensiteRepos(), m->getPression());
+//    Particule<3> *p2 = new Particule<3> (pos2, Vecteur<3>(), m->getDensiteRepos(), m->getPression());
+//    f = new Fluide<3> (m);
+//    f->ajouteParticule(p1);
+//    f->ajouteParticule(p2);
 }
 
 Scene::~Scene() {

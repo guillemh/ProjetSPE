@@ -84,21 +84,21 @@ void test_noyauLissage() {
     cout << "- Lissage par defaut pour noyau de Monaghan : ";
     NoyauLissageMonaghan<3> w4 = NoyauLissageMonaghan<3>(5);
     double res10 = w4.defaut(r);
-    if ((res10 <= 0.4669) && (res10 >= 0.4668))
+    if ((res10 <= 0.0018) && (res10 >= 0.0017))
         cout<<"OK"<<endl;
     else
         cout<<"ERREUR !"<<endl;
 
     cout << "- Lissage gradient pour noyau de Monaghan : ";
     Vecteur<3> res11 = w4.gradient(r);
-    if ((res11(1) <= -0.0732) && (res11(1) >= -0.0733))
+    if ((res11(1) <= -0.00027) && (res11(1) >= -0.00028))
         cout<<"OK"<<endl;
     else
         cout<<"ERREUR !"<<endl;
 
     cout << "- Lissage laplacien pour noyau de Monaghan : ";
     double res12 = w4.laplacien(r);
-    if ((res12 <= -0.1152) && (res12 >= -0.1153))
+    if ((res12 <= -0.00044) && (res12 >= -0.00045))
         cout<<"OK"<<endl;
     else
         cout<<"ERREUR !"<<endl;
