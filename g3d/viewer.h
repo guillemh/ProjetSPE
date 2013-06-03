@@ -12,8 +12,7 @@
 
 #include <QGLViewer/qglviewer.h>
 #include <list>
-// #include "scene.h"
-#include "sceneCascade.h"
+#include "scene.h"
 
 using namespace std;
 
@@ -65,8 +64,7 @@ class Viewer : public QGLViewer
      */
     virtual void keyPressEvent(QKeyEvent *e);
 
-    // Scene *s ;
-    SceneCascade *s;
+    Scene *s ;
 };
 
 #endif

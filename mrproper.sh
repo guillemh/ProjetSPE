@@ -37,3 +37,11 @@ make clean
 rm -f Makefile
 rm -f *~
 cd ..
+
+cd cascade
+make clean
+rm -f Makefile Makefile.Release Makefile.Debug
+rm -f -r debug
+rm -f -r release
+rm -f *~
+cd ..
