@@ -23,5 +23,7 @@ doc
 g3d/test_dessin_fluide
 cascade/test_cascade
 
+*.xml
+
 Memoire.pdf
 WCSPH*
