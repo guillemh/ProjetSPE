@@ -36,7 +36,7 @@ Le présent document constitue le document de cadrage du projet de spécialité 
 
 \section{Présentation du projet}
 
-Ce projet de spécialité, de part sa thématique, est davantage orienté vers la recherche que vers le génie logiciel. Il consiste en l'implémentation d'un modèle SPH {\em (Smoothed-Particle Hydrodynamics)} pour l'animation de fluides en temps réel. Ce modèle consiste à représenter un liquide ou un gaz sous la forme d'un ensemble de particules autonomes mais physiquement soumises à des forces et interagissant avec les particules qui lui sont voisines. La finalité de ce projet est d'obtenir une scène 3D animée comportant un fluide en écoulement la plus réaliste possible. La contrainte temps-réel impose un temps de calcul minimal pour un résultat quasi-instantané et favorisant l'interaction avec un tiers. Un exemple d'application possible de ce modèle est l'animation d'une cascade dans un jeu vidéo. \\
+Ce projet de spécialité, de part sa thématique, est davantage orienté vers la recherche que vers le génie logiciel. Il consiste en l'implémentation d'un modèle physique appelé SPH {\em (Smoothed-Particle Hydrodynamics)} pour l'animation de fluides en temps réel. Ce modèle consiste à représenter un liquide ou un gaz sous la forme d'un ensemble de particules autonomes mais physiquement soumises à des forces et interagissant avec les particules qui lui sont voisines. La finalité de ce projet est d'obtenir une scène 3D animée comportant un fluide en écoulement la plus réaliste possible. La contrainte temps-réel impose un temps de calcul minimal pour un résultat quasi-instantané et favorisant l'interaction avec un tiers. Un exemple d'application possible de ce modèle est l'animation d'une cascade dans un jeu vidéo. \\
 
 Techniquement, cet objectif s'articule autour de trois points : \\
 
@@ -48,7 +48,7 @@ Techniquement, cet objectif s'articule autour de trois points : \\
 
 Nous suivrons durant ce projet une démarche incrémentale dans notre amélioration du rendu et de la simulation. \\
 
-Concernant le rendu de ce projet, le temps nous est insuffisant pour essayer plusieurs modèles physiques et implémenter toutes les optimisations possibles pour ce type de problème. Aussi, notre objectif est, d'ici la date de fin du projet, d'obtenir un exécutable fonctionnel fournissant des résultats acceptables. Ces résultats incluent l'aspect visuel, l'aspect physique, mais aussi la recherche des meilleures performances. De plus, notre projet étant susceptible, par la suite, d'être réutilisé par nos encadrants et des chercheurs pour des travaux ultérieurs, des contraintes de clarté s'imposent, et ce, autant au sein du code que de la documentation du projet. 
+Concernant le rendu de ce projet, le temps nous est insuffisant pour essayer plusieurs modèles physiques et implémenter toutes les optimisations possibles pour ce type de problème. Aussi, notre objectif est, d'ici la date de fin du projet, d'obtenir un exécutable fonctionnel fournissant des résultats acceptables. Ces résultats incluent l'aspect visuel, l'aspect physique, mais aussi la recherche de meilleures performances -notamment en terme de nombres de particules. De plus, notre projet étant susceptible, par la suite, d'être réutilisé par nos encadrants et des chercheurs pour des travaux ultérieurs, des contraintes de clarté s'imposent, et ce, autant au sein du code que de la documentation du projet. 
 
 \section{Organisation et communication}
 
@@ -62,7 +62,7 @@ Par ailleurs, une autre équipe travaillant sur un projet similaire, une partie 
 
 \section{Planning}
 
-Pour mener à bien ce projet nous décidons de mettre en place une approche incrémentale vis-à-vis des objectifs définis précédemment. Dans un premier temps, une étude approfondie de la littérature à été nécessaire pour assurer une compréhension poussée du modèle à implémenter. Au fur et à mesure du déroulement du projet, d'autres lectures seront nécessaires pour améliorer le modèle de base.\\
+Pour mener à bien ce projet nous décidons de mettre en place une approche incrémentale vis-à-vis des objectifs définis précédemment. Dans un premier temps, une étude approfondie de la littérature a été nécessaire pour assurer une compréhension poussée du modèle à implémenter. Au fur et à mesure du déroulement du projet, d'autres lectures seront à envisager pour améliorer le modèle de base.\\
 
 L'étude de la littérature a permis de mettre en exergue des étapes successives d'implémentation. Tout d'abord, un modèle physique ``basique'' pour permettre le mouvement d'un fluide modélisé à partir de particules. Cela comprend les forces qui agissent sur ces particules ainsi que la gestion des collisions. Une fois ce bloc de base fonctionnel, il s'agit de s'intéresser au rendu visuel du liquide. Ceci définit la deuxième grande partie du projet, notre équipe devra sans doute se diviser à partir de ce moment. Chaque sous-groupe pourra passer à l'amélioration de sa partie, notamment au niveau des performances du logiciel. Ces améliorations se baseront sur des publications, proposant de nouvelles méthodes d'implémentation.\\
 
@@ -86,7 +86,7 @@ Les documents de référence associés au sujet nous ont été fournis dès le d
 
 Un squelette de code nous a été proposé initialement par les encadrants pour permettre une structuration du projet et un suivi plus aisé.\\ 
 
-Une des contraintes majeure liée au projet est celle de l'indisponibilité partielle de chacun des membres durant les deux premières semaines due aux soutenances et à la session d'examens. Un avancement régulier ne peut être maintenu durant cette période et peut entrainer un retard dans le projet. Les membres ayant la possibilité de contribuer au projet durant cette période doivent alors en informer régulièrement les autres via des bilans détaillés pour permettre le suivi global du projet par l'équipe.\\
+Une des contraintes majeures liées au projet est celle de l'indisponibilité partielle de chacun des membres durant les deux premières semaines due aux soutenances et à la session d'examens. Un avancement régulier ne peut être maintenu durant cette période et peut entrainer un retard dans le projet. Les membres ayant la possibilité de contribuer au projet durant cette période doivent alors en informer régulièrement les autres via des bilans détaillés pour permettre le suivi global du projet par l'équipe.\\
 
 \section{Gestion des risques}
 
@@ -97,10 +97,10 @@ se voulant la plus exhaustive possible des risques potentiels associés à ce pr
 
  Nous proposons une classification des risques associés au projet suivant les catégories suivantes:
 \begin{itemize}
-\item risques organisationnels (Orga.) liés au respect du planning, à la répartition des tâches,...
-\item risques techniques (Tech.) liés à la qualité du projet
-\item risques sociaux (Soc.) liés aux aspects humains du projet
-\item risques environnementaux (Env.) liés aux risques externes\\
+\item risques organisationnels (Orga.) liés au respect du planning, à la répartition des tâches,...\,;
+\item risques techniques (Tech.) liés à la qualité du projet\,;
+\item risques sociaux (Soc.) liés aux aspects humains du projet\,;
+\item risques environnementaux (Env.) liés aux risques externes.\\
 
 \end{itemize}
 
@@ -115,7 +115,7 @@ Bloquage technique au sein du projet & \ding{55}  &  \ding{55}  &  &  \\
    Conflits internes à l'équipe & \ding{55}  & \ding{55}  & \ding{55}  & \\
    Démotivation & \ding{55}  &\ding{55}   & \ding{55}  & \\
 Absence d'un membre & \ding{55}  & \ding{55}  & \ding{55}  & \\
-   Matériel non disponible (serveur HS, pas de machine dispo,...) &  \ding{55}  &  \ding{55}  & &  \ding{55} \\   
+   Matériel non disponible (Pas de machine disponible,...) &  \ding{55}  &  \ding{55}  & &  \ding{55} \\   
    Perte de satisfaction du client (réunion de suivi mal préparée,...) & & & & \ding{55} \\
    
 \hline
@@ -141,13 +141,13 @@ commenter explicitement chaque contribution effectuée au sein du repertoire par
 \hline
 Bloquage technique au sein du projet & Promouvoir la communication entre les membres pour déterminer la cause du problème et les pistes de résolution. Prévoir une prise de contact rapide avec les encadrants en cas de difficulté majeure pour limiter les risques liés aux délais.\\
 \hline
-   Conflits internes à l'équipe & Se référer à la Charte de travail. Organiser une discussion entre l'ensemble des membres pour trouver une solution acceptable le cas échéant.\\
+   Conflits internes à l'équipe & Organiser une discussion entre l'ensemble des membres pour trouver une solution acceptable le cas échéant.\\
 \hline
    Démotivation & Discussion avec le reste de l'équipe pour identifier les difficultés. Organiser de préférence des binômes pour permettre un avancement plus efficace sur les tâches difficiles.\\
 \hline
-   Absence d'un membre & Discussion entre le chef de projet et le membre concerné. Rattrapage du travail sur le temps libre pour ne pas impacter de façon trop importante le projet.\\
+   Absence d'un membre & Rattrapage du travail sur le temps libre pour ne pas impacter de façon trop importante le projet.\\
 \hline
-   Matériel non disponible & Trouver des alternatives (utilisation de clés USB en cas de serveur HS, travail sur machines personnelles,...).\\   
+   Matériel non disponible & Trouver des alternatives (travail sur machines personnelles,...).\\   
 \hline
    Perte de satisfaction du client & Discussion avec le client sur les points améliorables et les difficultés rencontrées.\\ 
 
