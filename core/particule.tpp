@@ -7,19 +7,18 @@
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
-Particule<Dim>::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p)
+Particule<Dim>::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double m, double rho, double p)
     : position(pos),
       vitesse(vit),
+      masse(m),
       masse_volumique(rho),
       pression(p)
 {
 }
 
-
 template<unsigned int Dim>
 Particule<Dim>::~Particule() {
 }
-
 
 /* ** Methodes ** */
 
@@ -40,6 +39,11 @@ const Vecteur<Dim> & Particule<Dim>::getAcceleration() const {
     return acceleration;
 }
 
+
+template<unsigned int Dim>
+double Particule<Dim>::getMasse() const {
+    return masse;
+}
 
 template<unsigned int Dim>
 double Particule<Dim>::getMasseVolumique() const {
@@ -89,7 +93,7 @@ void Particule<Dim>::majPression (double son, double dens) {
      */
     double gamma = 7.0;
     double B = dens * pow(son, 2.0) / gamma;
-    pression = B * (pow (masse_volumique / dens, gamma) - 1);
+    pression = B * (pow(masse_volumique / dens, gamma) - 1);
 }
 
 template<unsigned int Dim>
@@ -125,7 +129,7 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
 template<unsigned int Dim>
 std::ostream& operator<<(std::ostream& os, const Particule<Dim>& p) {
     os << "pos (" << p.getPosition() << "), vit (" << p.getVitesse() << ")" << std::endl
-       << "m_v (" << p.getMasseVolumique() << "), pre (" << p.getPression() << ")";
+       << "m (" << p.getMasse() << "), m_v (" << p.getMasseVolumique() << "), pre (" << p.getPression() << ")";
     return os;
 }
 

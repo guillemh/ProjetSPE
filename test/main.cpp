@@ -6,6 +6,7 @@
 #include "test_map.cpp"
 #include "test_premier.cpp"
 #include "test_performances_premier.cpp"
+#include "test_voisins.cpp"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -41,7 +42,11 @@ int main()
 
     cout << endl << endl;
     cout << "***** Test Map : *****" << endl;
-    test_map();    
+    test_map();
+
+    cout << endl << endl;
+    cout << "***** Test voisins : *****" << endl;
+    test_voisins();
 
     return 0;
 }

@@ -54,7 +54,7 @@ Materiau<Dim>::Materiau(TypeFluide type) {
         exit(EXIT_FAILURE);
         break;
     }
-    pas_temps = 0.01;
+    pas_temps = 0.001;
     temperature = 293.15;
     pression_atm = 101325;
 

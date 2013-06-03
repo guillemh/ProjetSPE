@@ -25,18 +25,31 @@ class Fluide {
     /* ** Attributs ** */
 public:
     Materiau<Dim> * mat;                 // Materiau du fluide (avec toutes les constantes)
-    vector<Particule<Dim> *> particules; // Ensemble des particules
+    vector<Particule<Dim> *> particules; // Ensemble des particules mobiles
+    vector<Particule<Dim> *> lignedEau;  // Ensemble des particules immobiles sur le plan z = z_min
+    double x_min;                        // Définit le plan d'équation x = x_min
+    double x_max;                        // Définit le plan d'équation x = x_max
+    double y_min;                        // Définit le plan d'équation y = x_min
+    double y_max;                        // Définit le plan d'équation y = x_max
+    double z_min;                        // Définit le plan d'équation z = z_min
+
 private:
     int nbrParticules;                   // Nombre de particules du fluide
     bool debutAnim;                      // Indique si on est au debut de l'animation
-    Premier<Dim> table;                  // Table pour la dimension de la table de hachage
-    multimap<int, Particule<Dim>*> hash_voisins;
 
+    Premier<Dim> table;
+    /* Table de hashage pour les voisins */
+    multimap<int, Particule<Dim>*> hash_voisins;
+    /* Longueur de la table de hashage */
+    int lgrHash;
     /* Fonction de hashage */
     int fonction_hashage(Vecteur<Dim>);
 
     /* Fonction d'accès au voisinage d'une particule */
     list<Particule<Dim>*> voisinage(Particule<Dim>&);
+
+    /* DEBUG : affichage de la table de hashage */
+    void afficher_hash();
 
     /* ** Constructeurs ** */
 public:
@@ -69,7 +82,12 @@ public:
       * \param part La particule à ajouter
       */
     void ajouteParticule(Particule<Dim> * part);
-    
+
+    /**
+     * Détecte une collision avec les parois de la boîte
+     */
+    Vecteur<Dim> collision(const Vecteur<Dim> & v);
+
     /**
       * Met à jour la densité et la pression de toutes les particules
       */
@@ -100,6 +118,7 @@ public:
      * Fonction de tests basiques sur le calcul du voisinage
      */
     friend void test_voisins();
+
 };
 
 

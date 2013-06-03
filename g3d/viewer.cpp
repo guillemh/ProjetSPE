@@ -4,6 +4,7 @@
 
 #include "viewer.h"
 
+#include "scene.h"
 using std::list ;
 
 Viewer::Viewer () {
@@ -35,11 +36,10 @@ void Viewer::init()
     glEnable(GL_COLOR);
     glEnable(GL_COLOR_MATERIAL);
 	
-    setSceneRadius(20.0f);
+    setSceneRadius(8.0f);
 	
     //=== INIT SCENE
     s = new Scene () ;
-
 }
 
 
