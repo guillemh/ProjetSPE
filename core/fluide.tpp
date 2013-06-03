@@ -33,7 +33,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
      * Création d'une table des nombres premiers 
      * pour calculer la dimension de la table de hashage 
      */
-    Premier<Dim> table = Premier<Dim>();
+    //    Premier<Dim> table = Premier<Dim>();
 
     if (Dim == 2) {
     
@@ -117,6 +117,7 @@ template<unsigned int Dim>
 void Fluide<Dim>::ajouteParticule(Particule<Dim> * part) {
     ++nbrParticules;
     particules.push_back(part);
+    lgrHash = table.getPremier(2*nbrParticules);
     hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(part->getPosition()), part));
 }
 
@@ -138,15 +139,12 @@ inline list<Particule<2>*> Fluide<2>::voisinage(Particule<2>& p) {
     /* On boucle sur tous les noeuds de la bounding box */
     for (int i = bbmin[0]; i <= bbmax[0]; ++i) {
 	for (int j = bbmin[1]; j <= bbmax[1]; ++j) {
-	    /* ... sauf la particule elle-même */
-	    if (!(i == p.getPosition()(1) && j == p.getPosition()(2))) {
-		hash_key = fonction_hashage(Vecteur<2>(i, j));
-		part_pit = hash_voisins.equal_range(hash_key);
+	    hash_key = fonction_hashage(Vecteur<2>(i, j));
+	    part_pit = hash_voisins.equal_range(hash_key);
 
-		/* On rajoute les particules trouvées dans la liste */
-		for (part_it = part_pit.first; part_it != part_pit.second; ++part_it) {
-		    res.push_back(part_it->second);
-		}
+	    /* On rajoute les particules trouvées dans la liste */
+	    for (part_it = part_pit.first; part_it != part_pit.second; ++part_it) {
+		res.push_back(part_it->second);
 	    }
 	}
     }
@@ -154,7 +152,8 @@ inline list<Particule<2>*> Fluide<2>::voisinage(Particule<2>& p) {
     /* Dans ces voisins, on ne garde que ceux qui sont dans la sphère */
     list<Particule<2>*>::iterator liste_it;
     for (liste_it = res.begin(); liste_it != res.end(); ) {
-	if ((p.getPosition() - (*liste_it)->getPosition()).norme() > rnoyau) {
+	if ((p.getPosition() == (*liste_it)->getPosition())
+	    || (p.getPosition() - (*liste_it)->getPosition()).norme() > rnoyau) {
 	    liste_it = res.erase(liste_it);
 	} else {
 	    ++liste_it;
@@ -175,23 +174,21 @@ inline list<Particule<3>*> Fluide<3>::voisinage(Particule<3>& p) {
 		    int(floor((p.getPosition()(2)+rnoyau)/rnoyau)),
 		    int(floor((p.getPosition()(3)-rnoyau)/rnoyau))};
     /* Paire d'itérateurs (début et fin) sur les particules de clé hash_key */
-    pair<multimap<int, Particule<3>*>::iterator,  multimap<int, Particule<3>*>::iterator> part_pit;
+    pair<multimap<int, Particule<3>*>::iterator, multimap<int, Particule<3>*>::iterator> part_pit;
     multimap<int, Particule<3>*>::iterator part_it;
     int hash_key;
 
-    /* On boucle sur tous les noeuds de la bounding box... */
+    /* On boucle sur tous les noeuds de la bounding box */
     for (int i = bbmin[0]; i <= bbmax[0]; ++i) {
 	for (int j = bbmin[1]; j <= bbmax[1]; ++j) {
 	    for (int k = bbmin[2]; k <= bbmax[2]; ++k) {
-		/* ... sauf la particule elle-même */
-		if (!(i == p.getPosition()(1) && j == p.getPosition()(2) && k == p.getPosition()(3))) {
-		    hash_key = fonction_hashage(Vecteur<3>(i, j, k));
-		    part_pit = hash_voisins.equal_range(hash_key);
+		hash_key = fonction_hashage(Vecteur<3>(i, j, k));
+		part_pit = hash_voisins.equal_range(hash_key);
 
-		    /* On rajoute les particules trouvées dans la liste */
-		    for (part_it = part_pit.first; part_it != part_pit.second; ++part_it) {
-			res.push_back(part_it->second);
-		    }
+		/* On rajoute les particules trouvées dans la liste */
+		for (part_it = part_pit.first; part_it != part_pit.second; ++part_it) {
+		    cout << "ajoute qqn" << endl;
+		    res.push_back(part_it->second);
 		}
 	    }
 	}
@@ -200,7 +197,13 @@ inline list<Particule<3>*> Fluide<3>::voisinage(Particule<3>& p) {
     /* Dans ces voisins, on ne garde que ceux qui sont dans la sphère */
     list<Particule<3>*>::iterator liste_it;
     for (liste_it = res.begin(); liste_it != res.end(); ) {
-	if ((p.getPosition() - (*liste_it)->getPosition()).norme() > rnoyau) {
+	if ((p.getPosition() == (*liste_it)->getPosition())
+	    || (p.getPosition() - (*liste_it)->getPosition()).norme() > rnoyau) {
+	    if (p.getPosition() == (*liste_it)->getPosition()) {
+		cout << " enleve moi-mm" << endl;
+	    } else {
+		cout << " enleve qqn" << endl;
+	    }
 	    liste_it = res.erase(liste_it);
 	} else {
 	    ++liste_it;

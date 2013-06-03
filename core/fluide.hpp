@@ -30,6 +30,7 @@ private:
     int nbrParticules;                   // Nombre de particules du fluide
     bool debutAnim;                      // Indique si on est au debut de l'animation
 
+    Premier<Dim> table;
     /* Table de hashage pour les voisins */
     multimap<int, Particule<Dim>*> hash_voisins;
     /* Longueur de la table de hashage */
