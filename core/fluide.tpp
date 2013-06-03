@@ -12,8 +12,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
     : mat(m),
       nbrParticules(0),
       debutAnim(true),
-      table(),
-      hash_voisins()
+      hash_voisins(),
+      lgrHash(0)
 {
     // Initialisation du vector vide
     particules = vector<Particule<Dim> *> ();
@@ -24,17 +24,23 @@ template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p)
     : mat(m),
       debutAnim(true),
-      table(),
       hash_voisins()
 {
     // Initialisation du vector vide
     particules = vector<Particule<Dim> *>();
     
+    /* 
+     * Création d'une table des nombres premiers 
+     * pour calculer la dimension de la table de hashage 
+     */
+    Premier<Dim> table = Premier<Dim>();
+
     if (Dim == 2) {
     
 	nbrParticules = nb[0]*nb[1];
+	lgrHash = table.getPremier(2*nbrParticules);
         // Ici, on est en dimension 2
-        // On va ajouter des particules regulierement disposees sur les deux dimensions
+        // On va ajouter des particules régulierement disposees sur les deux dimensions
         for (int i = 0; i < nb[0]; i++) {
             for (int j = 0; j < nb[1]; j++) {
                 Vecteur<Dim> vec = Vecteur<Dim>(i*ecart, j*ecart);
@@ -47,6 +53,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
     } else if (Dim == 3) {
     
 	nbrParticules = nb[0]*nb[1]*nb[2];
+	lgrHash = table.getPremier(2*nbrParticules);
         // Ici, on est en dimension 3
         // On va ajouter des particules regulierement disposees sur les trois dimensions
         for (int i = 0; i < nb[0]; i++) {
@@ -85,10 +92,9 @@ inline int Fluide<2>::fonction_hashage(Vecteur<2> pos) {
 			   int(floor(pos(2)/mat->getRayonNoyau()))};
     int p1 = 73856093;
     int p2 = 19349663;
-    int modulo = table.getPremier(2*nbrParticules);
     return (noeud_grille[0]*p1 
 	    ^ noeud_grille[1]*p2) 
-	% modulo;
+	% lgrHash;
 }
 
 template<>
@@ -99,11 +105,10 @@ inline int Fluide<3>::fonction_hashage(Vecteur<3> pos) {
     int p1 = 73856093;
     int p2 = 19349663;
     int p3 = 83492791;
-    int modulo = table.getPremier(2*nbrParticules);
     return (noeud_grille[0]*p1 
 	    ^ noeud_grille[1]*p2
 	    ^ noeud_grille[2]*p3) 
-	% modulo;
+	% lgrHash;
 }
 
 /* ** Méthodes ** */
@@ -133,12 +138,15 @@ inline list<Particule<2>*> Fluide<2>::voisinage(Particule<2>& p) {
     /* On boucle sur tous les noeuds de la bounding box */
     for (int i = bbmin[0]; i <= bbmax[0]; ++i) {
 	for (int j = bbmin[1]; j <= bbmax[1]; ++j) {
-	    hash_key = fonction_hashage(Vecteur<2>(i, j));
-	    part_pit = hash_voisins.equal_range(hash_key);
+	    /* ... sauf la particule elle-même */
+	    if (!(i == p.getPosition()(1) && j == p.getPosition()(2))) {
+		hash_key = fonction_hashage(Vecteur<2>(i, j));
+		part_pit = hash_voisins.equal_range(hash_key);
 
-	    /* On rajoute les particules trouvées dans la liste */
-	    for (part_it = part_pit.first; part_it != part_pit.second; ++part_it) {
-		res.push_back(part_it->second);
+		/* On rajoute les particules trouvées dans la liste */
+		for (part_it = part_pit.first; part_it != part_pit.second; ++part_it) {
+		    res.push_back(part_it->second);
+		}
 	    }
 	}
     }
@@ -171,16 +179,19 @@ inline list<Particule<3>*> Fluide<3>::voisinage(Particule<3>& p) {
     multimap<int, Particule<3>*>::iterator part_it;
     int hash_key;
 
-    /* On boucle sur tous les noeuds de la bounding box */
+    /* On boucle sur tous les noeuds de la bounding box... */
     for (int i = bbmin[0]; i <= bbmax[0]; ++i) {
 	for (int j = bbmin[1]; j <= bbmax[1]; ++j) {
 	    for (int k = bbmin[2]; k <= bbmax[2]; ++k) {
-		hash_key = fonction_hashage(Vecteur<3>(i, j, k));
-		part_pit = hash_voisins.equal_range(hash_key);
+		/* ... sauf la particule elle-même */
+		if (!(i == p.getPosition()(1) && j == p.getPosition()(2) && k == p.getPosition()(3))) {
+		    hash_key = fonction_hashage(Vecteur<3>(i, j, k));
+		    part_pit = hash_voisins.equal_range(hash_key);
 
-		/* On rajoute les particules trouvées dans la liste */
-		for (part_it = part_pit.first; part_it != part_pit.second; ++part_it) {
-		    res.push_back(part_it->second);
+		    /* On rajoute les particules trouvées dans la liste */
+		    for (part_it = part_pit.first; part_it != part_pit.second; ++part_it) {
+			res.push_back(part_it->second);
+		    }
 		}
 	    }
 	}

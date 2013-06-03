@@ -29,9 +29,11 @@ public:
 private:
     int nbrParticules;                   // Nombre de particules du fluide
     bool debutAnim;                      // Indique si on est au debut de l'animation
-    Premier<Dim> table;                  // Table pour la dimension de la table de hachage
-    multimap<int, Particule<Dim>*> hash_voisins;
 
+    /* Table de hashage pour les voisins */
+    multimap<int, Particule<Dim>*> hash_voisins;
+    /* Longueur de la table de hashage */
+    int lgrHash;
     /* Fonction de hashage */
     int fonction_hashage(Vecteur<Dim>);
 
@@ -91,6 +93,7 @@ public:
     void affiche();
 
     friend void test_map();
+
 };
 
 
