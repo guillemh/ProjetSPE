@@ -19,6 +19,7 @@ private:
     Vecteur<Dim> position;       // Position de la particule (m)
     Vecteur<Dim> vitesse;        // Vitesse de la particule (m.s^-1)
     Vecteur<Dim> acceleration;   // Acceleration de la particule (m.s^-2)
+    double masse;                // Masse de la particule (m)
     double masse_volumique;      // Masse volumique de la particule (kg.m^-3)
     double pression;             // Pression de la particule (Pa)
 
@@ -28,10 +29,11 @@ public:
       * Constructeur
       * \param pos position initiale
       * \param vit vitesse initiale
+      * \param m masse de la particule
       * \param rho masse volumique initiale
       * \param p pression initiale
       */
-    Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0);
+    Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double m, double rho = 0, double p = 0);
     
     /**
       * Destructeur
@@ -55,7 +57,12 @@ public:
       * \return l'accélération de la particule
       */
     const Vecteur<Dim> & getAcceleration() const;
-    
+
+    /**
+      * \return la masse de la particule
+      */
+    double getMasse() const;
+   
     /**
       * \return la masse volumique de la particule
       */

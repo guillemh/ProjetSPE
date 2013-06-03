@@ -21,9 +21,14 @@ class Fluide {
     /* ** Attributs ** */
 private:
     Materiau<Dim> * mat;                 // Materiau du fluide (avec toutes les constantes)
-    vector<Particule<Dim> *> particules; // Ensemble des particules
+    vector<Particule<Dim> *> particules; // Ensemble des particules mobiles
+    vector<Particule<Dim> *> lignedEau;  // Ensemble des particules immobiles sur le plan z = z_min
     bool debutAnim;                      // Indique si on est au debut de l'animation
-
+    double x_min;                        // Définit le plan d'équation x = x_min
+    double x_max;                        // Définit le plan d'équation x = x_max
+    double y_min;                        // Définit le plan d'équation y = x_min
+    double y_max;                        // Définit le plan d'équation y = x_max
+    double z_min;                        // Définit le plan d'équation z = z_min
 
     /* ** Constructeurs ** */
 public:
@@ -56,7 +61,12 @@ public:
       * \param part la particule à ajouter
       */
     void ajouteParticule(Particule<Dim> * part);
-    
+
+    /**
+     * Détecte une collision avec les parois de la boîte
+     */
+    Vecteur<Dim> collision(const Vecteur<Dim> & v);
+
     /**
       * Met à jour la densité et la pression de toutes les particules
       */
