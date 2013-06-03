@@ -4,6 +4,7 @@
 
 #include "viewer.h"
 #include "scene.h"
+// #include "sceneCascade.h"
 
 using std::list ;
 
@@ -40,6 +41,7 @@ void Viewer::init()
 	
     //=== INIT SCENE
     s = new Scene () ;
+    // s = new SceneCascade();
 }
 
 

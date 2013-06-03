@@ -11,8 +11,9 @@ using namespace std;
 /* Constructeur à modifier, évidemment */
 Scene::Scene() {
     m = new Materiau<3>(EAU);
+
     // int d [3] = {5, 5, 5};
-    // f = new Fluide<3>(m, d, 0.2);
+    // f = new Fluide<3>(m, d, 0.1, m->getDensiteRepos(), m->getPression());
     
     // Vecteur<3> vec0 = Vecteur<3>();
    
@@ -50,7 +51,8 @@ Scene::Scene() {
     // f->ajouteParticule(p9);
     // f->ajouteParticule(p10);
 
-    f = new Fluide<3>(m);
+    int d [3] = {0, 0, 0};
+    f = new Fluide<3>(m, d, 0.1, m->getDensiteRepos(), m->getPression());
     Vecteur<3> pos1 = Vecteur<3>(0, 0.01, 0);
     Vecteur<3> pos2 = Vecteur<3>(0, 0.1, 0);
     Vecteur<3> vInit = Vecteur<3>(0, 0.1, 0);
@@ -66,7 +68,7 @@ Scene::~Scene() {
 void Scene::draw() {
     glPushMatrix();
     f->draw();
-    f->affiche();
+    // f->affiche();
     glPopMatrix();
 }
 

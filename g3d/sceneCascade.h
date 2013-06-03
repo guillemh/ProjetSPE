@@ -1,26 +1,25 @@
-#ifndef _SCENE_
-#define _SCENE_
+#ifndef _SCENE_CASCADE_
+#define _SCENE_CASCADE_
 
 #include <GL/glut.h>
-#include "../core/fluide.hpp"
-#include "../core/materiau.hpp"
+#include "../core/cascade.hpp"
 
 /**
- * \class Scene Classe contenant les objets représentés sur la scène
+ * \class SceneCascade Classe contenant les objets représentés sur la scène et une cascade
  */
-class Scene {
+class SceneCascade {
  public :
     /**
      * \brief Constructeur
      *
      * Constructeur par défaut d'un objet de classe Scène
      */
-    Scene () ;
+    SceneCascade () ;
 
     /**
      * \brief Destructeur
      */
-    ~Scene () ;
+    ~SceneCascade () ;
 
     /**
      * \brief Représentation
@@ -32,7 +31,6 @@ class Scene {
     void animate() ;
 
  private :
-    Fluide<3> *f ; /*!< Pointeur sur un fluide */
-    Materiau<3> *m ; /*!< Pointeur sur un matériau */
+    Cascade<3> *c ;
 };
 #endif

@@ -4,10 +4,14 @@
 #include <vector>
 using std::vector;
 #include <iostream>
+#include <map>
+#include <list>
 #include "materiau.hpp"
 #include "particule.hpp"
 #include "vecteur.hpp"
-
+#include "premier.hpp"
+using std::multimap;
+using std::list;
 
 /** 
  * \class Fluide
@@ -17,18 +21,29 @@ using std::vector;
  */
 template<unsigned int Dim>
 class Fluide {
-
+    
     /* ** Attributs ** */
-private:
+public:
     Materiau<Dim> * mat;                 // Materiau du fluide (avec toutes les constantes)
     vector<Particule<Dim> *> particules; // Ensemble des particules mobiles
     vector<Particule<Dim> *> lignedEau;  // Ensemble des particules immobiles sur le plan z = z_min
-    bool debutAnim;                      // Indique si on est au debut de l'animation
     double x_min;                        // Définit le plan d'équation x = x_min
     double x_max;                        // Définit le plan d'équation x = x_max
     double y_min;                        // Définit le plan d'équation y = x_min
     double y_max;                        // Définit le plan d'équation y = x_max
     double z_min;                        // Définit le plan d'équation z = z_min
+
+private:
+    int nbrParticules;                   // Nombre de particules du fluide
+    bool debutAnim;                      // Indique si on est au debut de l'animation
+    Premier<Dim> table;                  // Table pour la dimension de la table de hachage
+    multimap<int, Particule<Dim>*> hash_voisins;
+
+    /* Fonction de hashage */
+    int fonction_hashage(Vecteur<Dim>);
+
+    /* Fonction d'accès au voisinage d'une particule */
+    list<Particule<Dim>*> voisinage(Particule<Dim>&);
 
     /* ** Constructeurs ** */
 public:
@@ -40,13 +55,13 @@ public:
 
     /**
       * Constructeur avec initialisation d'un parallèlépipède de particules
-      * \param m matériau du fluide
-      * \param nb tableau du nombre de particules sur chacune des dimensions
-      * \param ecart écart entre les particules
-      * \param rho masse volumique initiale des particules
-      * \param p pression initiale des particules
+      * \param m Matériau du fluide
+      * \param nb Tableau du nombre de particules sur chacune des dimensions
+      * \param ecart Écart entre les particules
+      * \param rho Masse volumique initiale des particules
+      * \param p Pression initiale des particules
       */
-    Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho = 0, double p = 0);
+    Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p);
     
     /**
       * Destructeur
@@ -58,7 +73,7 @@ public:
 public:
     /**
       * Ajoute une particule à l'ensemble des particules
-      * \param part la particule à ajouter
+      * \param part La particule à ajouter
       */
     void ajouteParticule(Particule<Dim> * part);
 
@@ -87,6 +102,7 @@ public:
       */
     void affiche();
 
+    friend void test_map();
 };
 
 
