@@ -49,32 +49,65 @@ void Cascade<Dim>::draw() {
     glVertex3f (0, bassin_y/2, 0);
     glVertex3f (bassin_x, bassin_y/2, 0);
     glVertex3f (bassin_x, -bassin_y/2, 0);
+
+    glNormal3f (0, 0, -1);
+    glVertex3f (0, -bassin_y/2, -0.001);
+    glVertex3f (0, bassin_y/2, -0.001);
+    glVertex3f (bassin_x, bassin_y/2, -0.001);
+    glVertex3f (bassin_x, -bassin_y/2, -0.001);
     /* Faces internes */
+
+    // Face arrière
     glNormal3f (1, 0, 0);
     glVertex3f (0, -bassin_y/2, 0);
     glVertex3f (0, bassin_y/2, 0);
     glVertex3f (0, bassin_y/2, bassin_z);
     glVertex3f (0, -bassin_y/2, bassin_z);
+
+    glNormal3f (-1, 0, 0);
+    glVertex3f (-0.001, -bassin_y/2, 0);
+    glVertex3f (-0.001, bassin_y/2, 0);
+    glVertex3f (-0.001, bassin_y/2, bassin_z);
+    glVertex3f (-0.001, -bassin_y/2, bassin_z);
+
+    // Face avant
     glNormal3f (1, 0, 0);
     glVertex3f (bassin_x, -bassin_y/2, 0);
     glVertex3f (bassin_x, bassin_y/2, 0);
     glVertex3f (bassin_x, bassin_y/2, bassin_z);
-    glVertex3f (bassin_x, -bassin_y/2, bassin_z);
+    glVertex3f (bassin_x, -bassin_y/2, bassin_z);  
+
     glNormal3f (-1, 0, 0);
-    glVertex3f (bassin_x, -bassin_y/2, 0);
-    glVertex3f (bassin_x, bassin_y/2, 0);
-    glVertex3f (bassin_x, bassin_y/2, bassin_z);
-    glVertex3f (bassin_x, -bassin_y/2, bassin_z);
+    glVertex3f (bassin_x-0.001, -bassin_y/2, 0);
+    glVertex3f (bassin_x-0.001, bassin_y/2, 0);
+    glVertex3f (bassin_x-0.001, bassin_y/2, bassin_z);
+    glVertex3f (bassin_x-0.001, -bassin_y/2, bassin_z);
+
+    // Face gauche
     glNormal3f (0, -1, 0);
     glVertex3f (0, -bassin_y/2, 0);
     glVertex3f (bassin_x, -bassin_y/2, 0);
     glVertex3f (bassin_x, -bassin_y/2, bassin_z);
     glVertex3f (0, -bassin_y/2, bassin_z);
+
+    glNormal3f (0, 1, 0);
+    glVertex3f (0, -bassin_y/2+0.001, 0);
+    glVertex3f (bassin_x, -bassin_y/2+0.001, 0);
+    glVertex3f (bassin_x, -bassin_y/2+0.001, bassin_z);
+    glVertex3f (0, -bassin_y/2+0.001, bassin_z);
+
+    // Face droite
     glNormal3f (0, 1, 0);
     glVertex3f (0, bassin_y/2, 0);
     glVertex3f (bassin_x, bassin_y/2, 0);
     glVertex3f (bassin_x, bassin_y/2, bassin_z);
     glVertex3f (0, bassin_y/2, bassin_z);
+
+    glNormal3f (0, -1, 0);
+    glVertex3f (0, bassin_y/2-0.001, 0);
+    glVertex3f (bassin_x, bassin_y/2-0.001, 0);
+    glVertex3f (bassin_x, bassin_y/2-0.001, bassin_z);
+    glVertex3f (0, bassin_y/2-0.001, bassin_z);
 
     // /* Dessin de l'obstacle */
     /* Haut */
@@ -84,22 +117,31 @@ void Cascade<Dim>::draw() {
     glVertex3f (obstacle_x/2, obstacle_y/2, obstacle_z);
     glVertex3f (obstacle_x/2, -obstacle_y/2, obstacle_z);
 
+    glNormal3f (0, 0, -1);
+    glVertex3f (-obstacle_x/2, -obstacle_y/2, obstacle_z-0.001);
+    glVertex3f (-obstacle_x/2, obstacle_y/2, obstacle_z-0.001);
+    glVertex3f (obstacle_x/2, obstacle_y/2, obstacle_z-0.001);
+    glVertex3f (obstacle_x/2, -obstacle_y/2, obstacle_z-0.001);
+
     /* Faces latérales */
     glNormal3f (-1, 0, 0);
     glVertex3f (-obstacle_x/2, -obstacle_y/2, 0);
     glVertex3f (-obstacle_x/2, obstacle_y/2, 0);
     glVertex3f (-obstacle_x/2, obstacle_y/2, obstacle_z);
     glVertex3f (-obstacle_x/2, -obstacle_y/2, obstacle_z);  
+
     glNormal3f (1, 0, 0);
     glVertex3f (obstacle_x/2, -obstacle_y/2, 0);
     glVertex3f (obstacle_x/2, obstacle_y/2, 0);
     glVertex3f (obstacle_x/2, obstacle_y/2, obstacle_z);
-    glVertex3f (obstacle_x/2, -obstacle_y/2, obstacle_z);  
+    glVertex3f (obstacle_x/2, -obstacle_y/2, obstacle_z); 
+
     glNormal3f (0, -1, 0);
     glVertex3f (-obstacle_x/2, -obstacle_y/2, 0);
     glVertex3f (obstacle_x/2, -obstacle_y/2, 0);
     glVertex3f (obstacle_x/2, -obstacle_y/2, obstacle_z);
     glVertex3f (-obstacle_x/2, -obstacle_y/2, obstacle_z);
+
     glNormal3f (0, 1, 0);
     glVertex3f (-obstacle_x/2, obstacle_y/2, 0);
     glVertex3f (obstacle_x/2, obstacle_y/2, 0);
@@ -118,8 +160,21 @@ void Cascade<Dim>::draw() {
     		bassin_z + pente_x * sin(PI * pente_angle / 180));
     glVertex3f (0, pente_y/2, bassin_z);
 
+    glNormal3f (sin(PI * pente_angle / 180), 0, -cos(PI * pente_angle / 180));
+    glVertex3f (0, -pente_y/2, bassin_z-0.001);
+    glVertex3f (-pente_x * cos(PI * pente_angle/180), 
+    		-pente_y/2, 
+    		bassin_z + pente_x * sin(PI * pente_angle / 180)-0.001);
+    glVertex3f (-pente_x * cos(PI * pente_angle/180), 
+    		pente_y/2, 
+    		bassin_z + pente_x * sin(PI * pente_angle / 180)-0.001);
+    glVertex3f (0, pente_y/2, bassin_z-0.001);
+
+    
+
     /* Bords */
-    glNormal3f (0, -1, 0);
+    // Bord gauche
+    glNormal3f (0, 1, 0);
     glVertex3f (0, -pente_y/2, bassin_z);
     glVertex3f (pente_z * sin(PI * pente_angle / 180), 
     		-pente_y/2,
@@ -131,7 +186,20 @@ void Cascade<Dim>::draw() {
     		- pente_y/2,
     		bassin_z + pente_x * sin(PI * pente_angle / 180));
 
-    glNormal3f (0, 1, 0);
+    glNormal3f (0, -1, 0);
+    glVertex3f (0, -pente_y/2-0.001, bassin_z);
+    glVertex3f (pente_z * sin(PI * pente_angle / 180), 
+    		-pente_y/2-0.001,
+    		bassin_z + pente_z * cos(PI * pente_angle / 180));
+    glVertex3f (pente_z * sin(PI * pente_angle / 180) - pente_x * cos (PI * pente_angle / 180),
+    		-pente_y/2-0.001,
+    		bassin_z + pente_z * cos(PI * pente_angle / 108) + pente_x * sin (PI * pente_angle / 180));
+    glVertex3f (- pente_x * cos (PI * pente_angle / 180),
+    		- pente_y/2-0.001,
+    		bassin_z + pente_x * sin(PI * pente_angle / 180));
+
+    // Bord droit
+    glNormal3f (0, -1, 0);
     glVertex3f (0, pente_y/2, bassin_z);
     glVertex3f (pente_z * sin(PI * pente_angle / 180), 
     		pente_y/2,
@@ -141,6 +209,18 @@ void Cascade<Dim>::draw() {
     		bassin_z + pente_z * cos(PI * pente_angle / 108) + pente_x * sin (PI * pente_angle / 180));
     glVertex3f (- pente_x * cos (PI * pente_angle / 180),
     		pente_y/2,
+    		bassin_z + pente_x * sin(PI * pente_angle / 180));
+
+    glNormal3f (0, 1, 0);
+    glVertex3f (0, pente_y/2+0.001, bassin_z);
+    glVertex3f (pente_z * sin(PI * pente_angle / 180), 
+    		pente_y/2+0.001,
+    		bassin_z + pente_z * cos(PI * pente_angle / 180));
+    glVertex3f (pente_z * sin(PI * pente_angle / 180) - pente_x * cos (PI * pente_angle / 180),
+    		pente_y/2+0.001,
+    		bassin_z + pente_z * cos(PI * pente_angle / 108) + pente_x * sin (PI * pente_angle / 180));
+    glVertex3f (- pente_x * cos (PI * pente_angle / 180),
+    		pente_y/2+0.001,
     		bassin_z + pente_x * sin(PI * pente_angle / 180));
 
     glEnd();

@@ -238,7 +238,7 @@ NoyauLissageMonaghan<Dim>::~NoyauLissageMonaghan () {
 
 
 
-/* ** Methodes classe NoyauLissageViscosite ** */
+/* ** Methodes classe NoyauLissageMonaghan ** */
 
 template<unsigned int Dim>
 double NoyauLissageMonaghan<Dim>::defaut(const Vecteur<Dim> r) const {
@@ -251,6 +251,15 @@ double NoyauLissageMonaghan<Dim>::defaut(const Vecteur<Dim> r) const {
     } else {
         res = 0;
     }
+    
+//    if (Dim == 3) {
+//        res *= 1.0/(4.0 * PI * pow(this->h, 3));
+//    } else if (Dim == 2) {
+//        res *= 15.0/(14.0 * PI * pow (this->h, 2));
+//    } else if (Dim == 1) {
+//        res *= 1.0/(6.0 * this->h);
+//    }
+    
     return res;
 }
 
@@ -267,6 +276,15 @@ Vecteur<Dim> NoyauLissageMonaghan<Dim>::gradient(const Vecteur<Dim> r) const {
     } else {
         res = Vecteur<Dim>();
     }
+    
+//    if (Dim == 3) {
+//        res *= 1.0/(4.0 * PI * pow(this->h, 4));
+//    } else if (Dim == 2) {
+//        res *= 15.0/(14.0 * PI * pow (this->h, 3));
+//    } else if (Dim == 1) {
+//        res *= 1.0/(6.0 * pow(this->h, 2));
+//    }
+    
     return res;
 }
 
