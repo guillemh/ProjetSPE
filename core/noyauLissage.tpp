@@ -243,11 +243,18 @@ double NoyauLissageMonaghan<Dim>::defaut(const Vecteur<Dim> r) const {
     double q = r.norme()/(this->h);
     double res;
     if (q <= 1) {
-	res = (pow(2 - q, 3) - 4.0 * pow(1 - q, 3)) / 6.0;
+	res = (pow(2 - q, 3) - 4.0 * pow(1 - q, 3));
     } else if (q <= 2) {
-	res = pow(2 - q, 3) / 6.0;
+	res = pow(2 - q, 3);
     } else {
 	res = 0;
+    }
+    if (Dim == 3) {
+	res *= 1.0/(4.0 * PI * pow(this->h, 3));
+    } else if (Dim == 2) {
+	res *= 15.0/(14.0 * PI * pow (this->h, 2));
+    } else if (Dim == 1) {
+	res *= 1.0/(6.0 * this->h);
     }
     return res;
 }
@@ -260,16 +267,23 @@ Vecteur<Dim> NoyauLissageMonaghan<Dim>::gradient(const Vecteur<Dim> r) const {
 	res = Vecteur<Dim>();
     } else if (q <= 1) {
 	res = (-3.0 * (r / r.norme()) * pow (2 - q, 2)
-	       + 12.0 * (r / r.norme()) * pow (1 - q, 2)) / (6.0 * this->h);
+	       + 12.0 * (r / r.norme()) * pow (1 - q, 2));
     } else if (q <= 2) {
-	res = (-3.0 * (r / r.norme()) * pow (2 - q, 2)) / (6.0 * this->h);
+	res = (-3.0 * (r / r.norme()) * pow (2 - q, 2));
     } else {
 	res = Vecteur<Dim>();
+    }
+    if (Dim == 3) {
+	res *= 1.0/(4.0 * PI * pow(this->h, 4));
+    } else if (Dim == 2) {
+	res *= 15.0/(14.0 * PI * pow (this->h, 3));
+    } else if (Dim == 1) {
+	res *= 1.0/(6.0 * pow(this->h, 2));
     }
     return res;
 }
 
-// À revoir car probablement faux... 
+// À revoir car faux... (ne prend pas en compte les constantes)
 // J'ai voulu m'inspirer du Kelager mais j'ai un gros doute sur la fiabilité du résultat
 
 template<unsigned int Dim>

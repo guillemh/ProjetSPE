@@ -204,21 +204,32 @@ void Fluide<Dim>::majDensitePression() {
     typename vector<Particule<Dim> *>::iterator it1;
     NoyauLissageDefaut<Dim> noyau = NoyauLissageDefaut<Dim>(mat->getRayonNoyau());
     list<Particule<Dim>*> voisins;    
-    typename list<Particule<Dim>*>::iterator it2;
+    // typename list<Particule<Dim>*>::iterator it2;
+    typename vector<Particule<Dim> *>::iterator it2;
 
+    int i = 0;
     // On boucles sur toutes les particules
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
-    
+	cout << "P" << i << " : ";
         // On met leur masse volumique à jour
         double somme = 0;
 	voisins = voisinage(*(*it1));
-        for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
-            somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
+	// cout << voisins.size() << " voisins trouvés" << endl;
+        // for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
+	for (it2 = particules.begin(); it2 != particules.end(); it2++) {
+	    if (it1 != it2) {
+		cout << "r.norme () : " << ((*it1)->getPosition() - (*it2)->getPosition()).norme() << endl;
+		cout << "h : " << noyau.getRayon() << endl;
+		somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
+	    }
+	}
+	cout << somme << endl;
 	if (somme != 0)
 	    (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
         
         // On met leur pression à jour
         (*it1)->majPression(mat->getCeleriteSon(), mat->getDensiteRepos());
+	i++;
     }
 }
 
@@ -268,12 +279,12 @@ void Fluide<Dim>::majPositionVitesse() {
     // On boucles sur toutes les particules
     // Ci-dessous, factorisation de calculs
     double masse = mat->getMasseParticules();
-    double masse_2 = pow(mat->getMasseParticules(), 2);
+    // double masse_2 = pow(mat->getMasseParticules(), 2);
     double nu_numerateur = 2*mat->getRayonNoyau()*mat->getConstanteViscosite()*mat->getCeleriteSon();
 
     list<Particule<Dim>*> voisins;    
-    typename list<Particule<Dim>*>::iterator it2;
-
+    // typename list<Particule<Dim>*>::iterator it2;
+    typename vector<Particule<Dim> *>::iterator it2;
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
         
         // Definition de toutes les forces
@@ -290,8 +301,9 @@ void Fluide<Dim>::majPositionVitesse() {
 	double termePressionDensite_a = (*it1)->getPression() / pow((*it1)->getMasseVolumique(), 2);
 	double masseVolumique_a = (*it1)->getMasseVolumique();
 
-	voisins = voisinage(*(*it1));
-        for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
+	// voisins = voisinage(*(*it1));
+        // for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
+	for (it2 = particules.begin(); it2 != particules.end(); it2++) {
 
 	    // Quelques variables locales pour factoriser le calcul
 	    Vecteur<Dim> x_ab = (*it1)->getPosition() - (*it2)->getPosition();
@@ -315,9 +327,9 @@ void Fluide<Dim>::majPositionVitesse() {
         
         // Calcul des forces de gravité, de pression, de viscosite et de surface
         fGravite = masseVolumique_a * mat->getAccGrav();
-        fPression *= masse_2;
-        fViscosite *= masse_2;
-        fSurface *= masse;
+        fPression *= masse * masseVolumique_a;
+        fViscosite *= masse * masseVolumique_a;
+        fSurface *= masse * masseVolumique_a;
         double norme = fSurface.norme();
         if (norme >= mat->getSeuilSurface()) {
             colorfield *= masse;
@@ -327,7 +339,10 @@ void Fluide<Dim>::majPositionVitesse() {
         }
         
         // Calcul de l'acceleration
-        (*it1)->setAcceleration((fPression + fViscosite + fGravite + fSurface) / masseVolumique_a);
+	cout << "fPression : " << fPression << endl;
+	cout << "fGravite : " << fGravite << endl;
+	(*it1)->setAcceleration((fPression + fGravite) / masseVolumique_a);
+        // (*it1)->setAcceleration((fPression + fViscosite + fGravite + fSurface) / masseVolumique_a);
         
     }
     

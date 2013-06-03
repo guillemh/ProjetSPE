@@ -49,6 +49,15 @@ Scene::Scene() {
 //    f->ajouteParticule(p8);
 //    f->ajouteParticule(p9);
 //    f->ajouteParticule(p10);
+
+    Vecteur<3> vInit = Vecteur<3> (0, 0.1, 0);
+    Vecteur<3> pos1 = Vecteur<3> (0, -0.02, 0);
+    Vecteur<3> pos2 = Vecteur<3> (0, 0.02, 0);
+    Particule<3> *p1 = new Particule<3> (pos1, Vecteur<3>(), m->getDensiteRepos(), m->getPression());
+    Particule<3> *p2 = new Particule<3> (pos2, Vecteur<3>(), m->getDensiteRepos(), m->getPression());
+    f = new Fluide<3> (m);
+    f->ajouteParticule(p1);
+    f->ajouteParticule(p2);
 }
 
 Scene::~Scene() {
@@ -57,6 +66,7 @@ Scene::~Scene() {
 void Scene::draw() {
     glPushMatrix();
     f->draw();
+    f->affiche();
     glPopMatrix();
 }
 
