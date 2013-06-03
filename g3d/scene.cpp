@@ -12,7 +12,7 @@ using namespace std;
 Scene::Scene() {
     m = new Materiau<3>(EAU);
     int d [3] = {5, 5, 5};
-    f = new Fluide<3>(m, d, 0.1, m->getDensiteRepos(), m->getPression());
+    f = new Fluide<3>(m, d, 0.03, m->getDensiteRepos(), m->getPression());
     
 //    Vecteur<3> vec0 = Vecteur<3>();
 //    
