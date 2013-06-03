@@ -283,6 +283,20 @@ inline list<Particule<3>*> Fluide<3>::voisinage(Particule<3>& p) {
     return res;
 }
 
+template<unsigned int Dim>
+vector<Particule<Dim> *> Fluide<Dim>::getParticulesMobiles() {
+    return particules;
+}
+
+template<unsigned int Dim>
+vector<Particule<Dim> *> Fluide<Dim>::getParticulesImmobiles() {
+    return lignedEau;
+}
+
+template<unsigned int Dim>
+Materiau<Dim>* Fluide<Dim>::getMateriau() {
+    return mat;
+}
 
 template<unsigned int Dim>
 void Fluide<Dim>::majDensitePression() {
@@ -527,5 +541,3 @@ void Fluide<Dim>::affiche() {
 	i++;
     }
 }
-
-

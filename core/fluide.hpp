@@ -23,19 +23,20 @@ template<unsigned int Dim>
 class Fluide {
     
     /* ** Attributs ** */
+private:
+    Materiau<Dim> * mat;                 /*!< Materiau du fluide (avec toutes les constantes) */
+    vector<Particule<Dim> *> particules; /*!< nsemble des particules mobiles */
+    vector<Particule<Dim> *> lignedEau;  /*!< Ensemble des particules immobiles sur le plan z = z_min */
 public:
-    Materiau<Dim> * mat;                 // Materiau du fluide (avec toutes les constantes)
-    vector<Particule<Dim> *> particules; // Ensemble des particules mobiles
-    vector<Particule<Dim> *> lignedEau;  // Ensemble des particules immobiles sur le plan z = z_min
-    double x_min;                        // Définit le plan d'équation x = x_min
-    double x_max;                        // Définit le plan d'équation x = x_max
-    double y_min;                        // Définit le plan d'équation y = x_min
-    double y_max;                        // Définit le plan d'équation y = x_max
-    double z_min;                        // Définit le plan d'équation z = z_min
+    double x_min;                        /*!< Définit le plan d'équation x = x_min (provisoire) */
+    double x_max;                        /*!< Définit le plan d'équation x = x_max (provisoire) */
+    double y_min;                        /*!< Définit le plan d'équation y = x_min (provisoire) */
+    double y_max;                        /*!< Définit le plan d'équation y = x_max (provisoire) */
+    double z_min;                        /*!< Définit le plan d'équation z = z_min (provisoire) */
 
 private:
-    int nbrParticules;                   // Nombre de particules du fluide
-    bool debutAnim;                      // Indique si on est au debut de l'animation
+    int nbrParticules;                   /*!< Nombre de particules du fluide */
+    bool debutAnim;                      /*!< Indique si on est au debut de l'animation */
 
     Premier<Dim> table;
     /* Table de hashage pour les voisins */
@@ -88,6 +89,21 @@ public:
      */
     Vecteur<Dim> collision(const Vecteur<Dim> & v);
 
+    /**
+     * Retourne le vecteur des particules mobiles utilisées dans le fluide
+     */
+    vector<Particule<Dim> *> getParticulesMobiles();
+
+    /**
+     * Retourne le vecteur des particules immobiles utilisées dans le fluide
+     */
+    vector<Particule<Dim> *> getParticulesImmobiles();
+
+    /**
+     * Retourne un pointeur sur le type de matériau utilisé
+     */
+    Materiau<Dim>* getMateriau();
+  
     /**
       * Met à jour la densité et la pression de toutes les particules
       */
