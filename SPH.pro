@@ -5,6 +5,7 @@ SUBDIRS =   core \
             test \
             run \
             g3d \
+            cascade \
 
 #Precise les dependances entre les sous-dossiers
 test.depends = core

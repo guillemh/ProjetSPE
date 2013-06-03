@@ -90,7 +90,16 @@ public:
       */
     void affiche();
 
+    /**
+     * Fonction de tests basiques sur l'insertion dans la table de hashage,
+     * qui a besoin de l'accès direct à celle-ci
+     */
     friend void test_map();
+
+    /**
+     * Fonction de tests basiques sur le calcul du voisinage
+     */
+    friend void test_voisins();
 };
 
 
