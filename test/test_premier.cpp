@@ -244,7 +244,7 @@ void test_premier()
     cout << "OK" << endl;
 
     x = 1000000000;
-    //res = p.getPremier(x); // Fonctionne mais long à l'execution
-    //assert(res==1000000007);   
+    res = p.getPremier(x); // Fonctionne mais long à l'execution
+    assert(res==1000000007);   
     cout << "OK" << endl;
 }

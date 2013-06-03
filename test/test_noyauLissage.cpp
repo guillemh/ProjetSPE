@@ -9,9 +9,11 @@ using std::cout;
 using std::endl;
 
 void test_noyauLissage() {
+
+    Vecteur<3> r(1.5);
+
     cout << "- Lissage par défaut pour noyau par défaut : ";
     NoyauLissageDefaut<3> w = NoyauLissageDefaut<3>(5);
-    Vecteur<3> r(1.5);
     double res1 = w.defaut(r);
     if ((res1 <= 0.0049) && (res1 >= 0.0048))
         cout<<"OK"<<endl;
@@ -24,7 +26,6 @@ void test_noyauLissage() {
         cout<<"OK"<<endl;
     else
         cout<<"ERREUR !"<<endl;
-
         
     cout << "- Lissage laplacien pour noyau par défaut : ";
     double res3 = w.laplacien(r);
@@ -32,6 +33,7 @@ void test_noyauLissage() {
         cout<<"OK"<<endl;
     else
         cout<<"ERREUR !"<<endl;
+
 
     cout << "- Lissage par défaut pour noyau pression : ";
     NoyauLissagePression<3> w2 = NoyauLissagePression<3>(5);
@@ -56,7 +58,7 @@ void test_noyauLissage() {
         cout<<"ERREUR !"<<endl;
 
         
-    cout << "- Lissage par defaut pour noyau viscosite : ";
+    cout << "- Lissage par defaut pour noyau viscosité : ";
     NoyauLissageViscosite<3> w3 = NoyauLissageViscosite<3>(5);
     double res7 = w3.defaut(r);
     if ((res7 <= 0.0031) && (res7 >= 0.0030))
@@ -64,16 +66,39 @@ void test_noyauLissage() {
     else
         cout<<"ERREUR !"<<endl;
 
-    cout << "- Lissage laplacien pour noyau pression : ";
+    cout << "- Lissage gradient pour noyau viscosité : ";
     Vecteur<3> res8 = w3.gradient(r);
     if ((res8(1) <= -0.0026) && (res8(1) >= -0.0027))
         cout<<"OK"<<endl;
     else
         cout<<"ERREUR !"<<endl;
 
-    cout << "- Lissage laplacien pour noyau pression : ";
+    cout << "- Lissage laplacien pour noyau viscosité : ";
     double res9 = w3.laplacien(r);
     if ((res9 <= 0.0023) && (res9 >= 0.0022))
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+
+        
+    cout << "- Lissage par defaut pour noyau de Monaghan : ";
+    NoyauLissageMonaghan<3> w4 = NoyauLissageMonaghan<3>(5);
+    double res10 = w4.defaut(r);
+    if ((res10 <= 0.0018) && (res10 >= 0.0017))
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+
+    cout << "- Lissage gradient pour noyau de Monaghan : ";
+    Vecteur<3> res11 = w4.gradient(r);
+    if ((res11(1) <= -0.00027) && (res11(1) >= -0.00028))
+        cout<<"OK"<<endl;
+    else
+        cout<<"ERREUR !"<<endl;
+
+    cout << "- Lissage laplacien pour noyau de Monaghan : ";
+    double res12 = w4.laplacien(r);
+    if ((res12 <= -0.00044) && (res12 >= -0.00045))
         cout<<"OK"<<endl;
     else
         cout<<"ERREUR !"<<endl;

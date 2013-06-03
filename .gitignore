@@ -15,5 +15,15 @@
 # Documentation Doxygen
 doc
 
-Memoire.pdf
-WCSPH*
+# Document de cadrage
+gestionProjet/*.pdf
+# Makefile
+*Makefile*
+
+# Exécutables
+*/release
+g3d/test_dessin_fluide
+cascade/test_cascade
+
+*.xml
+

@@ -18,7 +18,8 @@ void test_performances_premier()
     typedef std::chrono::duration<double, std::milli> ms;
     Clock::time_point t0,t1;
 
-    int n;
+    int n = 0;
+    n++;
     int max = 9592;
 
     t0 = Clock::now();    
@@ -27,15 +28,8 @@ void test_performances_premier()
     t1 = Clock::now();
     std::cout << ms(t1-t0).count() << " millisecond\n";
 
-    cout << "-- 2. Test de performances pour les 9592 premiers nombres premiers avec calculPremier --" << endl;
 
-    t0 = Clock::now();
-    for (int i = 0; i < max; ++i)
-	n = p.calculPremier(i);
-    t1 = Clock::now();
-    std::cout << ms(t1-t0).count() << " millisecond\n";
-
-    cout << "-- 3. Test de performances pour x = 9592 getPremier --" << endl;
+    cout << "-- 2. Test de performances pour x = 9592 getPremier --" << endl;
     
     typedef std::chrono::high_resolution_clock Clock1;
     typedef std::chrono::duration<double, std::nano> nanos;
@@ -44,14 +38,6 @@ void test_performances_premier()
     t2 = Clock1::now();
     n = p.getPremier(9592);
     t3 = Clock::now();
-    std::cout << nanos(t3-t2).count() << " nanosecond\n";
-
-    cout << "-- 4. Test de performances pour x = 9592 calculPremier --" << endl;
-    
-    t2 = Clock1::now();
-    n = p.calculPremier(9592);
-    t3 = Clock::now();
-    std::cout << nanos(t3-t2).count() << " nanosecond\n";
-    
+    std::cout << nanos(t3-t2).count() << " nanosecond\n";    
 
 }

@@ -203,17 +203,15 @@ double NoyauLissageViscosite<Dim>::laplacien(const Vecteur<Dim> r) const {
         return 0;
     double res = (this->coefLaplacien * (this->h - r.norme()));
     if (res > 10000000) {
-	cout << "!! Valeur de NoyauViscosite.laplacien : " << res << endl;
+        cout << "!! Valeur de NoyauViscosite.laplacien : " << res << endl;
     }
     return res;
 }
 
 
-/*
- * Noyau de Monaghan
- * Implémentation
- *
- */
+
+/* ** Constructeurs classe NoyauLissageMonaghan ** */
+
 template<unsigned int Dim>
 NoyauLissageMonaghan<Dim>::NoyauLissageMonaghan ()
     : NoyauLissage<Dim>()
@@ -238,21 +236,27 @@ template<unsigned int Dim>
 NoyauLissageMonaghan<Dim>::~NoyauLissageMonaghan () {
 }
 
+
+
+/* ** Methodes classe NoyauLissageMonaghan ** */
+
 template<unsigned int Dim>
 double NoyauLissageMonaghan<Dim>::defaut(const Vecteur<Dim> r) const {
     double q = r.norme()/(this->h);
     double res;
     if (q <= 1) {
-	res = (pow(2 - q, 3) - 4.0 * pow(1 - q, 3)) / 6.0;
+        res = (pow(2 - q, 3) - 4.0 * pow(1 - q, 3));
     } else if (q <= 2) {
-	res = pow(2 - q, 3) / 6.0;
+        res = pow(2 - q, 3);
     } else {
-	res = 0;
+        res = 0;
     }
-    if (Dim == 2) {
-	res *= 15/(14*PI*pow(this->h, 2));
-    } else if (Dim == 3) {
-	res *= 1/(4*PI*pow(this->h, 3));
+    if (Dim == 3) {
+        res *= 1.0/(4.0 * PI * pow(this->h, 3));
+    } else if (Dim == 2) {
+        res *= 15.0/(14.0 * PI * pow (this->h, 2));
+    } else if (Dim == 1) {
+        res *= 1.0/(6.0 * this->h);
     }
     return res;
 }
@@ -262,44 +266,47 @@ Vecteur<Dim> NoyauLissageMonaghan<Dim>::gradient(const Vecteur<Dim> r) const {
     double q = r.norme()/(this->h);
     Vecteur<Dim> res;
     if (q < 0.001) {
-	res = Vecteur<Dim>();
+        res = Vecteur<Dim>();
     } else if (q <= 1) {
-	res = (-3.0 * (r / r.norme()) * pow (2 - q, 2)
-	       + 12.0 * (r / r.norme()) * pow (1 - q, 2)) / (6.0 * this->h);
+        res = r/(2.0 * this->h * r.norme()) * (-pow(2 - q, 2) + 4.0 * pow(1 - q, 2));
     } else if (q <= 2) {
-	res = (-3.0 * (r / r.norme()) * pow (2 - q, 2)) / (6.0 * this->h);
+        res = -(r * pow(2 - q, 2)) / (2.0 * this->h * r.norme());
     } else {
-	res = Vecteur<Dim>();
+        res = Vecteur<Dim>();
     }
-    if (Dim == 2) {
-	res *= 15/(14*PI*pow(this->h, 2));
-    } else if (Dim == 3) {
-	res *= 1/(4*PI*pow(this->h, 3));
+    if (Dim == 3) {
+        res *= 3.0/(2.0 * PI * pow(this->h, 3));
+    } else if (Dim == 2) {
+        res *= 45.0/(7.0 * PI * pow (this->h, 2));
+    } else if (Dim == 1) {
+        res /= this->h;
     }
     return res;
 }
 
-// À revoir car probablement faux... 
-// J'ai voulu m'inspirer du Kelager mais j'ai un gros doute sur la fiabilité du résultat
 
 template<unsigned int Dim>
 double NoyauLissageMonaghan<Dim>::laplacien(const Vecteur<Dim> r) const {
     double q = r.norme()/(this->h);
     double res;
     if (q < 0.001) {
-	res = 0;
+        res = 0;
     } else if (q <= 1) {
-	res = (-6.0 * (2 - q) * (2 - 2*q) / r.norme()
-	       + 24.0 * (1 - q) * (1 - 2*q) / r.norme()) / 6.0;
+        double prod = r.norme() * this->h;
+        double h_carre = pow(this->h, 2);
+        res = -(1.0 / prod) * pow(2 - q, 2) + (1.0 / h_carre) * (2 - q)
+              + (4.0 / prod) * pow(1 - q, 2) - (4.0 / h_carre) * (1 - q);
     } else if (q <= 2) {
-	res = (-6.0 * (2 - q) * (2 - 2*q) / r.norme()) / 6.0;
+        res = -(1.0 / (r.norme() * this->h)) * pow(2 - q, 2) + (1.0 / pow(this->h, 2)) * (2 - q);
     } else {
-	res = 0;
+        res = 0;
     }
-    if (Dim == 2) {
-	res *= 15/(14*PI*pow(this->h, 2));
-    } else if (Dim == 3) {
-	res *= 1/(4*PI*pow(this->h, 3));
+    if (Dim == 3) {
+        res *= 3.0/(2.0 * PI * pow(this->h, 3));
+    } else if (Dim == 2) {
+        res *= 45.0/(7.0 * PI * pow (this->h, 2));
+    } else if (Dim == 1) {
+        res /= this->h;
     }
     return res;
 }
