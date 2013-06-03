@@ -35,10 +35,14 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
      */
     //    Premier<Dim> table = Premier<Dim>();
 
+    /* Pour la conversion des coordonnées de la particule dans la grille de voxels */
+    Vecteur<Dim> noeud_grille;
+
     if (Dim == 2) {
     
 	nbrParticules = nb[0]*nb[1];
 	lgrHash = table.getPremier(2*nbrParticules);
+
         // Ici, on est en dimension 2
         // On va ajouter des particules régulierement disposees sur les deux dimensions
         for (int i = 0; i < nb[0]; i++) {
@@ -46,7 +50,9 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                 Vecteur<Dim> vec = Vecteur<Dim>(i*ecart, j*ecart);
                 Particule<Dim> *part = new Particule<Dim>(vec, Vecteur<Dim>(), rho, p);
                 particules.push_back(part);
-                hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(part->getPosition()), part));
+		noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
+		noeud_grille(2) = int(floor(part->getPosition()(2)/mat->getRayonNoyau()));
+                hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(noeud_grille), part));
             }
         }
         
@@ -54,6 +60,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
     
 	nbrParticules = nb[0]*nb[1]*nb[2];
 	lgrHash = table.getPremier(2*nbrParticules);
+
         // Ici, on est en dimension 3
         // On va ajouter des particules regulierement disposees sur les trois dimensions
         for (int i = 0; i < nb[0]; i++) {
@@ -62,7 +69,10 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                     Vecteur<Dim> vec = Vecteur<Dim>(i*ecart, j*ecart, k*ecart + 0.1);
                     Particule<Dim> *part = new Particule<Dim>(vec, Vecteur<Dim>(), rho, p);
                     particules.push_back(part);
-                    hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(part->getPosition()), part));               
+		    noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
+		    noeud_grille(2) = int(floor(part->getPosition()(2)/mat->getRayonNoyau()));
+ 		    noeud_grille(3) = int(floor(part->getPosition()(3)/mat->getRayonNoyau()));
+		    hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(noeud_grille), part));               
                 }
             }
         }
@@ -90,30 +100,33 @@ Fluide<Dim>::~Fluide() {
 
 template<>
 inline int Fluide<2>::fonction_hashage(Vecteur<2> pos) {
-    int noeud_grille[2] = {int(floor(pos(1)/mat->getRayonNoyau())),
-                           int(floor(pos(2)/mat->getRayonNoyau()))};
     int p1 = 73856093;
     int p2 = 19349663;
-    return (noeud_grille[0]*p1 
-	    ^ noeud_grille[1]*p2) 
+    return (int(pos(1))*p1 
+	    ^ int(pos(2))*p2) 
 	% lgrHash;
 }
 
 
 template<>
 inline int Fluide<3>::fonction_hashage(Vecteur<3> pos) {
-    int noeud_grille[3] = {int(floor(pos(1)/mat->getRayonNoyau())),
-                           int(floor(pos(2)/mat->getRayonNoyau())),
-                           int(floor(pos(3)/mat->getRayonNoyau()))};
     int p1 = 73856093;
     int p2 = 19349663;
     int p3 = 83492791;
-    return (noeud_grille[0]*p1 
-	    ^ noeud_grille[1]*p2
-	    ^ noeud_grille[2]*p3) 
+    return (int(pos(1))*p1 
+	    ^ int(pos(2))*p2
+	    ^ int(pos(3))*p3) 
 	% lgrHash;
 }
 
+template<unsigned int Dim>
+void Fluide<Dim>::afficher_hash() {
+    typename multimap<int, Particule<Dim>*>::iterator mmap_it;
+    cout << "Multimap des voisins :" << endl;
+    for (mmap_it = hash_voisins.begin(); mmap_it != hash_voisins.end(); ++mmap_it) {
+	cout << " " << (*mmap_it).first << " => " << ((*mmap_it).second)->getPosition() << endl;
+    }
+}
 
 /* ** Méthodes ** */
 
@@ -176,7 +189,7 @@ inline list<Particule<3>*> Fluide<3>::voisinage(Particule<3>& p) {
                     int(floor((p.getPosition()(3)-rnoyau)/rnoyau))};
     int bbmax[3] = {int(floor((p.getPosition()(1)+rnoyau)/rnoyau)),
                     int(floor((p.getPosition()(2)+rnoyau)/rnoyau)),
-                    int(floor((p.getPosition()(3)-rnoyau)/rnoyau))};
+                    int(floor((p.getPosition()(3)+rnoyau)/rnoyau))};
     /* Paire d'itérateurs (début et fin) sur les particules de clé hash_key */
     pair<multimap<int, Particule<3>*>::iterator, multimap<int, Particule<3>*>::iterator> part_pit;
     multimap<int, Particule<3>*>::iterator part_it;
@@ -191,7 +204,6 @@ inline list<Particule<3>*> Fluide<3>::voisinage(Particule<3>& p) {
 
 		/* On rajoute les particules trouvées dans la liste */
 		for (part_it = part_pit.first; part_it != part_pit.second; ++part_it) {
-		    cout << "ajoute qqn" << endl;
 		    res.push_back(part_it->second);
 		}
 	    }
@@ -203,11 +215,11 @@ inline list<Particule<3>*> Fluide<3>::voisinage(Particule<3>& p) {
     for (liste_it = res.begin(); liste_it != res.end(); ) {
 	if ((p.getPosition() == (*liste_it)->getPosition())
 	    || (p.getPosition() - (*liste_it)->getPosition()).norme() > rnoyau) {
-	    if (p.getPosition() == (*liste_it)->getPosition()) {
-		cout << " enleve moi-mm" << endl;
-	    } else {
-		cout << " enleve qqn" << endl;
-	    }
+	    // if (p.getPosition() == (*liste_it)->getPosition()) {
+	    // 	cout << " enleve moi-mm" << endl;
+	    // } else {
+	    // 	cout << " enleve qqn" << endl;
+	    // }
 	    liste_it = res.erase(liste_it);
 	} else {
 	    ++liste_it;

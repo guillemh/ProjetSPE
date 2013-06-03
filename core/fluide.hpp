@@ -41,6 +41,9 @@ private:
     /* Fonction d'accès au voisinage d'une particule */
     list<Particule<Dim>*> voisinage(Particule<Dim>&);
 
+    /* DEBUG : affichage de la table de hashage */
+    void afficher_hash();
+
     /* ** Constructeurs ** */
 public:
     /**
