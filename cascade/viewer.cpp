@@ -7,8 +7,7 @@
 
 using std::list ;
 
-Viewer::Viewer () {
-}
+Viewer::Viewer () {}
 
 
 Viewer::~Viewer()
@@ -39,7 +38,6 @@ void Viewer::init()
     setSceneRadius(20.0f);
 	
     //=== INIT SCENE
-    // s = new Scene () ;
     s = new SceneCascade();
 }
 
