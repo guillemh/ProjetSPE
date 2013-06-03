@@ -1,4 +1,7 @@
 #include <GL/glut.h>
+#include <cstdlib>
+#include <ctime>
+
 #include "fluide.hpp"
 #include "noyauLissage.hpp"
 using std::cout;
@@ -207,12 +210,12 @@ template<unsigned int Dim>
 void Fluide<Dim>::majDensitePression() {
 
     typename vector<Particule<Dim> *>::iterator it1;
-    NoyauLissageDefaut<Dim> noyau = NoyauLissageDefaut<Dim>(mat->getRayonNoyau());
-    list<Particule<Dim>*> voisins;    
-    // typename list<Particule<Dim>*>::iterator it2;
+    NoyauLissageMonaghan<Dim> noyau = NoyauLissageMonaghan<Dim>(mat->getRayonNoyau());
+//     list<Particule<Dim>*> voisins;    
+//    typename list<Particule<Dim>*>::iterator it2;
     typename vector<Particule<Dim> *>::iterator it2;
 
-    int i = 0;
+//    int i = 0;
     // On boucles sur toutes les particules
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
 //        cout << "P" << i << " : ";
@@ -222,19 +225,16 @@ void Fluide<Dim>::majDensitePression() {
 //        cout << voisins.size() << " voisins trouvés" << endl;
 //        for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
         for (it2 = particules.begin(); it2 != particules.end(); it2++) {
-            if (it1 != it2) {
-//                cout << "r.norme () : " << ((*it1)->getPosition() - (*it2)->getPosition()).norme() << endl;
-//                cout << "h : " << noyau.getRayon() << endl;
-                somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
-            }
+//            cout << "r.norme () : " << ((*it1)->getPosition() - (*it2)->getPosition()).norme() << endl;
+//            cout << "h : " << noyau.getRayon() << endl;
+            somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
         }
 //        cout << somme << endl;
-        if (somme != 0)
-            (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
+        (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
         
         // On met leur pression à jour
         (*it1)->majPression(mat->getCeleriteSon(), mat->getDensiteRepos());
-        i++;
+//        i++;
     }
 }
 
@@ -247,27 +247,27 @@ Vecteur<Dim> collision(const Vecteur<Dim> & v) {
     Vecteur<Dim> res = Vecteur<Dim>(v);
 
     if (Dim == 2) {
-        if (v(1) < -5)
-            res(1) = -5;
-        if (v(1) > 5)
-            res(1) = 5;
+        if (v(1) < -0.03)
+            res(1) = -0.03;
+        if (v(1) > 0.03)
+            res(1) = 0.03;
         if (v(2) < 0)
             res(2) = 0;
-        if (v(2) > 5)
-            res(2) = 5;
+        if (v(2) > 0.03)
+            res(2) = 0.03;
     } else {
-        if (v(1) < -5)
-            res(1) = -5;
-        if (v(1) > 5)
-            res(1) = 5;
-        if (v(2) < -5)
-            res(2) = -5;
-        if (v(2) > 5)
-            res(2) = 5;
+        if (v(1) < -0.03)
+            res(1) = -0.03;
+        if (v(1) > 0.03)
+            res(1) = 0.03;
+        if (v(2) < -0.03)
+            res(2) = -0.03;
+        if (v(2) > 0.03)
+            res(2) = 0.03;
         if (v(3) < 0)
             res(3) = 0;
-        if (v(3) > 5)
-            res(3) = 5;
+//        if (v(3) > 0.03)
+//            res(3) = 0.03;
     }
     
     return res;
@@ -330,7 +330,7 @@ void Fluide<Dim>::majPositionVitesse() {
         
         // Calcul des forces de gravité, de pression, de viscosite et de surface
         fGravite = masseVolumique_a * mat->getAccGrav();
-        fPression *= masse * masseVolumique_a;
+        fPression *= masse * masseVolumique_a / 1000000;
         fViscosite *= masse * masseVolumique_a;
         fSurface *= masse;
         double norme = fSurface.norme();
@@ -363,7 +363,12 @@ void Fluide<Dim>::majPositionVitesse() {
         }
         
         // Calcul de la nouvelle position (au temps t+Dt)
-        (*it1)->incrPosition(mat->getPasTemps() * (*it1)->getVitesse());
+        double x = 0.002 * (rand() / double(RAND_MAX) - 0.5);
+        double y = 0.002 * (rand() / double(RAND_MAX) - 0.5);
+        double z = 0.002 * (rand() / double(RAND_MAX) - 0.5);
+        Vecteur<3> alea = Vecteur<3>(x,y,z);
+        
+        (*it1)->incrPosition(mat->getPasTemps() * (*it1)->getVitesse() + (*it1)->getVitesse().norme() * alea);
     
         // Detection des collisions
         Vecteur<Dim> pos = (*it1)->getPosition();

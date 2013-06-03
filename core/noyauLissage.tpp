@@ -245,20 +245,20 @@ double NoyauLissageMonaghan<Dim>::defaut(const Vecteur<Dim> r) const {
     double q = r.norme()/(this->h);
     double res;
     if (q <= 1) {
-        res = (pow(2 - q, 3) - 4.0 * pow(1 - q, 3)) / 6.0;
+        res = (pow(2 - q, 3) - 4.0 * pow(1 - q, 3));
     } else if (q <= 2) {
-        res = pow(2 - q, 3) / 6.0;
+        res = pow(2 - q, 3);
     } else {
         res = 0;
     }
     
-//    if (Dim == 3) {
-//        res *= 1.0/(4.0 * PI * pow(this->h, 3));
-//    } else if (Dim == 2) {
-//        res *= 15.0/(14.0 * PI * pow (this->h, 2));
-//    } else if (Dim == 1) {
-//        res *= 1.0/(6.0 * this->h);
-//    }
+    if (Dim == 3) {
+        res *= 1.0/(4.0 * PI * pow(this->h, 3));
+    } else if (Dim == 2) {
+        res *= 15.0/(14.0 * PI * pow (this->h, 2));
+    } else if (Dim == 1) {
+        res *= 1.0/(6.0 * this->h);
+    }
     
     return res;
 }
@@ -277,13 +277,13 @@ Vecteur<Dim> NoyauLissageMonaghan<Dim>::gradient(const Vecteur<Dim> r) const {
         res = Vecteur<Dim>();
     }
     
-//    if (Dim == 3) {
-//        res *= 1.0/(4.0 * PI * pow(this->h, 4));
-//    } else if (Dim == 2) {
-//        res *= 15.0/(14.0 * PI * pow (this->h, 3));
-//    } else if (Dim == 1) {
-//        res *= 1.0/(6.0 * pow(this->h, 2));
-//    }
+    if (Dim == 3) {
+        res *= 3.0/(2.0 * PI * pow(this->h, 3));
+    } else if (Dim == 2) {
+        res *= 45.0/(7.0 * PI * pow (this->h, 2));
+    } else if (Dim == 1) {
+        res /= this->h;
+    }
     
     return res;
 }
@@ -305,5 +305,14 @@ double NoyauLissageMonaghan<Dim>::laplacien(const Vecteur<Dim> r) const {
     } else {
         res = 0;
     }
+    
+    if (Dim == 3) {
+        res *= 3.0/(2.0 * PI * pow(this->h, 3));
+    } else if (Dim == 2) {
+        res *= 45.0/(7.0 * PI * pow (this->h, 2));
+    } else if (Dim == 1) {
+        res /= this->h;
+    }
+
     return res;
 }
