@@ -18,7 +18,8 @@ void test_performances_premier()
     typedef std::chrono::duration<double, std::milli> ms;
     Clock::time_point t0,t1;
 
-    int n;
+    int n = 0;
+    n++;
     int max = 9592;
 
     t0 = Clock::now();    
