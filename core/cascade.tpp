@@ -181,7 +181,7 @@ void Cascade<Dim>::draw() {
     		bassin_z + pente_z * cos(PI * pente_angle / 180));
     glVertex3f (pente_z * sin(PI * pente_angle / 180) - pente_x * cos (PI * pente_angle / 180),
     		-pente_y/2,
-    		bassin_z + pente_z * cos(PI * pente_angle / 108) + pente_x * sin (PI * pente_angle / 180));
+    		bassin_z + pente_z * cos(PI * pente_angle / 180) + pente_x * sin (PI * pente_angle / 180));
     glVertex3f (- pente_x * cos (PI * pente_angle / 180),
     		- pente_y/2,
     		bassin_z + pente_x * sin(PI * pente_angle / 180));
@@ -193,7 +193,7 @@ void Cascade<Dim>::draw() {
     		bassin_z + pente_z * cos(PI * pente_angle / 180));
     glVertex3f (pente_z * sin(PI * pente_angle / 180) - pente_x * cos (PI * pente_angle / 180),
     		-pente_y/2-0.001,
-    		bassin_z + pente_z * cos(PI * pente_angle / 108) + pente_x * sin (PI * pente_angle / 180));
+    		bassin_z + pente_z * cos(PI * pente_angle / 180) + pente_x * sin (PI * pente_angle / 180));
     glVertex3f (- pente_x * cos (PI * pente_angle / 180),
     		- pente_y/2-0.001,
     		bassin_z + pente_x * sin(PI * pente_angle / 180));
@@ -206,7 +206,7 @@ void Cascade<Dim>::draw() {
     		bassin_z + pente_z * cos(PI * pente_angle / 180));
     glVertex3f (pente_z * sin(PI * pente_angle / 180) - pente_x * cos (PI * pente_angle / 180),
     		pente_y/2,
-    		bassin_z + pente_z * cos(PI * pente_angle / 108) + pente_x * sin (PI * pente_angle / 180));
+    		bassin_z + pente_z * cos(PI * pente_angle / 180) + pente_x * sin (PI * pente_angle / 180));
     glVertex3f (- pente_x * cos (PI * pente_angle / 180),
     		pente_y/2,
     		bassin_z + pente_x * sin(PI * pente_angle / 180));
@@ -218,7 +218,7 @@ void Cascade<Dim>::draw() {
     		bassin_z + pente_z * cos(PI * pente_angle / 180));
     glVertex3f (pente_z * sin(PI * pente_angle / 180) - pente_x * cos (PI * pente_angle / 180),
     		pente_y/2+0.001,
-    		bassin_z + pente_z * cos(PI * pente_angle / 108) + pente_x * sin (PI * pente_angle / 180));
+    		bassin_z + pente_z * cos(PI * pente_angle / 180) + pente_x * sin (PI * pente_angle / 180));
     glVertex3f (- pente_x * cos (PI * pente_angle / 180),
     		pente_y/2+0.001,
     		bassin_z + pente_x * sin(PI * pente_angle / 180));
@@ -227,8 +227,14 @@ void Cascade<Dim>::draw() {
 
     /* On dessine les particules */
     typename vector<Particule <Dim> *>::const_iterator it;
-    for (it = f->particules.begin(); it != f->particules.end(); it++) {
-	(*it)->draw(f->mat);
+    vector<Particule<Dim> *> partM = f->getParticulesMobiles();
+    vector<Particule<Dim> *> partI = f->getParticulesImmobiles();
+    Materiau<Dim> * mat = f->getMateriau();
+    for (it = partM.begin(); it != partM.end(); it++) {
+	(*it)->draw(mat);
+    }
+    for (it = partI.begin(); it != partI.end(); it++) {
+	(*it)->draw(mat);
     }
     glDisable (GL_LIGHTING);
 }
@@ -265,4 +271,3 @@ const double & Cascade<Dim>::getBassinZ() const
  *
  * Les autres plans s'expriment simplement
  */
-
