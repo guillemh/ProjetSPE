@@ -1,8 +1,9 @@
-x Implémentation des nouvelles forces de pression, viscosité, etc.
+X Implémentation des nouvelles forces de pression et viscosité
+X Implémenter le nouveau noyau
+- Assimiler les bords de la boite par un ensemble de particules fixes
 - Trouver les bons paramètres pour le modèle
-x Recherche des plus proches voisins
+X Recherche des plus proches voisins
 - ARPS
-x Changer les noyaux
 - Rendu de la scène
 - SHEME
 - Shaders
