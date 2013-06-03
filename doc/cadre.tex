@@ -36,17 +36,17 @@ Le présent document constitue le document de cadrage du projet de spécialité 
 
 \section{Présentation du projet}
 
-Ce projet de spécialité est davantage orienté vers la recherche que vers le génie logiciel. Il consiste en l'implémentation d'un modèle SPH {\em (Smoothed-Particle Hydrodynamics)} pour l'animation de fluides en temps réel. Ce modèle consiste à représenter un liquide ou un gaz sous la forme d'un ensemble de particules autonomes mais physiquement soumises à des forces et interagissant avec les particules qui lui sont voisines. La finalité de ce projet consiste en l'obtention d'une animation 3D la plus réaliste possible d'un fluide. La contrainte temps-réel impose un temps de calcul minimal pour un résultat quasi-instantané et favorisant l'interaction avec un tiers. Un exemple d'application possible de ce modèle est l'animation d'une cascade dans un jeu vidéo. \\
+Ce projet de spécialité, de part sa thématique, est davantage orienté vers la recherche que vers le génie logiciel. Il consiste en l'implémentation d'un modèle SPH {\em (Smoothed-Particle Hydrodynamics)} pour l'animation de fluides en temps réel. Ce modèle consiste à représenter un liquide ou un gaz sous la forme d'un ensemble de particules autonomes mais physiquement soumises à des forces et interagissant avec les particules qui lui sont voisines. La finalité de ce projet est d'obtenir une scène 3D animée comportant un fluide en écoulement la plus réaliste possible. La contrainte temps-réel impose un temps de calcul minimal pour un résultat quasi-instantané et favorisant l'interaction avec un tiers. Un exemple d'application possible de ce modèle est l'animation d'une cascade dans un jeu vidéo. \\
 
 Techniquement, cet objectif s'articule autour de trois points : \\
 
 \begin{itemize}
-\item tout d'abord, l'implémentation du système et du modèle physique, ce qui passe par le calcul des forces et l'intégration de la seconde loi de Newton pour animer le fluide ;
-\item d'un point de vue informatique, au vu de la complexité du calcul, et du nombre de particules considérées pour approximer un fluide, un objectif essentiel consiste en l'optimisation du calcul précédent, ce qui sous-entend par exemple l'utilisation de structures de données adéquates et performantes ;
-\item enfin, nous devons veiller à obtenir un résultat réaliste, tant du point de vue physique qu'esthétique. Ceci consiste à construire un modèle partant de l'ensemble des particules et construisant la surface en mouvement. \\
+\item tout d'abord, l'\textbf{implémentation} du système et du modèle physique, ce qui passe par le calcul des forces et l'intégration de la seconde loi de Newton pour animer le fluide\, ;
+\item d'un point de vue informatique, au vu de la complexité des calculs effectués, et du nombre de particules considérées pour approximer un fluide, un objectif essentiel consiste en l'\textbf{optimisation} du calcul précédent, ce qui sous-entend par exemple l'utilisation de structures de données adéquates et performantes\, ;
+\item enfin, nous devons veiller à obtenir un résultat \textbf{réaliste}, tant du point de vue physique qu'esthétique. Ceci consiste à construire un modèle partant de l'ensemble des particules et construisant la surface en mouvement. \\
 \end{itemize}
 
-Nous suivrons dans ce projet une démarche incrémentale dans notre amélioration du rendu et de la simulation, nous y reviendrons plus en détail ci-dessous. \\
+Nous suivrons durant ce projet une démarche incrémentale dans notre amélioration du rendu et de la simulation. \\
 
 Concernant le rendu de ce projet, le temps nous est insuffisant pour essayer plusieurs modèles physiques et implémenter toutes les optimisations possibles pour ce type de problème. Aussi, notre objectif est, d'ici la date de fin du projet, d'obtenir un exécutable fonctionnel fournissant des résultats acceptables. Ces résultats incluent l'aspect visuel, l'aspect physique, mais aussi la recherche des meilleures performances. De plus, notre projet étant susceptible, par la suite, d'être réutilisé par nos encadrants et des chercheurs pour des travaux ultérieurs, des contraintes de clarté s'imposent, et ce, autant au sein du code que de la documentation du projet. 
 
