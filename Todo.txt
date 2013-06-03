@@ -1,8 +1,8 @@
-- Implémentation des nouvelles forces de pression, viscosité, etc.
+x Implémentation des nouvelles forces de pression, viscosité, etc.
 - Trouver les bons paramètres pour le modèle
-- Recherche des plus proches voisins
+x Recherche des plus proches voisins
 - ARPS
-- Changer les noyaux
+x Changer les noyaux
 - Rendu de la scène
 - SHEME
 - Shaders
