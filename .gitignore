@@ -15,5 +15,13 @@
 # Documentation Doxygen
 doc
 
+# Makefile
+*Makefile*
+
+# Exécutables
+*/release
+g3d/test_dessin_fluide
+cascade/test_cascade
+
 Memoire.pdf
 WCSPH*

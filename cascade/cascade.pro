@@ -1,5 +1,4 @@
 TEMPLATE = app
-TARGET   = test_cascade
 CONFIG  += qt opengl glut warn_on thread openmp debug # release 
 QT *= xml opengl 
 QMAKE_CXXFLAGS += -std=c++0x

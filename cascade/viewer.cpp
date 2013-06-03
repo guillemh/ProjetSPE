@@ -3,6 +3,7 @@
 #include <list>
 
 #include "viewer.h"
+#include "sceneCascade.h"
 
 using std::list ;
 
@@ -38,8 +39,8 @@ void Viewer::init()
     setSceneRadius(20.0f);
 	
     //=== INIT SCENE
-    s = new Scene () ;
-
+    // s = new Scene () ;
+    s = new SceneCascade();
 }
 
 
