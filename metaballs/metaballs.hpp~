@@ -1,0 +1,15 @@
+#ifndef _METABALLS_
+#ifndef _METABALLS_
+
+#include "../core/particules.hpp"
+
+template<unsigned int Dim>
+class Metaballs {
+private:
+    list<Particule <Dim>* > particules;
+    
+};
+
+#include "metaballs.tpp";
+
+#endif
