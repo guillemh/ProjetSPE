@@ -11,7 +11,8 @@
 class Skybox {
  public :
     enum TextureId {
-	TEX_CRATE, 
+	TEX_SKY,
+	TEX_HERBE
     };
 
 
@@ -33,8 +34,12 @@ class Skybox {
      * Représentation de la skybox
      */
     void init();
+    void initSky();
+    void initHerbe();
     void loadTexture(TextureId texId, const char *filename);
     void draw();
+    void drawSky();
+    void drawHerbe();
     void animate();
 
  private :
