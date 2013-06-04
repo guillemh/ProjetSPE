@@ -52,8 +52,12 @@ void Skybox::draw()
 { 
     glEnable(GL_TEXTURE_2D);
 
+    glDisable(GL_LIGHTING);
+
+    GLfloat default_color[3] = {1., 1., 1.};
+    glColor3fv(default_color);
+
     glBindTexture(GL_TEXTURE_2D, textures[TEX_CRATE]);
-    //setFiltering();
 
     glBegin(GL_QUADS);
     // face droite

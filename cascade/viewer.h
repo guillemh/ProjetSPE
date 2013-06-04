@@ -64,7 +64,7 @@ class Viewer : public QGLViewer
      */
     virtual void keyPressEvent(QKeyEvent *e);
 
-    SceneCascade *s;
+    SceneCascade *s;    /*!< Objet contenant tous les éléments de la scène */
 };
 
 #endif

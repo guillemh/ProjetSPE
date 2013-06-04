@@ -22,6 +22,8 @@ class SceneCascade {
      */
     ~SceneCascade();
 
+    void init();
+
     /**
      * \brief Représentation
      *
