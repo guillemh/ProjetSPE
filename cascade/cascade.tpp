@@ -1,4 +1,4 @@
-#include "particule.hpp"
+#include "../core/particule.hpp"
 
 template<unsigned int Dim>
 Cascade<Dim>::Cascade(Fluide<Dim> *_f) {

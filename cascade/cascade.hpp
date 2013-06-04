@@ -1,7 +1,7 @@
 #ifndef _CASCADE_HPP_
 #define _CASCADE_HPP_
 
-#include "fluide.hpp"
+#include "../core/fluide.hpp"
 
 /**
  * \class Cascade

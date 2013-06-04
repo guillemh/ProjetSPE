@@ -25,6 +25,7 @@ void SceneCascade::draw()
 {
     glPushMatrix();
     c->draw();
+    s->init();
     s->draw();
     glPopMatrix();
 }
