@@ -39,7 +39,11 @@ Cascade<Dim>::~Cascade() {
 
 template<unsigned int Dim>
 void Cascade<Dim>::draw() {
+    glPushMatrix();
+
     glColor3f(1, 1, 1);
+    glTranslatef(0., 0., 0.1);
+
     /* Dessin du bassin */
     glEnable(GL_LIGHTING);
     glBegin (GL_QUADS);
@@ -237,6 +241,8 @@ void Cascade<Dim>::draw() {
 	(*it)->draw(mat);
     }
     glDisable (GL_LIGHTING);
+
+    glPopMatrix();
 }
 
 template<unsigned int Dim>

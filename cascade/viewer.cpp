@@ -21,7 +21,7 @@ void Viewer::init()
 
     //=== VIEWING PARAMETERS
     restoreStateFromFile();
-    toogleWireframe = true;  // filled faces
+    toogleWireframe = false;  // filled faces
     toogleLight = false;     // light off
 
     if (toogleLight == true) glEnable(GL_LIGHTING);
