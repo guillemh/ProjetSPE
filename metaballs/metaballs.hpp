@@ -22,8 +22,10 @@ private:
     bool*** points; /*!< Tableau de booléens, chaque booléen étant associé de façon unique à un point de l'espace :
 		      un booléen indique si le sommet doit être marqué ou non, ce qui nous permet d'obtenir la configuration
 		      correspondante du cube qui sera défini par la suite à l'aide de huit points */
+    Vecteur<3> origine; /*!< Origine spatiale de l'espace rectangulaire considéré dans le maillage */
+    double cote; /*!< Côté d'un cube */
+    doube rayon; /*!< Rayon d'une particule */
     int configurations[256][12]; /*!< Look-up table des configurations possibles pour l'algorithme des Marching Cubes */
-
 
     /* ** Constructeurs ** */
     
@@ -32,8 +34,11 @@ public:
      * \brief Constructeur
      *
      * Alloue le tableau de points
+     * \param _origine Origine spatiale de l'espace rectangulaire considéré dans le maillage
+     * \param _cote Côté d'un cube du maillage
+     * \param _rayon Rayon d'une particule
      */
-    Metaballs();
+    Metaballs(Vecteur<3> _origine, double _cote, double _rayon);
 
     /**
      * \brief Destructeur
@@ -65,23 +70,35 @@ public:
      * \brief Représentation d'un cube
      *
      * Représente une configuration d'un Marching Cube, à la position et de taille voulue
-     * \param pos Position du sommet 0 du cube, d'abscisse, d'ordonnée et de côte minimale
+     * \param pos Position du sommet 0 du cube, d'abscisse, d'ordonnée et de côte minimales
      * \param cote Dimension du côté du cube
      * \param config Configuration du cube
      */
-    void drawCube(Vecteur<Dim> pos, double cote, int config);
+    void drawCube(Vecteur<3> pos, double cote, int config);
 
     /**
      * \brief Représentation d'un triangle
      *
      * Représente un triangle à l'intérieur d'un cube
-     * \param pos Position du sommet 0 du cube, d'abscisse, d'ordonnée et de côté minimale
+     * \param pos Position du sommet 0 du cube, d'abscisse, d'ordonnée et de côte minimales
      * \param cote Dimension du côté du cube
      * \param int a Numéro de la première arête à relier
      * \param int b Numéro de la deuxième arête à relier
      * \param int c Numéro de la troisième arête à relier
      */
-    void drawTriangle(Vecteur<Dim> pos, double cote, int a, int b, int c);
+    void drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c);
+
+    /**
+     * \brief Association d'un point
+     *
+     * Retourne un point au milieu de l'arête a d'un cube, connaissant la position de son
+     * sommet 0 et de son côté.
+     * \param pos Position du sommet 0 du cube, d'abscisse, d'ordonnée et de côte minimales
+     * \param cote Dimension du côté du cube
+     * \param a Numéro de l'arête considérée
+     * \return Le point de l'espace ainsi déterminé
+     */
+    double[3] associerPoint (Vecteur<3> pos, double cote, int a);
 };
 
 #endif
