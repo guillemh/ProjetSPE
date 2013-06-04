@@ -329,7 +329,8 @@ void Fluide<Dim>::majDensitePression() {
     typename list<Particule<Dim> *>::iterator it1;
     NoyauLissageMonaghan<Dim> noyau = NoyauLissageMonaghan<Dim>(mat->getRayonNoyau());
     set<Particule<Dim>*> voisins;    
-    typename set<Particule<Dim>*>::iterator it2;
+    //typename set<Particule<Dim>*>::iterator it2;
+    typename list<Particule<Dim>*>::iterator it2;
 
 //    cout<<"appel MAJDP"<<endl;
 //    int i = 0;
@@ -413,7 +414,8 @@ void Fluide<Dim>::majPositionVitesse() {
 
     set<Particule<Dim>*> voisins;
 
-    typename set<Particule<Dim>*>::iterator it2;
+    //typename set<Particule<Dim>*>::iterator it2;
+    typename list<Particule<Dim>*>::iterator it2;
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
  
         // Definition de toutes les forces
