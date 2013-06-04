@@ -2,6 +2,35 @@
 
 /* ** Constructeurs ** */
 
+/*
+ * Convention sur le cube utilisé
+ * (Si) représente le sommet numéro i
+ * Un simple chiffre représente le numéro de l'arête
+ *
+ * ......... z
+ *
+ * ......... ^
+ * ......... |
+ * ........(S4)------4------(S5)
+ * .......  /|              / |
+ * ....... / |             /  |
+ * ...... 7  8            5   9
+ * ..... /   |           /    |
+ * .... /    |          /     |
+ * ...(S7)------6-----(S6)    |
+ * ... |    (S0)-----0--|---(S1)----> y
+ * ... |    /           |    /
+ * .. 11   /           10   /
+ * ... |  3             |  1
+ * ... | /              | /
+ * ... |/               |/
+ * ...(S3)------2-----(S2)
+ * .. /
+ * .. v
+ * 
+ * .. x
+ */
+
 Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon) {
     n = 20;
     p = 20;
@@ -21,6 +50,7 @@ Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon) {
     
 }
 
+
 Metaballs::~Metaballs() {
     for (int i = 0 ; i < n ; i++) {
 	for (int j = 0 ; j < p ; j++) {
@@ -30,6 +60,7 @@ Metaballs::~Metaballs() {
     }
     delete points [];
 }
+
 
 /* ** Methodes ** */
 
@@ -57,6 +88,7 @@ void Metaballs::coloration(const list<Particule<3> *> &particules) {
 void Metaballs::draw() {
     int config = 0 ;
     Vecteur<3> posCour;
+    glBegin (GL_TRIANGLES);
     for (int i = 0 ; i < n - 1 ; i++) {
 	for (int j = 0 ; j < p - 1 ; j++) {
 	    for (int k = 0 ; k < q - 1 ; k++) {
@@ -66,7 +98,10 @@ void Metaballs::draw() {
 		     * C'est tordu, mais je n'ai rien trouvé de mieux pour éviter 8 "if"
 		     * La boucle sur s va parcourir les 8 sommets du cube dont le sommet 0
 		     * est (i, j, k)
+		     * Peut-être est-il cependant plus pertinent d'écrire les huit instructions
+		     * à la suite, d'autant plus qu'il n'y en a pas beaucoup (on évite ainsi un for)
 		     * Si un point prend la valeur "vrai" il est considéré comme coloré
+		     * c'est-à-dire à l'intérieur de la surface implicite
 		     */
 		    config |= points[i + ((s >> 1) % 2)][j + ((s + (s >> 1)) % 2)][k + (s >> 2)];
 		    config <<= 1;
@@ -78,7 +113,8 @@ void Metaballs::draw() {
 	    }
 	}
     }
-    // To do : cas limites (bords de la boîte)
+    glEnd (GL_TRIANGLES);
+    // To do : cas limites (bords de la boîte) (éventuellement)
 }
 
 void Metaballs::drawCube(Vecteur<3> pos, double cote, int config) {
@@ -90,17 +126,19 @@ void Metaballs::drawCube(Vecteur<3> pos, double cote, int config) {
     }
 }
 
+
 void Metaballs::drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c) {
-    double[3] ptA = associerPoint (pos, cote, a);
-    double[3] ptB = associerPoint (pos, cote, b);
-    double[3] ptC = associerPoint (pos, cote, c);
+    Vecteur<3> ptA = associerPoint (pos, cote, a);
+    Vecteur<3> ptB = associerPoint (pos, cote, b);
+    Vecteur<3> ptC = associerPoint (pos, cote, c);
     // Manque la normale !
     glVertex3d (ptA[0], ptA[1], ptA[2]);
     glVertex3d (ptB[0], ptB[1], ptB[2]);
     glVertex3d (ptC[0], ptC[1], ptC[2]);
 }
 
-double[3] Metaballs::associerPoint(Vecteur<3> pos, double cote, int a) {
+
+Vecteur<3> Metaballs::associerPoint(Vecteur<3> pos, double cote, int a) {
     switch (a) {
     case 0 : 
 	return Vecteur<3>(pos(1), pos(2)+cote/2.0, pos(3));

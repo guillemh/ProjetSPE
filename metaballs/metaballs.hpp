@@ -95,7 +95,7 @@ public:
      * \param a Numéro de l'arête considérée
      * \return Le point de l'espace ainsi déterminé
      */
-    double[3] associerPoint (Vecteur<3> pos, double cote, int a);
+    Vecteur<3> associerPoint (Vecteur<3> pos, double cote, int a);
 };
 
 #endif
