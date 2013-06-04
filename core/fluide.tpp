@@ -130,8 +130,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         }
         
 	//Ligne rigide de particules
-	int nb_x = largeur_x/0.03;
-	int nb_y = largeur_y/0.03;
+	int nb_x = largeur_x/0.08;
+	int nb_y = largeur_y/0.08;
 	for (int i = 0; i <= nb_x; i++) {
 	    for (int j = 0; j <= nb_y; j++) {
 		vec = Vecteur<Dim>((x_min + largeur_x*(double(i)/double(nb_x))),
