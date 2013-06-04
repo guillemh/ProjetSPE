@@ -9,12 +9,20 @@
  * \class Skybox Classe respresentant la skybox associee a la scene
  */
 class Skybox {
- public :
+    /* ** Attributs ** */
+ public:
     enum TextureId {
 	TEX_SKY,
 	TEX_HERBE
     };
+ private:
+    std::map<TextureId, GLuint> textures; /*!< Map des textures */
+    Cascade<3> *c; /*!< Pointeur vers la cascade utilisée */
+    double box_x; /*!< Coordonnée en x de la skybox */
+    double box_y; /*!< Coordonnée en y de la skybox */
+    double box_z; /*!< Coordonnée en z de la skybox */
 
+ public :
 
     /**
      * \brief Constructeur
@@ -29,36 +37,51 @@ class Skybox {
     ~Skybox();
 
     /**
-     * \brief Représentation 
+     * \brief Initialisation 
+     *
+     * Initialisation de la skybox
+     */
+    void init();
+
+    /**
+     * \brief Initialisation du ciel 
+     *
+     * Initialisation des faces latérales de la skybox
+     */
+    void initSky();
+
+    /**
+     * \brief Initialisation du sol
+     *
+     * Initialisation de la face inférieure de la skybox
+     */
+    void initHerbe();
+
+    /**
+     * \brief Chargement d'une texture
+     */
+    void loadTexture(TextureId texId, const char *filename);
+
+    /**
+     * \brief Représentation
      *
      * Représentation de la skybox
      */
-    void init();
-    void initSky();
-    void initHerbe();
-    void loadTexture(TextureId texId, const char *filename);
     void draw();
+
+    /**
+     * \brief Représentation du ciel
+     *
+     * Représentation des faces latérales de la skybox
+     */
     void drawSky();
+
+    /**
+     * \brief Représentation du sol 
+     *
+     * Représentation de la face inférieure de la skybox
+     */
     void drawHerbe();
-    void animate();
-
- private :
-    Cascade<3> *c;
-    double box_x;
-    double box_y;
-    double box_z;
-
- public:
-    // activated by the 'f' key
-    GLint filteringMode;
-    void toogleFiltering();
-    void setFiltering();
-    void setFilteringMipmap();
- 
- private:
-    // association bewteen a TextureId and its OpenGL texture id
-    // (generated with glGenTextures. cf the loadTexture method)
-    std::map<TextureId, GLuint> textures;
     
 };
 

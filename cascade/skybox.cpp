@@ -179,6 +179,3 @@ void Skybox::drawHerbe()
 
 }
 
-void Skybox::animate() {}
-
-

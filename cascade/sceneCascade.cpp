@@ -36,5 +36,4 @@ void SceneCascade::draw()
 void SceneCascade::animate()
 {
     c->animate();
-    s->animate();
 }
