@@ -1,8 +1,6 @@
 #ifndef _FLUIDE_HPP_
 #define _FLUIDE_HPP_
 
-#include <vector>
-using std::vector;
 #include <iostream>
 #include <map>
 #include <list>
@@ -25,8 +23,8 @@ class Fluide {
     /* ** Attributs ** */
 private:
     Materiau<Dim> * mat;                 /*!< Materiau du fluide (avec toutes les constantes) */
-    vector<Particule<Dim> *> particules; /*!< nsemble des particules mobiles */
-    vector<Particule<Dim> *> lignedEau;  /*!< Ensemble des particules immobiles sur le plan z = z_min */
+    list<Particule<Dim> *> particules; /*!< Ensemble des particules mobiles */
+    list<Particule<Dim> *> lignedEau;  /*!< Ensemble des particules immobiles sur le plan z = z_min */
 public:
     double x_min;                        /*!< Définit le plan d'équation x = x_min (provisoire) */
     double x_max;                        /*!< Définit le plan d'équation x = x_max (provisoire) */
@@ -39,18 +37,13 @@ private:
     bool debutAnim;                      /*!< Indique si on est au debut de l'animation */
 
     Premier<Dim> table;
+    
     /* Table de hashage pour les voisins */
     multimap<int, Particule<Dim>*> hash_voisins;
+    
     /* Longueur de la table de hashage */
     int lgrHash;
-    /* Fonction de hashage */
-    int fonction_hashage(Vecteur<Dim>);
 
-    /* Fonction d'accès au voisinage d'une particule */
-    list<Particule<Dim>*> voisinage(Particule<Dim>&);
-
-    /* DEBUG : affichage de la table de hashage */
-    void afficher_hash();
 
     /* ** Constructeurs ** */
 public:
@@ -92,12 +85,12 @@ public:
     /**
      * Retourne le vecteur des particules mobiles utilisées dans le fluide
      */
-    vector<Particule<Dim> *> getParticulesMobiles();
+    list<Particule<Dim> *> getParticulesMobiles();
 
     /**
      * Retourne le vecteur des particules immobiles utilisées dans le fluide
      */
-    vector<Particule<Dim> *> getParticulesImmobiles();
+    list<Particule<Dim> *> getParticulesImmobiles();
 
     /**
      * Retourne un pointeur sur le type de matériau utilisé
@@ -123,6 +116,21 @@ public:
       * Affichage des particules du fluide
       */
     void affiche();
+    
+    /**
+      * Fonction de hashage
+      */
+    int fonction_hashage(Vecteur<Dim>);
+
+    /**
+      * Fonction d'accès au voisinage d'une particule
+      */
+    list<Particule<Dim>*> voisinage(Particule<Dim>&);
+
+    /**
+      * DEBUG : affichage de la table de hashage
+      */
+    void afficher_hash();
 
     /**
      * Fonction de tests basiques sur l'insertion dans la table de hashage,

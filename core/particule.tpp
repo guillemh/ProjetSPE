@@ -7,12 +7,12 @@
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
-Particule<Dim>::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double m, double rho, double p)
+Particule<Dim>::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m)
     : position(pos),
       vitesse(vit),
-      masse(m),
       masse_volumique(rho),
-      pression(p)
+      pression(p),
+      masse(m)
 {
 }
 

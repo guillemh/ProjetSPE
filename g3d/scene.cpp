@@ -12,11 +12,13 @@ using namespace std;
 
 /* Constructeur à modifier, évidemment */
 Scene::Scene() {
+    
+    srand (time (NULL));   
+    
     m = new Materiau<3>(EAU);
     int d [3] = {1, 1, 200};
-    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression());
+    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression()); 
     
-    srand (time (NULL));    
 //    Vecteur<3> vec0 = Vecteur<3>();
 //    
 //    Vecteur<3> vec1 = Vecteur<3>(0, 0, 0.1);

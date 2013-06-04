@@ -226,9 +226,9 @@ void Cascade<Dim>::draw() {
     glEnd();
 
     /* On dessine les particules */
-    typename vector<Particule <Dim> *>::const_iterator it;
-    vector<Particule<Dim> *> partM = f->getParticulesMobiles();
-    vector<Particule<Dim> *> partI = f->getParticulesImmobiles();
+    typename list<Particule <Dim> *>::const_iterator it;
+    list<Particule<Dim> *> partM = f->getParticulesMobiles();
+    list<Particule<Dim> *> partI = f->getParticulesImmobiles();
     Materiau<Dim> * mat = f->getMateriau();
     for (it = partM.begin(); it != partM.end(); it++) {
 	(*it)->draw(mat);
