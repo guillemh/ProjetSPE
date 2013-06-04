@@ -2,12 +2,19 @@
 #ifndef _METABALLS_
 
 #include <list>
+#include <iostream>
 #include "../core/particules.hpp"
 
-using std::list;
+/** 
+ * \class Metaballs
+ * @brief Classe discrétisant l'espace pour afficher un fluide avec des surfaces implicites
+ * 
+ */
 
-template<unsigned int Dim>
 class Metaballs {
+
+    /* ** Attributs ** */
+    
 private:
     int n; /*!< Nombre de cubes selon l'axe (Ox) */
     int p; /*!< Nombre de cubes selon l'axe (Oy) */
@@ -17,6 +24,9 @@ private:
 		      correspondante du cube qui sera défini par la suite à l'aide de huit points */
     int configurations[256][12]; /*!< Look-up table des configurations possibles pour l'algorithme des Marching Cubes */
 
+
+    /* ** Constructeurs ** */
+    
 public:
     /**
      * \brief Constructeur
@@ -32,13 +42,17 @@ public:
      */
     ~Metaballs();
 
+
+    /* ** Methodes ** */
+
+public:
     /**
      * \brief Coloration
      *
      * Calcule la valeur de la surface implicite définie par les particules du fluide pour tout point du maillage,
-     * et attribue à chaque sommet sa couleur, ceci pour déterminer la configuration des cubes utilisés par l'algorithme
+     * et attribue à chaque sommet sa couleur, ceci pour déterminer la configuration des cubes
      */
-    void coloration(const list<Particule <Dim>* > &particules);
+    void coloration(const list<Particule <3>* > &particules);
 
     /**
      * \brief Représentation
@@ -69,7 +83,5 @@ public:
      */
     void drawTriangle(Vecteur<Dim> pos, double cote, int a, int b, int c);
 };
-
-#include "metaballs.tpp";
 
 #endif

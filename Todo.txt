@@ -8,3 +8,4 @@ X Recherche des plus proches voisins
 - SHEME
 - Shaders
 - Rendu réaliste de la scène : marching cubes, splatting images
+- Optimisation par parallélisation des calculs (sur GPU ?)

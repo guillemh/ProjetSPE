@@ -129,21 +129,19 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
             }
         }
         
-	//Ligne rigide de particules
-	int nb_x = largeur_x/0.08;
-	int nb_y = largeur_y/0.08;
-	for (int i = 0; i <= nb_x; i++) {
-	    for (int j = 0; j <= nb_y; j++) {
-		vec = Vecteur<Dim>((x_min + largeur_x*(double(i)/double(nb_x))),
-				   (y_min + largeur_y*(double(j)/double(nb_y))),
-				   z_min);
-		part = new Particule<Dim> (vec, Vecteur<Dim>(), 0.0, rho, p);
-		lignedEau.push_back(part);
-		hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(part->getPosition()), part));
+	    //Ligne rigide de particules
+	    int nb_x = largeur_x/0.03;
+	    int nb_y = largeur_y/0.03;
+	    for (int i = 0; i <= nb_x; i++) {
+	        for (int j = 0; j <= nb_y; j++) {
+		    vec = Vecteur<Dim>((x_min + largeur_x*(double(i)/double(nb_x))),
+				       (y_min + largeur_y*(double(j)/double(nb_y))),
+				       z_min);
+		    part = new Particule<Dim> (vec, Vecteur<Dim>(), 0.0, rho, p);
+		    lignedEau.push_back(part);
+		    hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(part->getPosition()), part));
+	        }
 	    }
-	}
-        cout << "On a construit " << particules.size() << " particules mobiles ";
-        cout << "et " << lignedEau.size() << " particules fixes" << endl;
         
     } else {
         cout << "Erreur (Fluide) : la dimension de l'espace doit être 2 ou 3" << endl;
@@ -329,34 +327,30 @@ void Fluide<Dim>::majDensitePression() {
     typename list<Particule<Dim> *>::iterator it1;
     NoyauLissageMonaghan<Dim> noyau = NoyauLissageMonaghan<Dim>(mat->getRayonNoyau());
     set<Particule<Dim>*> voisins;    
-    //typename set<Particule<Dim>*>::iterator it2;
-    typename list<Particule<Dim>*>::iterator it2;
+    typename set<Particule<Dim>*>::iterator it2;
 
-//    cout<<"appel MAJDP"<<endl;
-//    int i = 0;
     // On boucles sur toutes les particules
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
+    
         // On met leur masse volumique à jour
         double somme = noyau.defaut(Vecteur<Dim>());
-
         voisins = voisinage(*(*it1));
-//        cout << "P" << i << " : " << voisins.size() << endl;
-        for (it2 = particules.begin(); it2 != particules.end(); it2++) {  
-//        for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
-//            cout<<(**it2)<<endl;
+        
+        for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
             somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
-        }
 
         (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
         
         // On met leur pression à jour
         (*it1)->majPression(mat->getCeleriteSon(), mat->getDensiteRepos());
-//        i++;
     }
 
 //    for (it1 = lignedEau.begin(); it1 != lignedEau.end(); it1++) {
+
+//        // On met leur masse volumique à jour
 //        double somme = noyau.defaut(Vecteur<Dim>());
 //        voisins = voisinage(*(*it1));
+
 //        for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
 //            somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
 //            
@@ -414,8 +408,7 @@ void Fluide<Dim>::majPositionVitesse() {
 
     set<Particule<Dim>*> voisins;
 
-    //typename set<Particule<Dim>*>::iterator it2;
-    typename list<Particule<Dim>*>::iterator it2;
+    typename set<Particule<Dim>*>::iterator it2;
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
  
         // Definition de toutes les forces
@@ -433,8 +426,7 @@ void Fluide<Dim>::majPositionVitesse() {
         double masseVolumique_a = (*it1)->getMasseVolumique();
 
         voisins = voisinage(*(*it1));
-        // for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
-        for (it2 = particules.begin(); it2 != particules.end(); it2++) {
+        for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
             // Quelques variables locales pour factoriser le calcul
             Vecteur<Dim> x_ab = (*it1)->getPosition() - (*it2)->getPosition();
             Vecteur<Dim> v_ab = (*it1)->getVitesse() - (*it2)->getVitesse();
