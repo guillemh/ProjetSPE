@@ -87,6 +87,18 @@ void Particule<Dim>::setPression(double p) {
 }
 
 template<unsigned int Dim>
+void Particule<Dim>::incrPosition(const Vecteur<Dim> &pos) {
+    position += pos;
+}
+
+
+template<unsigned int Dim>
+void Particule<Dim>::incrVitesse(const Vecteur<Dim> &vit) {
+    vitesse += vit;
+}
+
+
+template<unsigned int Dim>
 void Particule<Dim>::majPression (double son, double dens) {
     /* Calcul de la pression appliquée à une particule selon l'équation de Tait
      * (cf. Becker-Teschner, "Weakly compressible SPH for free surface flows")
@@ -97,16 +109,13 @@ void Particule<Dim>::majPression (double son, double dens) {
 //    cout << "B = " << B << ", rho = " << masse_volumique << ", rho_0 = " << dens << ", rho/rho_0 = " << masse_volumique/dens << ", on obtient P = " << pression << endl;
 }
 
-template<unsigned int Dim>
-void Particule<Dim>::incrPosition(const Vecteur<Dim> &pos) {
-    position += pos;
-}
-
 
 template<unsigned int Dim>
-void Particule<Dim>::incrVitesse(const Vecteur<Dim> &vit) {
-    vitesse += vit;
+double Particule<Dim>::isosurface(Vecteur<Dim> &pos) {
+    Vecteur<Dim> diff = pos-position;
+    return diff.scalaire(diff);
 }
+
 
 template<unsigned int Dim>
 void Particule<Dim>::draw(Materiau<Dim> *mat) const {

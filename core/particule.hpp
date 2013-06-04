@@ -104,14 +104,6 @@ public:
     void setPression(double p);
 
     /**
-     * Met à jour la pression en fonction de la masse volumique de la particule
-     * Prototype éventuellement à reprendre
-     * \param son La vitesse du son
-     * \param dens La densité au repos
-     */
-    void majPression(double son, double dens);
-
-    /**
      * Incrémente la position de la particule
      * \param pos Vecteur de déplacement de la particule (position += pos)
      */
@@ -122,6 +114,20 @@ public:
      * \param vit Facteur d'augmentation de la vitesse (vitesse += vit)
      */
     void incrVitesse(const Vecteur<Dim> &vit);
+
+    /**
+     * Met à jour la pression en fonction de la masse volumique de la particule
+     * Prototype éventuellement à reprendre
+     * \param son La vitesse du son
+     * \param dens La densité au repos
+     */
+    void majPression(double son, double dens);
+
+    /**
+     * Calcule la valeur de l'isosurface de cette particule en un point de l'espace.
+     * \param pos position à laquelle on veut calculer la valeur de l'isosurface
+     */
+    double isosurface(Vecteur<Dim> &pos);
     
     /**
      * Fonction d'affichage de la particule
