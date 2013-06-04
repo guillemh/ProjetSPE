@@ -24,13 +24,13 @@ protected:
     /* ** Constructeurs ** */
 public:
     /**
-     * Constructeur par defaut, met h à 0
+     * Constructeur par défaut, met h à 0
      */
     NoyauLissage();
     
     /**
-     * Constructeur
-     * \param rayon rayon de support
+     * Constructeur prenant en argument le rayon du noyau
+     * \param rayon Rayon de support
      */
     NoyauLissage(double rayon);
 
@@ -43,25 +43,28 @@ public:
     /* ** Methodes ** */
 public:
     /**
-     * \return le rayon du noyau de lissage
+     * \return Le rayon du noyau de lissage
      */
     double getRayon() const;
 
     /**
      * Implémente la méthode par défaut de noyau de lissage
-     * \param r position de la particule
+     * @param r Position de la particule
+     * @return La valeur du noyau évalué en r
      */
     virtual double defaut(const Vecteur<Dim> r) const = 0;
 
     /**
      * Implémente la méthode de noyau de lissage avec le gradient
-     * \param r position de la particule
+     * @param r Position de la particule
+     * @return La valeur du gradient du noyau évalué en r
      */
     virtual Vecteur<Dim> gradient(const Vecteur<Dim> r) const = 0;
 
     /**
      * Implémente la méthode de noyau de lissage avec le laplacien
-     * \param r position de la particule
+     * @param r Position de la particule
+     * @return La valeur du laplacien du noyau évalué en r
      */
     virtual double laplacien(const Vecteur<Dim> r) const = 0;
     
@@ -91,7 +94,7 @@ public:
     
     /**
      * Constructeur
-     * \param rayon rayon de support
+     * \param rayon Rayon de support
      */
     NoyauLissageDefaut(double rayon);
 
@@ -103,22 +106,11 @@ public:
 
     /* ** Methodes ** */
 public:
-    /**
-     * Implémente la méthode par défaut de noyau de lissage
-     * \param r position de la particule
-     */
+
     virtual double defaut(const Vecteur<Dim> r) const;
 
-    /**
-     * Implémente la méthode de noyau de lissage avec le gradient
-     * \param r position de la particule
-     */
     virtual Vecteur<Dim> gradient(const Vecteur<Dim> r) const;
 
-    /**
-     * Implémente la méthode de noyau de lissage avec le laplacien
-     * \param r position de la particule
-     */
     virtual double laplacien(const Vecteur<Dim> r) const;
 
 };
@@ -142,7 +134,7 @@ public:
     
     /**
      * Constructeur
-     * \param rayon rayon de support
+     * \param rayon Rayon de support
      */
     NoyauLissagePression(double rayon);
 
@@ -154,22 +146,11 @@ public:
 
     /* ** Methodes ** */
 public:
-    /**
-     * Implémente la méthode par défaut de noyau de lissage
-     * \param r position de la particule
-     */
+
     virtual double defaut(const Vecteur<Dim> r) const;
 
-    /**
-     * Implémente la méthode de noyau de lissage avec le gradient
-     * \param r position de la particule
-     */
     virtual Vecteur<Dim> gradient(const Vecteur<Dim> r) const;
 
-    /**
-     * Implémente la méthode de noyau de lissage avec le laplacien
-     * \param r position de la particule
-     */
     virtual double laplacien(const Vecteur<Dim> r) const;
 
 };
@@ -199,7 +180,7 @@ public:
     
     /**
      * Constructeur
-     * \param rayon rayon de support
+     * \param rayon Rayon de support
      */
     NoyauLissageViscosite(double rayon);
 
@@ -212,22 +193,11 @@ public:
     /* ** Methodes ** */
 
 public:
-    /**
-     * Implémente la méthode par défaut de noyau de lissage
-     * \param r position de la particule
-     */
+
     virtual double defaut(const Vecteur<Dim> r) const;
 
-    /**
-     * Implémente la méthode de noyau de lissage avec le gradient
-     * \param r position de la particule
-     */
     virtual Vecteur<Dim> gradient(const Vecteur<Dim> r) const;
 
-    /**
-     * Implémente la méthode de noyau de lissage avec le laplacien
-     * \param r position de la particule
-     */
     virtual double laplacien(const Vecteur<Dim> r) const;
 
 };
@@ -252,7 +222,7 @@ public:
     
     /**
      * Constructeur
-     * \param rayon rayon de support
+     * \param rayon Rayon de support
      */
     NoyauLissageMonaghan(double rayon);
 
@@ -264,22 +234,11 @@ public:
 
     /* ** Methodes ** */
 public:
-    /**
-     * Implémente la méthode par défaut de noyau de lissage
-     * \param r position de la particule
-     */
+
     virtual double defaut(const Vecteur<Dim> r) const;
 
-    /**
-     * Implémente la méthode de noyau de lissage avec le gradient
-     * \param r position de la particule
-     */
     virtual Vecteur<Dim> gradient(const Vecteur<Dim> r) const;
 
-    /**
-     * Implémente la méthode de noyau de lissage avec le laplacien
-     * \param r position de la particule
-     */
     virtual double laplacien(const Vecteur<Dim> r) const;
 
 };

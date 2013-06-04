@@ -26,113 +26,113 @@ private:
     /* ** Constructeurs ** */
 public:
     /**
-      * Constructeur
-      * \param pos position initiale
-      * \param vit vitesse initiale
-      * \param m masse de la particule
-      * \param rho masse volumique initiale
-      * \param p pression initiale
-      */
+     * Constructeur
+     * \param pos Position initiale
+     * \param vit Vitesse initiale
+     * \param m Masse de la particule
+     * \param rho Masse volumique initiale
+     * \param p Pression initiale
+     */
     Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0, double m = 0);
     
     /**
-      * Destructeur
-      */
+     * Destructeur
+     */
     ~Particule();
 
 
     /* ** Methodes ** */
 public:
     /**
-      * \return la position de la particule
-      */
+     * \return La position de la particule
+     */
     const Vecteur<Dim> & getPosition() const;
 
     /**
-      * \return la vitesse de la particule
-      */
+     * \return La vitesse de la particule
+     */
     const Vecteur<Dim> & getVitesse() const;
 
     /**
-      * \return l'accélération de la particule
-      */
+     * \return L'accélération de la particule
+     */
     const Vecteur<Dim> & getAcceleration() const;
 
     /**
-      * \return la masse de la particule
-      */
+     * \return La masse de la particule
+     */
     double getMasse() const;
    
     /**
-      * \return la masse volumique de la particule
-      */
+     * \return La masse volumique de la particule
+     */
     double getMasseVolumique() const;
 
     /**
-      * \return la pression de la particule
-      */
+     * \return La pression de la particule
+     */
     double getPression() const;
 
     /**
-      * Modifie la position de la particule
-      * \param pos nouvelle position de la particule
-      */
+     * Modifie la position de la particule
+     * \param pos Nouvelle position de la particule
+     */
     void setPosition(const Vecteur<Dim> &pos);
 
     /**
-      * Modifie la vitesse de la particule
-      * \param vit nouvelle vitesse de la particule
-      */
+     * Modifie la vitesse de la particule
+     * \param vit Nouvelle vitesse de la particule
+     */
     void setVitesse(const Vecteur<Dim> &vit);
 
     /**
-      * Modifie l'accélération de la particule
-      * \param acc nouvelle accélération de la particule
-      */
+     * Modifie l'accélération de la particule
+     * \param acc Nouvelle accélération de la particule
+     */
     void setAcceleration(const Vecteur<Dim> &acc);
 
     /**
-      * Modifie la masse volumique de la particule
-      * \param rho nouvelle masse volumique de la particule
-      */
+     * Modifie la masse volumique de la particule
+     * \param rho Nouvelle masse volumique de la particule
+     */
     void setMasseVolumique(double rho);
 
     /**
-      * Modifie la pression de la particule
-      * \param p nouvelle pression de la particule
-      */
+     * Modifie la pression de la particule
+     * \param p Nouvelle pression de la particule
+     */
     void setPression(double p);
 
     /**
      * Met à jour la pression en fonction de la masse volumique de la particule
      * Prototype éventuellement à reprendre
-     * \param son la vitesse du son
-     * \param dens la densité au repos
+     * \param son La vitesse du son
+     * \param dens La densité au repos
      */
     void majPression(double son, double dens);
 
     /**
-      * Incrémente la position de la particule
-      * \param pos vecteur de deplacement de la particule (position += pos)
-      */
+     * Incrémente la position de la particule
+     * \param pos Vecteur de déplacement de la particule (position += pos)
+     */
     void incrPosition(const Vecteur<Dim> &pos);
 
     /**
-      * Incrémente la vitesse de la particule
-      * \param vit facteur d'augmentation de la vitesse (vitesse += vit)
-      */
+     * Incrémente la vitesse de la particule
+     * \param vit Facteur d'augmentation de la vitesse (vitesse += vit)
+     */
     void incrVitesse(const Vecteur<Dim> &vit);
     
     /**
-      * Fonction d'affichage de la particule
-      * \param mat le matériau du fluide auquel appartient la particule
-      */
+     * Fonction d'affichage de la particule
+     * \param mat Le matériau du fluide auquel appartient la particule
+     */
     void draw(Materiau<Dim> *mat) const;
 };
 
 /**
-  * Operateur d'affichage des composantes de la particule
-  */
+ * Operateur d'affichage des composantes de la particule
+ */
 template<unsigned int Dim>
 std::ostream& operator<<(std::ostream& os, const Particule<Dim>& p);
 
