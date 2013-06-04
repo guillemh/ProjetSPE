@@ -4,12 +4,14 @@
 #include <iostream>
 #include <map>
 #include <list>
+#include <set>
 #include "materiau.hpp"
 #include "particule.hpp"
 #include "vecteur.hpp"
 #include "premier.hpp"
 using std::multimap;
 using std::list;
+using std::set;
 
 /** 
  * \class Fluide
@@ -118,21 +120,6 @@ public:
     void affiche();
     
     /**
-      * Fonction de hashage
-      */
-    int fonction_hashage(Vecteur<Dim>);
-
-    /**
-      * Fonction d'accès au voisinage d'une particule
-      */
-    list<Particule<Dim>*> voisinage(Particule<Dim>&);
-
-    /**
-      * DEBUG : affichage de la table de hashage
-      */
-    void afficher_hash();
-
-    /**
      * Fonction de tests basiques sur l'insertion dans la table de hashage,
      * qui a besoin de l'accès direct à celle-ci
      */
@@ -142,6 +129,22 @@ public:
      * Fonction de tests basiques sur le calcul du voisinage
      */
     friend void test_voisins();
+
+private:
+    /**
+      * Fonction de hashage
+      */
+    int fonction_hashage(Vecteur<Dim>);
+
+    /**
+      * Fonction d'accès au voisinage d'une particule
+      */
+    set<Particule<Dim>*> voisinage(Particule<Dim>&);
+
+    /**
+      * DEBUG : affichage de la table de hashage
+      */
+    void afficher_hash();
 
 };
 
