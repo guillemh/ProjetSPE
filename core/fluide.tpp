@@ -331,29 +331,34 @@ void Fluide<Dim>::majDensitePression() {
     set<Particule<Dim>*> voisins;    
     typename set<Particule<Dim>*>::iterator it2;
 
+//    cout<<"appel MAJDP"<<endl;
+//    int i = 0;
     // On boucles sur toutes les particules
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
-
         // On met leur masse volumique à jour
-        double somme = 0;
-        voisins = voisinage(*(*it1));
-        for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
-            somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
+        double somme = noyau.defaut(Vecteur<Dim>());
 
-        somme += noyau.defaut(Vecteur<Dim>());
+        voisins = voisinage(*(*it1));
+//        cout << "P" << i << " : " << voisins.size() << endl;
+        for (it2 = particules.begin(); it2 != particules.end(); it2++) {  
+//        for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
+//            cout<<(**it2)<<endl;
+            somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
+        }
+
         (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
         
         // On met leur pression à jour
         (*it1)->majPression(mat->getCeleriteSon(), mat->getDensiteRepos());
+//        i++;
     }
 
 //    for (it1 = lignedEau.begin(); it1 != lignedEau.end(); it1++) {
-//        double somme = 0;
+//        double somme = noyau.defaut(Vecteur<Dim>());
 //        voisins = voisinage(*(*it1));
 //        for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
 //            somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
 //            
-//        somme += noyau.defaut(Vecteur<Dim>());
 //        (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
 //        
 //        // On met la pression a jour
@@ -426,8 +431,8 @@ void Fluide<Dim>::majPositionVitesse() {
         double masseVolumique_a = (*it1)->getMasseVolumique();
 
         voisins = voisinage(*(*it1));
-        for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
-
+        // for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
+        for (it2 = particules.begin(); it2 != particules.end(); it2++) {
             // Quelques variables locales pour factoriser le calcul
             Vecteur<Dim> x_ab = (*it1)->getPosition() - (*it2)->getPosition();
             Vecteur<Dim> v_ab = (*it1)->getVitesse() - (*it2)->getVitesse();
