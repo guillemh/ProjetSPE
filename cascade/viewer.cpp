@@ -78,9 +78,6 @@ void Viewer::keyPressEvent(QKeyEvent *e)
 	if (toogleLight == true) glEnable(GL_LIGHTING);
 	else glDisable(GL_LIGHTING);
 	updateGL();
-    } else if (e->key()==Qt::Key_R) {
-	toogleRecord = !toogleRecord;
-	updateGL();
     } else {
 	QGLViewer::keyPressEvent(e);
     }

@@ -2,7 +2,7 @@
 #define _SCENE_CASCADE_
 
 #include <GL/glut.h>
-#include "../core/cascade.hpp"
+#include "cascade.hpp"
 #include "skybox.h"
 
 /**
@@ -21,6 +21,8 @@ class SceneCascade {
      * \brief Destructeur
      */
     ~SceneCascade();
+
+    void init();
 
     /**
      * \brief Représentation
