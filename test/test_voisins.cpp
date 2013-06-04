@@ -11,6 +11,7 @@ void test_voisins() {
     bool succes = true;
 
     Materiau<3> mateau3d = Materiau<3>(EAU);
+    double rayon = mateau3d.getRayonNoyau();
 
     vector<Particule<3>*>::iterator part_it;
     list<Particule<3>*> vois;
@@ -18,7 +19,7 @@ void test_voisins() {
 
     int tab3d[3] = {20, 20, 20};
 
-    Fluide<3> f1 = Fluide<3>(&mateau3d, tab3d, 1., mateau3d.getDensiteRepos(), mateau3d.getPression());
+    Fluide<3> f1 = Fluide<3>(&mateau3d, tab3d, rayon*10., mateau3d.getDensiteRepos(), mateau3d.getPression());
     part_it = f1.particules.begin();
     while (part_it != f1.particules.end()) {
     	vois = f1.voisinage(*(*part_it));
@@ -39,7 +40,7 @@ void test_voisins() {
     }
 
     succes = true;
-    Fluide<3> f2 = Fluide<3>(&mateau3d, tab3d, 0.1, mateau3d.getDensiteRepos(), mateau3d.getPression());
+    Fluide<3> f2 = Fluide<3>(&mateau3d, tab3d, rayon+rayon/2, mateau3d.getDensiteRepos(), mateau3d.getPression());
     part_it = f2.particules.begin();
     while (part_it != f2.particules.end()) {
     	vois = f2.voisinage(*(*part_it));
@@ -60,7 +61,7 @@ void test_voisins() {
     }
 
     succes = true;
-    Fluide<3> f3 = Fluide<3>(&mateau3d, tab3d, 0.05, mateau3d.getDensiteRepos(), mateau3d.getPression());
+    Fluide<3> f3 = Fluide<3>(&mateau3d, tab3d, 0.05, rayon+0.01, mateau3d.getPression());
     part_it = f3.particules.begin();
     while (part_it != f3.particules.end()) {
     	vois = f3.voisinage(*(*part_it));
@@ -81,7 +82,7 @@ void test_voisins() {
     }
 
     succes = true;
-    Fluide<3> f4 = Fluide<3>(&mateau3d, tab3d, 0.04, mateau3d.getDensiteRepos(), mateau3d.getPression());
+    Fluide<3> f4 = Fluide<3>(&mateau3d, tab3d, rayon-0.01, mateau3d.getDensiteRepos(), mateau3d.getPression());
     //cout << "Longueur hashtable " << f4.lgrHash << endl;
     //f4.afficher_hash();
     part_it = f4.particules.begin();
