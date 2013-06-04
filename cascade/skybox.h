@@ -6,28 +6,37 @@
 #include <map>
 
 /**
- * \class Skybox Classe respresentant la skybox associee a la scene
+ * \class Skybox 
+ * @brief Classe donnant les objets de la scène
+ *
+ * Elle est représentée par des plans entourant la scène,
+ * et comprend également la cascade
  */
 class Skybox {
     /* ** Attributs ** */
  public:
+    /**
+     * @enum TextureId
+     * Identifiants pour les différentes textures utilisées
+     */
     enum TextureId {
 	TEX_SKY,
 	TEX_HERBE
     };
  private:
-    std::map<TextureId, GLuint> textures; /*!< Map des textures */
-    Cascade<3> *c; /*!< Pointeur vers la cascade utilisée */
-    double box_x; /*!< Coordonnée en x de la skybox */
-    double box_y; /*!< Coordonnée en y de la skybox */
-    double box_z; /*!< Coordonnée en z de la skybox */
+    std::map<TextureId, GLuint> textures;  /*!< Map des textures */
+    Cascade<3> *c;                         /*!< Pointeur vers la cascade utilisée */
+    double box_x;                          /*!< Coordonnée en x de la skybox */
+    double box_y;                          /*!< Coordonnée en y de la skybox */
+    double box_z;                          /*!< Coordonnée en z de la skybox */
 
  public :
 
     /**
      * \brief Constructeur
      *
-     * Constructeur par défaut d'un objet de classe Skybox
+     * Constructeur par défaut
+     * @param c Pointeur vers la cascade à mettre dans la scène
      */
     Skybox(const Cascade<3> *c);
 
@@ -59,6 +68,8 @@ class Skybox {
 
     /**
      * \brief Chargement d'une texture
+     * @param texId Identifiant pour la texture à charger
+     * @param filename Nom du fichier contenant la texture
      */
     void loadTexture(TextureId texId, const char *filename);
 

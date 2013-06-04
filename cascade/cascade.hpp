@@ -20,47 +20,46 @@ class Cascade {
 
     /* ** Attributs ** */
 private :
-    Fluide<Dim> *f; /*!< Pointeur vers le fluide utilisé */
-    double bassin_x; /*!< Dimensions de la cuve rectangulaire selon l'axe (Ox) */
-    double bassin_y; /*!< Dimensions de la cuve rectangulaire selon l'axe (Oy) */
-    double bassin_z; /*!< Dimensions de la cuve rectangulaire selon l'axe (Oz) */
-    double obstacle_x; /*!< Dimensions de l'obstacle rectangulaire selon l'axe (Ox) */
-    double obstacle_y; /*!< Dimensions de l'obstacle rectangulaire selon l'axe (Oy) */
-    double obstacle_z; /*!< Dimensions de l'obstacle rectangulaire selon l'axe (Oz) */
-    double pente_angle; /*!< Angle formé par la pente et l'horizontale */
-    double pente_x; /*!< Longueur totale de la pente */
-    double pente_y; /*!< Largeur de la pente */
-    double pente_z; /*!< Hauteur des bords de la pente */
+    Fluide<Dim> *f;       /*!< Pointeur vers le fluide utilisé */
+    double bassin_x;      /*!< Dimensions de la cuve rectangulaire selon l'axe (Ox) */
+    double bassin_y;      /*!< Dimensions de la cuve rectangulaire selon l'axe (Oy) */
+    double bassin_z;      /*!< Dimensions de la cuve rectangulaire selon l'axe (Oz) */
+    double obstacle_x;    /*!< Dimensions de l'obstacle rectangulaire selon l'axe (Ox) */
+    double obstacle_y;    /*!< Dimensions de l'obstacle rectangulaire selon l'axe (Oy) */
+    double obstacle_z;    /*!< Dimensions de l'obstacle rectangulaire selon l'axe (Oz) */
+    double pente_angle;   /*!< Angle formé par la pente et l'horizontale */
+    double pente_x;       /*!< Longueur totale de la pente */
+    double pente_y;       /*!< Largeur de la pente */
+    double pente_z;       /*!< Hauteur des bords de la pente */
 
 public :
     
     /**
      * \brief Constructeur
      *
-     * Constructeur d'une cascade prenant en compte les dimensions par défaut de celles-ci
-     * mais recevant au moins un pointeur vers un objet existant de type Fluide
+     * Constructeur d'une cascade avec le fluide correspondant
      *
-     * \param _f Pointeur vers un objet de type Fluide, déjà créé ailleurs
+     * \param _f Pointeur vers un objet de classe Fluide
      */
     Cascade(Fluide<Dim> *_f);
 
     /**
      * \brief Constructeur
      *
-     * Constructeur d'une cascade prenant recevant un pointeur vers un objet existant de type Fluide
-     * et la liste des grandeurs représentant les dimensions du bassin
+     * Constructeur d'une cascade à partir du fluide et de
+     * la liste des grandeurs représentant les dimensions du bassin
      *
-     * \param _f Pointeur vers un objet de type Fluide, déjà créé ailleurs
-     * \param _bassin_x Nouvelles dimensions selon l'axe (Ox) du bassin
-     * \param _bassin_y Nouvelles dimensions selon l'axe (Oy) du bassin
-     * \param _bassin_z Nouvelles dimensions selon l'axe (Oz) du bassin
-     * \param _obstacle_x Nouvelles dimensions selon l'axe (Ox) de l'obstacle
-     * \param _obstacle_y Nouvelles dimensions selon l'axe (Oy) de l'obstacle 
-     * \param _obstacle_z Nouvelles dimensions selon l'axe (Oz) de l'obstacle
-     * \param _pente_angle Nouvel angle formé par la pente par rapport au plan horizontal
-     * \param _pente_x Nouvelle longueur de la pente
-     * \param _pente_y Nouvelle largeur de la pente
-     * \param _pente_z Nouvelle hauteur pour les bords de la pente
+     * \param _f Pointeur vers un objet de classe Fluide
+     * \param _bassin_x Dimension selon l'axe (Ox) du bassin
+     * \param _bassin_y Dimension selon l'axe (Oy) du bassin
+     * \param _bassin_z Dimension selon l'axe (Oz) du bassin
+     * \param _obstacle_x Dimension selon l'axe (Ox) de l'obstacle
+     * \param _obstacle_y Dimension selon l'axe (Oy) de l'obstacle 
+     * \param _obstacle_z Dimension selon l'axe (Oz) de l'obstacle
+     * \param _pente_angle Angle formé par la pente par rapport au plan horizontal
+     * \param _pente_x Longueur de la pente
+     * \param _pente_y Largeur de la pente
+     * \param _pente_z Hauteur pour les bords de la pente
      */
     Cascade(Fluide<Dim> *_f, double _bassin_x, double _bassin_y, double _bassin_z,
 	    double _obstacle_x, double _obstacle_y, double _obstacle_z, 
@@ -74,9 +73,9 @@ public :
     ~Cascade();
 
     /**
-     * \brief Représentation graphique
+     * \brief Méthode de dessin
      * 
-     * Représente l'objet de type Cascade initialisé à l'appel de l'objet, ceci
+     * Dessine l'objet de type Cascade,
      * comprenant un bassin et les particules du fluide
      */
     void draw();
@@ -89,18 +88,21 @@ public :
     void animate();
 
     /**
-      * \return la position en x du bassin
-      */
+     * @brief Accesseur
+     * \return La position en x du bassin
+     */
     const double & getBassinX() const;
 
     /**
-      * \return la position en y du bassin
-      */
+     * @brief Accesseur
+     * \return La position en y du bassin
+     */
     const double & getBassinY() const;
 
     /**
-      * \return la position en z du bassin
-      */
+     * @brief Accesseur
+     * \return La position en z du bassin
+     */
     const double & getBassinZ() const;
 };
 

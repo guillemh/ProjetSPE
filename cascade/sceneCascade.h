@@ -6,31 +6,34 @@
 #include "skybox.h"
 
 /**
- * \class SceneCascade Classe contenant les objets représentés sur la scène et une cascade
+ * \class SceneCascade 
+ * @brief Classe contenant les objets représentés sur la scène 
+ *
+ * Les objets de la scène sont une cascade animée et une skybox
  */
 class SceneCascade {
-/* ** Attributs ** */
+    /* ** Attributs ** */
  private :
     Cascade<3> *c;  /*!< Pointeur vers la cascade utilisée */
-    Skybox *s; /*!< Pointeur vers la skybox utilisée */
+    Skybox *s;      /*!< Pointeur vers la skybox utilisée */
 
  public :
     /**
      * \brief Constructeur
      *
-     * Constructeur par défaut d'un objet de classe Scène
+     * Constructeur par défaut
      */
     SceneCascade();
 
     /**
      * \brief Destructeur
-     * 
-     * Destructeur d'un objet de type Scene
      */
     ~SceneCascade();
 
     /**
-     * \brief Initialisation de la scène
+     * @brief Initialisation
+     *
+     * Initialisations pour les objets de la scène
      */
     
     void init();
