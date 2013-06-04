@@ -190,7 +190,7 @@ inline int Fluide<3>::fonction_hashage(Vecteur<3> pos) {
         % lgrHash;
 }
 
-
+/* Affichage de la table de hashage */
 template<unsigned int Dim>
 void Fluide<Dim>::afficher_hash() {
     typename multimap<int, Particule<Dim>*>::iterator mmap_it;
@@ -516,12 +516,19 @@ void Fluide<Dim>::majPositionVitesse() {
     /* On met la table de hachage à jour */
     hash_voisins.clear();
     int hash_key;
+    Vecteur<Dim> noeud_grille;
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
-        hash_key = fonction_hashage((*it1)->getPosition());
+	for (unsigned int i = 1; i <= Dim; i++) {
+	    noeud_grille(i) = int(floor((*it1)->getPosition()(i)/mat->getRayonNoyau()));
+	}
+        hash_key = fonction_hashage(noeud_grille);
         hash_voisins.insert(pair<int, Particule<Dim>*>(hash_key, *it1));
     }
     for (it1 = lignedEau.begin(); it1 != lignedEau.end(); it1++) {
-        hash_key = fonction_hashage((*it1)->getPosition());
+	for (unsigned int i = 1; i <= Dim; i++) {
+	    noeud_grille(i) = int(floor((*it1)->getPosition()(i)/mat->getRayonNoyau()));
+	}
+        hash_key = fonction_hashage(noeud_grille);
         hash_voisins.insert(pair<int, Particule<Dim>*>(hash_key, *it1));
     }
 

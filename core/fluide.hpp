@@ -134,7 +134,11 @@ public:
     friend void test_voisins();
 
 private:
-    /* Fonction de hashage */
+    /* 
+     * Fonction de hashage 
+     * ATTENTION : prend en argument le vecteur de position 
+     * ** DANS LA GRILLE DE VOXELS ** (des entiers)
+     */
     int fonction_hashage(Vecteur<Dim>);
 
     /* Fonction d'accès au voisinage d'une particule */
