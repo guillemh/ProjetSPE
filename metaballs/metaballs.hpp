@@ -1,7 +1,10 @@
 #ifndef _METABALLS_
 #ifndef _METABALLS_
 
+#include <list>
 #include "../core/particules.hpp"
+
+using std::list;
 
 template<unsigned int Dim>
 class Metaballs {
