@@ -55,7 +55,30 @@ void Metaballs::coloration(const list<Particule<3> *> &particules) {
 
 
 void Metaballs::draw() {
-
+    int config = 0 ;
+    Vecteur<3> posCour;
+    for (int i = 0 ; i < n - 1 ; i++) {
+	for (int j = 0 ; j < p - 1 ; j++) {
+	    for (int k = 0 ; k < q - 1 ; k++) {
+		config = 0 ;
+		for (int s = 0 ; s < 8 ; s++) {
+		    /*
+		     * C'est tordu, mais je n'ai rien trouvé de mieux pour éviter 8 "if"
+		     * La boucle sur s va parcourir les 8 sommets du cube dont le sommet 0
+		     * est (i, j, k)
+		     * Si un point prend la valeur "vrai" il est considéré comme coloré
+		     */
+		    config |= points[i + ((s >> 1) % 2)][j + ((s + (s >> 1)) % 2)][k + (s >> 2)];
+		    config <<= 1;
+		}
+		posCour = Vecteur<3> (origine(1) + cote*double(i)/(n - 1),
+				      origine(2) + cote*double(j)/(p - 1),
+				      origine(3) + cote*double(k)/(q - 1));
+	        drawCube (posCour, cote, config);
+	    }
+	}
+    }
+    // To do : cas limites (bords de la boîte)
 }
 
 void Metaballs::drawCube(Vecteur<3> pos, double cote, int config) {
