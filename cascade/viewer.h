@@ -12,13 +12,16 @@
 
 #include <QGLViewer/qglviewer.h>
 #include <list>
-// #include "scene.h"
 #include "sceneCascade.h"
 
 using namespace std;
 
 /**
- * \class Viewer Classe interagissant avec OpenGL pour la représentation d'objets
+ * \class Viewer 
+ * @brief Classe interagissant avec OpenGL pour la représentation d'objets
+ *
+ * Classe du plus haut niveau permettant de représenter une scène et de l'animer,
+ * en la créant dans un main
  */
 
 class Viewer : public QGLViewer
@@ -52,20 +55,26 @@ class Viewer : public QGLViewer
      */
     virtual void draw();
     
+    /**
+     * @brief Animation
+     *
+     * Animation des objets
+     */
     virtual void animate();
 
-    bool toogleWireframe; /*!< Booléen indiquant ou non si on dessine la scène sous une forme de maillage ou de faces pleines */
-    bool toogleLight; /*!< Booléen indiquant si le modèle d'illumination d'OpenGL (modèle de Phong) doit être respecté */
-    bool toogleRecord; /*!< Enregistrer ou non une vidéo */
+    bool toogleWireframe;   /*!< Booléen indiquant ou non si on dessine la scène sous une forme de maillage ou de faces pleines */
+    bool toogleLight;       /*!< Booléen indiquant si le modèle d'illumination d'OpenGL (modèle de Phong) doit être respecté */
+    bool toogleRecord;      /*!< Enregistrer ou non une vidéo */
 
     /**
      * \brief Interaction avec l'utilisateur
      *
      * Méthode interagissant avec l'utilisateur et appliquant un traitement aux touches pressées du clavier
+     * @param e Événement clavier considéré
      */
     virtual void keyPressEvent(QKeyEvent *e);
 
-    SceneCascade *s;
+    SceneCascade *s;    /*!< Objet contenant tous les éléments de la scène */
 };
 
 #endif

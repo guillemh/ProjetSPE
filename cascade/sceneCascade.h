@@ -2,18 +2,26 @@
 #define _SCENE_CASCADE_
 
 #include <GL/glut.h>
-#include "../core/cascade.hpp"
+#include "cascade.hpp"
 #include "skybox.h"
 
 /**
- * \class SceneCascade Classe contenant les objets représentés sur la scène et une cascade
+ * \class SceneCascade 
+ * @brief Classe contenant les objets représentés sur la scène 
+ *
+ * Les objets de la scène sont une cascade animée et une skybox
  */
 class SceneCascade {
+    /* ** Attributs ** */
+ private :
+    Cascade<3> *c;  /*!< Pointeur vers la cascade utilisée */
+    Skybox *s;      /*!< Pointeur vers la skybox utilisée */
+
  public :
     /**
      * \brief Constructeur
      *
-     * Constructeur par défaut d'un objet de classe Scène
+     * Constructeur par défaut
      */
     SceneCascade();
 
@@ -23,16 +31,26 @@ class SceneCascade {
     ~SceneCascade();
 
     /**
+     * @brief Initialisation
+     *
+     * Initialisations pour les objets de la scène
+     */
+    
+    void init();
+
+    /**
      * \brief Représentation
      *
      * Représentation de la scène
      */
     void draw();
     
+    /**
+     * \brief Animation
+     *
+     * Animation de la scène
+     */
     void animate();
 
- private :
-    Cascade<3> *c;
-    Skybox *s;
 };
 #endif

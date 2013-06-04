@@ -11,7 +11,8 @@
 #include "vecteur.hpp"
 
 /**
- * @enum TypeFluide permettant de définir par défaut des types de fluides
+ * @enum TypeFluide 
+ * Permet de définir par défaut des types de fluides
  */
 enum TypeFluide {
     EAU,
@@ -50,6 +51,8 @@ private:
 public:
 
     /**
+     * @brief Constructeur 
+     *
      * Constructeur prenant en paramètre tous les attributs
      * @param g       Accélération de la gravitation
      * @param dt      Pas de temps pour le schéma intégrateur
@@ -87,6 +90,8 @@ public:
 	     );
 
     /**
+     * @brief Constructeur
+     *
      * Constructeur d'un certain type de fluide
      * @param type Type de fluide énuméré
      */
@@ -94,66 +99,82 @@ public:
 
     /* Accesseurs */
     /**
+     * @brief Accesseur
      * @return L'accélération de la gravitation
      */
     Vecteur<Dim> getAccGrav();
     /**
+     * @brief Accesseur
      * @return Le pas de temps pour le schéma intégrateur
      */
     double getPasTemps();
     /**
+     * @brief Accesseur
      * @return La température du milieu
      */
     double getTemperature();
     /**
+     * @brief Accesseur
      * @return La pression atmosphérique
      */
     double getPression();
     /**
+     * @brief Accesseur
      * @return La masse volumique au repos
      */
     double getDensiteRepos();
     /**
+     * @brief Accesseur
      * @return La masse des particules
      */
     double getMasseParticules();
     /**
+     * @brief Accesseur
      * @return Le coefficient de flottabilité
      */
     double getCoeffFlott();
     /**
+     * @brief Accesseur
      * @return La viscosité du fluide
      */
     double getViscosite();
     /**
+     * @brief Accesseur
      * @return La tension de surface
      */
     double getTensionSurface();
     /**
+     * @brief Accesseur
      * @return Seuil pour le calcul des force de surface
      */
     double getSeuilSurface();
     /**
+     * @brief Accesseur
      * @return Le coefficient de rigidité pour les gaz
      */
     double getRigiditeGaz();
     /**
+     * @brief Accesseur
      * @return Le coefficient de restitution pour les collisions
      */
     double getCoeffRestitution();
     /**
+     * @brief Accesseur
      * @return Le nombre de particules dans la sphère du noyau de lissage
      */
     unsigned int getNbrPartNoyau();
     /**
+     * @brief Accesseur
      * @return Le rayon du noyau de lissage
      */
     double getRayonNoyau();
     /**
+     * @brief Accesseur
      * @return La célérité du son dans le fluide
      */
     double getCeleriteSon();
     /**
+     * @brief Accesseur
      * @return La constante de viscosité alpha dans le calcul du facteur nu
      * intervenant dans le calcul de la force de viscosité
      */

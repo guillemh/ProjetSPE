@@ -7,12 +7,12 @@
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
-Particule<Dim>::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double m, double rho, double p)
+Particule<Dim>::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m)
     : position(pos),
       vitesse(vit),
-      masse(m),
       masse_volumique(rho),
-      pression(p)
+      pression(p),
+      masse(m)
 {
 }
 
@@ -94,6 +94,7 @@ void Particule<Dim>::majPression (double son, double dens) {
     double gamma = 7.0;
     double B = dens * pow(son, 2.0) / gamma;
     pression = B * (pow(masse_volumique / dens, gamma) - 1);
+//    cout << "B = " << B << ", rho = " << masse_volumique << ", rho_0 = " << dens << ", rho/rho_0 = " << masse_volumique/dens << ", on obtient P = " << pression << endl;
 }
 
 template<unsigned int Dim>

@@ -25,14 +25,13 @@ public:
     /* ** Methodes ** */
 public:
     /**
-     * \return le nombre premier supérieur ou égal à x
+     * @param x Nombre entier
+     * \return Le nombre premier supérieur ou égal à x
      */
     int getPremier(int x) const;
 
 private:
-    /**
-     * \return vrai si le nombre passé en paramètre est premier
-     */
+    /* Retourne vrai ssi le nombre passé en paramètre est premier */
     bool estPremier(const int x) const;
     
 };

@@ -21,7 +21,7 @@ void Viewer::init()
 
     //=== VIEWING PARAMETERS
     restoreStateFromFile();
-    toogleWireframe = true;  // filled faces
+    toogleWireframe = false;  // filled faces
     toogleLight = false;     // light off
 
     if (toogleLight == true) glEnable(GL_LIGHTING);
@@ -35,7 +35,7 @@ void Viewer::init()
     glEnable(GL_COLOR);
     glEnable(GL_COLOR_MATERIAL);
 	
-    setSceneRadius(20.0f);
+    setSceneRadius(50.0f);
 	
     //=== INIT SCENE
     s = new SceneCascade();
@@ -77,9 +77,6 @@ void Viewer::keyPressEvent(QKeyEvent *e)
 	toogleLight = !toogleLight;
 	if (toogleLight == true) glEnable(GL_LIGHTING);
 	else glDisable(GL_LIGHTING);
-	updateGL();
-    } else if (e->key()==Qt::Key_R) {
-	toogleRecord = !toogleRecord;
 	updateGL();
     } else {
 	QGLViewer::keyPressEvent(e);

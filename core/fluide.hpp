@@ -1,17 +1,17 @@
 #ifndef _FLUIDE_HPP_
 #define _FLUIDE_HPP_
 
-#include <vector>
-using std::vector;
 #include <iostream>
 #include <map>
 #include <list>
+#include <set>
 #include "materiau.hpp"
 #include "particule.hpp"
 #include "vecteur.hpp"
 #include "premier.hpp"
 using std::multimap;
 using std::list;
+using std::set;
 
 /** 
  * \class Fluide
@@ -25,8 +25,8 @@ class Fluide {
     /* ** Attributs ** */
 private:
     Materiau<Dim> * mat;                 /*!< Materiau du fluide (avec toutes les constantes) */
-    vector<Particule<Dim> *> particules; /*!< nsemble des particules mobiles */
-    vector<Particule<Dim> *> lignedEau;  /*!< Ensemble des particules immobiles sur le plan z = z_min */
+    list<Particule<Dim> *> particules; /*!< Ensemble des particules mobiles */
+    list<Particule<Dim> *> lignedEau;  /*!< Ensemble des particules immobiles sur le plan z = z_min */
 public:
     double x_min;                        /*!< Définit le plan d'équation x = x_min (provisoire) */
     double x_max;                        /*!< Définit le plan d'équation x = x_max (provisoire) */
@@ -38,92 +38,90 @@ private:
     int nbrParticules;                   /*!< Nombre de particules du fluide */
     bool debutAnim;                      /*!< Indique si on est au debut de l'animation */
 
+    /* Table de nombre premiers pour le calcul de la longueur de la table de hashage */
     Premier<Dim> table;
+    
     /* Table de hashage pour les voisins */
     multimap<int, Particule<Dim>*> hash_voisins;
+
     /* Longueur de la table de hashage */
     int lgrHash;
-    /* Fonction de hashage */
-    int fonction_hashage(Vecteur<Dim>);
 
-    /* Fonction d'accès au voisinage d'une particule */
-    list<Particule<Dim>*> voisinage(Particule<Dim>&);
-
-    /* DEBUG : affichage de la table de hashage */
-    void afficher_hash();
 
     /* ** Constructeurs ** */
 public:
     /**
-      * Constructeur par defaut
-      * \param m matériau du fluide
-      */
+     * Constructeur par défaut : le fluide ne contient aucune particule
+     * \param m Matériau du fluide
+     */
     Fluide(Materiau<Dim> * m);
 
     /**
-      * Constructeur avec initialisation d'un parallèlépipède de particules
-      * \param m Matériau du fluide
-      * \param nb Tableau du nombre de particules sur chacune des dimensions
-      * \param ecart Écart entre les particules
-      * \param rho Masse volumique initiale des particules
-      * \param p Pression initiale des particules
-      */
+     * Constructeur avec initialisation d'un parallèlépipède de particules
+     * \param m Matériau du fluide
+     * \param nb Tableau du nombre de particules sur chacune des dimensions
+     * \param ecart Écart entre les particules
+     * \param rho Masse volumique initiale des particules
+     * \param p Pression initiale des particules
+     */
     Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p);
     
     /**
-      * Destructeur
-      */
+     * Destructeur
+     */
     ~Fluide();
 
 
     /* ** Methodes ** */
 public:
     /**
-      * Ajoute une particule à l'ensemble des particules
-      * \param part La particule à ajouter
-      */
+     * Ajoute une particule à l'ensemble des particules
+     * \param part La particule à ajouter
+     */
     void ajouteParticule(Particule<Dim> * part);
 
     /**
      * Détecte une collision avec les parois de la boîte
+     * @param 
+     * @return 
      */
     Vecteur<Dim> collision(const Vecteur<Dim> & v);
 
     /**
-     * Retourne le vecteur des particules mobiles utilisées dans le fluide
+     * @return Le vecteur des particules mobiles utilisées dans le fluide
      */
-    vector<Particule<Dim> *> getParticulesMobiles();
+    list<Particule<Dim> *> getParticulesMobiles();
 
     /**
-     * Retourne le vecteur des particules immobiles utilisées dans le fluide
+     * @return Le vecteur des particules immobiles utilisées dans le fluide
      */
-    vector<Particule<Dim> *> getParticulesImmobiles();
+    list<Particule<Dim> *> getParticulesImmobiles();
 
     /**
-     * Retourne un pointeur sur le type de matériau utilisé
+     * @return Un pointeur sur le type de matériau utilisé
      */
     Materiau<Dim>* getMateriau();
   
     /**
-      * Met à jour la densité et la pression de toutes les particules
-      */
+     * Met à jour la densité et la pression de toutes les particules
+     */
     void majDensitePression();
     
     /**
-      * Met à jour la densité et la pression de toutes les particules
-      */
+     * Met à jour la densité et la pression de toutes les particules
+     */
     void majPositionVitesse();
     
     /**
-      * Fonction d'affichage du fluide
-      */
+     * Fonction d'affichage du fluide
+     */
     void draw() const;
 
     /**
-      * Affichage des particules du fluide
-      */
+     * Affichage des particules du fluide
+     */
     void affiche();
-
+    
     /**
      * Fonction de tests basiques sur l'insertion dans la table de hashage,
      * qui a besoin de l'accès direct à celle-ci
@@ -134,6 +132,20 @@ public:
      * Fonction de tests basiques sur le calcul du voisinage
      */
     friend void test_voisins();
+
+private:
+    /* 
+     * Fonction de hashage 
+     * ATTENTION : prend en argument le vecteur de position 
+     * ** DANS LA GRILLE DE VOXELS ** (des entiers)
+     */
+    int fonction_hashage(Vecteur<Dim>);
+
+    /* Fonction d'accès au voisinage d'une particule */
+    set<Particule<Dim>*> voisinage(Particule<Dim>&);
+
+    /* DEBUG : affichage de la table de hashage */
+    void afficher_hash();
 
 };
 

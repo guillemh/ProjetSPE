@@ -9,7 +9,6 @@ void test_materiau() {
     Materiau<3> mateau = Materiau<3>(EAU);
     Vecteur<3> v1 = Vecteur<3>(0, 0, -9.82);
     if (mateau.getAccGrav() == v1
-     && mateau.getPasTemps() == 0.01
      && mateau.getTemperature() == 293.15
      && mateau.getPression() == 101325
      && mateau.getDensiteRepos() == 998.29
@@ -30,7 +29,6 @@ void test_materiau() {
     Materiau<2> matmucus = Materiau<2>(MUCUS);
     Vecteur<2> v2 = Vecteur<2>(0, -9.82);
     if (matmucus.getAccGrav() == v2
-     && matmucus.getPasTemps() == 0.01
      && matmucus.getTemperature() == 293.15
      && matmucus.getPression() == 101325
      && matmucus.getDensiteRepos() == 1000
@@ -50,7 +48,6 @@ void test_materiau() {
     cout << "3 - Création du matériau vapeur" << endl;
     Materiau<3> matvapeur = Materiau<3>(VAPEUR);
     if (matvapeur.getAccGrav() == v1
-     && matvapeur.getPasTemps() == 0.01
      && matvapeur.getTemperature() == 293.15
      && matvapeur.getPression() == 101325
      && matvapeur.getDensiteRepos() == 0.59
