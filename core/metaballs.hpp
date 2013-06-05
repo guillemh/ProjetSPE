@@ -37,9 +37,9 @@ public:
      * \param _origine Origine spatiale de l'espace rectangulaire considéré dans le maillage
      * \param _cote Côté d'un cube du maillage
      * \param _rayon Rayon d'une particule
-     * \param x Dimension du parallèlépipède selon x
-     * \param y Dimension du parallèlépipède selon y
-     * \param z Dimension du parallèlépipède selon z
+     * \param x Dimension du parallélépipède selon x
+     * \param y Dimension du parallélépipède selon y
+     * \param z Dimension du parallélépipède selon z
      */
     Metaballs(Vecteur<3> _origine, double _cote, double _rayon, double x = 1.0, double y = 1.0, double z = 1.0);
 
