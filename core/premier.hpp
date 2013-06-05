@@ -5,7 +5,7 @@
 
 /** 
  * \class Premier
- * @brief Classe contenant une lookup table des nombres premiers 
+ * @brief Classe contenant les méthodes relatives au calcul du plus petit nombre        premier supérieur
  */
 template <unsigned int Dim>
 class Premier {

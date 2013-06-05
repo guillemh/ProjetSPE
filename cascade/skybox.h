@@ -64,7 +64,7 @@ class Skybox {
      *
      * Initialisation de la face inférieure de la skybox
      */
-    void initHerbe();
+    void initSol();
 
     /**
      * \brief Chargement d'une texture
@@ -92,7 +92,7 @@ class Skybox {
      *
      * Représentation de la face inférieure de la skybox
      */
-    void drawHerbe();
+    void drawSol();
     
 };
 

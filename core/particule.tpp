@@ -149,7 +149,7 @@ void Particule<Dim>::majPression (double son, double dens) {
      */
     double gamma = 7.0;
 //    double B = dens * pow(son, 2.0) / gamma;
-    double B = 10000;
+    double B = 100;
 //    pression = B * (pow(masse_volumique / dens, gamma));
     pression = B * (pow(masse_volumique / dens, gamma) - 1);
 //    cout << "B = " << B << ", rho = " << masse_volumique << ", rho_0 = " << dens << ", rho/rho_0 = " << masse_volumique/dens << ", on obtient P = " << pression << endl;

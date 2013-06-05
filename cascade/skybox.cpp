@@ -22,7 +22,7 @@ Skybox::~Skybox() {}
 void Skybox::init()
 {
     initSky();
-    initHerbe();
+    initSol();
 }
 
 
@@ -39,7 +39,7 @@ void Skybox::initSky()
     
 }
 
-void Skybox::initHerbe()
+void Skybox::initSol()
 {
   	
     loadTexture(TEX_HERBE, "cascade/images/herbe.tiff");
@@ -74,7 +74,7 @@ void Skybox::draw()
     glEnable(GL_TEXTURE_2D);
     drawSky();
     glEnable(GL_TEXTURE_2D);
-    drawHerbe();
+    drawSol();
 }
 
 
@@ -150,7 +150,7 @@ void Skybox::drawSky()
     
 }
 
-void Skybox::drawHerbe() 
+void Skybox::drawSol() 
 {
     //glEnable(GL_TEXTURE_2D);
 
