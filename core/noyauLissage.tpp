@@ -265,10 +265,12 @@ template<unsigned int Dim>
 Vecteur<Dim> NoyauLissageMonaghan<Dim>::gradient(const Vecteur<Dim> r) const {
     double q = r.norme()/(this->h);
     Vecteur<Dim> res;
-    if (q < 0.001) {
-        res = Vecteur<Dim>();
-    } else if (q <= 1) {
-        res = r/(2.0 * this->h * r.norme()) * (-pow(2 - q, 2) + 4.0 * pow(1 - q, 2));
+    //if (q < 0.001) {
+    //    res = Vecteur<Dim>();
+    //} else if (q <= 1) {
+    if (q <= 1) {
+        //res = r/(2.0 * this->h * r.norme()) * (-pow(2 - q, 2) + 4.0 * pow(1 - q, 2));
+        res = (-r/(2.0*this->h*this->h))*(4-3*q);
     } else if (q <= 2) {
         res = -(r * pow(2 - q, 2)) / (2.0 * this->h * r.norme());
     } else {

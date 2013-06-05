@@ -15,9 +15,9 @@ Scene::Scene() {
     
     srand (time (NULL));   
     
-//    m = new Materiau<3>(EAU);
-//    int d [3] = {1, 1, 200};
-//    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression()); 
+    m = new Materiau<3>(EAU);
+    int d [3] = {5, 5, 5};
+    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression()); 
     
 //    Vecteur<3> vec0 = Vecteur<3>();
 //    
@@ -55,15 +55,17 @@ Scene::Scene() {
 //    f->ajouteParticule(p9);
 //    f->ajouteParticule(p10);
 
+/*
     m = new Materiau<3>(EAU);
     Vecteur<3> vInit = Vecteur<3> (0, 0.1, 0);
-    Vecteur<3> pos1 = Vecteur<3> (0, -0.02, 0);
-    Vecteur<3> pos2 = Vecteur<3> (0, 0.02, 0);
+    Vecteur<3> pos1 = Vecteur<3> (0, -0.04, 0.2);
+    Vecteur<3> pos2 = Vecteur<3> (0, 0.04, 0.2);
     Particule<3> *p1 = new Particule<3> (pos1, Vecteur<3>(), m->getDensiteRepos(), m->getPression(), m->getMasseParticules());
     Particule<3> *p2 = new Particule<3> (pos2, Vecteur<3>(), m->getDensiteRepos(), m->getPression(), m->getMasseParticules());
     f = new Fluide<3> (m);
     f->ajouteParticule(p1);
     f->ajouteParticule(p2);
+*/
 }
 
 Scene::~Scene() {
@@ -72,7 +74,7 @@ Scene::~Scene() {
 void Scene::draw() {
     glPushMatrix();
     f->draw();
-    f->affiche();
+    //f->affiche();
     glPopMatrix();
 }
 

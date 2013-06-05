@@ -54,14 +54,16 @@ Materiau<Dim>::Materiau(TypeFluide type) {
         exit(EXIT_FAILURE);
         break;
     }
-    pas_temps = 0.001;
+    pas_temps = 0.0005;
     temperature = 293.15;
     pression_atm = 101325;
 
     switch(type) {
     case EAU :
-        densite_repos = 998.29;
+        //densite_repos = 998.29;
+        densite_repos = 100;
         masse_particules = 0.02;
+        //masse_particules = 0.0065;
         coeff_flottabilite = 0;
         viscosite = 3.5;
         tension_surface = 0.0728;
@@ -69,9 +71,12 @@ Materiau<Dim>::Materiau(TypeFluide type) {
         rigidite_gaz = 3;
         coeff_restitution = 0;
         nbr_noyau = 20;
-        rayon_noyau = 0.0457;
-	celerite_son = 1480;
-	alpha = 0.5;
+        //rayon_noyau = 0.0457;
+        rayon_noyau = 0.03;
+	//celerite_son = 1480;
+	celerite_son = 88.5;
+	//alpha = 0.5;
+	alpha = 2000;
         break;
     case MUCUS :
         densite_repos = 1000;

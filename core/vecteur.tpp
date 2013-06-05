@@ -5,6 +5,7 @@ using std::endl;
 
 /* ** Constructeurs ** */
 
+#if 0
 template <unsigned int Dim>
 Vecteur<Dim>::Vecteur() {
 	for (unsigned int i = 0; i < Dim; i++) {
@@ -48,7 +49,7 @@ Vecteur<Dim>::~Vecteur<Dim>() {
 
 
 
-/* ** Methodes ** */
+// Methodes
 
 template <unsigned int Dim>
 double  Vecteur<Dim>::norme() const {
@@ -316,4 +317,7 @@ std::ostream & operator<<(std::ostream &O, Vecteur<Dim> const &v) {
     O << v(Dim);
     return O;
 }
+
+#endif
+
 
