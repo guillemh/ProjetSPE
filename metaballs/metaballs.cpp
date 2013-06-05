@@ -46,7 +46,71 @@ Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon) {
     cote = _cote;
     rayon = _rayon;
     
-    // TODO : lookup table
+    configurations = {
+                      {1, 9, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1}, // Ligne 64
+                      {1, 9, 0, 7, 6, 11, -1, -1, -1, -1, -1, -1},
+                      {5, 10, 6, 1, 9, 0, -1, -1, -1, -1, -1, -1},
+                      {7, 11, 5, 11, 5, 10, 1, 9, 0, -1, -1, -1 },
+                      {4, 5, 0, 0, 5, 1, -1, -1, -1, -1, -1, -1 },
+                      {4, 5, 0, 0, 5, 1, 7, 6, 11, -1, -1, -1 },
+                      {6, 4, 0, 6, 0, 1, 6, 1, 10, -1, -1, -1 },
+                      {7, 11, 10, 7, 10, 0, 10, 0, 1, 7, 0, 4 },
+                      {9, 0, 1, 4, 7, 8, -1, -1, -1, -1, -1, -1 },
+                      {8, 4, 11, 4, 11, 6, 1, 9, 0, -1, -1, -1 },
+                      {1, 9, 0, 6, 5, 10, 7, 8, 4, -1, -1, -1 },
+                      {1, 9, 0, 11, 10, 8, 10, 8, 4, 10, 4, 5 },
+                      {7, 5, 1, 7, 1, 0, 7, 0, 8, -1, -1, -1 },
+                      {8, 11, 0, 0, 5, 1, 11, 6, 5, 11, 5, 0 },
+                      {8, 0, 7, 0, 7, 1, 7, 1, 6, 1, 6, 10 },
+                      {11, 8, 10, 8, 0, 10, 10, 0, 1, -1, -1, -1 },
+                      {11, 2, 3, 1, 9, 0, -1, -1, -1, -1, -1, -1 },
+                      {7, 6, 3, 6, 3, 2, 1, 9, 0, -1, -1, -1 },
+                      {3, 2, 11, 10, 6, 5, 1, 9, 0, -1, -1, -1 },
+                      {1, 9, 0, 3, 7, 5, 3, 5, 2, 5, 2, 10 },
+                      {4, 5, 0, 0, 5, 1, 11, 3, 2, -1, -1, -1 },
+                      {7, 6, 3, 6, 3, 2, 4, 5, 0, 5, 0, 1 },
+                      {11, 3, 2, 6, 4, 0, 6, 0, 1, 6, 1, 10 },
+                      {2, 10, 1, 7, 3, 4, 4, 3, 0, -1, -1, -1 },
+                      {7, 8, 4, 11, 3, 2, 1, 9, 0, -1, -1, -1 },
+                      {1, 9, 0, 4, 6, 2, 4, 2, 8, 2, 8, 3 },
+                      {7, 8, 4, 6, 5, 10, 11, 3, 2, 1, 9, 0 },
+                      {3, 8, 0, 4, 5, 9, 2, 10, 1, -1, -1, -1 },
+                      {11, 3, 2, 7, 5, 1, 1, 7, 8, 1, 8, 0 },
+                      {3, 8, 0, 2, 6, 5, 2, 5, 1, -1, -1, -1 },
+                      {7, 6, 11, 3, 8, 0, 2, 10, 1, -1, -1, -1 },
+                      {2, 10, 1, 3, 0, 8, -1, -1, -1, -1, -1, -1 },
+                      {9, 0, 2, 9, 2, 10, -1, -1, -1, -1, -1, -1 },
+                      {9, 0, 2, 9, 2, 10, 11, 7, 6, -1, -1, -1 },
+                      {6, 2, 0, 6, 0, 5, 0, 5, 9, -1, -1, -1 },
+                      {7, 11, 2, 7, 2, 9, 2, 9, 0, 7, 9, 5 },
+                      {4, 0, 2, 2, 4, 5, 2, 5, 10, -1, -1, -1 },
+                      {4, 0, 2, 2, 4, 5, 2, 5, 10, 11, 7, 6 },
+                      {4, 6, 0, 6, 0, 2, -1, -1, -1, -1, -1, -1 },
+                      {4, 0, 2, 4, 2, 7, 2, 7, 11, -1, -1, -1 },
+                      {9, 0, 10, 0, 10, 2, 7, 8, 4, -1, -1, -1 },
+                      {8, 4, 6, 8, 6, 11, 9, 0, 10, 0, 10, 2 },
+                      {7, 8, 4, 6, 2, 0, 6, 0, 9, 6, 9, 5 },
+                      {11, 8, 0, 11, 0, 2, 4, 5, 9, -1, -1, -1 },
+                      {7, 8, 0, 7, 0, 10, 0, 10, 2, 7, 10, 5 },
+                      {11, 8, 2, 2, 8, 0, 10, 6, 5, -1, -1, -1 },
+                      {6, 2, 0, 6, 0, 7, 0, 7, 8, -1, -1, -1 },
+                      {11, 8, 2, 8, 2, 0, -1, -1, -1, -1, -1, -1 },
+                      {11, 10, 9, 11, 9, 0, 11, 0, 3, -1, -1, -1 },
+                      {0, 9, 3, 3, 9, 6, 9, 6, 10, 3, 6, 7 },
+                      {5, 6, 9, 6, 9, 0, 6, 0, 11, 11, 0, 3 },
+                      {1, 9, 0, 3, 7, 5, 3, 5, 2, 5, 2, 10 },
+                      {4, 5, 10, 4, 10, 3, 10, 11, 3, 3, 4, 0 },
+                      {7, 3, 0, 7, 0, 4, 6, 5, 10, -1, -1, -1 },
+                      {6, 4, 0, 6, 0, 3, 6, 3, 11, -1, -1, -1 },
+                      {7, 0, 3, 7, 0, 4, -1, -1, -1, -1, -1, -1 },
+                      {10, 0, 2, 10, 9, 0, 7, 8, 4, -1, -1, -1 },
+                      {4, 11, 6, 4, 11, 8, 9, 2, 10, 9, 2, 0 },
+                      {11, 7, 6, 4, 5, 9, 3, 8, 0, -1, -1, -1 },
+                      {3, 8, 0, 4, 5, 9, -1, -1, -1, -1, -1, -1 },
+                      {3, 8, 0, 5, 11, 7, 5, 11, 10, -1, -1, -1 },
+                      {7, 2, 6, 7, 2, 3, 0, 5, 4, 0, 5, 1 },
+                      {7, 6, 11, 8, 3, 0, -1, -1, -1, -1, -1, -1 },
+                      {3, 0, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1}}
     
 }
 
@@ -78,7 +142,7 @@ void Metaballs::coloration(const list<Particule<3> *> &particules) {
                 for (it = particules.begin(); it != particules.end(); it++)
                     influence += (*it)->isosurface(position);
                     
-                points[i][j][k] = (influence >= rayon)? true : false;
+                points[i][j][k] = (influence >= rayon)? truefalse;
             }
         }
     }
@@ -112,11 +176,11 @@ void Metaballs::draw() {
     }
     glEnd(GL_TRIANGLES);
     
-    // TODO : cas limites (bords de la boîte) (éventuellement)
+    // TODOcas limites (bords de la boîte) (éventuellement)
 }
 
 void Metaballs::drawCube(Vecteur<3> pos, double cote, int config) {
-    int listeAretes[12] = configurations[config];
+    int listeAretes[12] = configurations[(config < 128)? config255 - config];
     int i = 0;
     while (i < 4 && listeAretes[3 * i] != -1) {
         drawTriangle(pos, cote, listeAretes[3*i], listeAretes[3*i + 1], listeAretes[3*i + 2]);
@@ -130,7 +194,7 @@ void Metaballs::drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c) {
     Vecteur<3> ptB = associerPoint(pos, cote, b);
     Vecteur<3> ptC = associerPoint(pos, cote, c);
     
-    // TODO : la normale !
+    // TODOla normale !
     glVertex3d(ptA(1), ptA(2), ptA(3));
     glVertex3d(ptB(1), ptB(2), ptB(3));
     glVertex3d(ptC(1), ptC(2), ptC(3));
@@ -139,7 +203,7 @@ void Metaballs::drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c) {
 
 Vecteur<3> Metaballs::associerPoint(Vecteur<3> pos, double cote, int a) {
     switch (a) {
-    case 0 : 
+    case 0
         return Vecteur<3>(pos(1), pos(2)+cote/2.0, pos(3));
         break;
     case 1 :
@@ -151,7 +215,7 @@ Vecteur<3> Metaballs::associerPoint(Vecteur<3> pos, double cote, int a) {
     case 3 :
         return Vecteur<3>(pos(1)+cote/2.0, pos(2)+cote, pos(3));
         break;
-    case 4 : 
+    case 4
         return Vecteur<3>(pos(1), pos(2)+cote/2.0, pos(3)+cote);
         break;
     case 5 :
