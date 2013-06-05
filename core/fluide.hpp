@@ -40,12 +40,16 @@ private:
 
     /* Table de nombre premiers pour le calcul de la longueur de la table de hashage */
     Premier<Dim> table;
-    
+    /* Longueur de la table de hashage */
+    int lgrHash;
     /* Table de hashage pour les voisins */
     multimap<int, Particule<Dim>*> hash_voisins;
 
-    /* Longueur de la table de hashage */
-    int lgrHash;
+    /* Seuils pour le critère d'activité des particules */
+    double epsilonR;  // Seuil de dynamique restreinte (en-dessous duquel les particules restent immobiles)
+    double epsilonF;  // Seuil de dynamique entière (au-dessus duquel les particules sont complètement libres)
+    /* Liste des particules actives */
+    list<Particule<Dim>*> actives;
 
 
     /* ** Constructeurs ** */
@@ -147,6 +151,24 @@ private:
     /* DEBUG : affichage de la table de hashage */
     void afficher_hash();
 
+    /* Calcul des forces d'interaction entre 2 particules au temps courant */
+    Vecteur<Dim> calculForcesInteraction(Particule<Dim>*, Particule<Dim>*);
+    
+    /* Calcul des forces d'interaction entre 2 particules au pas de temps précédent */
+    Vecteur<Dim> calculForcesInteractionPrec(Particule<Dim>*, Particule<Dim>*);
+
+    /*
+     * Mise à jour des forces s'exerçant sur les particules du fluide,
+     * par l'algorithme incrémental de l'ARPS
+     */
+    void integrationForces();
+
+    /* Fonction de restriction concernant l'activité des particules */
+    void restriction(const Vecteur<Dim>&, const double, double&, Vecteur<Dim>&);
+
+    /* Mise à jour du système avec le schéma d'intégration de l'ARPS */
+    void schemaIntegration();
+        
 };
 
 

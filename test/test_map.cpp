@@ -19,11 +19,11 @@ void test_map() {
     Vecteur<3> vec3d7 = Vecteur<3>(3.0, 2.0, 3.0);
     Vecteur<3> vec3d9 = Vecteur<3>(1.0, 4.0, 6.0);
     Vecteur<3> vec3d2 = Vecteur<3>();
-    Particule<3> * p2 = new Particule<3>(vec3d1, vec3d2, 950, 101558);
-    Particule<3> * p4 = new Particule<3>(vec3d3, vec3d2, 950, 101558);
-    Particule<3> * p6 = new Particule<3>(vec3d5, vec3d2, 950, 101558);
-    Particule<3> * p8 = new Particule<3>(vec3d7, vec3d2, 950, 101558);
-    Particule<3> * p10 = new Particule<3>(vec3d9, vec3d2, 950, 101558);
+    Particule<3> * p2 = new Particule<3>(1, vec3d1, vec3d2, 950, 101558);
+    Particule<3> * p4 = new Particule<3>(2, vec3d3, vec3d2, 950, 101558);
+    Particule<3> * p6 = new Particule<3>(3, vec3d5, vec3d2, 950, 101558);
+    Particule<3> * p8 = new Particule<3>(4, vec3d7, vec3d2, 950, 101558);
+    Particule<3> * p10 = new Particule<3>(5, vec3d9, vec3d2, 950, 101558);
 
     Fluide<3> f3 = Fluide<3>(&mateau3d);
     f3.ajouteParticule(p2);

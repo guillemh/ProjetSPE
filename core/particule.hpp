@@ -16,9 +16,15 @@ class Particule {
 
     /* ** Attributs ** */
 private:
+    unsigned int indice;         // Numéro identifiant la particule
     Vecteur<Dim> position;       // Position de la particule (m)
+    Vecteur<Dim> positionPrec;   // Position de la particule 
+                                 // au pas de temps précédent (m)
     Vecteur<Dim> vitesse;        // Vitesse de la particule (m.s^-1)
+    Vecteur<Dim> vitessePrec;    // Vitesse de la particule 
+                                 // au pas de temps précédent (m.s^-1)
     Vecteur<Dim> acceleration;   // Acceleration de la particule (m.s^-2)
+    Vecteur<Dim> forces;         // Forces d'interaction s'exerçant sur la particule (kg.m.s -2)
     double masse_volumique;      // Masse volumique de la particule (kg.m^-3)
     double pression;             // Pression de la particule (Pa)
     double masse;                // Masse de la particule (m)
@@ -27,13 +33,14 @@ private:
 public:
     /**
      * Constructeur
+     * \param ind Numéro d'identification de la particule
      * \param pos Position initiale
      * \param vit Vitesse initiale
      * \param m Masse de la particule
      * \param rho Masse volumique initiale
      * \param p Pression initiale
      */
-    Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0, double m = 0);
+    Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0, double m = 0);
     
     /**
      * Destructeur
@@ -44,9 +51,19 @@ public:
     /* ** Methodes ** */
 public:
     /**
+     * \return Le numéro de la particule
+     */
+    unsigned int getIndice() const;
+
+    /**
      * \return La position de la particule
      */
     const Vecteur<Dim> & getPosition() const;
+
+    /**
+     * \return La position de la particule au pas de temps précédent
+     */
+    const Vecteur<Dim> & getPositionPrec() const;
 
     /**
      * \return La vitesse de la particule
@@ -54,9 +71,19 @@ public:
     const Vecteur<Dim> & getVitesse() const;
 
     /**
+     * \return La vitesse de la particule au pas de temps précédent
+     */
+    const Vecteur<Dim> & getVitessePrec() const;
+
+    /**
      * \return L'accélération de la particule
      */
     const Vecteur<Dim> & getAcceleration() const;
+
+    /**
+     * \return Le total des forces s'exerçant sur la particule
+     */
+    const Vecteur<Dim> & getForces() const;
 
     /**
      * \return La masse de la particule
@@ -80,10 +107,22 @@ public:
     void setPosition(const Vecteur<Dim> &pos);
 
     /**
+     * Met à jour la position de la particule au pas de temps précédent
+     * \param pos Nouvelle position précédente de la particule
+     */
+    void setPositionPrec(const Vecteur<Dim> &pos);
+
+    /**
      * Modifie la vitesse de la particule
      * \param vit Nouvelle vitesse de la particule
      */
     void setVitesse(const Vecteur<Dim> &vit);
+
+    /**
+     * Met à jour la vitesse de la particule au pas de temps précédent
+     * \param pos Nouvelle vitesse précédente de la particule
+     */
+    void setVitessePrec(const Vecteur<Dim> &pos);
 
     /**
      * Modifie l'accélération de la particule
@@ -114,6 +153,18 @@ public:
      * \param vit Facteur d'augmentation de la vitesse (vitesse += vit)
      */
     void incrVitesse(const Vecteur<Dim> &vit);
+
+    /**
+     * Incrémente le total des forces
+     * @param f Facteur d'incrémentation des forces (forces += f)
+     */
+    void incrForces(const Vecteur<Dim>& f);
+
+    /**
+     * Décrémente le total des forces
+     * @param f Facteur de décrémentation des forces (forces -= f)
+     */
+    void decrForces(const Vecteur<Dim>& f);
 
     /**
      * Met à jour la pression en fonction de la masse volumique de la particule
