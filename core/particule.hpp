@@ -17,7 +17,11 @@ class Particule {
     /* ** Attributs ** */
 private:
     Vecteur<Dim> position;       // Position de la particule (m)
+    Vecteur<Dim> positionPrec;   // Position de la particule 
+                                 //au pas de temps précédent (m)
     Vecteur<Dim> vitesse;        // Vitesse de la particule (m.s^-1)
+    Vecteur<Dim> vitessePrec;    // Vitesse de la particule 
+                                 // au pas de temps précédent (m.s^-1)
     Vecteur<Dim> acceleration;   // Acceleration de la particule (m.s^-2)
     double masse_volumique;      // Masse volumique de la particule (kg.m^-3)
     double pression;             // Pression de la particule (Pa)
@@ -49,9 +53,19 @@ public:
     const Vecteur<Dim> & getPosition() const;
 
     /**
+     * \return La position de la particule au pas de temps précédent
+     */
+    const Vecteur<Dim> & getPositionPrec() const;
+
+    /**
      * \return La vitesse de la particule
      */
     const Vecteur<Dim> & getVitesse() const;
+
+    /**
+     * \return La vitesse de la particule au pas de temps précédent
+     */
+    const Vecteur<Dim> & getVitessePrec() const;
 
     /**
      * \return L'accélération de la particule
@@ -80,10 +94,22 @@ public:
     void setPosition(const Vecteur<Dim> &pos);
 
     /**
+     * Met à jour la position de la particule au pas de temps précédent
+     * \param pos Nouvelle position précédente de la particule
+     */
+    void setPositionPrec(const Vecteur<Dim> &pos);
+
+    /**
      * Modifie la vitesse de la particule
      * \param vit Nouvelle vitesse de la particule
      */
     void setVitesse(const Vecteur<Dim> &vit);
+
+    /**
+     * Met à jour la vitesse de la particule au pas de temps précédent
+     * \param pos Nouvelle vitesse précédente de la particule
+     */
+    void setVitessePrec(const Vecteur<Dim> &pos);
 
     /**
      * Modifie l'accélération de la particule

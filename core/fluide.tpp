@@ -549,3 +549,97 @@ void Fluide<Dim>::affiche() {
         i++;
     }
 }
+
+// template<unsigned int Dim>
+// void Fluide<Dim>::integrationForces() {
+//     set<Particule<Dim>*> vois;
+//     set<Particule<Dim>*>::iterator vois_it;
+
+//     if (debutAnim) {
+// 	/* Premier pas de l'animation */
+// 	typename list<Particule<Dim> *>::iterator part_it;
+// 	for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
+// 	    /* On boucle sur toutes les particules */
+// 	    vois = voisinage(*(*part_it));
+// 	    for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+// 		/* Boucle sur tous les voisins de la particule */
+// 		/* Ajouter interactions */
+// 		Vecteur<Dim> rayon = (*vois_it)->getPosition() - (*part_it)->getPosition();
+// 		double forces = calculForces(rayon);
+// 		(*part_it)->incrForces(forces);
+// 		(*vois_it)->decrForces(forces);
+// 	    }
+// 	}
+//     } else {
+// 	/* Au milieu de l'algorithme incrémental */
+// 	typename list<Particule<Dim> *>::iterator part_it;
+
+// 	/* On se base sur les anciennes positions pour enlever les anciennes forces */
+// 	for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
+// 	    /* On boucle sur les particules actives */
+// 	    vois = voisinage(*(*part_it));
+// 	    for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+// 		/* Boucle sur tous les voisins de la particule */
+// 		if (restrain_fonction((*vois_it)->getMomentPrec()) == 1) {
+// 		    /* Si la particule était active au pas de temps précédent */
+// 		    /* Enlever interactions */
+// 		    Vecteur<Dim> rayon = (*vois_it)->getPositionPrec() - (*part_it)->getPositionPrec();
+// 		    double forces = calculForces(rayon);
+// 		    (*part_it)->decrForces(forces);
+// 		    (*vois_it)->incrForces(forces);
+// 		}
+// 	    }
+// 	}
+
+// 	/* On met à jour les positions dans la grille de voxels */
+// 	for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
+// 	    /*
+// 	     * On met à jour la hashtable?
+// 	     */
+// 	}
+
+// 	/* On ajoute les forces correspondant aux nouvelles positions */
+// 	for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
+// 	    /* On boucle sur les particules actives */
+// 	    vois = voisinage(*(*part_it));
+// 	    for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+// 		/* Boucle sur tous les voisins de la particule */
+// 		if (restrain_fonction((*vois_it)->getMoment()) == 1) {
+// 		    /* Si la particule est active */
+// 		    /* Ajouter interactions */
+// 		    Vecteur<Dim> rayon = (*vois_it)->getPosition() - (*part_it)->getPosition();
+// 		    double forces = calculForces(rayon);
+// 		    (*part_it)->incrForces(forces);
+// 		    (*vois_it)->decrForces(forces);
+// 		}
+// 	    }
+// 	}
+
+//     }
+// }
+
+// template<unsigned int Dim>
+// void Fluide<Dim>::schemaIntegration() {
+
+//     /* Mise à jour des forces */
+//     integrationForces();
+
+//     typename list<Particule<Dim> *>::iterator part_it;
+
+//     /* Mise à jour des moments */
+//     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
+// 	(*part_it)->incrMoment((*part_it)->getForces()*mat->getPasTemps());
+//     }
+
+//     /* Mise à jour des positions */
+//     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
+// 	double incr = mat->getPasTemps() * 
+// 	    ((*part_it)->getMomentPrec() / mat->getMasseParticules() * 
+// 	     (1 - restrain_fonction((*part_it)->getMomentPrec()))
+// 	     - 0.5 * pow((*part_it)->getMomentPrec().norme(), 2) / mat->getMasseParticules()
+// 	     * deriv_restrain_fonction((*part_it)->getMoment())
+// 	     );
+// 	(*part_it)->incrPosition(incr);
+//     }
+
+// }

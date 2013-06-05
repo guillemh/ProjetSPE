@@ -27,10 +27,20 @@ const Vecteur<Dim> & Particule<Dim>::getPosition() const {
     return position;
 }
 
+template<unsigned int Dim>
+const Vecteur<Dim> & Particule<Dim>::getPositionPrec() const {
+    return positionPrec;
+}
+
 
 template<unsigned int Dim>
 const Vecteur<Dim> & Particule<Dim>::getVitesse() const {
     return vitesse;
+}
+
+template<unsigned int Dim>
+const Vecteur<Dim> & Particule<Dim>::getVitessePrec() const {
+    return vitessePrec;
 }
 
 
@@ -62,10 +72,20 @@ void Particule<Dim>::setPosition(const Vecteur<Dim> &pos) {
     position = pos;
 }
 
+template<unsigned int Dim>
+void Particule<Dim>::setPositionPrec(const Vecteur<Dim> &pos) {
+    positionPrec = pos;
+}
+
 
 template<unsigned int Dim>
 void Particule<Dim>::setVitesse(const Vecteur<Dim> &vit) {    
     vitesse = vit;
+}
+
+template<unsigned int Dim>
+void Particule<Dim>::setVitessePrec(const Vecteur<Dim> &vit) {    
+    vitessePrec = vit;
 }
 
 
