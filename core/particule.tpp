@@ -104,7 +104,9 @@ void Particule<Dim>::majPression (double son, double dens) {
      * (cf. Becker-Teschner, "Weakly compressible SPH for free surface flows")
      */
     double gamma = 7.0;
-    double B = dens * pow(son, 2.0) / gamma;
+    //double B = dens * pow(son, 2.0) / gamma;
+    double B = 10000;
+    //pression = B * (pow(masse_volumique / dens, gamma));
     pression = B * (pow(masse_volumique / dens, gamma) - 1);
 //    cout << "B = " << B << ", rho = " << masse_volumique << ", rho_0 = " << dens << ", rho/rho_0 = " << masse_volumique/dens << ", on obtient P = " << pression << endl;
 }
@@ -119,9 +121,11 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos) {
 
 template<unsigned int Dim>
 void Particule<Dim>::draw(Materiau<Dim> *mat) const {
-    glPushMatrix();
-    glColor3f(0.0, 0.0, 1.0);
-    glTranslatef(position(1), position(2), position(3));
+    //glPushMatrix();
+    glColor3f(1.0, 0.0, 0.0);
+	glPointSize(3.0f);
+glBegin(GL_POINTS);
+    //glTranslatef(position(1), position(2), position(3));
     /* Calcul du rayon de la sphère :
      * r = racine cubique (3 * m / (4 * PI * rho)) 
      *     avec m masse de la particule
@@ -130,9 +134,11 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
      * Or V = m / rho, donc m = rho * V = rho * k / p
      * ce qui simplifie le calcul
      */
-    double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * mat->getPression()), 1.0/3.0);
-    glutSolidSphere(rayon, 12, 12);
-    glPopMatrix();
+    //double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * mat->getPression()), 1.0/3.0);
+    //glutSolidSphere(rayon, 12, 12);
+	glVertex3f(position(1), position(2), position(3));
+glEnd();
+    //glPopMatrix();
 }
 
 
