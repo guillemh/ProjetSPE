@@ -25,8 +25,8 @@ private:
 		      correspondante du cube qui sera défini par la suite à l'aide de huit points */
     Vecteur<3> origine; /*!< Origine spatiale de l'espace rectangulaire considéré dans le maillage */
     double cote; /*!< Côté d'un cube */
-    double rayon; /*!< Rayon d'une particule */
-    int configurations[256][12]; /*!< Look-up table des configurations possibles pour l'algorithme des Marching Cubes */
+    doube rayon; /*!< Rayon d'une particule */
+    int configurations[128][12]; /*!< Look-up table des configurations possibles pour l'algorithme des Marching Cubes */
 
     /* ** Constructeurs ** */
 public:
