@@ -31,29 +31,8 @@
  * .. x
  */
 
-Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon) {
-
-    // Calcul des dimensions
-    n = 20;
-    p = 20;
-    q = 10;
-    
-    // Allocation du tableau des points
-    points = new bool** [n];
-    for (int i = 0 ; i < n ; i++) {
-        points [i] = new bool* [p];
-        for (int j = 0 ; j < p ; j++) {
-            points [i][j] = new bool [q];
-        }
-    }
-    
-    // Définition des attributs
-    origine = _origine;
-    cote = _cote;
-    rayon = _rayon;
-    
-    // Définition de la lookup table
-    configurations = {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon, double x, double y, double z) :
+    configurations ({{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                       {7, 6, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                       {5, 6, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                       {5, 10, 11, 7, 10, 11, -1, -1, -1, -1, -1, -1},
@@ -180,7 +159,25 @@ Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon) {
                       {3, 8, 0, 5, 11, 7, 5, 11, 10, -1, -1, -1 },
                       {7, 2, 6, 7, 2, 3, 0, 5, 4, 0, 5, 1 },
                       {7, 6, 11, 8, 3, 0, -1, -1, -1, -1, -1, -1 },
-                      {3, 0, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1}}
+                      {3, 0, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1}}),
+    origine (_origine),
+    cote (_cote),
+    rayon (_rayon)
+{
+
+    // Calcul des dimensions
+    n = x / cote;
+    p = y / cote;
+    q = z / cote;
+    
+    // Allocation du tableau des points
+    points = new bool** [n];
+    for (int i = 0 ; i < n ; i++) {
+        points [i] = new bool* [p];
+        for (int j = 0 ; j < p ; j++) {
+            points [i][j] = new bool [q];
+        }
+    }
     
 }
 
@@ -188,18 +185,18 @@ Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon) {
 Metaballs::~Metaballs() {
     for (int i = 0 ; i < n ; i++) {
         for (int j = 0 ; j < p ; j++) {
-            delete points [i][j][];
+            delete points [i][j];
         }
-        delete points [i][];
+        delete points [i];
     }
-    delete points [];
+    delete [] points;
 }
 
 
 /* ** Methodes ** */
 
-void Metaballs::coloration(const list<Particule<3> *> &particules) {
-    typename list<Particule<Dim> *>::iterator it;
+void Metaballs::coloration(list<Particule<3> *> &particules) {
+    typename list<Particule<3> *>::iterator it;
 
     // Pour chaque point, on regarde l'influence des particules du fluide
     // Si elle superieure a rayon, on "colorie" le point
@@ -212,7 +209,7 @@ void Metaballs::coloration(const list<Particule<3> *> &particules) {
                 for (it = particules.begin(); it != particules.end(); it++)
                     influence += (*it)->isosurface(position);
                     
-                points[i][j][k] = (influence >= rayon)? truefalse;
+                points[i][j][k] = (influence >= rayon)? true : false;
             }
         }
     }
@@ -244,13 +241,14 @@ void Metaballs::draw() {
             }
         }
     }
-    glEnd(GL_TRIANGLES);
+    glEnd();
     
-    // TODOcas limites (bords de la boîte) (éventuellement)
+    // TODO : cas limites (bords de la boîte) (éventuellement)
 }
 
 void Metaballs::drawCube(Vecteur<3> pos, double cote, int config) {
-    int listeAretes[12] = configurations[(config < 128)? config255 - config];
+    int numConfig = (config < 128)? config : 255 - config;
+    int *listeAretes = configurations[numConfig];
     int i = 0;
     while (i < 4 && listeAretes[3 * i] != -1) {
         drawTriangle(pos, cote, listeAretes[3*i], listeAretes[3*i + 1], listeAretes[3*i + 2]);
@@ -264,7 +262,7 @@ void Metaballs::drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c) {
     Vecteur<3> ptB = associerPoint(pos, cote, b);
     Vecteur<3> ptC = associerPoint(pos, cote, c);
     
-    // TODOla normale !
+    // TODO : la normale !
     glVertex3d(ptA(1), ptA(2), ptA(3));
     glVertex3d(ptB(1), ptB(2), ptB(3));
     glVertex3d(ptC(1), ptC(2), ptC(3));
@@ -273,7 +271,7 @@ void Metaballs::drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c) {
 
 Vecteur<3> Metaballs::associerPoint(Vecteur<3> pos, double cote, int a) {
     switch (a) {
-    case 0
+    case 0 :
         return Vecteur<3>(pos(1), pos(2)+cote/2.0, pos(3));
         break;
     case 1 :
@@ -283,9 +281,9 @@ Vecteur<3> Metaballs::associerPoint(Vecteur<3> pos, double cote, int a) {
         return Vecteur<3>(pos(1)+cote, pos(2)+cote/2.0, pos(3));
         break;
     case 3 :
-        return Vecteur<3>(pos(1)+cote/2.0, pos(2)+cote, pos(3));
+        return Vecteur<3>(pos(1)+cote/2.0, pos(2), pos(3));
         break;
-    case 4
+    case 4 :
         return Vecteur<3>(pos(1), pos(2)+cote/2.0, pos(3)+cote);
         break;
     case 5 :
@@ -295,7 +293,7 @@ Vecteur<3> Metaballs::associerPoint(Vecteur<3> pos, double cote, int a) {
         return Vecteur<3>(pos(1)+cote, pos(2)+cote/2.0, pos(3)+cote);
         break;
     case 7 :
-        return Vecteur<3>(pos(1)+cote/2.0, pos(2)+cote, pos(3)+cote);
+        return Vecteur<3>(pos(1)+cote/2.0, pos(2), pos(3)+cote);
         break;
     case 8 :
         return Vecteur<3>(pos(1), pos(2), pos(3)+cote/2.0);

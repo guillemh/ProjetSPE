@@ -25,5 +25,9 @@ gestionProjet/*.pdf
 g3d/test_dessin_fluide
 cascade/test_cascade
 
+#
 *.xml
 
+# Fichiers générés par latex
+*.log
+*.aux

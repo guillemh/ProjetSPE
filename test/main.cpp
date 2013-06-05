@@ -7,6 +7,7 @@
 #include "test_premier.cpp"
 #include "test_performances_premier.cpp"
 #include "test_voisins.cpp"
+#include "test_metaballs.cpp"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -47,6 +48,10 @@ int main()
     cout << endl << endl;
     cout << "***** Test voisins : *****" << endl;
     test_voisins();
+
+    cout << endl << endl;
+    cout << "***** Test metaballs : *****" << endl;
+    test_metaballs();
 
     return 0;
 }
