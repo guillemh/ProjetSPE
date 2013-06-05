@@ -143,7 +143,8 @@ void Particule<Dim>::decrForces(const Vecteur<Dim> &f) {
 
 
 template<unsigned int Dim>
-void Particule<Dim>::majPression (double son, double dens) {
+void Particule<Dim>::majPression (double dens) {
+    // Paramètre "son" supprimé
     /* Calcul de la pression appliquée à une particule selon l'équation de Tait
      * (cf. Becker-Teschner, "Weakly compressible SPH for free surface flows")
      */
@@ -165,11 +166,9 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos) {
 
 template<unsigned int Dim>
 void Particule<Dim>::draw(Materiau<Dim> *mat) const {
-    //glPushMatrix();
+    // glPushMatrix();
     glColor3f(1.0, 0.0, 0.0);
-    glPointSize(3.0f);
-    glBegin(GL_POINTS);
-    //glTranslatef(position(1), position(2), position(3));
+    // glTranslatef(position(1), position(2), position(3));
     /* Calcul du rayon de la sphère :
      * r = racine cubique (3 * m / (4 * PI * rho)) 
      *     avec m masse de la particule
@@ -178,13 +177,23 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
      * Or V = m / rho, donc m = rho * V = rho * k / p
      * ce qui simplifie le calcul
      */
-    //double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * mat->getPression()), 1.0/3.0);
-    //glutSolidSphere(rayon, 12, 12);
+    double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * mat->getPression()), 1.0/3.0);
+    glutSolidSphere(rayon, 12, 12);
     glVertex3f(position(1), position(2), position(3));
-    glEnd();
-    //glPopMatrix();
+    // glPopMatrix();
 }
 
+template<unsigned int Dim>
+void Particule<Dim>::draw() const {
+    // glPushMatrix();
+    glColor3f(1.0, 0.0, 0.0);
+    glPointSize(3.0f);
+    glBegin(GL_POINTS);
+    //glTranslatef(position(1), position(2), position(3));
+    glVertex3f(position(1), position(2), position(3));
+    glEnd();
+    // glPopMatrix();
+}
 
 template<unsigned int Dim>
 std::ostream& operator<<(std::ostream& os, const Particule<Dim>& p) {

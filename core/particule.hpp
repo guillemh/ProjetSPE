@@ -169,10 +169,9 @@ public:
     /**
      * Met à jour la pression en fonction de la masse volumique de la particule
      * Prototype éventuellement à reprendre
-     * \param son La vitesse du son
      * \param dens La densité au repos
      */
-    void majPression(double son, double dens);
+    void majPression(double dens);
 
     /**
      * Calcule la valeur de l'isosurface de cette particule en un point de l'espace.
@@ -181,10 +180,15 @@ public:
     double isosurface(Vecteur<Dim> &pos);
     
     /**
-     * Fonction d'affichage de la particule
+     * Fonction d'affichage de la particule sous la forme d'une sphère
      * \param mat Le matériau du fluide auquel appartient la particule
      */
     void draw(Materiau<Dim> *mat) const;
+
+    /**
+     * Fonction d'affichage de la particule sous la forme d'un point
+     */
+    void draw() const;
 };
 
 /**

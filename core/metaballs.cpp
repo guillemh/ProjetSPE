@@ -32,6 +32,9 @@
  */
 
 Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon, double x, double y, double z) :
+    origine (_origine),
+    cote (_cote),
+    rayon (_rayon),
     configurations ({{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                       {7, 6, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                       {5, 6, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1},
@@ -159,10 +162,7 @@ Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon, double x,
                       {3, 8, 0, 5, 11, 7, 5, 11, 10, -1, -1, -1 },
                       {7, 2, 6, 7, 2, 3, 0, 5, 4, 0, 5, 1 },
                       {7, 6, 11, 8, 3, 0, -1, -1, -1, -1, -1, -1 },
-                      {3, 0, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1}}),
-    origine (_origine),
-    cote (_cote),
-    rayon (_rayon)
+                      {3, 0, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1}})
 {
 
     // Calcul des dimensions

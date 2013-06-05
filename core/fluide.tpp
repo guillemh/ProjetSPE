@@ -353,7 +353,7 @@ void Fluide<Dim>::majDensitePression() {
         (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
         
         // On met leur pression à jour
-        (*it1)->majPression(mat->getCeleriteSon(), mat->getDensiteRepos());
+        (*it1)->majPression(mat->getDensiteRepos());
     }
 
    // for (it1 = lignedEau.begin(); it1 != lignedEau.end(); it1++) {
@@ -361,12 +361,9 @@ void Fluide<Dim>::majDensitePression() {
    //     // On met leur masse volumique à jour
    //     double somme = noyau.defaut(Vecteur<Dim>());
    //     voisins = voisinage(*(*it1));
-
    //     for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
    //         somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
-           
-   //     (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
-       
+   //     (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);   
    //     // On met la pression a jour
    //     (*it1)->majPression(mat->getCeleriteSon(), mat->getDensiteRepos());
    // }
@@ -428,8 +425,8 @@ void Fluide<Dim>::majPositionVitesse() {
         Vecteur<Dim> fPression = Vecteur<Dim>();
         Vecteur<Dim> fViscosite = Vecteur<Dim>();
         Vecteur<Dim> fGravite = Vecteur<Dim>();
-        Vecteur<Dim> fSurface = Vecteur<Dim>();
-        double colorfield = 0;
+        // Vecteur<Dim> fSurface = Vecteur<Dim>();
+        // double colorfield = 0;
         
         // Calcul des sommes utiles aux forces de pression, de viscosite et de surface,
         // selon l'article de Becker et Teschner (WCSPH). Ci-dessous, quelques variables
@@ -468,16 +465,14 @@ void Fluide<Dim>::majPositionVitesse() {
         fViscosite *= masse * masseVolumique_a;
         //fViscosite *= masse * masse;
         
-        /*
-          fSurface *= masse;
-          double norme = fSurface.norme();
-          if (norme >= mat->getSeuilSurface()) {
-          colorfield *= masse;
-          fSurface *= -colorfield * mat->getTensionSurface() / norme;
-          } else {
-          fSurface = Vecteur<Dim>();
-          }
-        */
+	// fSurface *= masse;
+	// double norme = fSurface.norme();
+	// if (norme >= mat->getSeuilSurface()) {
+	//     colorfield *= masse;
+	//     fSurface *= -colorfield * mat->getTensionSurface() / norme;
+	// } else {
+	//     fSurface = Vecteur<Dim>();
+	// }
                 
         // Calcul de l'acceleration
 	if (it1 == particules.begin()) {
@@ -554,10 +549,10 @@ template<unsigned int Dim>
 void Fluide<Dim>::draw() const {
     typename list<Particule<Dim> *>::const_iterator it;
     for (it = particules.begin (); it != particules.end (); it++) {
-        (*it)->draw (mat);
+        (*it)->draw ();
     }
     // for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
-    //    (*it)->draw (mat);
+    //    (*it)->draw ();
     // }
 }
 
