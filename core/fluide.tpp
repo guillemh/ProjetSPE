@@ -470,7 +470,7 @@ void Fluide<Dim>::majPositionVitesse() {
         // Calcul des forces de gravité, de pression, de viscosite et de surface
         fGravite = masseVolumique_a * mat->getAccGrav();
         //fPression *= masse * masse;
-        fPression *= masse * masseVolumique_a / 100;
+        fPression *= masse * masseVolumique_a;
         fViscosite *= masse * masseVolumique_a;
         //fViscosite *= masse * masse;
         
@@ -563,8 +563,8 @@ void Fluide<Dim>::draw() {
    for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
       (*it)->draw ();
    }
-    ball.coloration(particules);
-    ball.draw();
+    // ball.coloration(particules);
+    // ball.draw();
 }
 
 
