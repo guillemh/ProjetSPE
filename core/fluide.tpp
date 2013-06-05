@@ -23,6 +23,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
     // Initilisation de la liste vide
     particules = list<Particule<Dim> *>();
     lignedEau = list<Particule<Dim> *>();
+    
+    // Definition des dimensions et de la metaball suivant la dimension
     if (Dim == 2) {
         x_min = -1.0;
         x_max = 1.0;
@@ -35,6 +37,9 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
         y_min = -1.0;
         y_max = 1.0;
         z_min = 0;
+        
+        Vecteur<3> orig = Vecteur<3>(x_min, y_min, z_min);
+        ball = Metaballs(orig, 0.01, mat->getRayonNoyau(), x_max - x_min, y_max - y_min, y_max - y_min);
     }
 }
 
@@ -103,6 +108,10 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         y_min = -0.5;
         y_max = 0.5;
         z_min = 0;
+        
+        // On definit enduite la metaball
+        Vecteur<3> orig = Vecteur<3>(x_min, y_min, z_min);
+        ball = Metaballs(orig, 0.01, mat->getRayonNoyau(), x_max - x_min, y_max - y_min, y_max - y_min);
         
         // On définit ensuite la position des particules
         double largeur_x = x_max - x_min;
@@ -546,14 +555,16 @@ void Fluide<Dim>::majPositionVitesse() {
 
 
 template<unsigned int Dim>
-void Fluide<Dim>::draw() const {
-    typename list<Particule<Dim> *>::const_iterator it;
-    for (it = particules.begin (); it != particules.end (); it++) {
-        (*it)->draw ();
-    }
-    // for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
-    //    (*it)->draw ();
-    // }
+void Fluide<Dim>::draw() {
+   typename list<Particule<Dim> *>::const_iterator it;
+   for (it = particules.begin (); it != particules.end (); it++) {
+       (*it)->draw ();
+   }
+   for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
+      (*it)->draw ();
+   }
+    ball.coloration(particules);
+    ball.draw();
 }
 
 

@@ -3,7 +3,7 @@
 
 #include <list>
 #include <iostream>
-#include "../core/particule.hpp"
+#include "particule.hpp"
 
 using std::list;
 
@@ -17,19 +17,28 @@ class Metaballs {
 
     /* ** Attributs ** */
 private:
-    int n; /*!< Nombre de cubes selon l'axe (Ox) */
-    int p; /*!< Nombre de cubes selon l'axe (Oy) */
-    int q; /*!< Nombre de cubes selon l'axe (Oz) */
-    bool*** points; /*!< Tableau de booléens, chaque booléen étant associé de façon unique à un point de l'espace :
-		      un booléen indique si le sommet doit être marqué ou non, ce qui nous permet d'obtenir la configuration
-		      correspondante du cube qui sera défini par la suite à l'aide de huit points */
-    Vecteur<3> origine; /*!< Origine spatiale de l'espace rectangulaire considéré dans le maillage */
-    double cote; /*!< Côté d'un cube */
-    double rayon; /*!< Rayon d'une particule */
-    int configurations[128][12]; /*!< Look-up table des configurations possibles pour l'algorithme des Marching Cubes */
+    int n;                       /*!< Nombre de cubes selon l'axe (Ox) */
+    int p;                       /*!< Nombre de cubes selon l'axe (Oy) */
+    int q;                       /*!< Nombre de cubes selon l'axe (Oz) */
+    bool*** points;              /*!< Tableau de booléens, chaque booléen étant associé à un point de l'espace :
+		                              un booléen indique si le sommet doit être marqué ou non, pour avoir
+		                              la configuration du cube qui sera défini à l'aide de huit points */
+    Vecteur<3> origine;          /*!< Origine spatiale de l'espace rectangulaire considéré dans le maillage */
+    double cote;                 /*!< Côté d'un cube */
+    double rayon;                /*!< Rayon d'une particule */
+    int configurations[128][12]; /*!< Look-up table de toutes les configurations possibles
+                                      pour l'algorithme des Marching Cubes */
 
     /* ** Constructeurs ** */
 public:
+    /**
+     * \brief Constructeur par defaut
+     *
+     * Alloue le tableau de points et initialise les valeurs arbitrairement
+     * (A éviter d'utiliser)
+     */
+    Metaballs();
+    
     /**
      * \brief Constructeur
      *
@@ -37,9 +46,9 @@ public:
      * \param _origine Origine spatiale de l'espace rectangulaire considéré dans le maillage
      * \param _cote Côté d'un cube du maillage
      * \param _rayon Rayon d'une particule
-     * \param x Dimension du parallèlépipède selon x
-     * \param y Dimension du parallèlépipède selon y
-     * \param z Dimension du parallèlépipède selon z
+     * \param x Dimension du parallélépipède selon x
+     * \param y Dimension du parallélépipède selon y
+     * \param z Dimension du parallélépipède selon z
      */
     Metaballs(Vecteur<3> _origine, double _cote, double _rayon, double x = 1.0, double y = 1.0, double z = 1.0);
 
