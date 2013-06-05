@@ -15,8 +15,8 @@ void test_metaballs() {
     Vecteur<3> vec2 = Vecteur<3>(0.0, -0.2, 0.7);
     
     list<Particule<3> *> particules;
-    Particule<3> * p1 = new Particule<3>(vec1, vec0, 1000, 100000);
-    Particule<3> * p2 = new Particule<3>(vec2, vec0, 1000, 100000);
+    Particule<3> * p1 = new Particule<3>(1, vec1, vec0, 1000, 100000);
+    Particule<3> * p2 = new Particule<3>(2, vec2, vec0, 1000, 100000);
     particules.push_back(p1);
     particules.push_back(p2);
     

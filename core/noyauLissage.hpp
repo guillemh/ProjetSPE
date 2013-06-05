@@ -46,7 +46,7 @@ public:
      * \return Le rayon du noyau de lissage
      */
     inline double getRayon() const {
-	return h;
+        return h;
     }
 
     /**
@@ -238,72 +238,72 @@ public:
 public:
 
     inline virtual double defaut(const Vecteur<Dim> r) const {
-	double q = r.norme()/(this->h);
-	double res;
-	if (q <= 1) {
-	    res = (pow(2 - q, 3) - 4.0 * pow(1 - q, 3));
-	} else if (q <= 2) {
-	    res = pow(2 - q, 3);
-	} else {
-	    res = 0;
-	}
-	if (Dim == 3) {
-	    res *= 1.0/(4.0 * PI * pow(this->h, 3));
-	} else if (Dim == 2) {
-	    res *= 15.0/(14.0 * PI * pow (this->h, 2));
-	} else if (Dim == 1) {
-	    res *= 1.0/(6.0 * this->h);
-	}
-	return res;
+        double q = r.norme()/(this->h);
+        double res;
+        if (q <= 1) {
+            res = (pow(2 - q, 3) - 4.0 * pow(1 - q, 3));
+        } else if (q <= 2) {
+            res = pow(2 - q, 3);
+        } else {
+            res = 0;
+        }
+        if (Dim == 3) {
+            res *= 1.0/(4.0 * PI * pow(this->h, 3));
+        } else if (Dim == 2) {
+            res *= 15.0/(14.0 * PI * pow (this->h, 2));
+        } else if (Dim == 1) {
+            res *= 1.0/(6.0 * this->h);
+        }
+        return res;
     }
 
     inline virtual Vecteur<Dim> gradient(const Vecteur<Dim> r) const {
-	double q = r.norme()/(this->h);
-	Vecteur<Dim> res;
-	//if (q < 0.001) {
-	//    res = Vecteur<Dim>();
-	//} else if (q <= 1) {
-	if (q <= 1) {
-	    //res = r/(2.0 * this->h * r.norme()) * (-pow(2 - q, 2) + 4.0 * pow(1 - q, 2));
-	    res = (-r/(2.0*this->h*this->h))*(4-3*q);
-	} else if (q <= 2) {
-	    res = -(r * pow(2 - q, 2)) / (2.0 * this->h * r.norme());
-	} else {
-	    res = Vecteur<Dim>();
-	}
-	if (Dim == 3) {
-	    res *= 3.0/(2.0 * PI * pow(this->h, 3));
-	} else if (Dim == 2) {
-	    res *= 45.0/(7.0 * PI * pow (this->h, 2));
-	} else if (Dim == 1) {
-	    res /= this->h;
-	}
-	return res;
+        double q = r.norme()/(this->h);
+        Vecteur<Dim> res;
+        //if (q < 0.001) {
+        //    res = Vecteur<Dim>();
+        //} else if (q <= 1) {
+        if (q <= 1) {
+            //res = r/(2.0 * this->h * r.norme()) * (-pow(2 - q, 2) + 4.0 * pow(1 - q, 2));
+            res = (-r/(2.0*this->h*this->h))*(4-3*q);
+        } else if (q <= 2) {
+            res = -(r * pow(2 - q, 2)) / (2.0 * this->h * r.norme());
+        } else {
+            res = Vecteur<Dim>();
+        }
+        if (Dim == 3) {
+            res *= 3.0/(2.0 * PI * pow(this->h, 3));
+        } else if (Dim == 2) {
+            res *= 45.0/(7.0 * PI * pow (this->h, 2));
+        } else if (Dim == 1) {
+            res /= this->h;
+        }
+        return res;
     }
 
     inline virtual double laplacien(const Vecteur<Dim> r) const {
-	double q = r.norme()/(this->h);
-	double res;
-	if (q < 0.001) {
-	    res = 0;
-	} else if (q <= 1) {
-	    double prod = r.norme() * this->h;
-	    double h_carre = pow(this->h, 2);
-	    res = -(1.0 / prod) * pow(2 - q, 2) + (1.0 / h_carre) * (2 - q)
-		+ (4.0 / prod) * pow(1 - q, 2) - (4.0 / h_carre) * (1 - q);
-	} else if (q <= 2) {
-	    res = -(1.0 / (r.norme() * this->h)) * pow(2 - q, 2) + (1.0 / pow(this->h, 2)) * (2 - q);
-	} else {
-	    res = 0;
-	}
-	if (Dim == 3) {
-	    res *= 3.0/(2.0 * PI * pow(this->h, 3));
-	} else if (Dim == 2) {
-	    res *= 45.0/(7.0 * PI * pow (this->h, 2));
-	} else if (Dim == 1) {
-	    res /= this->h;
-	}
-	return res;
+        double q = r.norme()/(this->h);
+        double res;
+        if (q < 0.001) {
+            res = 0;
+        } else if (q <= 1) {
+            double prod = r.norme() * this->h;
+            double h_carre = pow(this->h, 2);
+            res = -(1.0 / prod) * pow(2 - q, 2) + (1.0 / h_carre) * (2 - q)
+                + (4.0 / prod) * pow(1 - q, 2) - (4.0 / h_carre) * (1 - q);
+        } else if (q <= 2) {
+            res = -(1.0 / (r.norme() * this->h)) * pow(2 - q, 2) + (1.0 / pow(this->h, 2)) * (2 - q);
+        } else {
+            res = 0;
+        }
+        if (Dim == 3) {
+            res *= 3.0/(2.0 * PI * pow(this->h, 3));
+        } else if (Dim == 2) {
+            res *= 45.0/(7.0 * PI * pow (this->h, 2));
+        } else if (Dim == 1) {
+            res /= this->h;
+        }
+        return res;
     }
 
 };

@@ -24,6 +24,8 @@ template<unsigned int Dim>
 NoyauLissage<Dim>::~NoyauLissage() {
 }
 
+
+
 /* ** Constructeurs classe NoyauLissageDefaut ** */
 
 template<unsigned int Dim>

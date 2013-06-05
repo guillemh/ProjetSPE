@@ -167,8 +167,8 @@ template<unsigned int Dim>
 void Particule<Dim>::draw(Materiau<Dim> *mat) const {
     //glPushMatrix();
     glColor3f(1.0, 0.0, 0.0);
-	glPointSize(3.0f);
-glBegin(GL_POINTS);
+    glPointSize(3.0f);
+    glBegin(GL_POINTS);
     //glTranslatef(position(1), position(2), position(3));
     /* Calcul du rayon de la sphère :
      * r = racine cubique (3 * m / (4 * PI * rho)) 
@@ -180,8 +180,8 @@ glBegin(GL_POINTS);
      */
     //double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * mat->getPression()), 1.0/3.0);
     //glutSolidSphere(rayon, 12, 12);
-	glVertex3f(position(1), position(2), position(3));
-glEnd();
+    glVertex3f(position(1), position(2), position(3));
+    glEnd();
     //glPopMatrix();
 }
 
