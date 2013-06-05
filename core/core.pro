@@ -15,6 +15,6 @@ DESTDIR = $${DBGNAME}
 QT += xml opengl
 QMAKE_CXXFLAGS += -std=c++0x
 
-HEADERS += fluide.hpp materiau.hpp noyauLissage.hpp particule.hpp vecteur.hpp premier.hpp
-SOURCES +=
+HEADERS += fluide.hpp materiau.hpp noyauLissage.hpp particule.hpp vecteur.hpp premier.hpp metaballs.hpp
+SOURCES += metaballs.cpp
 

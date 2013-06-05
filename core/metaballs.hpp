@@ -25,7 +25,7 @@ private:
 		      correspondante du cube qui sera défini par la suite à l'aide de huit points */
     Vecteur<3> origine; /*!< Origine spatiale de l'espace rectangulaire considéré dans le maillage */
     double cote; /*!< Côté d'un cube */
-    doube rayon; /*!< Rayon d'une particule */
+    double rayon; /*!< Rayon d'une particule */
     int configurations[128][12]; /*!< Look-up table des configurations possibles pour l'algorithme des Marching Cubes */
 
     /* ** Constructeurs ** */
@@ -37,8 +37,11 @@ public:
      * \param _origine Origine spatiale de l'espace rectangulaire considéré dans le maillage
      * \param _cote Côté d'un cube du maillage
      * \param _rayon Rayon d'une particule
+     * \param x Dimension du parallèlépipède selon x
+     * \param y Dimension du parallèlépipède selon y
+     * \param z Dimension du parallèlépipède selon z
      */
-    Metaballs(Vecteur<3> _origine, double _cote, double _rayon);
+    Metaballs(Vecteur<3> _origine, double _cote, double _rayon, double x = 1.0, double y = 1.0, double z = 1.0);
 
     /**
      * \brief Destructeur
@@ -56,7 +59,7 @@ public:
      * Calcule la valeur de la surface implicite définie par les particules du fluide pour tout point du maillage,
      * et attribue à chaque sommet sa couleur, ceci pour déterminer la configuration des cubes
      */
-    void coloration(const list<Particule<3> *> &particules);
+    void coloration(list<Particule<3> *> &particules);
 
     /**
      * \brief Représentation
@@ -97,7 +100,7 @@ public:
      * \param a Numéro de l'arête considérée
      * \return Le point de l'espace ainsi déterminé
      */
-    Vecteur<3> associerPoint (Vecteur<3> pos, double cote, int a);
+    Vecteur<3> associerPoint(Vecteur<3> pos, double cote, int a);
 };
 
 #endif

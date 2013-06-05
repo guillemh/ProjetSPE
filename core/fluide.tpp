@@ -100,11 +100,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         double largeur_x = x_max - x_min;
         double largeur_y = y_max - y_min;
         
-        if (largeur_x < nb[0]*ecart || largeur_y < nb[1]*ecart) {
-            cout << "Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p)" << endl;
-            cout << "Erreur : trop de particules pour les dimensions de la boîte" << endl;
-            exit (1);
-        }
+        if (largeur_x < nb[0]*ecart || largeur_y < nb[1]*ecart)
+            cout << "Attention (fluide.tpp) : trop de particules pour les dimensions de la boîte" << endl;
         
         Vecteur<Dim> vec;
         Particule<Dim> *part;
