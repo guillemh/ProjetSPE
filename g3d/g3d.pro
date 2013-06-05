@@ -4,8 +4,8 @@ CONFIG  += qt opengl glut warn_on thread openmp debug # release
 QT *= xml opengl 
 QMAKE_CXXFLAGS += -std=c++0x
 
-HEADERS  = viewer.h scene.h
-SOURCES  = main.cpp viewer.cpp scene.cpp
+HEADERS  = viewer.h scene.h ../core/metaballs.hpp
+SOURCES  = main.cpp viewer.cpp scene.cpp ../core/metaballs.cpp
 LIBS *= -lglut
 
 exists( /usr/lib/libqglviewer-qt4.so) |

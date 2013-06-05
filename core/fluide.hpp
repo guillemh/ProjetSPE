@@ -9,6 +9,7 @@
 #include "particule.hpp"
 #include "vecteur.hpp"
 #include "premier.hpp"
+#include "metaballs.hpp"
 using std::multimap;
 using std::list;
 using std::set;
@@ -24,9 +25,10 @@ class Fluide {
     
     /* ** Attributs ** */
 private:
-    Materiau<Dim> * mat;                 /*!< Materiau du fluide (avec toutes les constantes) */
+    Materiau<Dim> * mat;               /*!< Materiau du fluide (avec toutes les constantes) */
     list<Particule<Dim> *> particules; /*!< Ensemble des particules mobiles */
     list<Particule<Dim> *> lignedEau;  /*!< Ensemble des particules immobiles sur le plan z = z_min */
+    Metaballs ball;                     /*!< Metaball permettant de dessiner le fluide */
 public:
     double x_min;                        /*!< Définit le plan d'équation x = x_min (provisoire) */
     double x_max;                        /*!< Définit le plan d'équation x = x_max (provisoire) */
@@ -119,7 +121,7 @@ public:
     /**
      * Fonction d'affichage du fluide
      */
-    void draw() const;
+    void draw();
 
     /**
      * Affichage des particules du fluide
