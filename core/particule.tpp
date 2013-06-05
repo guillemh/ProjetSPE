@@ -7,9 +7,12 @@
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
-Particule<Dim>::Particule(Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m)
-    : position(pos),
+Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m)
+    : indice(ind),
+      position(pos),
+      positionPrec(pos),
       vitesse(vit),
+      vitessePrec(vit),
       masse_volumique(rho),
       pression(p),
       masse(m)
@@ -21,6 +24,11 @@ Particule<Dim>::~Particule() {
 }
 
 /* ** Methodes ** */
+
+template<unsigned int Dim>
+unsigned int Particule<Dim>::getIndice() const {
+    return indice;
+}
 
 template<unsigned int Dim>
 const Vecteur<Dim> & Particule<Dim>::getPosition() const {
@@ -47,6 +55,11 @@ const Vecteur<Dim> & Particule<Dim>::getVitessePrec() const {
 template<unsigned int Dim>
 const Vecteur<Dim> & Particule<Dim>::getAcceleration() const {
     return acceleration;
+}
+
+template<unsigned int Dim>
+const Vecteur<Dim> & Particule<Dim>::getForces() const {
+    return forces;
 }
 
 
@@ -115,6 +128,17 @@ void Particule<Dim>::incrPosition(const Vecteur<Dim> &pos) {
 template<unsigned int Dim>
 void Particule<Dim>::incrVitesse(const Vecteur<Dim> &vit) {
     vitesse += vit;
+}
+
+template<unsigned int Dim>
+void Particule<Dim>::incrForces(const Vecteur<Dim> &f) {
+    forces += f;
+}
+
+
+template<unsigned int Dim>
+void Particule<Dim>::decrForces(const Vecteur<Dim> &f) {
+    forces -= f;
 }
 
 

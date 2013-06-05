@@ -56,6 +56,9 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
     /* Pour la conversion des coordonnées de la particule dans la grille de voxels */
     Vecteur<Dim> noeud_grille;
 
+    /* Compteur pour numéroter les particules */
+    unsigned int cpt = 0;
+
     if (Dim == 2) {
     
         nbrParticules = nb[0]*nb[1];
@@ -73,8 +76,9 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         // On définit ensuite la position des particules
         for (int i = 0; i < nb[0]; i++) {
             for (int j = 0; j < nb[1]; j++) {
+		++cpt;
                 Vecteur<Dim> vec = Vecteur<Dim>((i-nb[0]/2)*ecart, 0.1 + j*ecart);
-                Particule<Dim> *part = new Particule<Dim>(vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
+                Particule<Dim> *part = new Particule<Dim>(cpt, vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
                 particules.push_back(part);
                 noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
                 noeud_grille(2) = int(floor(part->getPosition()(2)/mat->getRayonNoyau()));
@@ -111,7 +115,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         for (int i = 0; i < nb[0]; i++) {
             for (int j = 0; j < nb[1]; j++) {
                 for (int k = 0; k < nb[2]; k++) {
-                
+		    ++cpt;
                     // On ajoute de l'alea pour rendre le fluide plus realiste
 		/*
                     double x = 0.02 * (rand() / double(RAND_MAX) - 0.5);
@@ -122,7 +126,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                     
                     //vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart) + alea;
                     vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
-                    part = new Particule<Dim>(vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
+                    part = new Particule<Dim>(cpt, vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
                     particules.push_back(part);
                     noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
                     noeud_grille(2) = int(floor(part->getPosition()(2)/mat->getRayonNoyau()));
@@ -138,10 +142,11 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
 	    int nb_y = largeur_y/0.03;
 	    for (int i = 0; i <= nb_x; i++) {
 	        for (int j = 0; j <= nb_y; j++) {
+		    ++cpt;
 		    vec = Vecteur<Dim>((x_min + largeur_x*(double(i)/double(nb_x))),
 				       (y_min + largeur_y*(double(j)/double(nb_y))),
 				       z_min);
-		    part = new Particule<Dim> (vec, Vecteur<Dim>(), 0.0, rho, p);
+		    part = new Particule<Dim> (cpt, vec, Vecteur<Dim>(), 0.0, rho, p);
 		    lignedEau.push_back(part);
 		    hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(part->getPosition()), part));
 	        }
@@ -579,13 +584,15 @@ void Fluide<Dim>::affiche() {
 // 	    vois = voisinage(*(*part_it));
 // 	    for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
 // 		/* Boucle sur tous les voisins de la particule */
-// 		/* Ajouter interactions */
-// 		Vecteur<Dim> rayon = (*vois_it)->getPosition() - (*part_it)->getPosition();
-// 		double forces = calculForces(rayon);
-// 		(*part_it)->incrForces(forces);
-// 		(*vois_it)->decrForces(forces);
+// 		if () {
+// 		    /* Ajouter interactions */
+// 		    double forces = calculForces(*part_it, *vois_it);
+// 		    (*part_it)->incrForces(forces);
+// 		    (*vois_it)->decrForces(forces);
+// 		}
 // 	    }
 // 	}
+
 //     } else {
 // 	/* Au milieu de l'algorithme incrémental */
 // 	typename list<Particule<Dim> *>::iterator part_it;
