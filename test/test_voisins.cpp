@@ -9,21 +9,78 @@ using std::endl;
 void test_voisins() {
     
     bool succes = true;
+    double dist;
 
+    cout << endl << "** Test recherche de voisins **" << endl;
+
+    cout << " Avec 2 particules" << endl;
+    Materiau<2> mateau2d = Materiau<2>(EAU);
+    double rayon = mateau2d.getRayonNoyau();
+    cout << " Rayon du noyau : " << rayon << endl;
+    list<Particule<2>*>::iterator it;
+    set<Particule<2>*> voisins;
+    set<Particule<2>*>::iterator v_it;
+    int tab2d[2] = {0, 2};
+
+    dist = rayon+0.1;
+    Fluide<2> f = Fluide<2>(&mateau2d, tab2d, dist, mateau2d.getDensiteRepos(), mateau2d.getPression());
+    cout << " Distance entre particules " << dist << endl;
+    it = f.particules.begin();
+    while (it != f.particules.end()) {
+        voisins = f.voisinage(*(*it));
+        if (!voisins.empty()) {
+            cout << "Pas de voisins : KO" << endl;
+            cout << (*it)->getPosition() << endl;
+            for (v_it = voisins.begin(); v_it != voisins.end(); ++v_it) {
+                cout << " " << (*v_it)->getPosition() << endl;
+        	cout << " Distance : " << ((*it)->getPosition() - (*v_it)->getPosition()).norme() << endl;
+            }
+        }
+        succes = succes && voisins.empty();
+        ++it;
+    }
+    if (succes) {
+        cout << " BILAN : Pas de voisins ok" << endl;
+    } else {
+        cout << " BILAN : Pas de voisins KO" << endl;
+    }
+
+    succes = true;
+    dist = rayon-0.02;
+    Fluide<2> fp = Fluide<2>(&mateau2d, tab2d, dist, mateau2d.getDensiteRepos(), mateau2d.getPression());
+    cout << " Distance entre particules " << dist << endl;
+    it = fp.particules.begin();
+    while (it != fp.particules.end()) {
+        voisins = fp.voisinage(*(*it));
+        if (voisins.empty()) {
+            cout << "Voisins : KO" << endl;
+            cout << (*it)->getPosition() << endl;
+        }
+        succes = succes && (!voisins.empty());
+        ++it;
+    }
+    if (succes) {
+        cout << " BILAN : Voisins ok" << endl;
+    } else {
+        cout << " BILAN : Voisins KO" << endl;
+    }
+    
+    
+    cout << "Avec plus de particules, en 3 dimensions" << endl;
     Materiau<3> mateau3d = Materiau<3>(EAU);
-    double rayon = mateau3d.getRayonNoyau();
+    rayon = mateau3d.getRayonNoyau();
     cout << "Rayon du noyau : " << rayon << endl;
 
     list<Particule<3>*>::iterator part_it;
     set<Particule<3>*> vois;
     set<Particule<3>*>::iterator vois_it;
+    int tab3d[3] = {2, 2, 2};
 
-    int tab3d[3] = {4, 4, 4};
-    double dist;
-
+    succes = true;
     dist = rayon*10;
     Fluide<3> f1 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression());
     cout << "1.Distance entre particules " << dist << endl;
+    f1.afficher_hash();
     part_it = f1.particules.begin();
     while (part_it != f1.particules.end()) {
         vois = f1.voisinage(*(*part_it));
@@ -32,7 +89,7 @@ void test_voisins() {
             cout << (*part_it)->getPosition() << endl;
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 cout << " " << (*vois_it)->getPosition() << endl;
-		cout << " Distance : " << ((*part_it)->getPosition() - (*vois_it)->getPosition()).norme() << endl;
+        	cout << " Distance : " << ((*part_it)->getPosition() - (*vois_it)->getPosition()).norme() << endl;
             }
         }
         succes = succes && vois.empty();
@@ -48,6 +105,7 @@ void test_voisins() {
     dist = rayon+rayon/2;
     Fluide<3> f2 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression());
     cout << "2.Distance entre particules " << dist << endl;
+    f2.afficher_hash();
     part_it = f2.particules.begin();
     while (part_it != f2.particules.end()) {
         vois = f2.voisinage(*(*part_it));
@@ -56,7 +114,7 @@ void test_voisins() {
             cout << (*part_it)->getPosition() << endl;
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 cout << " " << (*vois_it)->getPosition() << endl;
-		cout << " Distance : " << ((*part_it)->getPosition() - (*vois_it)->getPosition()).norme() << endl;
+        	cout << " Distance : " << ((*part_it)->getPosition() - (*vois_it)->getPosition()).norme() << endl;
             }
         }
         succes = succes && vois.empty();
@@ -72,7 +130,7 @@ void test_voisins() {
     dist = rayon+0.02;
     Fluide<3> f3 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression());
     cout << "3.Distance entre particules " << dist << endl;
-    //f3.afficher_hash();
+    f3.afficher_hash();
     part_it = f3.particules.begin();
     while (part_it != f3.particules.end()) {
         vois = f3.voisinage(*(*part_it));
@@ -81,7 +139,7 @@ void test_voisins() {
             cout << (*part_it)->getPosition() << endl;
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 cout << " " << (*vois_it)->getPosition() << endl;
-		cout << " Distance : " << ((*part_it)->getPosition() - (*vois_it)->getPosition()).norme() << endl;
+        	cout << " Distance : " << ((*part_it)->getPosition() - (*vois_it)->getPosition()).norme() << endl;
             }
         }
         succes = succes && vois.empty();
@@ -97,16 +155,115 @@ void test_voisins() {
     dist = rayon-0.01;
     Fluide<3> f4 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression());
     cout << "4.Distance entre particules " << dist << endl;
-    //f4.afficher_hash();
+    f4.afficher_hash();
     part_it = f4.particules.begin();
     while (part_it != f4.particules.end()) {
-    vois = f4.voisinage(*(*part_it));
-    if (vois.empty()) {
-        cout << "Voisins : KO" << endl;
-        cout << (*part_it)->getPosition() << endl;
-    } 
-    succes = succes && !vois.empty();
-    ++part_it;
+        vois = f4.voisinage(*(*part_it));
+        if (vois.empty()) {
+            cout << "Voisins : KO" << endl;
+            cout << (*part_it)->getPosition() << endl;
+        } // else {
+        //     cout << "Voisins de " << (*part_it)->getPosition() << " :" << endl;
+        //     for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+        //         cout << " " << (*vois_it)->getPosition();
+        // 	cout << " Distance : " << ((*part_it)->getPosition() - (*vois_it)->getPosition()).norme() << endl;
+        //     }
+        // }
+
+        succes = succes && !vois.empty();
+        ++part_it;
+    }
+    if (succes) {
+        cout << "BILAN 4 : Voisins ok" << endl;
+    } else {
+        cout << "BILAN 4 : Voisins KO" << endl;
+    }
+
+    cout << endl << "** Test mise à jour de la table **" << endl;
+    
+    succes = true;
+    f1.majDensitePression();
+    f1.majPositionVitesse();
+    part_it = f1.particules.begin();
+    while (part_it != f1.particules.end()) {
+        vois = f1.voisinage(*(*part_it));
+        if (!vois.empty()) {
+            cout << "Pas de voisins : KO" << endl;
+            cout << (*part_it)->getPosition() << endl;
+            for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+                cout << " " << (*vois_it)->getPosition() << endl;
+        	cout << " Distance : " << ((*part_it)->getPosition() - (*vois_it)->getPosition()).norme() << endl;
+            }
+        }
+        succes = succes && vois.empty();
+        ++part_it;
+    }
+    if (succes) {
+        cout << "BILAN 1 : Pas de voisins ok" << endl;
+    } else {
+        cout << "BILAN 1 : Pas de voisins KO" << endl;
+    }
+
+    succes = true;
+    f2.majDensitePression();
+    f2.majPositionVitesse();
+    part_it = f2.particules.begin();
+    while (part_it != f2.particules.end()) {
+        vois = f2.voisinage(*(*part_it));
+        if (!vois.empty()) {
+            cout << "Pas de voisins : KO" << endl;
+            cout << (*part_it)->getPosition() << endl;
+            for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+                cout << " " << (*vois_it)->getPosition() << endl;
+        	cout << " Distance : " << ((*part_it)->getPosition() - (*vois_it)->getPosition()).norme() << endl;
+            }
+        }
+        succes = succes && vois.empty();
+        ++part_it;
+    }
+    if (succes) {
+        cout << "BILAN 2 : Pas de voisins ok" << endl;
+    } else {
+        cout << "BILAN 2 : Pas de voisins KO" << endl;
+    }
+
+    succes = true;
+    f3.majDensitePression();
+    f3.majPositionVitesse();
+    part_it = f3.particules.begin();
+    while (part_it != f3.particules.end()) {
+        vois = f3.voisinage(*(*part_it));
+        if (!vois.empty()) {
+            cout << "Pas de voisins : KO" << endl;
+            cout << (*part_it)->getPosition() << endl;
+            for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+                cout << " " << (*vois_it)->getPosition() << endl;
+        	cout << " Distance : " << ((*part_it)->getPosition() - (*vois_it)->getPosition()).norme() << endl;
+            }
+        }
+        succes = succes && vois.empty();
+        ++part_it;
+    }
+    if (succes) {
+        cout << "BILAN 3 : Pas de voisins ok" << endl;
+    } else {
+        cout << "BILAN 3 : Pas de voisins KO" << endl;
+    }
+
+    succes = true;
+    f4.majDensitePression();
+    f4.majPositionVitesse();
+    cout << "4.Distance entre particules " << dist << endl;
+    f4.afficher_hash();
+    part_it = f4.particules.begin();
+    while (part_it != f4.particules.end()) {
+        vois = f4.voisinage(*(*part_it));
+        if (vois.empty()) {
+            cout << "Voisins : KO" << endl;
+            cout << (*part_it)->getPosition() << endl;
+        } 
+        succes = succes && !vois.empty();
+        ++part_it;
     }
     if (succes) {
         cout << "BILAN 4 : Voisins ok" << endl;
