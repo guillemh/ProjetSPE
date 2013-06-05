@@ -23,6 +23,7 @@ SceneCascade::~SceneCascade() {}
 
 void SceneCascade::init() {
     s->init();
+}
 
 void SceneCascade::draw()
 {
