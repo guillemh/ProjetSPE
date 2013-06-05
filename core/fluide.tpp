@@ -357,6 +357,9 @@ void Fluide<Dim>::majDensitePression() {
         
         // for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
         for (it2 = particules.begin(); it2 != particules.end(); it2++)
+            if (noyau.defaut((*it1)->getPosition() - (*it2)->getPosition()) != 0) {
+                cout << (*it2)->getIndice() << endl;
+            }
             somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
 
         (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
