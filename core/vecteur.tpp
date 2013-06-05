@@ -5,19 +5,18 @@ using std::endl;
 
 /* ** Constructeurs ** */
 
-#if 0
 template <unsigned int Dim>
 Vecteur<Dim>::Vecteur() {
-	for (unsigned int i = 0; i < Dim; i++) {
-		t[i] = 0.0;
-	}
+    for (unsigned int i = 0; i < Dim; i++) {
+	t[i] = 0.0;
+    }
 }
 
 template <unsigned int Dim>
 Vecteur<Dim>::Vecteur(double def) {
-	for (unsigned int i = 0; i < Dim; i++) {
-		t[i] = def;
-	}
+    for (unsigned int i = 0; i < Dim; i++) {
+	t[i] = def;
+    }
 }
 
 template <unsigned int Dim>
@@ -47,8 +46,6 @@ template <unsigned int Dim>
 Vecteur<Dim>::~Vecteur<Dim>() {
 }
 
-
-
 // Methodes
 
 template <unsigned int Dim>
@@ -59,5 +56,3 @@ std::ostream & operator<<(std::ostream &O, Vecteur<Dim> const &v) {
     O << v(Dim);
     return O;
 }
-
-#endif

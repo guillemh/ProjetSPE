@@ -26,32 +26,22 @@ public :
     /**
      * Constructeur d'un vecteur nul bidimensionnel ou tridimensionnel
      */
-    Vecteur() {
-	for (unsigned int i = 0; i < Dim; i++) {
-	    t[i] = 0.0;
-	}
-    }
+    Vecteur();
 
     /**
      * Constructeur d'un vecteur comportant une valeur de remplissage par défaut
      *
      * \param def la valeur a entrer dans le vecteur
      */
-    Vecteur(double def) {
-	for (unsigned int i = 0; i < Dim; i++) {
-	    t[i] = def;
-	}
-    }
+    Vecteur(double def);
+
     /**
      * Constructeur par défaut du vecteur bidimensionnel
      *
      * \param x Première composante du vecteur
      * \param y Deuxième composante du vecteur
      */
-    Vecteur(double x, double y) {
-	t[0] = x;
-	t[1] = y;
-    }
+    Vecteur(double x, double y);
 
     /**
      * Constructeur par défaut du point tridimensionnel
@@ -60,26 +50,18 @@ public :
      * \param y Deuxième composante du vecteur
      * \param z Troisième composante du vecteur
      */
-    Vecteur(double x, double y, double z) {
-	t[0] = x;
-	t[1] = y;
-	t[2] = z;
-    }
+    Vecteur(double x, double y, double z);
 
     /**
      * Constructeur par recopie d'un autre vecteur
      *
      * \param v Référence sur le vecteur recopié */
-    Vecteur(const Vecteur<Dim> &v) {
-	for (unsigned int i = 0; i < Dim; i++) {
-	    t[i] = v.t[i];
-	}
-    }
+    Vecteur(const Vecteur<Dim> &v);
 
     /**
      * Destructeur d'un objet de type vecteur
      */
-    ~Vecteur(){}
+    ~Vecteur();
 
 
     /* ** Methodes ** */
@@ -586,13 +568,7 @@ inline Vecteur<Dim> operator-(const Vecteur<Dim> &v) {
  *
  */
 template <unsigned int Dim>
-std::ostream & operator<<(std::ostream &O, Vecteur<Dim> const &v) {
-    for (unsigned int i = 1; i < Dim; i++) {
-	O << v(i) << " ";
-    }
-    O << v(Dim);
-    return O;
-}
+std::ostream & operator<<(std::ostream &O, Vecteur<Dim> const &v);
 
 #include "vecteur.tpp"
 
