@@ -1,9 +1,11 @@
 #ifndef _METABALLS_
-#ifndef _METABALLS_
+#define _METABALLS_
 
 #include <list>
 #include <iostream>
-#include "../core/particules.hpp"
+#include "../core/particule.hpp"
+
+using std::list;
 
 /** 
  * \class Metaballs
@@ -23,7 +25,7 @@ private:
 		      correspondante du cube qui sera défini par la suite à l'aide de huit points */
     Vecteur<3> origine; /*!< Origine spatiale de l'espace rectangulaire considéré dans le maillage */
     double cote; /*!< Côté d'un cube */
-    doube rayon; /*!< Rayon d'une particule */
+    double rayon; /*!< Rayon d'une particule */
     int configurations[256][12]; /*!< Look-up table des configurations possibles pour l'algorithme des Marching Cubes */
 
     /* ** Constructeurs ** */
