@@ -18,7 +18,7 @@ DESTDIR = $${DBGNAME}
 QT *= xml opengl 
 QMAKE_CXXFLAGS += -std=c++0x
 
-HEADERS  = viewer.h sceneCascade.h skybox.h
+HEADERS  = viewer.h sceneCascade.h skybox.h cascade.hpp cascade.tpp
 SOURCES  = main.cpp viewer.cpp sceneCascade.cpp skybox.cpp
 LIBS += -lglut
 LIBS += -lqglviewer-qt4 -L./../core/$${DBGNAME}/ -lcore
