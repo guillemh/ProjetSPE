@@ -19,8 +19,4 @@ int main () {
 	printf("%i -- %i\n", (s >> 4) & 1, (s >> 5) & 1);
 	printf("\n");
     }
-
-    for (int s = 0 ; s < 256 ; s++) {
-	printf("Cube %i : \n", s);
-    }
 }

@@ -1,10 +1,10 @@
 Énumération des familles :
 http://users.polytech.unice.fr/~lingrand/MarchingCubes/algo.html
 
-Cube 0  : 
-Cube 1  : 
-Cube 2  : 
-Cube 3  : 
+Cube 0  : ,
+Cube 1  : 7 6 11, 
+Cube 2  : 5 6 10,
+Cube 3  : 5 10 11, 7 10 11
 Cube 4  : 
 Cube 5  : 
 Cube 6  : 
