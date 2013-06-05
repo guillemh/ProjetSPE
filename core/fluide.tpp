@@ -90,10 +90,10 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         // Ici, on est en dimension 3
         // On va ajouter des particules regulierement disposees sur les trois dimensions
         // On définit la largeur de la boîte
-        x_min = -1.0;
-        x_max = 1.0;
-        y_min = -1.0;
-        y_max = 1.0;
+        x_min = -0.5;
+        x_max = 0.5;
+        y_min = -0.5;
+        y_max = 0.5;
         z_min = 0;
         
         // On définit ensuite la position des particules
