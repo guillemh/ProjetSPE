@@ -54,7 +54,7 @@ Materiau<Dim>::Materiau(TypeFluide type) {
         exit(EXIT_FAILURE);
         break;
     }
-    pas_temps = 0.0005;
+    pas_temps = 0.001;
     temperature = 293.15;
     pression_atm = 101325;
 
@@ -76,7 +76,8 @@ Materiau<Dim>::Materiau(TypeFluide type) {
 	//celerite_son = 1480;
 	celerite_son = 88.5;
 	//alpha = 0.5;
-	alpha = 2000;
+	//alpha = 1;
+	alpha = 0.08;
         break;
     case MUCUS :
         densite_repos = 1000;
