@@ -42,10 +42,10 @@ private:
 
     /* Table de nombre premiers pour le calcul de la longueur de la table de hashage */
     Premier<Dim> table;
-    /* Longueur de la table de hashage */
-    int lgrHash;
     /* Table de hashage pour les voisins */
     multimap<int, Particule<Dim>*> hash_voisins;
+    /* Longueur de la table de hashage */
+    int lgrHash;
 
     /* Seuils pour le critère d'activité des particules */
     double epsilonR;  // Seuil de dynamique restreinte (en-dessous duquel les particules restent immobiles)
