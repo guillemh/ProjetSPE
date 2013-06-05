@@ -90,10 +90,10 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         // Ici, on est en dimension 3
         // On va ajouter des particules regulierement disposees sur les trois dimensions
         // On définit la largeur de la boîte
-        x_min = -1.0;
-        x_max = 1.0;
-        y_min = -1.0;
-        y_max = 1.0;
+        x_min = -0.5;
+        x_max = 0.5;
+        y_min = -0.5;
+        y_max = 0.5;
         z_min = 0;
         
         // On définit ensuite la position des particules
@@ -113,12 +113,15 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                 for (int k = 0; k < nb[2]; k++) {
                 
                     // On ajoute de l'alea pour rendre le fluide plus realiste
+		/*
                     double x = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     double y = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     double z = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     Vecteur<Dim> alea = Vecteur<Dim>(x,y,z);
+		*/
                     
-                    vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart) + alea;
+                    //vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart) + alea;
+                    vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
                     part = new Particule<Dim>(vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
                     particules.push_back(part);
                     noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
@@ -129,6 +132,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
             }
         }
         
+		/*
 	    //Ligne rigide de particules
 	    int nb_x = largeur_x/0.03;
 	    int nb_y = largeur_y/0.03;
@@ -142,6 +146,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
 		    hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(part->getPosition()), part));
 	        }
 	    }
+		*/
         
     } else {
         cout << "Erreur (Fluide) : la dimension de l'espace doit être 2 ou 3" << endl;
@@ -327,16 +332,18 @@ void Fluide<Dim>::majDensitePression() {
     typename list<Particule<Dim> *>::iterator it1;
     NoyauLissageMonaghan<Dim> noyau = NoyauLissageMonaghan<Dim>(mat->getRayonNoyau());
     set<Particule<Dim>*> voisins;    
-    typename set<Particule<Dim>*>::iterator it2;
+    //typename set<Particule<Dim>*>::iterator it2;
+    typename list<Particule<Dim>*>::iterator it2;
 
     // On boucles sur toutes les particules
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
     
         // On met leur masse volumique à jour
-        double somme = noyau.defaut(Vecteur<Dim>());
+        double somme = 0.0;// noyau.defaut(Vecteur<Dim>());
         voisins = voisinage(*(*it1));
         
-        for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
+        //for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
+        for (it2 = particules.begin(); it2 != particules.end(); it2++)
             somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
 
         (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
@@ -408,7 +415,8 @@ void Fluide<Dim>::majPositionVitesse() {
 
     set<Particule<Dim>*> voisins;
 
-    typename set<Particule<Dim>*>::iterator it2;
+    //typename set<Particule<Dim>*>::iterator it2;
+    typename list<Particule<Dim>*>::iterator it2;
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
  
         // Definition de toutes les forces
@@ -425,8 +433,9 @@ void Fluide<Dim>::majPositionVitesse() {
         double termePressionDensite_a = (*it1)->getPression() / pow((*it1)->getMasseVolumique(), 2);
         double masseVolumique_a = (*it1)->getMasseVolumique();
 
-        voisins = voisinage(*(*it1));
-        for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
+        //voisins = voisinage(*(*it1));
+        //for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
+        for (it2 = particules.begin(); it2 != particules.end(); it2++) {
             // Quelques variables locales pour factoriser le calcul
             Vecteur<Dim> x_ab = (*it1)->getPosition() - (*it2)->getPosition();
             Vecteur<Dim> v_ab = (*it1)->getVitesse() - (*it2)->getVitesse();
@@ -439,19 +448,23 @@ void Fluide<Dim>::majPositionVitesse() {
             double prodScal = (v_ab).scalaire(x_ab);
             if (prodScal < 0) {
                 double nu = nu_numerateur / (masseVolumique_a + masseVolumique_b);
-                fViscosite += noyauMonaghan.gradient(x_ab) * nu * (prodScal / (0.0001 + pow(x_ab.norme(), 2)));
+		double coeffTest = pow(mat->getRayonNoyau(), 2)/4;
+                fViscosite += noyauMonaghan.gradient(x_ab) * nu * (prodScal / ( (0.01*coeffTest) + pow(x_ab.norme(), 2)));
             }
 
-            colorfield += noyauMonaghan.laplacien(x_ab) / masseVolumique_b;
-          
-            fSurface += noyauMonaghan.gradient(x_ab) / masseVolumique_b;
+            //colorfield += noyauMonaghan.laplacien(x_ab) / masseVolumique_b;
+            //fSurface += noyauMonaghan.gradient(x_ab) / masseVolumique_b;
         }
         
         // Calcul des forces de gravité, de pression, de viscosite et de surface
         fGravite = masseVolumique_a * mat->getAccGrav();
-        fPression *= masse * masseVolumique_a / 1000000;
+        //fPression *= masse * masse;
+        fPression *= masse * masseVolumique_a;// / 1000000;
         fViscosite *= masse * masseVolumique_a;
-        fSurface *= masse;
+        //fViscosite *= masse * masse;
+        
+/*
+	fSurface *= masse;
         double norme = fSurface.norme();
         if (norme >= mat->getSeuilSurface()) {
             colorfield *= masse;
@@ -459,13 +472,15 @@ void Fluide<Dim>::majPositionVitesse() {
         } else {
             fSurface = Vecteur<Dim>();
         }
+*/
                 
         // Calcul de l'acceleration
         // cout << "fPression : " << fPression << endl;
         // cout << "fViscosite : "<< fViscosite << endl;
         // cout << "fGravite : " << fGravite << endl;
         // cout << "fSurface : " << fSurface << endl;
-        (*it1)->setAcceleration((fPression + fViscosite + fGravite + fSurface) / masseVolumique_a);
+        //(*it1)->setAcceleration((fPression + fViscosite + fGravite + fSurface) / masseVolumique_a);
+        (*it1)->setAcceleration((fPression + fViscosite + fGravite) / masseVolumique_a);
 
     }
     
@@ -474,7 +489,8 @@ void Fluide<Dim>::majPositionVitesse() {
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
         // Calcul de la nouvelle vitesse (qu'on retient au temps t+Dt/2)
         if (debutAnim) {
-            (*it1)->incrVitesse(mat->getPasTemps() * (*it1)->getAcceleration() / 2);
+            //(*it1)->incrVitesse(mat->getPasTemps() * (*it1)->getAcceleration() / 2);
+            (*it1)->incrVitesse(mat->getPasTemps() * (*it1)->getAcceleration());
             debutAnim = false;
         } else {
             (*it1)->incrVitesse(mat->getPasTemps() * (*it1)->getAcceleration());
