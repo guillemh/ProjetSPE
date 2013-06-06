@@ -12,3 +12,5 @@ SUBDIRS =   core \
 test.depends = core
 run.depends = core
 g3d.depends = core
+cascade.depends = core
+
