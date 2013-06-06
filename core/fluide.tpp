@@ -13,6 +13,7 @@ using std::pair;
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m)
     : mat(m),
+      ball (Metaballs(Vecteur<3>(-0.5, -0.5, 0.0), 0.05, mat->getRayonNoyau(), 1, 1, 0.5)),
       nbrParticules(0),
       debutAnim(true),
       hash_voisins(),
@@ -26,20 +27,20 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
     
     // Definition des dimensions et de la metaball suivant la dimension
     if (Dim == 2) {
-        x_min = -1.0;
-        x_max = 1.0;
-        y_min = 0;
-        y_max = 2;
-        z_min = 0;
-    } else if (Dim == 3) {
-        x_min = -1.0;
-        x_max = 1.0;
-        y_min = -1.0;
+        x_min = -0.5;
+        x_max = 0.5;
+        y_min = 0.0;
         y_max = 1.0;
-        z_min = 0;
+        z_min = 0.0;
+    } else if (Dim == 3) {
+        x_min = -0.5;
+        x_max = 0.5;
+        y_min = -0.5;
+        y_max = 0.5;
+        z_min = 0.0;
         
-        Vecteur<3> orig = Vecteur<3>(x_min, y_min, z_min);
-        ball = Metaballs(orig, 0.01, mat->getRayonNoyau(), x_max - x_min, y_max - y_min, y_max - y_min);
+//        Vecteur<3> orig = Vecteur<3>(x_min, y_min, z_min);
+//        ball = Metaballs(orig, 0.01, mat->getRayonNoyau(), x_max - x_min, y_max - y_min, y_max - y_min);
     }
 }
 
@@ -47,6 +48,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p)
     : mat(m),
+      ball (Metaballs(Vecteur<3>(-0.5, -0.5, 0.0), 0.1, mat->getRayonNoyau(), 1, 1, 3)),
       debutAnim(true),
       hash_voisins(),
       epsilonR(1.5),
@@ -76,11 +78,11 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         // Ici, on est en dimension 2
         // On va ajouter des particules regulierement disposees sur les deux dimensions
         // On définit la largeur de la boîte
-        x_min = -1.0;
-        x_max = 1.0;
-        y_min = 0;
-        y_max = 2;
-        z_min = 0;
+        x_min = -0.5;
+        x_max = 0.5;
+        y_min = 0.0;
+        y_max = 1.0;
+        z_min = 0.0;
         
         // On définit ensuite la position des particules
         for (int i = 0; i < nb[0]; i++) {
@@ -107,11 +109,11 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         x_max = 0.5;
         y_min = -0.5;
         y_max = 0.5;
-        z_min = 0;
+        z_min = 0.0;
         
         // On definit enduite la metaball
-        Vecteur<3> orig = Vecteur<3>(x_min, y_min, z_min);
-        ball = Metaballs(orig, 0.01, mat->getRayonNoyau(), x_max - x_min, y_max - y_min, y_max - y_min);
+//        Vecteur<3> orig = Vecteur<3>(x_min, y_min, z_min);
+//        ball = Metaballs(orig, 0.01, mat->getRayonNoyau(), x_max - x_min, y_max - y_min, y_max - y_min);
         
         // On définit ensuite la position des particules
         double largeur_x = x_max - x_min;
@@ -128,14 +130,14 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                     ++cpt;
                     // On ajoute de l'alea pour rendre le fluide plus realiste
 	
-                    // double x = 0.02 * (rand() / double(RAND_MAX) - 0.5);
-                    // double y = 0.02 * (rand() / double(RAND_MAX) - 0.5);
-                    // double z = 0.02 * (rand() / double(RAND_MAX) - 0.5);
-                    // Vecteur<Dim> alea = Vecteur<Dim>(x,y,z);
+                    double x = 0.02 * (rand() / double(RAND_MAX) - 0.5);
+                    double y = 0.02 * (rand() / double(RAND_MAX) - 0.5);
+                    double z = 0.02 * (rand() / double(RAND_MAX) - 0.5);
+                    Vecteur<Dim> alea = Vecteur<Dim>(x,y,z);
 
                     
-                    // vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart) + alea;
-                    vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
+                    vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart) + alea;
+          //          vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
                     part = new Particule<Dim>(cpt, vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
                     particules.push_back(part);
                     noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
@@ -566,15 +568,16 @@ void Fluide<Dim>::majPositionVitesse() {
 
 template<unsigned int Dim>
 void Fluide<Dim>::draw() {
-   typename list<Particule<Dim> *>::const_iterator it;
-   for (it = particules.begin (); it != particules.end (); it++) {
-       (*it)->draw ();
-   }
-   for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
-      (*it)->draw ();
-   }
-    // ball.coloration(particules);
-    // ball.draw();
+//   typename list<Particule<Dim> *>::const_iterator it;
+//   for (it = particules.begin (); it != particules.end (); it++) {
+//       (*it)->draw ();
+//   }
+//   for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
+//      (*it)->draw ();
+//   }
+   
+   ball.coloration(particules);
+   ball.draw();
 }
 
 

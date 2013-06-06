@@ -170,8 +170,14 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos) {
 //    else
 //        return 0;
 
-    double d = (pos - position).norme();
-    return exp(-d*d/2);
+    Vecteur<Dim> diff = pos - position;
+    double d = diff.scalaire(diff);
+    if (d == 0.0)
+        return 5000;
+    return 1 / d;
+
+//    double d = (pos - position).norme();
+//    return exp(-rayon*d/2);
 }
 
 
@@ -198,7 +204,7 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
 template<unsigned int Dim>
 void Particule<Dim>::draw() const {
     // glPushMatrix();
-    glColor3f(1.0, 0.0, 0.0);
+    glColor3f(0.0, 1.0, 0.0);
     glPointSize(3.0f);
     glBegin(GL_POINTS);
     //glTranslatef(position(1), position(2), position(3));

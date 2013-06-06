@@ -152,7 +152,7 @@ Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon, double x,
                       {11, 10, 9, 11, 9, 0, 11, 0, 3, -1, -1, -1 },
                       {0, 9, 3, 3, 9, 6, 9, 6, 10, 3, 6, 7 },
                       {5, 6, 9, 6, 9, 0, 6, 0, 11, 11, 0, 3 },
-		      {3, 7, 5, 5, 3, 9, 3, 9, 0, -1, -1, -1},
+		              {3, 7, 5, 5, 3, 9, 3, 9, 0, -1, -1, -1},
                       {4, 5, 10, 4, 10, 3, 10, 11, 3, 3, 4, 0 },
                       {7, 3, 0, 7, 0, 4, 6, 5, 10, -1, -1, -1 },
                       {6, 4, 0, 6, 0, 3, 6, 3, 11, -1, -1, -1 },
@@ -214,7 +214,7 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
 //                cout << "i = " << i << ", j = " << j << ", k = " << k << endl;
 //                cout << "influence : " << influence << endl;
                 
-                bool res = (influence > 0.9)? true : false;
+                bool res = (influence > 1/(rayon*rayon))? true : false;
                 points[i][j][k] = res;
             }
         }
@@ -258,12 +258,12 @@ void Metaballs::draw() {
 //                    } else {
 //                        glColor3f (0.0, 0.0, 1.0);
 //                    }
-//                    glPushMatrix ();
-//                    glTranslatef (origine(1) + cote*(i + ((s >> 1) & 1)),
+//                    glPointSize(5.0f);
+//                    glBegin(GL_POINTS);
+//                    glVertex3f (origine(1) + cote*(i + ((s >> 1) & 1)),
 //                                  origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
 //                                  origine(3) + cote*(k + (s >> 2)));
-//                    glutSolidSphere (0.01, 10, 10);
-//                    glPopMatrix ();
+//                    glEnd();
 //                }
                 posCour = origine + Vecteur<3>(cote*i, cote*j, cote*k);
                 drawCube(posCour, cote, config);
@@ -291,9 +291,14 @@ void Metaballs::drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c) {
     Vecteur<3> ptB = associerPoint(pos, cote, b);
     Vecteur<3> ptC = associerPoint(pos, cote, c);
     
-    // TODO : la normale !
+    // Calcul de la normale
+    Vecteur<3> normale = ptC - ptA;
+    normale = (ptB - ptA).vectoriel(normale);
+    normale /= normale.norme();
+    
     glBegin(GL_TRIANGLES);
     glColor3f(1.0, 0.0, 0.0);
+    glNormal3f(normale(1), normale(2), normale(3));
     glVertex3d(ptA(1), ptA(2), ptA(3));
     glVertex3d(ptB(1), ptB(2), ptB(3));
     glVertex3d(ptC(1), ptC(2), ptC(3));
