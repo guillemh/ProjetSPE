@@ -3,7 +3,8 @@
 
 #include <list>
 #include <iostream>
-#include "particule.hpp"
+#include "../core/particule.hpp"
+#include "../core/vecteur.hpp"
 
 using std::list;
 
@@ -31,14 +32,6 @@ private:
 
     /* ** Constructeurs ** */
 public:
-    /**
-     * \brief Constructeur par defaut
-     *
-     * Alloue le tableau de points et initialise les valeurs arbitrairement
-     * (A éviter d'utiliser)
-     */
-    Metaballs();
-    
     /**
      * \brief Constructeur
      *
@@ -69,6 +62,15 @@ public:
      * et attribue à chaque sommet sa couleur, ceci pour déterminer la configuration des cubes
      */
     void coloration(list<Particule<3> *> &particules);
+    // void coloration();
+
+    /**
+     * \brief Coloration - fonction de debug
+     *
+     * Considère un maillage de l'espace de dimensions 1 x 1 x 1, et transforme les sommets de l'unique cube
+	 * de manière à obtenir la configuration d'identifiant passé en paramètre.
+     */
+    void coloration(int config);
 
     /**
      * \brief Représentation

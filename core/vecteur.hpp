@@ -91,6 +91,17 @@ public:
         return somme;
     }
 
+    /**
+     * Calcul du produit vectoriel de deux vecteurs
+     * \param v le vecteur avec lequel faire le produit vectoriel
+     * \return le produit vectoriel des deux vecteurs
+     */
+    inline Vecteur<3> vectoriel(Vecteur<3> & v) const {
+        return Vecteur<3>(t[1]*v.t[2] - t[2]*v.t[1],
+                            t[2]*v.t[0] - t[0]*v.t[2],
+                            t[0]*v.t[1] - t[1]*v.t[0]);
+    }
+
 
     //
     // Opérateurs d'accès
