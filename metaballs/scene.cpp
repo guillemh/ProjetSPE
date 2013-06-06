@@ -46,7 +46,7 @@ Scene::Scene() {
     double z_min = 0;
     for (int i = 0 ; i < 128 ; i++) {
 	Vecteur<3> origine = Vecteur<3> (-0.5, y_min + (double((i % 16) << 1)), z_min + (double ((i / 16) << 1)));
-	Metaballs *m = new Metaballs (origine, 1, 0.05, 2, 2, 2);
+	Metaballs *m = new Metaballs (origine, 1, 0.05, 1, 1, 1);
 	m->coloration (i);
 	v.push_back (m);
     }
