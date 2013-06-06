@@ -214,7 +214,7 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
 //                cout << "i = " << i << ", j = " << j << ", k = " << k << endl;
 //                cout << "influence : " << influence << endl;
                 
-                bool res = (influence < rayon * rayon)? true : false;
+                bool res = (influence > 0.9)? true : false;
                 points[i][j][k] = res;
             }
         }
@@ -292,12 +292,12 @@ void Metaballs::drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c) {
     Vecteur<3> ptC = associerPoint(pos, cote, c);
     
     // TODO : la normale !
-    glBegin (GL_TRIANGLES);
-    glColor3f (1.0, 0.0, 0.0);
+    glBegin(GL_TRIANGLES);
+    glColor3f(1.0, 0.0, 0.0);
     glVertex3d(ptA(1), ptA(2), ptA(3));
     glVertex3d(ptB(1), ptB(2), ptB(3));
     glVertex3d(ptC(1), ptC(2), ptC(3));
-    glEnd ();
+    glEnd();
 }
 
 

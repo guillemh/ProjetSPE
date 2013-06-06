@@ -1,4 +1,5 @@
 #include <GL/glut.h>
+#include <math.h>
 #include "particule.hpp"
 #include "materiau.hpp"
 
@@ -161,7 +162,16 @@ void Particule<Dim>::majPression (double dens) {
 
 template<unsigned int Dim>
 double Particule<Dim>::isosurface(Vecteur<Dim> &pos) {
-    return (pow(pos(1) - position(1), 2) + pow(pos(2) - position(2), 2) + pow(pos(3) - position(3), 2));
+//    double d = (pos - position).norme();
+//    if (d <= 1/3)
+//        return 1 - 3*d*d;
+//    if (d <= 1)
+//        return 3*(1-d)*(1-d)/2;
+//    else
+//        return 0;
+
+    double d = (pos - position).norme();
+    return exp(-d*d/2);
 }
 
 

@@ -73,7 +73,7 @@ public:
     inline double  norme() const {
         double somme = 0;
         for (unsigned int i = 0; i < Dim; i++) {
-            somme += pow(t[i],2);
+            somme += t[i] * t[i];
         }
         return sqrt(somme);
     }  
