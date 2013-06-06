@@ -345,8 +345,9 @@ Metaballs::~Metaballs() {
 
 /* ** Methodes ** */
 
-void Metaballs::coloration(list<Particule<3> *> &particules) {
-    typename list<Particule<3> *>::iterator it;
+// void Metaballs::coloration(list<Particule<3> *> &particules) {
+void Metaballs::coloration() {
+    // typename list<Particule<3> *>::iterator it;
 
     // Pour chaque point, on regarde l'influence des particules du fluide
     // Si elle superieure a rayon, on "colorie" le point
@@ -357,9 +358,9 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
             //    cout << position << endl;
                 
                 double influence = 0;
-                for (it = particules.begin(); it != particules.end(); it++)
-                    influence += (*it)->isosurface(position);
-                
+		//  for (it = particules.begin(); it != particules.end(); it++)
+                //    influence += (*it)->isosurface(position);
+                influence = (position(1)*position(1) + position(2)*position(2) + position(3)*position(3));
             //    cout << "n = " << n << ", p = " << p << ", q = " << q << endl;
             //    cout << "i = " << i << ", j = " << j << ", k = " << k << endl;
                 points[i][j][k] = (influence >= rayon)? true : false;
@@ -403,16 +404,19 @@ void Metaballs::draw() {
 		    if (points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)]) {
 			glColor3f (0.0, 1.0, 0.0);
 		    } else {
-			glColor3f (0.0, 0.0, 1.0);
+			// glColor3f (0.0, 0.0, 1.0);
+			// glPushMatrix ();
+			// glTranslatef (origine(1) + cote*(i + ((s >> 1) & 1)),
+			// 	      origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
+			// 	      origine(3) + cote*(k + (s >> 2)));
+			// glutSolidSphere (0.01, 10, 10);
+			// glPopMatrix ();
 		    }
-		    glPushMatrix ();
-		    glTranslatef (origine(1) + cote*(i + ((s >> 1) & 1)),
-				  origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
-				  origine(3) + cote*(k + (s >> 2)));
-		    glutSolidSphere (0.01, 10, 10);
-		    glPopMatrix ();
+
 		}
                 posCour = origine + Vecteur<3>(cote*i, cote*j, cote*k);
+		if (fabs(posCour (1) - 3*cote) < 0.01 && fabs(posCour (2) - cote) < 0.01 && fabs(posCour(3) + 2*cote) < 0.01)
+		    cout << config;
                 drawCube(posCour, cote, config);
             }
         }

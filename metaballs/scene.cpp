@@ -5,20 +5,20 @@
 #include "scene.h"
 #include "metaballs.hpp"
 #include "../core/vecteur.hpp"
+#include "../core/particule.hpp"
 #include <vector>
 
 using std::vector;
 
 Scene::Scene() {
     v = vector<Metaballs *> ();
-	double y_min = -16;
-	double z_min = 0;
-	for (int i = 0 ; i < 128 ; i++) {
-		Vecteur<3> origine = Vecteur<3> (-0.5, y_min + (double((i % 16) << 1)), z_min + (double ((i / 16) << 1)));
-		Metaballs *m = new Metaballs (origine, 1, 0.05, 1, 1, 1);
-		m->coloration (i);
-		v.push_back (m);
-	}
+    double x_min = -5;
+    double y_min = -5;
+    double z_min = -5;
+    Vecteur<3> origine = Vecteur<3> (x_min, y_min, z_min);
+    Metaballs *m = new Metaballs (origine, 0.5, 4, 10, 10, 10);
+    m->coloration();
+    v.push_back (m);
 }
 
 Scene::~Scene() {
@@ -27,13 +27,6 @@ Scene::~Scene() {
 
 void Scene::draw() {
     glPushMatrix();
-	GLfloat y_min = -16;
-	GLfloat z_min = 0;
-	for (int i = 0 ; i < 128 ; i++) {
-		glPushMatrix();
-		glTranslatef (-0.5, y_min + float((i % 16) * 2), z_min + float((i / 16) * 2));
-		v[i]->draw();
-		glPopMatrix();
-	}	
+    v[0]->draw();
     glPopMatrix();
 }
