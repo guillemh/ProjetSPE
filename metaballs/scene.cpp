@@ -22,7 +22,7 @@ using std::vector;
 // }
 
 Scene::Scene() :
-    m (Metaballs(Vecteur<3>(), 0.05, 0.1, 1, 1, 1))
+    m (Metaballs(Vecteur<3>(), 0.25, 4, 10, 10, 10))
 {
     
     Vecteur<3> v = Vecteur<3>(0.2);
