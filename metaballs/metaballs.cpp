@@ -317,9 +317,9 @@ Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon, double x,
 {
 
     // Calcul des dimensions
-    n = x / cote;
-    p = y / cote;
-    q = z / cote;
+    n = 1 + x / cote;
+    p = 1 + y / cote;
+    q = 1 + z / cote;
     
     // Allocation du tableau des points
     points = new bool** [n];
