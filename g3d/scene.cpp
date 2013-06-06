@@ -79,11 +79,11 @@ void Scene::draw() {
 }
 
 void Scene::animate() {
-    if (anim) {
-        // f->majDensitePression();
-        // f->majPositionVitesse();
-        f->schemaIntegration();
-        f->affiche();
-        anim = false;
-    }    
+    // if (anim) {
+        f->majDensitePression();
+        f->majPositionVitesse();
+    //     f->schemaIntegration();
+    //     f->affiche();
+    //     anim = false;
+    // }    
 }

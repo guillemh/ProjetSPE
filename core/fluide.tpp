@@ -525,7 +525,7 @@ void Fluide<Dim>::majPositionVitesse() {
 	//}
         //(*it1)->setAcceleration((fPression + fViscosite + fGravite + fSurface) / masseVolumique_a);
 
-        cout << "forces " << (fPression + fViscosite + fGravite) << endl;
+        //cout << "forces " << (fPression + fViscosite + fGravite) << endl;
         (*it1)->setAcceleration((fPression + fViscosite + fGravite) / masseVolumique_a);
 
     }
@@ -536,11 +536,11 @@ void Fluide<Dim>::majPositionVitesse() {
         // Calcul de la nouvelle vitesse (qu'on retient au temps t+Dt/2)
         if (debutAnim) {
             //(*it1)->incrVitesse(mat->getPasTemps() * (*it1)->getAcceleration() / 2);
-            cout << "Vitesse " << mat->getPasTemps() * (*it1)->getAcceleration() << endl;
+            //cout << "Vitesse " << mat->getPasTemps() * (*it1)->getAcceleration() << endl;
             (*it1)->incrVitesse(mat->getPasTemps() * (*it1)->getAcceleration());
             debutAnim = false;
         } else {
-            cout << "Vitesse " << mat->getPasTemps() * (*it1)->getAcceleration() << endl;
+            //cout << "Vitesse " << mat->getPasTemps() * (*it1)->getAcceleration() << endl;
             (*it1)->incrVitesse(mat->getPasTemps() * (*it1)->getAcceleration());
         }
         
@@ -575,16 +575,16 @@ void Fluide<Dim>::majPositionVitesse() {
 
 template<unsigned int Dim>
 void Fluide<Dim>::draw() {
-//   typename list<Particule<Dim> *>::const_iterator it;
-//   for (it = particules.begin (); it != particules.end (); it++) {
-//       (*it)->draw ();
-//   }
-//   for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
-//      (*it)->draw ();
-//   }
+  typename list<Particule<Dim> *>::const_iterator it;
+  for (it = particules.begin (); it != particules.end (); it++) {
+      (*it)->draw ();
+  }
+  for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
+     (*it)->draw ();
+  }
    
-   ball.coloration(particules);
-   ball.draw();
+   // ball.coloration(particules);
+   // ball.draw();
 }
 
 

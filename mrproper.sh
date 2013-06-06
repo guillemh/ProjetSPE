@@ -4,7 +4,6 @@
 # and building directory (release, debug)
 
 make clean
-rm -f Makefile
 rm -f SPH2D.pro.user
 rm -f *~
 
