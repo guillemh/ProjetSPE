@@ -381,7 +381,7 @@ void Metaballs::coloration(int config) {
 void Metaballs::draw() {
     int config = 0 ;
     Vecteur<3> posCour;
-    glBegin(GL_TRIANGLES);
+    // glBegin(GL_TRIANGLES);
     
     // On boucle sur l'ensemble des cubes
     for (int i = 0 ; i < n - 1 ; i++) {
@@ -398,12 +398,26 @@ void Metaballs::draw() {
                     config |= points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)];
                     config <<= 1;
                 }
+		config >>= 1;
+		for (int s = 0 ; s < 8 ; s++) {
+		    if (points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)]) {
+			glColor3f (0.0, 1.0, 0.0);
+		    } else {
+			glColor3f (0.0, 0.0, 1.0);
+		    }
+		    glPushMatrix ();
+		    glTranslatef (origine(1) + cote*(i + ((s >> 1) & 1)),
+				  origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
+				  origine(3) + cote*(k + (s >> 2)));
+		    glutSolidSphere (0.01, 10, 10);
+		    glPopMatrix ();
+		}
                 posCour = origine + Vecteur<3>(cote*i, cote*j, cote*k);
                 drawCube(posCour, cote, config);
             }
         }
     }
-    glEnd();
+    // glEnd();
     
     // TODO : cas limites (bords de la boîte) (éventuellement)
 }
@@ -425,9 +439,12 @@ void Metaballs::drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c) {
     Vecteur<3> ptC = associerPoint(pos, cote, c);
     
     // TODO : la normale !
+    glBegin (GL_TRIANGLES);
+    glColor3f (1.0, 0.0, 0.0);
     glVertex3d(ptA(1), ptA(2), ptA(3));
     glVertex3d(ptB(1), ptB(2), ptB(3));
     glVertex3d(ptC(1), ptC(2), ptC(3));
+    glEnd ();
 }
 
 
