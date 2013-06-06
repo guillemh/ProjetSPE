@@ -17,21 +17,22 @@ class Scene {
      *
      * Constructeur par défaut d'un objet de classe Scène
      */
-    Scene () ;
+    Scene();
 
     /**
      * \brief Destructeur
      */
-    ~Scene () ;
+    ~Scene();
 
     /**
      * \brief Représentation
      *
      * Représentation de la scène
      */
-    void draw() ;
+    void draw();
 
  private :
-    vector<Metaballs*> v ;
+    // Metaballs m;
+    vector<Metaballs *> v;
 };
 #endif

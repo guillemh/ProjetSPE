@@ -33,14 +33,6 @@ private:
     /* ** Constructeurs ** */
 public:
     /**
-     * \brief Constructeur par defaut
-     *
-     * Alloue le tableau de points et initialise les valeurs arbitrairement
-     * (A éviter d'utiliser)
-     */
-    Metaballs();
-    
-    /**
      * \brief Constructeur
      *
      * Alloue le tableau de points
@@ -70,6 +62,7 @@ public:
      * et attribue à chaque sommet sa couleur, ceci pour déterminer la configuration des cubes
      */
     void coloration(list<Particule<3> *> &particules);
+    // void coloration();
 
     /**
      * \brief Coloration - fonction de debug

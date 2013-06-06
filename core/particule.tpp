@@ -1,4 +1,5 @@
 #include <GL/glut.h>
+#include <math.h>
 #include "particule.hpp"
 #include "materiau.hpp"
 
@@ -152,19 +153,35 @@ void Particule<Dim>::majPression (double dens) {
      * Calcul de la pression appliquée à une particule selon l'équation de Tait
      * (cf. Becker-Teschner, "Weakly compressible SPH for free surface flows")
      */
+     
     double gamma = 7.0;
-//    double B = dens * pow(son, 2.0) / gamma;
     double B = 100;
-//    pression = B * (pow(masse_volumique / dens, gamma));
     pression = B * (pow(masse_volumique / dens, gamma) - 1);
+    
+//    double B = dens * pow(son, 2.0) / gamma;
+//    pression = B * (pow(masse_volumique / dens, gamma));
 //    cout << "B = " << B << ", rho = " << masse_volumique << ", rho_0 = " << dens << ", rho/rho_0 = " << masse_volumique/dens << ", on obtient P = " << pression << endl;
 }
 
 
 template<unsigned int Dim>
 double Particule<Dim>::isosurface(Vecteur<Dim> &pos) {
-    Vecteur<Dim> diff = pos-position;
-    return diff.scalaire(diff);
+//    double d = (pos - position).norme();
+//    if (d <= 1/3)
+//        return 1 - 3*d*d;
+//    if (d <= 1)
+//        return 3*(1-d)*(1-d)/2;
+//    else
+//        return 0;
+
+    Vecteur<Dim> diff = pos - position;
+    double d = diff.scalaire(diff);
+    if (d == 0.0)
+        return 5000;
+    return 1 / d;
+
+//    double d = (pos - position).norme();
+//    return exp(-rayon*d/2);
 }
 
 
@@ -187,10 +204,11 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
     // glPopMatrix();
 }
 
+
 template<unsigned int Dim>
 void Particule<Dim>::draw() const {
     // glPushMatrix();
-    glColor3f(1.0, 0.0, 0.0);
+    glColor3f(0.0, 1.0, 0.0);
     glPointSize(3.0f);
     glBegin(GL_POINTS);
     //glTranslatef(position(1), position(2), position(3));
@@ -198,6 +216,7 @@ void Particule<Dim>::draw() const {
     glEnd();
     // glPopMatrix();
 }
+
 
 template<unsigned int Dim>
 ostream& operator<<(ostream& os, const Particule<Dim>& p) {
