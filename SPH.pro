@@ -6,6 +6,7 @@ SUBDIRS =   core \
             run \
             g3d \
             cascade \
+            metaballs \
 
 #Precise les dependances entre les sous-dossiers
 test.depends = core
