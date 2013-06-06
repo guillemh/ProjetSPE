@@ -36,7 +36,7 @@ void Viewer::init()
     glEnable(GL_COLOR);
     glEnable(GL_COLOR_MATERIAL);
 	
-    setSceneRadius(16.0f);
+    setSceneRadius(30.0f);
 	
     //=== INIT SCENE
     s = new Scene () ;
