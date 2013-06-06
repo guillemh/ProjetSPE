@@ -16,13 +16,13 @@ Scene::Scene() {
     double y_min = -5;
     double z_min = -5;
     Vecteur<3> origine = Vecteur<3> (x_min, y_min, z_min);
-    Metaballs *m = new Metaballs (origine, 0.5, 4, 10, 10, 10);
+    Metaballs *m = new Metaballs (origine, 0.125, 4, 10, 10, 10);
     m->coloration();
     v.push_back (m);
 }
 
 Scene::~Scene() {
-	v.clear();
+    v.clear();
 }
 
 void Scene::draw() {
