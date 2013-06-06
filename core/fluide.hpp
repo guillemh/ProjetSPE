@@ -161,6 +161,9 @@ private:
     /* DEBUG : affichage de la table de hashage */
     void afficher_hash();
 
+    /* DEBUG : affichage de la liste des particules actives */
+    void afficher_actives();
+
     /* Calcul des forces d'interaction entre 2 particules au temps courant */
     Vecteur<Dim> calculForcesInteraction(Particule<Dim>*, Particule<Dim>*);
     

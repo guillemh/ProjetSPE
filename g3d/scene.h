@@ -31,8 +31,12 @@ class Scene {
     
     void animate() ;
 
+    void animer() {anim = true;}
+    
  private :
     Fluide<3> *f ; /*!< Pointeur sur un fluide */
     Materiau<3> *m ; /*!< Pointeur sur un matériau */
+
+    bool anim;  /* pour faire l'animation pas à pas */
 };
 #endif
