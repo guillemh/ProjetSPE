@@ -150,6 +150,9 @@ private:
     /* Fonction d'accès au voisinage d'une particule */
     set<Particule<Dim>*> voisinage(Particule<Dim>&);
 
+    /* Mise à jour de la table : on la vide entièrement puis on réinsère les particules */
+    void majTableHashage();
+    
     /* DEBUG : affichage de la table de hashage */
     void afficher_hash();
 
@@ -170,7 +173,7 @@ private:
 
     /* Mise à jour du système avec le schéma d'intégration de l'ARPS */
     void schemaIntegration();
-        
+
 };
 
 
