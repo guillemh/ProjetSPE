@@ -575,16 +575,16 @@ void Fluide<Dim>::majPositionVitesse() {
 
 template<unsigned int Dim>
 void Fluide<Dim>::draw() {
-    typename list<Particule<Dim> *>::const_iterator it;
-    for (it = particules.begin (); it != particules.end (); it++) {
-        (*it)->draw ();
-    }
-    for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
-        (*it)->draw ();
-    }
+    // typename list<Particule<Dim> *>::const_iterator it;
+    // for (it = particules.begin (); it != particules.end (); it++) {
+    //     (*it)->draw ();
+    // }
+    // for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
+    //     (*it)->draw ();
+    // }
    
-    // ball.coloration(particules);
-    // ball.draw();
+    ball.coloration(particules);
+    ball.draw();
 }
 
 
