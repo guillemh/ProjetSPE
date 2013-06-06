@@ -129,6 +129,11 @@ public:
     void affiche();
     
     /**
+     * Mise à jour du système avec le schéma d'intégration de l'ARPS
+     */
+    void schemaIntegration();
+
+    /**
      * Fonction de tests basiques sur l'insertion dans la table de hashage,
      * qui a besoin de l'accès direct à celle-ci
      */
@@ -168,11 +173,11 @@ private:
      */
     void integrationForces();
 
+    /* Fonction de calcul d'un critère de restriction */
+    double calculCritere(const Vecteur<Dim>&);
+    
     /* Fonction de restriction concernant l'activité des particules */
-    void restriction(const Vecteur<Dim>&, const double, double&, Vecteur<Dim>&);
-
-    /* Mise à jour du système avec le schéma d'intégration de l'ARPS */
-    void schemaIntegration();
+    void restriction(const Vecteur<Dim>&, double&, Vecteur<Dim>&);
 
 };
 

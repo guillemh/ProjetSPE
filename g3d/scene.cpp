@@ -81,4 +81,6 @@ void Scene::draw() {
 void Scene::animate() {
     f->majDensitePression();
     f->majPositionVitesse();
+
+    // f->schemaIntegration();
 }
