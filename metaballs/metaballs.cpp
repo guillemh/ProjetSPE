@@ -1,4 +1,7 @@
 #include "metaballs.hpp"
+#include <algorithm>
+
+using std::min;
 
 /* ** Constructeurs ** */
 
@@ -213,7 +216,7 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
 //                cout << "i = " << i << ", j = " << j << ", k = " << k << endl;
 //                cout << "influence : " << influence << endl;
                 
-                bool res = (influence > 0.9)? true : false;
+                bool res = (min(0.95, influence) > 0.9)? true : false;
                 points[i][j][k] = res;
             }
         }

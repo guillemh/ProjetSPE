@@ -169,7 +169,7 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos) {
 //        return 3*(1-d)*(1-d)/2;
 //    else
 //        return 0;
-
+//
     double d = (pos - position).norme();
     return exp(-d*d/2);
 }

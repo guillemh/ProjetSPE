@@ -32,6 +32,7 @@ class Scene {
     void draw();
 
  private :
-    Metaballs m;
+    // Metaballs m;
+    vector<Metaballs *> v;
 };
 #endif
