@@ -5,35 +5,34 @@
 #include "scene.h"
 #include "metaballs.hpp"
 #include "../core/vecteur.hpp"
+#include "../core/particule.hpp"
 #include <vector>
 
 using std::vector;
 
-Scene::Scene() {
-    v = vector<Metaballs *> ();
-	double y_min = -16;
-	double z_min = 0;
-	for (int i = 0 ; i < 128 ; i++) {
-		Vecteur<3> origine = Vecteur<3> (-0.5, y_min + (double((i % 16) << 1)), z_min + (double ((i / 16) << 1)));
-		Metaballs *m = new Metaballs (origine, 1, 0.05, 1, 1, 1);
-		m->coloration (i);
-		v.push_back (m);
-	}
+Scene::Scene() :
+    m (Metaballs(Vecteur<3>(), 0.05, 0.1, 1, 1, 1))
+{
+    
+    Vecteur<3> v = Vecteur<3>(0.2);
+    Vecteur<3> v2 = Vecteur<3>(0.3);
+    Particule<3> * p = new Particule<3>(1, v, Vecteur<3>());
+    Particule<3> * p2 = new Particule<3>(2, v2, Vecteur<3>());
+    list<Particule<3> *> l;
+    l.push_back(p);
+    l.push_back(p2);
+    
+    m.coloration(l);
+    
+    delete p;
+    delete p2;
 }
 
 Scene::~Scene() {
-	v.clear();
 }
 
 void Scene::draw() {
     glPushMatrix();
-	GLfloat y_min = -16;
-	GLfloat z_min = 0;
-	for (int i = 0 ; i < 128 ; i++) {
-		glPushMatrix();
-		glTranslatef (-0.5, y_min + float((i % 16) * 2), z_min + float((i / 16) * 2));
-		v[i]->draw();
-		glPopMatrix();
-	}	
+	m.draw();
     glPopMatrix();
 }

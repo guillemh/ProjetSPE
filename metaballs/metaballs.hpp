@@ -33,14 +33,6 @@ private:
     /* ** Constructeurs ** */
 public:
     /**
-     * \brief Constructeur par defaut
-     *
-     * Alloue le tableau de points et initialise les valeurs arbitrairement
-     * (A éviter d'utiliser)
-     */
-    Metaballs();
-    
-    /**
      * \brief Constructeur
      *
      * Alloue le tableau de points

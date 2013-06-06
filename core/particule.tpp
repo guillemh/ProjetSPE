@@ -148,19 +148,20 @@ void Particule<Dim>::majPression (double dens) {
     /* Calcul de la pression appliquée à une particule selon l'équation de Tait
      * (cf. Becker-Teschner, "Weakly compressible SPH for free surface flows")
      */
+     
     double gamma = 7.0;
-//    double B = dens * pow(son, 2.0) / gamma;
     double B = 100;
-//    pression = B * (pow(masse_volumique / dens, gamma));
     pression = B * (pow(masse_volumique / dens, gamma) - 1);
+    
+//    double B = dens * pow(son, 2.0) / gamma;
+//    pression = B * (pow(masse_volumique / dens, gamma));
 //    cout << "B = " << B << ", rho = " << masse_volumique << ", rho_0 = " << dens << ", rho/rho_0 = " << masse_volumique/dens << ", on obtient P = " << pression << endl;
 }
 
 
 template<unsigned int Dim>
 double Particule<Dim>::isosurface(Vecteur<Dim> &pos) {
-    Vecteur<Dim> diff = pos-position;
-    return diff.scalaire(diff);
+    return (pow(pos(1) - position(1), 2) + pow(pos(2) - position(2), 2) + pow(pos(3) - position(3), 2));
 }
 
 
@@ -183,6 +184,7 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
     // glPopMatrix();
 }
 
+
 template<unsigned int Dim>
 void Particule<Dim>::draw() const {
     // glPushMatrix();
@@ -194,6 +196,7 @@ void Particule<Dim>::draw() const {
     glEnd();
     // glPopMatrix();
 }
+
 
 template<unsigned int Dim>
 std::ostream& operator<<(std::ostream& os, const Particule<Dim>& p) {
