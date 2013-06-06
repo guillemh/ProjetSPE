@@ -199,7 +199,6 @@ Metaballs::~Metaballs() {
 void Metaballs::coloration(list<Particule<3> *> &particules) {
     // void Metaballs::coloration() {
     typename list<Particule<3> *>::iterator it;
-
     // Pour chaque point, on regarde l'influence des particules du fluide
     // Si elle superieure a rayon, on "colorie" le point
     for (int i = 0; i < n; i++) {
