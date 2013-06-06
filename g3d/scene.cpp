@@ -14,9 +14,9 @@ using namespace std;
 Scene::Scene() {
     
     srand (time (NULL));   
-    
+    anim = false;
     m = new Materiau<3>(EAU);
-    int d [3] = {5, 5, 5};
+    int d [3] = {2, 2, 2};
     f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression()); 
     
     //    Vecteur<3> vec0 = Vecteur<3>();
@@ -79,6 +79,11 @@ void Scene::draw() {
 }
 
 void Scene::animate() {
-    f->majDensitePression();
-    f->majPositionVitesse();
+    // if (anim) {
+        f->majDensitePression();
+        f->majPositionVitesse();
+    //     f->schemaIntegration();
+    //     f->affiche();
+    //     anim = false;
+    // }    
 }

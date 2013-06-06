@@ -79,6 +79,9 @@ void Viewer::keyPressEvent(QKeyEvent *e)
 	if (toogleLight == true) glEnable(GL_LIGHTING);
 	else glDisable(GL_LIGHTING);
 	updateGL();
+    } else if (e->key()==Qt::Key_Z) {
+	s->animer();
+	updateGL();
     } else if (e->key()==Qt::Key_R) {
 	toogleRecord = !toogleRecord;
 	updateGL();

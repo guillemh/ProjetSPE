@@ -5,6 +5,9 @@
 
 #define PI 3.1415926535
 
+using std::endl;
+using std::ostream;
+
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
@@ -146,7 +149,8 @@ void Particule<Dim>::decrForces(const Vecteur<Dim> &f) {
 template<unsigned int Dim>
 void Particule<Dim>::majPression (double dens) {
     // Paramètre "son" supprimé
-    /* Calcul de la pression appliquée à une particule selon l'équation de Tait
+    /*
+     * Calcul de la pression appliquée à une particule selon l'équation de Tait
      * (cf. Becker-Teschner, "Weakly compressible SPH for free surface flows")
      */
      
@@ -215,9 +219,11 @@ void Particule<Dim>::draw() const {
 
 
 template<unsigned int Dim>
-std::ostream& operator<<(std::ostream& os, const Particule<Dim>& p) {
-    os << "pos (" << p.getPosition() << "), vit (" << p.getVitesse() << ")" << std::endl
-       << "m (" << p.getMasse() << "), m_v (" << p.getMasseVolumique() << "), pre (" << p.getPression() << ")";
+ostream& operator<<(ostream& os, const Particule<Dim>& p) {
+    os << "pos : " << p.getPosition() << endl
+       << "    vit : " << p.getVitesse() <<  endl
+       << "    m_v : " << p.getMasseVolumique() << endl
+       << "    pre : " << p.getPression();
     return os;
 }
 

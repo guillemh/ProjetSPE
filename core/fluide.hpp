@@ -129,6 +129,11 @@ public:
     void affiche();
     
     /**
+     * Mise à jour du système avec le schéma d'intégration de l'ARPS
+     */
+    void schemaIntegration();
+
+    /**
      * Fonction de tests basiques sur l'insertion dans la table de hashage,
      * qui a besoin de l'accès direct à celle-ci
      */
@@ -156,6 +161,9 @@ private:
     /* DEBUG : affichage de la table de hashage */
     void afficher_hash();
 
+    /* DEBUG : affichage de la liste des particules actives */
+    void afficher_actives();
+
     /* Calcul des forces d'interaction entre 2 particules au temps courant */
     Vecteur<Dim> calculForcesInteraction(Particule<Dim>*, Particule<Dim>*);
     
@@ -168,11 +176,11 @@ private:
      */
     void integrationForces();
 
+    /* Fonction de calcul d'un critère de restriction */
+    double calculCritere(const Vecteur<Dim>&);
+    
     /* Fonction de restriction concernant l'activité des particules */
-    void restriction(const Vecteur<Dim>&, const double, double&, Vecteur<Dim>&);
-
-    /* Mise à jour du système avec le schéma d'intégration de l'ARPS */
-    void schemaIntegration();
+    void restriction(const Vecteur<Dim>&, double&, Vecteur<Dim>&);
 
 };
 

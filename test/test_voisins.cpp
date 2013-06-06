@@ -21,7 +21,8 @@ void test_voisins() {
     set<Particule<2>*> voisins;
     set<Particule<2>*>::iterator v_it;
     int tab2d[2] = {0, 2};
-
+    rayon *= 2;  // car le noyau prend les particules dans un rayon 2*rnoyau
+    
     dist = rayon+0.1;
     Fluide<2> f = Fluide<2>(&mateau2d, tab2d, dist, mateau2d.getDensiteRepos(), mateau2d.getPression());
     cout << " Distance entre particules " << dist << endl;
@@ -75,12 +76,13 @@ void test_voisins() {
     set<Particule<3>*> vois;
     set<Particule<3>*>::iterator vois_it;
     int tab3d[3] = {2, 2, 2};
+    rayon *= 2;
 
     succes = true;
     dist = rayon*10;
     Fluide<3> f1 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression());
     cout << "1.Distance entre particules " << dist << endl;
-    f1.afficher_hash();
+    //f1.afficher_hash();
     part_it = f1.particules.begin();
     while (part_it != f1.particules.end()) {
         vois = f1.voisinage(*(*part_it));
@@ -105,7 +107,7 @@ void test_voisins() {
     dist = rayon+rayon/2;
     Fluide<3> f2 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression());
     cout << "2.Distance entre particules " << dist << endl;
-    f2.afficher_hash();
+    //f2.afficher_hash();
     part_it = f2.particules.begin();
     while (part_it != f2.particules.end()) {
         vois = f2.voisinage(*(*part_it));
@@ -130,7 +132,7 @@ void test_voisins() {
     dist = rayon+0.02;
     Fluide<3> f3 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression());
     cout << "3.Distance entre particules " << dist << endl;
-    f3.afficher_hash();
+    //f3.afficher_hash();
     part_it = f3.particules.begin();
     while (part_it != f3.particules.end()) {
         vois = f3.voisinage(*(*part_it));
@@ -155,7 +157,7 @@ void test_voisins() {
     dist = rayon-0.01;
     Fluide<3> f4 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression());
     cout << "4.Distance entre particules " << dist << endl;
-    f4.afficher_hash();
+    //f4.afficher_hash();
     part_it = f4.particules.begin();
     while (part_it != f4.particules.end()) {
         vois = f4.voisinage(*(*part_it));
@@ -254,7 +256,7 @@ void test_voisins() {
     f4.majDensitePression();
     f4.majPositionVitesse();
     cout << "4.Distance entre particules " << dist << endl;
-    f4.afficher_hash();
+    //f4.afficher_hash();
     part_it = f4.particules.begin();
     while (part_it != f4.particules.end()) {
         vois = f4.voisinage(*(*part_it));
