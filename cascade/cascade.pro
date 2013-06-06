@@ -18,12 +18,12 @@ DESTDIR = $${DBGNAME}
 QT *= xml opengl 
 QMAKE_CXXFLAGS += -std=c++0x
 
-HEADERS  = viewer.h sceneCascade.h skybox.h cascade.hpp cascade.tpp
+HEADERS  = viewer.h sceneCascade.h skybox.h cascade.hpp 
 SOURCES  = main.cpp viewer.cpp sceneCascade.cpp skybox.cpp
 LIBS += -lglut
 LIBS += -lqglviewer-qt4 -L./../core/$${DBGNAME}/ -lcore
 
-INCLUDEPATH += ..
+INCLUDEPATH += .. 
 DEPENDPATH += .. #check si les fichiers ont été modifiés
 
 exists( /usr/lib/libqglviewer-qt4.so) |
