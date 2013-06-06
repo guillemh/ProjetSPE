@@ -34,28 +34,25 @@
 
 \section{Présentation du projet}
 
-Ce projet de spécialité, de par sa thématique, est davantage orienté vers la recherche que vers le génie logiciel. Il consiste en l'implémentation d'un modèle SPH {\em (Smoothed-Particle Hydrodynamics)} pour l'animation de fluides en temps réel. Ce modèle consiste à représenter un liquide sous la forme d'un ensemble de particules, soumises entre elles à des forces d'interaction. La finalité de ce projet est d'obtenir une scène 3D, animée en temps-réel, comportant un fluide en écoulement le plus réaliste possible. La contrainte temps-réel impose un temps de calcul minimal pour un résultat quasi-instantané et favorisant l'interaction avec un utilisateur. Un exemple d'application possible de ce modèle est l'animation d'une cascade dans un jeu vidéo. \\
+Ce projet de spécialité, de par sa thématique, est davantage orienté vers la recherche que vers le génie logiciel. Il consiste en l'implémentation d'un modèle SPH {\em (Smoothed-Particle Hydrodynamics)} pour l'animation de fluides en temps réel. Ce modèle consiste à représenter un liquide sous la forme d'un ensemble de particules, soumises entre elles à des forces d'interaction. La finalité de ce projet est d'obtenir une scène 3D, animée en temps-réel, comportant un fluide en écoulement le plus réaliste possible. La contrainte temps-réel impose un temps de calcul minimal pour un résultat quasi-instantané et favorisant l'interaction avec un utilisateur. Un exemple d'application possible de ce modèle est l'animation d'une cascade dans un jeu vidéo.\\
 
 Techniquement, cet objectif s'articule autour de trois points~: \\
 
 \begin{itemize}
 \item tout d'abord, l'\textbf{implémentation} du système et du modèle physique, ce qui passe par le calcul des forces et l'intégration de la seconde loi de Newton pour animer le fluide\,;
 \item d'un point de vue informatique, au vu de la complexité des calculs effectués, et du nombre de particules considérées pour approximer un fluide, un objectif essentiel consiste en l'\textbf{optimisation} du calcul précédent, ce qui sous-entend par exemple l'utilisation de structures de données adéquates et performantes\,;
-\item enfin, nous devons veiller à obtenir un résultat \textbf{réaliste}, tant du point de vue physique qu'esthétique. Ceci consiste à construire un modèle partant de l'ensemble des particules et construisant la surface en mouvement. \\
+\item enfin, nous devons veiller à obtenir un résultat \textbf{réaliste}, tant du point de vue physique qu'esthétique. Ceci consiste à construire un modèle partant de l'ensemble des particules et construisant la surface en mouvement. Ce modèle sera ensuite intégré dans la scène finale représentant une cascade.\\
 \end{itemize}
 
 Nous suivrons durant ce projet une démarche incrémentale dans notre amélioration du rendu et de la simulation. \\
 
 Concernant le rendu de ce projet, le temps nous est insuffisant pour essayer plusieurs modèles physiques et implémenter toutes les optimisations possibles pour ce type de problème. Aussi, notre objectif est, d'ici la date de fin du projet, d'obtenir un exécutable fonctionnel fournissant des résultats acceptables. Ces résultats incluent l'aspect visuel, l'aspect physique, mais aussi la recherche des meilleures performances. Les encadrants nous ont proposé plusieurs techniques d'améliorations sur ces aspects, que nous pourrons mettre en \oe{}uvre si nous avons le temps. De plus, notre projet étant susceptible, par la suite, d'être réutilisé par nos encadrants et des chercheurs pour des travaux ultérieurs, des contraintes de clarté s'imposent, autant au sein du code que de la documentation du projet. 
 
-\newpage
-
 \section{Organisation et communication}
 
 Notre équipe est composée de quatre étudiants, tous issus de la filière MMIS (Modélisation Mathématique, Images et Simulation). Deux encadrants, Marie-Paule Cani et Pierre-Luc Manteaux, sont nos principaux interlocuteurs en cas de difficultés sur le plan technique et forment l'équipe étendue. \\
 
 Du point de vue de la communication, nous choisissons de travailler tous ensemble à l'Ensimag sur des tâches parallèles, éventuellement seuls ou en binômes. Pour des raisons d'efficacité et de compréhension des autres membres de l'équipe vis-à-vis des changements apportés au projet, nous avons tendance à réprouver le travail en solitaire, effectué le soir ou le week-end chez soi, quitte à rallonger nos horaires de présence à l'école en journée. \\
-
 Pour synchroniser notre travail, nous utilisons un répertoire partagé auquel les encadrants ont également accès, ce qui leur permet de contrôler notre travail et d'y faire référence avec une plus grande pertinence lors de nos réunions de suivi. Après concertation avec les encadrants, il a été décidé d'adopter un rythme de deux réunions de suivi par semaine. Nous leur communiquons également par mail régulièrement notre avancement et les éventuels problèmes rencontrés. \\
 
 Par ailleurs, une autre équipe travaillant sur un projet similaire, une partie de nos travaux est donc commune. Cela rend possible un échange entre les deux équipes sur des points précis du projet en cas de difficultés. Cette communication inter-équipes a été vivement encouragée par les encadrants dès le début du projet pour permettre un avancement régulier.
@@ -66,11 +63,9 @@ Pour mener à bien ce projet, les encadrants nous ont proposé une approche incr
 
 L'étude de la littérature a permis de mettre en exergue des étapes successives d'implémentation. Tout d'abord, la mise en place d'un modèle physique ``basique'' pour permettre le mouvement d'un fluide modélisé à partir de particules. Cela comprend les forces qui agissent sur ces particules ainsi que la gestion des collisions. Une fois ce bloc de base fonctionnel, il s'agit de s'intéresser au rendu visuel du liquide. Ceci définit la deuxième grande partie du projet, notre équipe devra se diviser à partir de ce moment. Chaque sous-groupe pourra passer à l'amélioration de sa partie, notamment au niveau des performances du logiciel. Ces améliorations se baseront sur des publications scientifiques, proposant de nouvelles méthodes d'implémentation.\\
 
-Nous devrions donc obtenir successivement des animations de liquides de plus en plus rapides et réalistes. Néanmoins, il est primordial de noter que, pour le rendu final, nous devrons livrer un logiciel qui fonctionne, afin d'avoir un résultat concret à présenter. Le rendu final sera donc celui correspondant à la dernière itération fonctionnelle du projet.\\
+Nous devrions donc obtenir successivement des animations de liquides de plus en plus rapides et réalistes. Néanmoins, il est primordial de noter que, pour le rendu final, nous devrons livrer un logiciel qui fonctionne, afin d'avoir un résultat concret à présenter. Le rendu final sera donc celui correspondant à la dernière itération fonctionnelle du projet. Evaluer le délai nécessaire à chaque itération est une tâche difficile puisque chacune d'elles nécessite la mise en \oe{}uvre de notions nouvelles complexes à intégrer au modèle existant. Après discussion avec les encadrants, la livraison du résultat issu de la première itération (i.e. une scène 3D représentant une cascade où s'écoule un fluide selon le modèle physique de base) serait acceptable compte tenu du délai imparti.\\ 
 
 Les différentes étapes de suivi du projet sont également autant de moments clés à ne pas négliger. Nous prévoyons de rencontrer nos encadrants deux fois par semaine. Aussi, du temps devra être consacré à la préparation de ces rendez-vous pour définir, notamment, les questions à traiter et effectuer un résumé de notre avancement depuis la dernière rencontre. \\
-
-\newpage
 
 Nous avons aussi noté différentes dates clés à ne pas oublier, pour lesquelles nous aurons éventuellement un produit à livrer~:
 \begin{itemize}
@@ -80,6 +75,7 @@ Nous avons aussi noté différentes dates clés à ne pas oublier, pour lesquell
 \item soutenance du projet le 19 juin
 \item rendez-vous réguliers avec les encadrants techniques
 \end{itemize}
+
 \section{Ressources et contraintes}
 
 Du point de vue logistique, la salle E301 nous est mise à disposition durant la durée du projet.\\
@@ -88,12 +84,10 @@ Les documents de référence associés au sujet nous ont été fournis dès le d
 
 Un squelette de code nous a été proposé initialement par les encadrants pour permettre une structuration du projet et un suivi plus aisé.\\ 
 
-Une des contraintes majeures liées au projet est celle de l'indisponibilité partielle de chacun des membres durant les deux premières semaines due aux soutenances et à la session d'examens. Un avancement régulier ne peut être maintenu durant cette période et peut entrainer un retard dans le projet. Les membres ayant la possibilité de contribuer au projet durant cette période doivent alors en informer régulièrement les autres via des bilans détaillés pour permettre le suivi global du projet par l'équipe.\\
+Une des contraintes majeures liées au projet est celle de l'indisponibilité partielle de chacun des membres durant les deux premières semaines due aux soutenances et à la session d'examens. Un avancement régulier ne peut être maintenu durant cette période et peut entrainer un retard dans le projet. Les membres ayant la possibilité de contribuer au projet durant cette période doivent alors en informer régulièrement les autres via des bilans détaillés pour permettre le suivi global du projet par l'équipe.
 
 \section{Gestion des risques}
-
-Dans cette section, nous nous attachons à effectuer un étude raisonnée et se voulant la plus exhaustive possible des risques potentiels associés à ce projet. Nous étudions ensuite les actions envisagées pour limiter ou éviter ces dangers.\\
-
+Dans cette section, nous nous attachons à effectuer un étude raisonnée et se voulant la plus exhaustive possible des risques potentiels associés à ce projet. Nous étudions ensuite les actions envisagées pour limiter ou éviter ces dangers.
 \subsection{Identifier les risques}
 
  Nous proposons une classification des risques associés au projet suivant les catégories suivantes~:
@@ -112,7 +106,7 @@ Dans cette section, nous nous attachons à effectuer un étude raisonnée et se 
 \hline
    Problèmes d'organisation (planning, répartition,...) &  \ding{55}  &  \ding{55}  &  &  \\
    Problèmes de régression (push inadapté,...) &  \ding{55}  &  \ding{55}  &  &  \\
-Bloquage technique au sein du projet & \ding{55}  &  \ding{55}  &  &  \\
+Blocage technique au sein du projet & \ding{55}  &  \ding{55}  &  &  \\
    Conflits internes à l'équipe & \ding{55}  & \ding{55}  & \ding{55}  & \\
    Démotivation & \ding{55}  &\ding{55}   & \ding{55}  & \\
 Absence d'un membre & \ding{55}  & \ding{55}  & \ding{55}  & \\
@@ -128,8 +122,8 @@ Absence d'un membre & \ding{55}  & \ding{55}  & \ding{55}  & \\
 Il s'agit désormais de réfléchir à des actions pour limiter ou éviter la réalisation des risques identifiés précédement.\\
 
 Le tableau suivant constitue les propositions d'actions émises par l'équipe pour tenter de limiter les risques et leurs impacts sur le bon déroulement du projet~: \\
-
-\begin{tabular}{|p{5cm}||p{12cm}|}
+\hspace{-3cm}
+\begin{tabular}{|p{4cm}||p{14cm}|}
 \hline  
    Risque & Actions à entreprendre pour éviter la réalisation \\
 \hline
@@ -140,7 +134,7 @@ identifier les problèmes et organiser une nouvelle répartition des tâches le 
    Problèmes de régression & Utiliser de façon raisonnée le gestionnaire de versions et 
 commenter explicitement chaque contribution effectuée au sein du répertoire partagé. Utiliser la fonction permettant un retour à une version précédente du projet dans le cas où une erreur majeure serait présente.\\
 \hline
-Bloquage technique au sein du projet & Promouvoir la communication entre les membres pour déterminer la cause du problème et les pistes de résolution. Prévoir une prise de contact rapide avec les encadrants en cas de difficulté majeure pour limiter les risques liés aux délais.\\
+Blocage technique au sein du projet & Promouvoir la communication entre les membres pour déterminer la cause du problème et les pistes de résolution. Prévoir une prise de contact rapide avec les encadrants en cas de difficulté majeure pour limiter les risques liés aux délais.\\
 \hline
    Conflits internes à l'équipe & Organiser une discussion entre l'ensemble des membres pour trouver une solution acceptable le cas échéant.\\
 \hline
@@ -155,6 +149,17 @@ Bloquage technique au sein du projet & Promouvoir la communication entre les mem
 \hline
 \end{tabular}\\
 
-Ces propositions d'actions ne sont bien évidemment pas exhaustives. En fonction du contexte exact du danger rencontré, nous pourrons être amenés à compléter ce tableau au cours du projet.\\
+Ces propositions d'actions ne sont bien évidemment pas exhaustives. En fonction du contexte exact du danger rencontré, nous pourrons être amenés à compléter ce tableau au cours du projet.
+
+\section{Indicateurs de suivi de projet}
+
+Dans l'optique de mesurer le bon avancement du projet, nous proposons la définition des indicateurs suivants :
+\begin{itemize}
+\item \textbf{Indicateur sur l'avancement des livrables : } une semaine avant la date de rendu, la première itération du projet devra être effectuée et un livrable théorique devra pouvoir être fourni : une scène 3D d'une cascade intégrant le modèle physique de base d'animation d'un liquide. 
+\item \textbf{Indicateur sur la qualité des livrables : } chaque itération devra donner lieu à un livrable théorique respectant les critères de réalisme décrits précédement.
+\item \textbf{Indicateur sur la motivation de l'équipe : } chacun des membres de l'équipe doit être présent de 9h à 12h30 et 13h30 à 18h du lundi au samedi pour travailler à plein temps sur le projet. En cas d'indisponibilité ou de perte de motivation, on fera référence aux actions proposées dans la section associée à la Gestion des Risques pour garantir l'avancement du projet.
+\item \textbf{Indicateur sur le coût : } le projet devra être mené à son terme selon les volumes horaires définis précédement. La pertinence de chaque dépassement horaire ponctuel devra être évaluée au regard des objectifs courants et de l'avancement de l'itération en cours.
+
+\end{itemize}
 
 \end{document}
