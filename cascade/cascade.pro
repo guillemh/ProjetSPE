@@ -19,7 +19,7 @@ QT *= xml opengl
 QMAKE_CXXFLAGS += -std=c++0x
 
 HEADERS  = viewer.h sceneCascade.h skybox.h cascade.hpp 
-SOURCES  = main.cpp viewer.cpp sceneCascade.cpp skybox.cpp
+SOURCES  = main.cpp viewer.cpp sceneCascade.cpp skybox.cpp ../metaballs/metaballs.cpp
 LIBS += -lglut
 LIBS += -lqglviewer-qt4 -L./../core/$${DBGNAME}/ -lcore
 
