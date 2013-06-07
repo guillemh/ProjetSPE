@@ -6,6 +6,7 @@ SUBDIRS =   core \
             run \
             g3d \
             cascade \
+            cascade_complexe \
             metaballs \
 
 #Precise les dependances entre les sous-dossiers
@@ -52,3 +53,11 @@ test.commands = ./test/release/test
 test.depends = 
 
 QMAKE_EXTRA_TARGETS += test
+
+# Regle pour l execution de cascade_complexe
+
+cascade_complexe.target = cascade_complexe
+cascade_complexe.commands = ./cascade_complexe/release/cascade_complexe
+cascade_complexe.depends =
+
+QMAKE_EXTRA_TARGETS += cascade_complexe
