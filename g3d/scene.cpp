@@ -85,7 +85,7 @@ void Scene::animate() {
     // if (anim) {
         f->majDensitePression();
         f->majPositionVitesse();
-        // f->schemaIntegration();
+    //     f->schemaIntegration();
     //     f->affiche();
     //     anim = false;
     // }    
