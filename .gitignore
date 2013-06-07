@@ -23,7 +23,7 @@ gestionProjet/*.pdf
 # Exécutables
 */release
 g3d/test_dessin_fluide
-cascade/test_cascade
+metaballs/test_metaballs
 
 #
 *.xml
