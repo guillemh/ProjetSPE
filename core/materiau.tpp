@@ -61,7 +61,7 @@ Materiau<Dim>::Materiau(TypeFluide type) {
     switch(type) {
     case EAU :
         //densite_repos = 998.29;
-        densite_repos = 100;
+        densite_repos = 160;
         masse_particules = 0.02;
         //masse_particules = 0.0065;
         coeff_flottabilite = 0;
