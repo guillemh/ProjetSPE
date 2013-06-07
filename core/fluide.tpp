@@ -50,7 +50,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(-0.2, -0.2, 0.0), 0.01, mat->getRayonNoyau(), 0.5, 0.5, 1)),
+      ball (Metaballs(Vecteur<3>(-0.2, -0.2, 0.0), 0.1, mat->getRayonNoyau(), 0.5, 0.5, 1)),
       debutAnim(true),
       hash_voisins(),
       epsilonR(EPS),
