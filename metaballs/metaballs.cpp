@@ -50,7 +50,7 @@ Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon, double x,
 {9, 10, 11, 4, 9, 11, 4, 11, 7, -1, -1, -1},
 {4, 7, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1},
 {4, 6, 8, 6, 11, 8, -1, -1, -1, -1, -1, -1},
-{4, 8, 7, 5, 6, 10, -1, -1, -1, -1, -1, -1},
+{4, 8, 7, 5, 10, 6, -1, -1, -1, -1, -1, -1},
 {8, 10, 11, 4, 5, 8, 5, 10, 8, -1, -1, -1},
 {7, 8, 5, 5, 8, 9, -1, -1, -1, -1, -1, -1},
 {8, 9, 11, 5, 6, 9, 6, 11, 9, -1, -1, -1},
@@ -255,25 +255,25 @@ void Metaballs::draw() {
                     config <<= 1;
                 }
                 config >>= 1;
-		for (int s = 0 ; s < 8 ; s++) {
-		    if (points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)]) {
-			glColor3f (0.0, 1.0, 0.0);
-		    } else {
-			glColor3f (0.0, 0.0, 1.0);
-		    }
-		    // glPointSize(5.0f);
-		    // glBegin(GL_POINTS);
-		    // glVertex3f (origine(1) + cote*(i + ((s >> 1) & 1)),
-		    //               origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
-		    //               origine(3) + cote*(k + (s >> 2)));
-		    // glEnd();
-		    glPushMatrix();
-		    glTranslatef (origine(1) + cote*(i + ((s >> 1) & 1)),
-				  origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
-				  origine(3) + cote*(k + (s >> 2)));
-		    glutSolidSphere (0.05, 10, 10);
-		    glPopMatrix();
-		}
+		// for (int s = 0 ; s < 8 ; s++) {
+		//     if (points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)]) {
+		// 	glColor3f (0.0, 1.0, 0.0);
+		//     } else {
+		// 	glColor3f (0.0, 0.0, 1.0);
+		//     }
+		//     // glPointSize(5.0f);
+		//     // glBegin(GL_POINTS);
+		//     // glVertex3f (origine(1) + cote*(i + ((s >> 1) & 1)),
+		//     //               origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
+		//     //               origine(3) + cote*(k + (s >> 2)));
+		//     // glEnd();
+		//     glPushMatrix();
+		//     glTranslatef (origine(1) + cote*(i + ((s >> 1) & 1)),
+		// 		  origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
+		// 		  origine(3) + cote*(k + (s >> 2)));
+		//     glutSolidSphere (0.05, 10, 10);
+		//     glPopMatrix();
+		// }
                 posCour = origine + Vecteur<3>(cote*i, cote*j, cote*k);
                 drawCube(posCour, cote, config);
             }
