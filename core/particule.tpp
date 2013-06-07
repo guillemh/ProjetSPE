@@ -206,14 +206,18 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
 
 template<unsigned int Dim>
 void Particule<Dim>::draw() const {
-    // glPushMatrix();
+
+//    glColor3f(0.0, 1.0, 0.0);
+//    glPointSize(3.0f);
+//    glBegin(GL_POINTS);
+//    glVertex3f(position(1), position(2), position(3));
+//    glEnd();
+    
+    glPushMatrix();
     glColor3f(0.0, 1.0, 0.0);
-    glPointSize(3.0f);
-    glBegin(GL_POINTS);
-    //glTranslatef(position(1), position(2), position(3));
-    glVertex3f(position(1), position(2), position(3));
-    glEnd();
-    // glPopMatrix();
+    glTranslatef(position(1), position(2), position(3));
+    glutSolidSphere(0.025, 8, 8);
+    glPopMatrix();
 }
 
 

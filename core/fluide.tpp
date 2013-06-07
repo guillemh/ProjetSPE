@@ -569,34 +569,34 @@ void Fluide<Dim>::draw() {
     glBegin(GL_QUADS);
     
     glNormal3f(-1, 0, 0);
-    glVertex3f(x_min, y_min, z_min);
-    glVertex3f(x_min, y_max, z_min);
-    glVertex3f(x_min, y_max, 1);
-    glVertex3f(x_min, y_min, 1);
+    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_min - 0.025, y_max + 0.025, 1);
+    glVertex3f(x_min - 0.025, y_min - 0.025, 1);
     
     glNormal3f(0, -1, 0);
-    glVertex3f(x_min, y_min, z_min);
-    glVertex3f(x_max, y_min, z_min);
-    glVertex3f(x_max, y_min, 1);
-    glVertex3f(x_min, y_min, 1);
+    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_min - 0.025, 1);
+    glVertex3f(x_min - 0.025, y_min - 0.025, 1);
     
     glNormal3f(1, 0, 0);
-    glVertex3f(x_max, y_min, z_min);
-    glVertex3f(x_max, y_max, z_min);
-    glVertex3f(x_max, y_max, 1);
-    glVertex3f(x_max, y_min, 1);
+    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, 1);
+    glVertex3f(x_max + 0.025, y_min - 0.025, 1);
     
     glNormal3f(0, 1, 0);
-    glVertex3f(x_min, y_max, z_min);
-    glVertex3f(x_max, y_max, z_min);
-    glVertex3f(x_max, y_max, 1);
-    glVertex3f(x_min, y_max, 1);
+    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, 1);
+    glVertex3f(x_min - 0.025, y_max + 0.025, 1);
     
     glNormal3f(0, 0, -1);
-    glVertex3f(x_min, y_min, z_min);
-    glVertex3f(x_min, y_max, z_min);
-    glVertex3f(x_max, y_max, z_min);
-    glVertex3f(x_max, y_min, z_min);
+    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
     
     glEnd();
     glDisable (GL_BLEND);
