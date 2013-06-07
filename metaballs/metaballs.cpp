@@ -251,10 +251,9 @@ void Metaballs::draw() {
                      * Si un point prend la valeur "vrai" il est considéré comme coloré
                      * c'est-à-dire à l'intérieur de la surface implicite
                      */
-                    config |= points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)];
                     config <<= 1;
+                    config |= points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)];
                 }
-                config >>= 1;
 //                for (int s = 0 ; s < 8 ; s++) {
 //                    if (points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)]) {
 //                        glColor3f (0.0, 1.0, 0.0);
@@ -297,7 +296,12 @@ void Metaballs::drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c) {
     // Calcul de la normale
     Vecteur<3> normale = ptC - ptA;
     normale = (ptB - ptA).vectoriel(normale);
-    normale /= normale.norme();
+    cout << "coucou1"<< endl;
+    cout << ptA << endl;
+    cout << ptB << endl;
+    cout << ptC << endl;
+//    normale /= normale.norme();
+    cout << "coucou2"<< endl;
     
     glBegin(GL_TRIANGLES);
     glColor3f(1.0, 0.0, 0.0);
