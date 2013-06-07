@@ -3,7 +3,7 @@
 
 #include <list>
 #include <iostream>
-#include "../core/particule.hpp"
+#include "particule.hpp"
 #include "../core/vecteur.hpp"
 
 using std::list;
@@ -18,10 +18,11 @@ class Metaballs {
 
     /* ** Attributs ** */
 private:
+    bool debutAnim;              /*!< Indique si on est au début de l'animation */
     int n;                       /*!< Nombre de cubes selon l'axe (Ox) */
     int p;                       /*!< Nombre de cubes selon l'axe (Oy) */
     int q;                       /*!< Nombre de cubes selon l'axe (Oz) */
-    bool*** points;              /*!< Tableau de booléens, chaque booléen étant associé à un point de l'espace :
+    double*** points;            /*!< Tableau de booléens, chaque booléen étant associé à un point de l'espace :
 		                              un booléen indique si le sommet doit être marqué ou non, pour avoir
 		                              la configuration du cube qui sera défini à l'aide de huit points */
     Vecteur<3> origine;          /*!< Origine spatiale de l'espace rectangulaire considéré dans le maillage */

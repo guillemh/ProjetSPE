@@ -16,7 +16,7 @@ int main()
 {
     cout << "***** Test vecteur : *****" << endl;
     test_vecteur();
-    
+
     cout << endl << endl;
     cout << "***** Test particules : *****" << endl;
     tests_unitaires_particules();
@@ -24,7 +24,7 @@ int main()
     cout << endl << endl;
     cout << "***** Test materiau : *****" << endl;
     test_materiau();
- 
+
     cout << endl << endl;
     cout << "***** Test Fluide : *****" << endl;
     tests_unitaires_fluide();
@@ -35,7 +35,7 @@ int main()
 
     cout << endl << endl;
     cout << "***** Test premier : *****" << endl;
-    test_premier();    
+    test_premier();
 
     cout << endl << endl;
     cout << "***** Test performances_premier : *****" << endl;

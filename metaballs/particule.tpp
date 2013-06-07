@@ -147,7 +147,7 @@ void Particule<Dim>::decrForces(const Vecteur<Dim> &f) {
 
 template<unsigned int Dim>
 void Particule<Dim>::majPression (double dens) {
-    //void Particule<Dim>::majPression (double son, double dens) {
+    // Paramètre "son" supprimé
     /*
      * Calcul de la pression appliquée à une particule selon l'équation de Tait
      * (cf. Becker-Teschner, "Weakly compressible SPH for free surface flows")

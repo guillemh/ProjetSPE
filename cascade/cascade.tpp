@@ -269,6 +269,47 @@ const double & Cascade<Dim>::getBassinZ() const
     return bassin_z;
 }
 
+template<unsigned int Dim>
+const double & Cascade<Dim>::getObstacleX() const
+{
+	return obstacle_x;
+}
+
+template<unsigned int Dim>
+const double & Cascade<Dim>::getObstacleY() const
+{
+	return obstacle_y;
+}
+
+template<unsigned int Dim>
+const double & Cascade<Dim>::getObstacleZ() const
+{
+	return obstacle_z;
+}
+
+template<unsigned int Dim>
+const double & Cascade<Dim>::getPenteAngle() const
+{
+	return pente_angle;
+}
+
+template<unsigned int Dim>
+const double & Cascade<Dim>::getPenteX() const
+{
+	return pente_x;
+}
+
+template<unsigned int Dim>
+const double & Cascade<Dim>::getPenteY() const
+{
+	return pente_y;
+}
+
+template<unsigned int Dim>
+const double & Cascade<Dim>::getPenteZ() const
+{
+	return pente_z;	
+}
 
 
 /*

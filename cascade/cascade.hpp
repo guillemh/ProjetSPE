@@ -72,6 +72,8 @@ public :
      */
     ~Cascade();
 
+  
+
     /**
      * \brief Méthode de dessin
      * 
@@ -99,11 +101,53 @@ public :
      */
     const double & getBassinY() const;
 
-    /**
-     * @brief Accesseur
-     * \return La position en z du bassin
-     */
-    const double & getBassinZ() const;
+  /**
+   * @brief Accesseur
+   * \return La position en z du bassin
+   */
+  const double & getBassinZ() const;
+
+  /**
+   * @brief Accesseur
+   * \return La position en x de l'obstacle
+   */
+  const double & getObstacleX() const; 
+
+  /**
+   * @brief Accesseur
+   * \return La position en y de l'obstacle
+   */
+  const double & getObstacleY() const;   
+
+  /**
+   * @brief Accesseur
+   * \return La position en z de l'obstacle
+   */
+  const double & getObstacleZ() const;   
+
+  /**
+   * @brief Accesseur
+   * \return L'angle de la pente
+   */
+  const double & getPenteAngle() const;   
+
+  /**
+   * @brief Accesseur
+   * \return La position en x de la pente
+   */
+  const double & getPenteX() const;       
+
+  /**
+   * @brief Accesseur
+   * \return La position en y de la pente
+   */
+  const double & getPenteY() const;   
+
+  /**
+   * @brief Accesseur
+   * \return La position en z de la pente
+   */
+  const double & getPenteZ() const;   
 };
 
 #include "cascade.tpp"
