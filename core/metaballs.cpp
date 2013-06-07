@@ -212,7 +212,7 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
     // 	    }
     // 	}
     // }
-    int part ;
+    int part = 0;
     for (it = particules.begin(); it != particules.end(); it++) {
         
        // Si la particule a bougé

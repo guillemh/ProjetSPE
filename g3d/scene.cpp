@@ -17,6 +17,7 @@ Scene::Scene() {
     anim = false;
     m = new Materiau<3>(EAU);
     int d [3] = {1, 1, 50};
+    // int d [3] = {2, 1, 1};
     f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression()); 
     
     //    Vecteur<3> vec0 = Vecteur<3>();
@@ -84,7 +85,7 @@ void Scene::animate() {
     // if (anim) {
         f->majDensitePression();
         f->majPositionVitesse();
-    //     f->schemaIntegration();
+        // f->schemaIntegration();
     //     f->affiche();
     //     anim = false;
     // }    
