@@ -147,7 +147,7 @@ void Particule<Dim>::decrForces(const Vecteur<Dim> &f) {
 
 template<unsigned int Dim>
 void Particule<Dim>::majPression (double dens) {
-    //void Particule<Dim>::majPression (double son, double dens) {
+    // Paramètre "son" supprimé
     /*
      * Calcul de la pression appliquée à une particule selon l'équation de Tait
      * (cf. Becker-Teschner, "Weakly compressible SPH for free surface flows")
@@ -206,18 +206,14 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
 
 template<unsigned int Dim>
 void Particule<Dim>::draw() const {
-
-//    glColor3f(0.0, 1.0, 0.0);
-//    glPointSize(3.0f);
-//    glBegin(GL_POINTS);
-//    glVertex3f(position(1), position(2), position(3));
-//    glEnd();
-    
-    glPushMatrix();
+    // glPushMatrix();
     glColor3f(0.0, 1.0, 0.0);
-    glTranslatef(position(1), position(2), position(3));
-    glutSolidSphere(0.025, 8, 8);
-    glPopMatrix();
+    glPointSize(3.0f);
+    glBegin(GL_POINTS);
+    //glTranslatef(position(1), position(2), position(3));
+    glVertex3f(position(1), position(2), position(3));
+    glEnd();
+    // glPopMatrix();
 }
 
 
