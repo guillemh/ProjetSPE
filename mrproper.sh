@@ -54,3 +54,12 @@ rm -f -r debug
 rm -f -r release
 rm -f *~
 cd ..
+
+cd cascade_complexe
+make clean
+rm -f cascade_complexe
+rm -f Makefile Makefile.Release Makefile.Debug
+rm -f -r debug
+rm -f -r release
+rm -f *~
+cd ..
