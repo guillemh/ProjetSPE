@@ -14,40 +14,40 @@ using std::endl;
 
 int main()
 {
-    cout << "***** Test vecteur : *****" << endl;
-    test_vecteur();
-    
-    cout << endl << endl;
-    cout << "***** Test particules : *****" << endl;
-    tests_unitaires_particules();
+//    cout << "***** Test vecteur : *****" << endl;
+//    test_vecteur();
 
-    cout << endl << endl;
-    cout << "***** Test materiau : *****" << endl;
-    test_materiau();
- 
-    cout << endl << endl;
-    cout << "***** Test Fluide : *****" << endl;
-    tests_unitaires_fluide();
+//    cout << endl << endl;
+//    cout << "***** Test particules : *****" << endl;
+//    tests_unitaires_particules();
 
-    cout << endl << endl;
-    cout << "***** Test noyauLissage : *****" << endl;
-    test_noyauLissage();    
+//    cout << endl << endl;
+//    cout << "***** Test materiau : *****" << endl;
+//    test_materiau();
 
-    cout << endl << endl;
-    cout << "***** Test premier : *****" << endl;
-    test_premier();    
+//    cout << endl << endl;
+//    cout << "***** Test Fluide : *****" << endl;
+//    tests_unitaires_fluide();
 
-    cout << endl << endl;
-    cout << "***** Test performances_premier : *****" << endl;
-    test_performances_premier();    
+//    cout << endl << endl;
+//    cout << "***** Test noyauLissage : *****" << endl;
+//    test_noyauLissage();    
 
-    cout << endl << endl;
-    cout << "***** Test Map : *****" << endl;
-    test_map();
+//    cout << endl << endl;
+//    cout << "***** Test premier : *****" << endl;
+//    test_premier();
 
-    cout << endl << endl;
-    cout << "***** Test voisins : *****" << endl;
-    test_voisins();
+//    cout << endl << endl;
+//    cout << "***** Test performances_premier : *****" << endl;
+//    test_performances_premier();    
+
+//    cout << endl << endl;
+//    cout << "***** Test Map : *****" << endl;
+//    test_map();
+
+//    cout << endl << endl;
+//    cout << "***** Test voisins : *****" << endl;
+//    test_voisins();
 
     cout << endl << endl;
     cout << "***** Test metaballs : *****" << endl;

@@ -35,5 +35,8 @@ void test_metaballs() {
         cout << "OK" << endl;
     else
         cout << "ERREUR !" << endl;
+        
+    delete p1;
+    delete p2;
     
 }
