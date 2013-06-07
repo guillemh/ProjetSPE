@@ -49,6 +49,6 @@ QMAKE_EXTRA_TARGETS += cascade
 
 test.target = test
 test.commands = ./test/release/test
-test.depends =
+test.depends = 
 
 QMAKE_EXTRA_TARGETS += test
