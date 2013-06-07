@@ -255,25 +255,25 @@ void Metaballs::draw() {
                     config <<= 1;
                 }
                 config >>= 1;
-		// for (int s = 0 ; s < 8 ; s++) {
-		//     if (points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)]) {
-		// 	glColor3f (0.0, 1.0, 0.0);
-		//     } else {
-		// 	glColor3f (0.0, 0.0, 1.0);
-		//     }
-		//     // glPointSize(5.0f);
-		//     // glBegin(GL_POINTS);
-		//     // glVertex3f (origine(1) + cote*(i + ((s >> 1) & 1)),
-		//     //               origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
-		//     //               origine(3) + cote*(k + (s >> 2)));
-		//     // glEnd();
-		//     glPushMatrix();
-		//     glTranslatef (origine(1) + cote*(i + ((s >> 1) & 1)),
-		// 		  origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
-		// 		  origine(3) + cote*(k + (s >> 2)));
-		//     glutSolidSphere (0.05, 10, 10);
-		//     glPopMatrix();
-		// }
+		for (int s = 0 ; s < 8 ; s++) {
+		    if (points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)]) {
+			glColor3f (0.0, 1.0, 0.0);
+		    } else {
+			glColor3f (0.0, 0.0, 1.0);
+		    }
+		    // glPointSize(5.0f);
+		    // glBegin(GL_POINTS);
+		    // glVertex3f (origine(1) + cote*(i + ((s >> 1) & 1)),
+		    //               origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
+		    //               origine(3) + cote*(k + (s >> 2)));
+		    // glEnd();
+		    glPushMatrix();
+		    glTranslatef (origine(1) + cote*(i + ((s >> 1) & 1)),
+				  origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
+				  origine(3) + cote*(k + (s >> 2)));
+		    glutSolidSphere (0.05, 10, 10);
+		    glPopMatrix();
+		}
                 posCour = origine + Vecteur<3>(cote*i, cote*j, cote*k);
                 drawCube(posCour, cote, config);
             }
