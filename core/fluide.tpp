@@ -562,8 +562,8 @@ void Fluide<Dim>::draw() {
    //     (*it)->draw ();
    // }
    
-//    ball.coloration(particules);
-//    ball.draw();
+   ball.coloration(particules);
+   ball.draw();
 
     glPushMatrix();
     glEnable (GL_BLEND);
