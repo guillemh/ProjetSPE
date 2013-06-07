@@ -95,11 +95,12 @@ public:
      * Représente un triangle à l'intérieur d'un cube
      * \param pos Position du sommet 0 du cube, d'abscisse, d'ordonnée et de côte minimales
      * \param cote Dimension du côté du cube
-     * \param int a Numéro de la première arête à relier
-     * \param int b Numéro de la deuxième arête à relier
-     * \param int c Numéro de la troisième arête à relier
+     * \param a Numéro de la première arête à relier
+     * \param b Numéro de la deuxième arête à relier
+     * \param c Numéro de la troisième arête à relier
+     * \param coef Coefficient d'orientation de la normale, devant valoir 1 ou -1
      */
-    void drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c);
+    void drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c, int coef);
 
     /**
      * \brief Association d'un point
