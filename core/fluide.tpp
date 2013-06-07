@@ -8,7 +8,7 @@ using std::cout;
 using std::endl;
 using std::pair;
 
-#define EPS 5.5
+#define EPS 0
 
 /* ** Constructeurs ** */
 
@@ -21,7 +21,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
       hash_voisins(),
       lgrHash(0),
       epsilonR(EPS),
-      epsilonF(EPS+40)
+      epsilonF(EPS)
 {
     // Initilisation de la liste vide
     particules = list<Particule<Dim> *>();
@@ -54,7 +54,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
       debutAnim(true),
       hash_voisins(),
       epsilonR(EPS),
-      epsilonF(EPS+40)
+      epsilonF(EPS)
 {
     // Initialisation de la liste vide
     particules = list<Particule<Dim> *>();
@@ -132,14 +132,14 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                     ++cpt;
                     // On ajoute de l'alea pour rendre le fluide plus realiste
 	
-                    double x = 0.02 * (rand() / double(RAND_MAX) - 0.5);
-                    double y = 0.02 * (rand() / double(RAND_MAX) - 0.5);
-                    double z = 0.02 * (rand() / double(RAND_MAX) - 0.5);
-                    Vecteur<Dim> alea = Vecteur<Dim>(x,y,z);
+                    // double x = 0.02 * (rand() / double(RAND_MAX) - 0.5);
+                    // double y = 0.02 * (rand() / double(RAND_MAX) - 0.5);
+                    // double z = 0.02 * (rand() / double(RAND_MAX) - 0.5);
+                    // Vecteur<Dim> alea = Vecteur<Dim>(x,y,z);
 
                     
-                    vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart) + alea;
-                    //vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
+                    // vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart) + alea;
+                    vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
                     part = new Particule<Dim>(cpt, vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
                     particules.push_back(part);
                     noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
@@ -383,7 +383,7 @@ void Fluide<Dim>::majDensitePression() {
         
         //cout << "Rayon noyau " << mat->getRayonNoyau() << endl;
         for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
-            // cout << (*it1)->getIndice() << ".voisin " << (*it2)->getIndice() << " " << ((*it1)->getPosition() - (*it2)->getPosition()).norme() << endl;
+            cout << (*it1)->getIndice() << ".voisin " << (*it2)->getIndice() << " " << ((*it1)->getPosition() - (*it2)->getPosition()).norme() << endl;
             //for (it2 = particules.begin(); it2 != particules.end(); it2++) {
             // if (noyau.defaut((*it1)->getPosition() - (*it2)->getPosition()) != 0
             //     && ((*it1)->getPosition() - (*it2)->getPosition()).norme() != 0) {
@@ -527,7 +527,8 @@ void Fluide<Dim>::majPositionVitesse() {
 	//}
         //(*it1)->setAcceleration((fPression + fViscosite + fGravite + fSurface) / masseVolumique_a);
 
-        //cout << "forces " << (fPression + fViscosite + fGravite) << endl;
+        fGravite = Vecteur<Dim>();
+        cout << (*it1)->getIndice() << ". totalforces : " << (fPression + fViscosite + fGravite) << endl;
         (*it1)->setAcceleration((fPression + fViscosite + fGravite) / masseVolumique_a);
 
     }
@@ -622,7 +623,17 @@ Vecteur<Dim> Fluide<Dim>::calculForcesInteraction(Particule<Dim>* p1, Particule<
 
     /* Variables locales */
     Vecteur<Dim> x_1_2 = p2->getPosition() - p1->getPosition();
-    Vecteur<Dim> v_1_2 = p2->getVitesse() - p1->getVitesse();
+    /* On récupère la vitesse effective des particules, et non celle accumulée */
+    double rho;
+    Vecteur<Dim> drho;
+    restriction(p2->getVitesse(), rho, drho);
+    Vecteur<Dim> v2 = p2->getVitesse() * (1 - rho) - 0.5 * pow(p2->getVitesse().norme(), 2)
+        * p2->getMasseVolumique() * drho;
+    restriction(p1->getVitesse(), rho, drho);
+    Vecteur<Dim> v1 = p1->getVitesse() * (1 - rho) - 0.5 * pow(p1->getVitesse().norme(), 2)
+        * p1->getMasseVolumique() * drho;
+    Vecteur<Dim> v_1_2 = v2 - v1;
+    /* Renommages */
     double termePressionDensite_1 = p1->getPression() / pow(p1->getMasseVolumique(), 2);
     double masseVolumique_1 = p1->getMasseVolumique();
     double termePressionDensite_2 = p2->getPression() / pow(p2->getMasseVolumique(), 2);
@@ -679,7 +690,17 @@ Vecteur<Dim> Fluide<Dim>::calculForcesInteractionPrec(Particule<Dim>* p1, Partic
 
     /* Variables locales */
     Vecteur<Dim> x_1_2 = p2->getPositionPrec() - p1->getPositionPrec();
-    Vecteur<Dim> v_1_2 = p2->getVitessePrec() - p1->getVitessePrec();
+    /* On récupère la vitesse effective des particules, et non celle accumulée */
+    double rho;
+    Vecteur<Dim> drho;
+    restriction(p2->getVitesse(), rho, drho);
+    Vecteur<Dim> v2 = p2->getVitessePrec() * (1 - rho) - 0.5 * pow(p2->getVitessePrec().norme(), 2)
+        * p2->getMasseVolumique() * drho;
+    restriction(p1->getVitessePrec(), rho, drho);
+    Vecteur<Dim> v1 = p1->getVitessePrec() * (1 - rho) - 0.5 * pow(p1->getVitessePrec().norme(), 2)
+        * p1->getMasseVolumique() * drho;
+    Vecteur<Dim> v_1_2 = v2 - v1;
+    /* Renommages */
     double termePressionDensite_1 = p1->getPression() / pow(p1->getMasseVolumique(), 2);
     double masseVolumique_1 = p1->getMasseVolumique();
     double termePressionDensite_2 = p2->getPression() / pow(p2->getMasseVolumique(), 2);
@@ -742,7 +763,7 @@ void Fluide<Dim>::integrationForces() {
                 }
             }
             /* Ajout des forces non interactives */
-            (*part_it)->incrForces((*part_it)->getMasseVolumique() * mat->getAccGrav());   // force de gravité
+            //(*part_it)->incrForces((*part_it)->getMasseVolumique() * mat->getAccGrav());   // force de gravité
             cout << (*part_it)->getIndice() << ". forces début : " << (*part_it)->getForces() << endl;
         }
         debutAnim = false;
@@ -762,7 +783,6 @@ void Fluide<Dim>::integrationForces() {
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
                 restriction((*vois_it)->getVitesse(), rho, drho);
-                //restriction((*vois_it)->getVitesse() * mat->getMasseParticules(), rho, drho);
                 if (rho == 1  // la particule voisine n'est pas active : il faut quand même
                               // mettre à jour les forces d'interaction entre elles,
                               // mais vois_it ne pourra pas le faire
@@ -776,7 +796,6 @@ void Fluide<Dim>::integrationForces() {
                     cout << " => force intermédiaire : " << (*part_it)->getForces() << endl;
                 }
             }
-            // cout << (*part_it)->getIndice() << ". forces avant : " << (*part_it)->getForces() << endl;
             cout << endl;
         }
 
@@ -836,7 +855,6 @@ void Fluide<Dim>::integrationForces() {
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
                 restriction((*vois_it)->getVitesse(), rho, drho);
-                //restriction((*vois_it)->getVitesse() * mat->getMasseParticules(), rho, drho);
                 if (rho == 1  // la particule voisine n'est pas active : il faut quand même
                               // mettre à jour les forces d'interaction entre elles,
                               // mais vois_it ne pourra pas le faire
@@ -851,7 +869,6 @@ void Fluide<Dim>::integrationForces() {
                     cout << " => force intermédiaire : " << (*part_it)->getForces() << endl;
                 }
             }
-            // cout << (*part_it)->getIndice() << ". forces : " << (*part_it)->getForces() << endl;
             cout << endl;
         }
 
@@ -944,22 +961,20 @@ void Fluide<Dim>::schemaIntegration() {
         double rho;
         Vecteur<Dim> drho;
         restriction((*part_it)->getVitesse(), rho, drho);
-        // restriction((*part_it)->getVitesse() * mat->getMasseParticules(), rho, drho);
         // cout << (*part_it)->getIndice() << ". Restriction : " << rho <<  " | " << drho << endl;
         if (rho < 1) {
             actives.push_back(*part_it);
         }
         /* Mise à jour des positions */
         Vecteur<Dim> incr = mat->getPasTemps() * 
-            ((*part_it)->getVitesse() / mat->getMasseParticules() * (1 - rho)
-             - 0.5 * pow((*part_it)->getVitesse().norme(), 2) / mat->getMasseParticules() * drho
-            // ((*part_it)->getVitesse() * (1 - rho)
-            //  - 0.5 * pow((*part_it)->getVitesse().norme(), 2) * mat->getMasseParticules() * drho
+            // ((*part_it)->getVitesse() / mat->getMasseParticules() * (1 - rho)
+            //  - 0.5 * pow((*part_it)->getVitesse().norme(), 2) / mat->getMasseParticules() * drho
+            ((*part_it)->getVitesse() * (1 - rho)
+             - 0.5 * pow((*part_it)->getVitesse().norme(), 2) * mat->getMasseParticules() * drho
              );
         cout << (*part_it)->getIndice() << ". Incr position " << incr << endl;
         (*part_it)->setPositionPrec((*part_it)->getPosition());
         (*part_it)->incrPosition(incr); 
-        // (*part_it)->incrPosition(incr / mat->getMasseParticules());
         
         /* Détection des collisions */
         Vecteur<Dim> pos = (*part_it)->getPosition();

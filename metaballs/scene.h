@@ -8,7 +8,8 @@
 using std::vector;
 
 /**
- * \class Scene Classe contenant les objets représentés sur la scène
+ * \class Scene
+ * @brief Classe contenant les objets représentés sur la scène
  */
 class Scene {
  public :
