@@ -10,6 +10,7 @@
 #include "vecteur.hpp"
 #include "premier.hpp"
 #include "metaballs.hpp"
+
 using std::multimap;
 using std::list;
 using std::set;
@@ -174,7 +175,12 @@ private:
    * @param v 
    * @return 
    */
-  Vecteur<Dim> collisionCascade(const Vecteur<Dim> & v);
+    //Vecteur<Dim> collisionCascade(const Vecteur<Dim> & v, const Cascade<Dim> c);
+    Vecteur<Dim> collisionCascade(const Vecteur<Dim> & v,
+				  Materiau<Dim> *mat,
+				  const double bassin_x,
+				  const double bassin_y,
+				  const double bassin_z);
 
     /* 
      * Fonction de hashage 
@@ -225,4 +231,3 @@ private:
 #include "fluide.tpp"
 
 #endif
-

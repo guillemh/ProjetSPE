@@ -535,15 +535,34 @@ Vecteur<Dim> Fluide<Dim>::collision(const Vecteur<Dim> & v) {
  * Elle renvoie le point de contact s'il y a collision, le Vecteur v sinon
  */
 template<unsigned int Dim>
-Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v) {
-    // if (Dim == 2) {
-        
-    // } else {
-    //     if (v(1) < 0) 
-    //         ;	   
-	   
-    // }
+//Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,  const Cascade<Dim> c) {
 
+Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
+					   Materiau<Dim> *mat,
+					   const double bassin_x,
+					   const double bassin_y,
+					   const double bassin_z) {
+
+    Vecteur<Dim> res = Vecteur<Dim>(v);
+    double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * mat->getPression()), 1.0/3.0);
+    rayon += 0.3*rayon;
+
+    if (Dim == 2) {
+        
+    } else {
+	if ((v(3)-rayon) < 0 && (v(1)+rayon) < bassin_x) // En dessous du fond du bassin
+	    res(3) = 0+rayon;
+        if ((v(1)-rayon) < 0 && (v(3)-rayon) < bassin_z) // Derrière la boite
+	      res(1) = 0+rayon;
+	if ((v(1)+rayon) >= bassin_x && (v(1)+rayon) <= (bassin_x+2*rayon) && (v(3)-rayon) < bassin_z/3) // Devant la boite
+	    res(1) = bassin_x-rayon;
+	if ((v(2)-rayon) < -bassin_y/2 && (v(3)-rayon) < bassin_z) // Coté gauche du bassin
+	    res(2) = -bassin_y/2+rayon;
+	if ((v(2)+rayon) > bassin_y/2 && (v(3)-rayon) < bassin_z) // Coté droit du bassin
+	    res(2) = bassin_y/2-rayon;
+
+    }
+    return res;
 }
 
 template<unsigned int Dim>
@@ -640,6 +659,7 @@ void Fluide<Dim>::majPositionVitesse() {
         /* Détection des collisions */
         Vecteur<Dim> pos = (*it1)->getPosition();
         Vecteur<Dim> contact = collision(pos);
+	//Vecteur<Dim> contact = collisionCascade(pos, mat, 2.0, 1.0, 0.5);
         
         /* S'il y a collision, on met a jour la position et la vitesse */
         if (contact != pos) {
