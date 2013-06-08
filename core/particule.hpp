@@ -263,7 +263,7 @@ public:
      * Calcule la valeur de l'isosurface d'une particule en un point de l'espace.
      * \param pos Position à laquelle on veut calculer la valeur de l'isosurface
      * \param prec Booléen indiquant si on le fait pour la position actuelle ou précédente
-     * @return Valeur de l'isosurface
+     * @return Isovaleur au point pos
      */
     double isosurface(Vecteur<Dim> &pos, bool prec);
     

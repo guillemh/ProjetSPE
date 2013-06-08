@@ -1,11 +1,11 @@
 X Implémentation des nouvelles forces de pression et viscosité
 X Implémenter le nouveau noyau
-- Assimiler les bords de la boite par un ensemble de particules fixes
-- Trouver les bons paramètres pour le modèle
+X Trouver les bons paramètres pour le modèle
 X Recherche des plus proches voisins
 - ARPS
 - Rendu de la scène
-- SHEME
+X SHEME
 - Shaders
-- Rendu réaliste de la scène : marching cubes, splatting images
+X Rendu réaliste de la scène : marching cubes, splatting images
 - Optimisation par parallélisation des calculs (sur GPU ?)
+- Assimiler les bords de la boite par un ensemble de particules fixes (Abandonné ?)

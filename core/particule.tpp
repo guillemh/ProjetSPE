@@ -199,7 +199,7 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
     double d = diff.scalaire(diff);
     if (d == 0.0)
         return 50000;
-    return 1 / d;
+    return 1 / (2*d);
 
     //    double d = (pos - position).norme();
     //    return exp(-rayon*d/2);
@@ -229,11 +229,11 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
 template<unsigned int Dim>
 void Particule<Dim>::draw() const {
 
-    //    glColor3f(0.0, 1.0, 0.0);
-    //    glPointSize(3.0f);
-    //    glBegin(GL_POINTS);
-    //    glVertex3f(position(1), position(2), position(3));
-    //    glEnd();
+    //glColor3f(0.0, 1.0, 0.0);
+    //glPointSize(3.0f);
+    //glBegin(GL_POINTS);
+    //glVertex3f(position(1), position(2), position(3));
+    //glEnd();
     
     glPushMatrix();
     glColor3f(0.0, 1.0, 0.0);
