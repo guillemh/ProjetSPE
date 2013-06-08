@@ -24,11 +24,11 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
       epsilonR(EPSR),
       epsilonF(EPSF)
 {
-    // Initilisation de la liste vide
+    /* Initilisation de la liste vide */
     particules = list<Particule<Dim> *>();
     lignedEau = list<Particule<Dim> *>();
     
-    // Definition des dimensions et de la metaball suivant la dimension
+    /* Définition des dimensions et de la metaball suivant la dimension */
     if (Dim == 2) {
         x_min = -0.5;
         x_max = 0.5;
@@ -54,7 +54,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
       epsilonR(EPSR),
       epsilonF(EPSF)
 {
-    // Initialisation de la liste vide
+    /* Initialisation de listes vides */
     particules = list<Particule<Dim> *>();
     lignedEau = list<Particule<Dim> *>();
 
@@ -73,16 +73,15 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         nbrParticules = nb[0]*nb[1];
         lgrHash = table.getPremier(2*nbrParticules);
 
-        // Ici, on est en dimension 2
-        // On va ajouter des particules regulierement disposees sur les deux dimensions
-        // On définit la largeur de la boîte
+        /* On va ajouter des particules régulierement disposées sur les deux dimensions */
+        /* On définit la largeur de la boîte */
         x_min = -0.5;
         x_max = 0.5;
         y_min = 0.0;
         y_max = 1.0;
         z_min = 0.0;
         
-        // On définit ensuite la position des particules
+        /* On définit ensuite la position des particules */
         for (int i = 0; i < nb[0]; i++) {
             for (int j = 0; j < nb[1]; j++) {
                 ++cpt;
@@ -100,16 +99,15 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         nbrParticules = nb[0]*nb[1]*nb[2];
         lgrHash = table.getPremier(2*nbrParticules);
 
-        // Ici, on est en dimension 3
-        // On va ajouter des particules regulierement disposees sur les trois dimensions
-        // On définit la largeur de la boîte
+        /* On va ajouter des particules régulierement disposées sur les trois dimensions */
+        /* On définit la largeur de la boîte */
         x_min = -0.2;
         x_max = 0.2;
         y_min = -0.2;
         y_max = 0.2;
         z_min = 0.0;
         
-        // On définit ensuite la position des particules
+        /* On définit ensuite la position des particules */
         double largeur_x = x_max - x_min;
         double largeur_y = y_max - y_min;
         
@@ -140,7 +138,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
             }
         }
 
-	// Ligne rigide de particules
+	// /* Ligne rigide de particules */
 	// int nb_x = largeur_x/0.03;
 	// int nb_y = largeur_y/0.03;
 	// for (int i = 0; i <= nb_x; i++) {
@@ -164,7 +162,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
 template<unsigned int Dim>
 Fluide<Dim>::~Fluide() {
     typename list<Particule<Dim> *>::iterator it;
-    // On libere toutes les particules
+    /* On libère toutes les particules */
     for (it = particules.begin(); it != particules.end();it++) {
         delete (*it);
     }
@@ -223,12 +221,15 @@ void Fluide<Dim>::ajouteParticule(Particule<Dim> * part) {
 
 template<unsigned int Dim>
 inline void Fluide<Dim>::majTableHashage() {
+    /* On vide la table */
     hash_voisins.clear();
 
     typename list<Particule<Dim>*>::iterator part_it;
     int hash_key;
+    /* Vecteur d'entiers représentants les indices dans la grille de voxels */
     Vecteur<Dim> noeud_grille;
-    
+
+    /* Puis on réinsère toutes les particules */
     for (part_it = particules.begin(); part_it != particules.end(); part_it++) {
         for (unsigned int i = 1; i <= Dim; i++) {
             noeud_grille(i) = int(floor((*part_it)->getPosition()(i)/mat->getRayonNoyau()));
@@ -463,13 +464,13 @@ void Fluide<Dim>::majDensitePression() {
     set<Particule<Dim>*> voisins;    
     typename set<Particule<Dim>*>::iterator it2;
 
-    // On boucle sur toutes les particules
+    /* On boucle sur toutes les particules */
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
         /* On mémorise les valeurs précédentes */
         (*it1)->setMasseVolumiquePrec((*it1)->getMasseVolumique());
         (*it1)->setPressionPrec((*it1)->getPression());
     
-        // On met leur masse volumique à jour
+        /* On met leur masse volumique à jour */
         double somme = noyau.defaut(Vecteur<Dim>());
         voisins = voisinage(*(*it1));
         
@@ -480,7 +481,7 @@ void Fluide<Dim>::majDensitePression() {
         
         (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);
         
-        // On met leur pression à jour
+        /* On met leur pression à jour */
         (*it1)->majPression(mat->getDensiteRepos());
     }
 
@@ -652,51 +653,51 @@ void Fluide<Dim>::draw() {
         (*it)->draw ();
     }
     
-   // for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
-   //     (*it)->draw ();
-   // }
+    // for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
+    //     (*it)->draw ();
+    // }
    
-   // ball.coloration(particules);
-   // ball.draw();
+    // ball.coloration(particules);
+    // ball.draw();
 
-   //  glPushMatrix();
-   //  glEnable (GL_BLEND);
-   //  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-   //  glColor4f(1.0, 1.0, 1.0, 0.1);
-   //  glBegin(GL_QUADS);
+    //  glPushMatrix();
+    //  glEnable (GL_BLEND);
+    //  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //  glColor4f(1.0, 1.0, 1.0, 0.1);
+    //  glBegin(GL_QUADS);
     
-   //  glNormal3f(-1, 0, 0);
-   //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-   //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-   //  glVertex3f(x_min - 0.025, y_max + 0.025, 1);
-   //  glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+    //  glNormal3f(-1, 0, 0);
+    //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+    //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+    //  glVertex3f(x_min - 0.025, y_max + 0.025, 1);
+    //  glVertex3f(x_min - 0.025, y_min - 0.025, 1);
     
-   //  glNormal3f(0, -1, 0);
-   //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-   //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
-   //  glVertex3f(x_max + 0.025, y_min - 0.025, 1);
-   //  glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+    //  glNormal3f(0, -1, 0);
+    //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+    //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+    //  glVertex3f(x_max + 0.025, y_min - 0.025, 1);
+    //  glVertex3f(x_min - 0.025, y_min - 0.025, 1);
     
-   //  glNormal3f(1, 0, 0);
-   //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
-   //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-   //  glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-   //  glVertex3f(x_max + 0.025, y_min - 0.025, 1);
+    //  glNormal3f(1, 0, 0);
+    //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+    //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+    //  glVertex3f(x_max + 0.025, y_max + 0.025, 1);
+    //  glVertex3f(x_max + 0.025, y_min - 0.025, 1);
     
-   //  glNormal3f(0, 1, 0);
-   //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-   //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-   //  glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-   //  glVertex3f(x_min - 0.025, y_max + 0.025, 1);
+    //  glNormal3f(0, 1, 0);
+    //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+    //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+    //  glVertex3f(x_max + 0.025, y_max + 0.025, 1);
+    //  glVertex3f(x_min - 0.025, y_max + 0.025, 1);
     
-   //  glNormal3f(0, 0, -1);
-   //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-   //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-   //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-   //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+    //  glNormal3f(0, 0, -1);
+    //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+    //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+    //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+    //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
     
-   //  glEnd();
-   //  glDisable (GL_BLEND);
+    //  glEnd();
+    //  glDisable (GL_BLEND);
 }
 
 

@@ -12,11 +12,15 @@ class Premier {
 
 public:
     /**
+     * @brief Constructeur
+     *
      * Constructeur
      */
     Premier(); 
     
     /**
+     * @brief Destructeur
+     *
      * Destructeur
      */
     ~Premier();
@@ -25,6 +29,7 @@ public:
     /* ** Methodes ** */
 public:
     /**
+     * @brief Accesseur
      * @param x Nombre entier
      * \return Le nombre premier supérieur ou égal à x
      */

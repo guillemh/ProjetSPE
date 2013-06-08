@@ -36,6 +36,8 @@ private:
     /* ** Constructeurs ** */
 public:
     /**
+     * @brief Constructeur
+     *
      * Constructeur
      * \param ind Numéro d'identification de la particule
      * \param pos Position initiale
@@ -47,6 +49,8 @@ public:
     Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0, double m = 0);
     
     /**
+     * @brief Destructeur
+     *
      * Destructeur
      */
     ~Particule();
@@ -56,145 +60,197 @@ public:
 public:
     /* ** Accesseurs ** */
     /**
+     * @brief Accesseur
+     *
      * \return Le numéro de la particule
      */
     unsigned int getIndice() const;
 
     /**
+     * @brief Accesseur
+     *
      * \return La position de la particule
      */
     const Vecteur<Dim> & getPosition() const;
 
     /**
+     * @brief Accesseur
+     *
      * \return La position de la particule au pas de temps précédent
      */
     const Vecteur<Dim> & getPositionPrec() const;
 
     /**
+     * @brief Accesseur
+     *
      * \return La vitesse de la particule
      */
     const Vecteur<Dim> & getVitesse() const;
 
     /**
+     * @brief Accesseur
+     *
      * \return La vitesse de la particule au pas de temps précédent
      */
     const Vecteur<Dim> & getVitessePrec() const;
 
     /**
+     * @brief Accesseur
+     *
      * \return L'accélération de la particule
      */
     const Vecteur<Dim> & getAcceleration() const;
 
     /**
+     * @brief Accesseur
+     *
      * \return Le total des forces s'exerçant sur la particule
      */
     const Vecteur<Dim> & getForces() const;
 
     /**
+     * @brief Accesseur
+     *
      * \return La masse de la particule
      */
     double getMasse() const;
    
     /**
+     * @brief Accesseur
+     *
      * \return La masse volumique de la particule
      */
     double getMasseVolumique() const;
 
     /**
+     * @brief Accesseur
+     *
      * \return La masse volumique de la particule au pas de temps précédent
      */
     double getMasseVolumiquePrec() const;
 
     /**
+     * @brief Accesseur
+     *
      * \return La pression de la particule
      */
     double getPression() const;
 
     /**
+     * @brief Accesseur
+     *
      * \return La pression de la particule au pas de temps précédent
      */
     double getPressionPrec() const;
 
     /* ** Mutateurs ** */
     /**
+     * @brief Mutateur
+     *
      * Modifie la position de la particule
      * \param pos Nouvelle position de la particule
      */
     void setPosition(const Vecteur<Dim> &pos);
 
     /**
+     * @brief Mutateur
+     *
      * Met à jour la position de la particule du pas de temps précédent
      * \param pos Nouvelle position précédente de la particule
      */
     void setPositionPrec(const Vecteur<Dim> &pos);
 
     /**
+     * @brief Mutateur
+     *
      * Modifie la vitesse de la particule
      * \param vit Nouvelle vitesse de la particule
      */
     void setVitesse(const Vecteur<Dim> &vit);
 
     /**
+     * @brief Mutateur
+     *
      * Met à jour la vitesse de la particule du pas de temps précédent
      * \param pos Nouvelle vitesse précédente de la particule
      */
     void setVitessePrec(const Vecteur<Dim> &pos);
 
     /**
+     * @brief Mutateur
+     *
      * Modifie l'accélération de la particule
      * \param acc Nouvelle accélération de la particule
      */
     void setAcceleration(const Vecteur<Dim> &acc);
 
     /**
+     * @brief Mutateur
+     *
      * Modifie la masse volumique de la particule
      * \param rho Nouvelle masse volumique de la particule
      */
     void setMasseVolumique(double rho);
 
     /**
+     * @brief Mutateur
+     *
      * Met à jour la masse volumique de la particule du pas de temps précédent
      * \param rho Nouvelle masse volumique précédente de la particule
      */
     void setMasseVolumiquePrec(double rho);
 
     /**
+     * @brief Mutateur
+     *
      * Modifie la pression de la particule
      * \param p Nouvelle pression de la particule
      */
     void setPression(double p);
 
     /**
+     * @brief Mutateur
+     *
      * Met à jour la pression de la particule du pas de temps précédent
      * \param p Nouvelle pression précédente de la particule
      */
     void setPressionPrec(double p);
 
     /**
+     * @brief Mutateur
+     *
      * Incrémente la position de la particule
      * \param pos Vecteur de déplacement de la particule (position += pos)
      */
     void incrPosition(const Vecteur<Dim> &pos);
 
     /**
+     * @brief Mutateur
+     *
      * Incrémente la vitesse de la particule
      * \param vit Facteur d'augmentation de la vitesse (vitesse += vit)
      */
     void incrVitesse(const Vecteur<Dim> &vit);
 
     /**
+     * @brief Mutateur
+     *
      * Incrémente le total des forces
      * @param f Facteur d'incrémentation des forces (forces += f)
      */
     void incrForces(const Vecteur<Dim>& f);
 
     /**
+     * @brief Mutateur
+     *
      * Décrémente le total des forces
      * @param f Facteur de décrémentation des forces (forces -= f)
      */
     void decrForces(const Vecteur<Dim>& f);
 
     /**
+     * @brief Mise à jour de la particule pour un pas de temps
+     *
      * Met à jour la pression en fonction de la masse volumique de la particule
      * Prototype éventuellement à reprendre
      * \param dens La densité au repos
@@ -202,6 +258,8 @@ public:
     void majPression(double dens);
 
     /**
+     * @brief Calcul d'une surface implicite pour le rendu
+     *
      * Calcule la valeur de l'isosurface d'une particule en un point de l'espace.
      * \param pos Position à laquelle on veut calculer la valeur de l'isosurface
      * \param prec Booléen indiquant si on le fait pour la position actuelle ou précédente
@@ -210,19 +268,23 @@ public:
     double isosurface(Vecteur<Dim> &pos, bool prec);
     
     /**
+     * @brief Affichage graphique
+     *
      * Fonction d'affichage de la particule sous la forme d'une sphère
      * \param mat Le matériau du fluide auquel appartient la particule
      */
     void draw(Materiau<Dim> *mat) const;
 
     /**
+     * @brief Affichage graphique
+     *
      * Fonction d'affichage de la particule sous la forme d'un point
      */
     void draw() const;
 };
 
 /**
- * Operateur d'affichage des composantes de la particule
+ * Opérateur d'affichage des composantes de la particule
  */
 template<unsigned int Dim>
 std::ostream& operator<<(std::ostream& os, const Particule<Dim>& p);

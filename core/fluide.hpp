@@ -57,13 +57,17 @@ private:
     /* ** Constructeurs ** */
 public:
     /**
+     * @brief Constructeur
+     *
      * Constructeur par défaut : le fluide ne contient aucune particule
      * \param m Matériau du fluide
      */
     Fluide(Materiau<Dim> * m);
 
     /**
-     * Constructeur avec initialisation d'un parallèlépipède de particules
+     * @brief Constructeur
+     *
+     * Constructeur avec initialisation d'un parallélépipède de particules
      * \param m Matériau du fluide
      * \param nb Tableau du nombre de particules sur chacune des dimensions
      * \param ecart Écart entre les particules
@@ -73,55 +77,74 @@ public:
     Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p);
     
     /**
+     * @brief Destructeur
+     *
      * Destructeur
      */
     ~Fluide();
 
 
     /* ** Methodes ** */
-public:
     /**
+     * @brief Ajout au fluide
+     *
      * Ajoute une particule à l'ensemble des particules
      * \param part La particule à ajouter
      */
     void ajouteParticule(Particule<Dim> * part);
 
     /**
+     * @brief Accesseur
+     *
      * @return Le vecteur des particules mobiles utilisées dans le fluide
      */
     list<Particule<Dim> *> getParticulesMobiles();
 
     /**
+     * @brief Accesseur
+     *
      * @return Le vecteur des particules immobiles utilisées dans le fluide
      */
     list<Particule<Dim> *> getParticulesImmobiles();
 
     /**
+     * @brief Accesseur
+     *
      * @return Un pointeur sur le type de matériau utilisé
      */
     Materiau<Dim>* getMateriau();
   
     /**
+     * @brief Mise à jour des particules pour un pas de temps
+     *
      * Met à jour la densité et la pression de toutes les particules
      */
     void majDensitePression();
     
     /**
+     * @brief Mise à jour des particules pour un pas de temps
+     *
      * Met à jour la position et la vitesse de toutes les particules
      */
     void majPositionVitesse();
     
     /**
+     * @brief Affichage graphique
+     *
      * Fonction d'affichage du fluide
      */
     void draw();
 
     /**
+     * @brief Trace de debug
+     *
      * Affichage des particules du fluide
      */
     void affiche();
     
     /**
+     * @brief Mise à jour des particules pour un pas de temps
+     *
      * Mise à jour du système avec le schéma d'intégration de l'ARPS
      */
     void schemaIntegration();

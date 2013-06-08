@@ -17,35 +17,39 @@ template <unsigned int Dim>
 class Vecteur {
 
     /* ** Attributs ** */
-public:
     double t[Dim];      /*!< Tableau des coordonnées du vecteur */
 
 
     /* ** Constructeurs ** */
 public :
     /**
-     * Constructeur d'un vecteur nul bidimensionnel ou tridimensionnel
+     * @brief Constructeur
+     *
+     * Constructeur par défaut d'un vecteur (il est nul)
      */
     Vecteur();
 
     /**
-     * Constructeur d'un vecteur comportant une valeur de remplissage par défaut
+     * @brief Constructeur
      *
-     * \param def la valeur a entrer dans le vecteur
+     * Constructeur d'un vecteur comportant une valeur de remplissage par défaut
+     * \param def La valeur à entrer dans le vecteur
      */
     Vecteur(double def);
 
     /**
-     * Constructeur par défaut du vecteur bidimensionnel
+     * @brief Constructeur
      *
+     * Constructeur d'un vecteur bidimensionnel par passage de ses valeurs
      * \param x Première composante du vecteur
      * \param y Deuxième composante du vecteur
      */
     Vecteur(double x, double y);
 
     /**
-     * Constructeur par défaut du point tridimensionnel
+     * @brief Constructeur
      *
+     * Constructeur d'un vecteur tridimensionnel par passage de ses valeurs
      * \param x Première composante du vecteur
      * \param y Deuxième composante du vecteur
      * \param z Troisième composante du vecteur
@@ -53,12 +57,15 @@ public :
     Vecteur(double x, double y, double z);
 
     /**
-     * Constructeur par recopie d'un autre vecteur
+     * @brief Constructeur
      *
+     * Constructeur par recopie d'un autre vecteur
      * \param v Référence sur le vecteur recopié */
     Vecteur(const Vecteur<Dim> &v);
 
     /**
+     * @brief Destructeur
+     *
      * Destructeur d'un objet de type vecteur
      */
     ~Vecteur();
@@ -67,10 +74,12 @@ public :
     /* ** Methodes ** */
 public:
     /**
+     * @brief Norme euclidienne
+     *
      * Calcul de la norme d'un vecteur
-     * \return norme du vecteur
+     * \return Norme du vecteur
      */
-    inline double  norme() const {
+    inline double norme() const {
         double somme = 0;
         for (unsigned int i = 0; i < Dim; i++) {
             somme += t[i] * t[i];
@@ -79,9 +88,11 @@ public:
     }  
 
     /**
-     * Calcul du produit scalaire de deux vecteurs
-     * \param v le vecteur avec lequel faire le produit scalaire
-     * \return le produit scalaire des deux vecteurs
+     * @brief Produit scalaire
+     *
+     * Méthode interne de produit scalaire de deux vecteurs
+     * \param v Le vecteur avec lequel faire le produit scalaire
+     * \return Le produit scalaire des deux vecteurs
      */
     inline double scalaire(Vecteur<Dim> & v) const {
         double somme = 0;
@@ -92,27 +103,27 @@ public:
     }
 
     /**
-     * Calcul du produit vectoriel de deux vecteurs
-     * \param v le vecteur avec lequel faire le produit vectoriel
-     * \return le produit vectoriel des deux vecteurs
+     * @brief Produit vectoriel
+     *
+     * Méthode interne de produit vectoriel de deux vecteurs
+     * \param v Le vecteur avec lequel faire le produit vectoriel
+     * \return Le produit vectoriel des deux vecteurs
      */
     inline Vecteur<3> vectoriel(Vecteur<3> & v) const {
         return Vecteur<3>(t[1]*v.t[2] - t[2]*v.t[1],
-                            t[2]*v.t[0] - t[0]*v.t[2],
-                            t[0]*v.t[1] - t[1]*v.t[0]);
+                          t[2]*v.t[0] - t[0]*v.t[2],
+                          t[0]*v.t[1] - t[1]*v.t[0]);
     }
 
 
-    //
-    // Opérateurs d'accès
-    // 
+    /* ** Opérateurs d'accès ** */
 
     /**
-     *  \brief Operateur d'accès en écriture à un élément du vecteur
-     * Fonction accédant a l'élément indexé par l'argument du vecteur.
+     *  \brief Accès en écriture
      *
+     * Fonction accédant à l'élément indexé du vecteur
      * \param i Indice de l'élément
-     * \return Référence sur l'élément situé dans la case numero i - 1 du vecteur
+     * \return Référence sur l'élément situé dans la case (i - 1) du tableau
      *
      */
     inline double & operator()(unsigned int i) {
@@ -120,27 +131,23 @@ public:
     }
 
     /**
-     * \brief Operateur d'accès en lecture à un élément du vecteur
-     * Fonction accédant a l'élément indexé par l'argument du vecteur.
-     * La méthode n'a pas le droit de modifier les champs de l'objet manipulé.
+     * \brief Accès en lecture
      *
+     * Fonction accédant à l'élément indexé du vecteur
      * \param i Indice de l'élément
-     * \return L'élément situe dans la case numero i - 1 du vecteur
+     * \return L'élément situe dans la case (i - 1) du tableau
      *
      */        
     inline double operator()(unsigned int i) const {
         return t[i - 1];
     }
 
-    //
-    // Opérations internes
-    //
+    /* ** Opérations internes ** */
 
     /**
      * \brief Addition interne par un réel
      *
-     * Fonction additionnant un réel à tous les elements de l'objet.
-     *
+     * Fonction additionnant un réel à tous les éléments de l'objet.
      * \param valeur Réel
      * \return Référence sur le Vecteur créé par addition de l'argument et de l'existant
      *
@@ -157,7 +164,6 @@ public:
      * \brief Soustraction interne par un réel
      *
      * Fonction soustrayant un réel à tous les éléments de l'objet.
-     *
      * \param valeur Réel
      * \return Référence sur le Vecteur créé par addition de l'argument et de l'existant
      *
@@ -172,8 +178,7 @@ public:
     /*!
      * \brief Multiplication interne par un réel
      *
-     * Fonction multipliant un réel à tous les elements de l'objet.
-     *
+     * Fonction multipliant un réel à tous les éléments de l'objet.
      * \param valeur Réel
      * \return Référence sur le Vecteur créé par addition de l'argument et de l'existant
      *
@@ -190,7 +195,6 @@ public:
      * \brief Division interne par un réel
      *
      * Fonction divisant un réel à tous les éléments de l'objet.
-     *
      * \param valeur Réel
      * \return Référence sur le Vecteur créé par addition de l'argument et de l'existant
      *
@@ -214,8 +218,7 @@ public:
      * \brief Addition interne par un vecteur
      *
      * Fonction additionnant terme à terme le vecteur à l'objet.
-     *
-     * \param v référence du vecteur à additionner 
+     * \param v Vecteur à additionner 
      * \return Référence sur le Vecteur créé par addition ou un message d'erreur si vecteurs de tailles différentes
      *
      */
@@ -231,8 +234,7 @@ public:
      * \brief Soustraction interne par un vecteur
      *
      * Fonction soustrayant terme à terme le vecteur à l'objet.
-     *
-     * \param v référence du vecteur à soustraire
+     * \param v Vecteur à soustraire
      * \return Référence sur le Vecteur créé par soustraction ou un message d'erreur si vecteurs de tailles différentes
      *
      */ 
@@ -249,8 +251,7 @@ public:
      * \brief Multiplication interne par un vecteur
      *
      * Fonction multipliant terme à terme le vecteur à l'objet.
-     *
-     * \param v référence du vecteur à multiplier
+     * \param v Vecteur par lequel multiplier
      * \return Référence sur le Vecteur créé par multiplication ou un message d'erreur si vecteurs de tailles différentes
      *
      */
@@ -266,8 +267,7 @@ public:
      * \brief Division interne par un vecteur
      *
      * Fonction divisant terme à terme l'objet par le vecteur.
-     *
-     * \param v référence du vecteur à diviser
+     * \param v Vecteur par lequel diviser
      * \return Référence sur le Vecteur créé par division ou un message d'erreur si division par zéro ou si vecteurs de tailles différentes
      *
      */
@@ -289,7 +289,6 @@ public:
      * \brief Opérateur d'affectation
      *
      * \param v Référence à un Vecteur constant
-     *
      * \return Référence sur le Vecteur obtenu
      *
      */
@@ -301,15 +300,15 @@ public:
     }
 
     /*!
-     * \brief Operateur de comparaison a un autre Vecteur
+     * \brief Opérateur de comparaison à un autre Vecteur
      * 
-     * \param v réference constante sur un Vecteur
-     * \return Booleen contenant le résultat de la comparaison
+     * \param v Réference constante sur un Vecteur
+     * \return Booléen contenant le résultat de la comparaison
      *
      */
     inline bool operator==(const Vecteur<Dim> &v) const {
         for (unsigned int i = 1; i <= Dim; i++) {
-            // Etant donne que ce sont des double, on teste la difference plutot que l'egalite !
+            /* Étant donne que ce sont des double, on teste la différence plutôt que l'égalité */
             if (std::abs((*this)(i) - v(i)) > 0.0000000001) {
                 return false;
             }
@@ -318,10 +317,10 @@ public:
     }
 
     /*!
-     * \brief Operateur de difference a un autre Vecteur
+     * \brief Opérateur de difference à un autre Vecteur
      * 
-     * \param v réference constante sur un Vecteur
-     * \return Booleen valant true si les vecteurs ne sont pas égaux
+     * \param v Réference constante sur un Vecteur
+     * \return Booléen valant true si les vecteurs ne sont pas égaux
      *
      */
     inline bool operator!=(const Vecteur<Dim> &v) const {
@@ -330,19 +329,14 @@ public:
 };
 
 
-//
-// Opérations externes
-//
-
+/* Opérations externes */
 
 /**
  * \brief Addition par un réel
  *
- * Fonction additionnant un réel à tous les elements d'un Vecteur.
- * Dans cette fonction, le premier argument est un double.
- *
+ * Fonction additionnant un réel à tous les éléments d'un Vecteur.
  * \param r Réel
- * \param v Référence sur le Vecteur à qui on ajoute r 
+ * \param v Référence sur le Vecteur auquel on ajoute r 
  * \return Le Vecteur créé par addition de l'argument et de l'existant
  *
  */
@@ -357,10 +351,8 @@ inline Vecteur<Dim> operator+(double r, const Vecteur<Dim> &v) {
 /*!
  * \brief Addition par un réel
  *
- * Fonction additionnant un réel à tous les elements d'un Vecteur.
- * Dans cette fonction, le premier argument est un double.
- *
- * \param v Référence sur le Vecteur à qui on ajoute r 
+ * Fonction additionnant un réel à tous les éléments d'un Vecteur.
+ * \param v Référence sur le Vecteur auquel on ajoute r 
  * \param r Réel
  * \return Le Vecteur créé par addition de l'argument et de l'existant
  *
@@ -373,11 +365,9 @@ inline Vecteur<Dim> operator+(const Vecteur<Dim> &v, double r) {
 /*!
  * \brief Soustraction par un réel
  *
- * Fonction soustrayant un réel à tous les elements d'un Vecteur.
- * Dans cette fonction, le premier argument est un double.
- *
+ * Fonction soustrayant un réel à tous les éléments d'un Vecteur.
  * \param r Réel
- * \param v Référence sur le Vecteur à qui on soustrait r 
+ * \param v Référence sur le Vecteur auquel on soustrait r 
  * \return Le Vecteur créé par soustraction de l'argument et de l'existant
  *
  */
@@ -391,10 +381,8 @@ inline Vecteur<Dim> operator-(double r, const Vecteur<Dim> &v)
 /*!
  * \brief Soustraction par un réel
  *
- * Fonction soustrayant un réel à tous les elements d'un Vecteur.
- * Dans cette fonction, le premier argument est un vecteur.
- *
- * \param v Référence sur le Vecteur à qui on soustrait r 
+ * Fonction soustrayant un réel à tous les éléments d'un Vecteur.
+ * \param v Référence sur le Vecteur auquel on soustrait r 
  * \param r Réel
  * \return Le Vecteur créé par soustraction de l'argument et de l'existant
  *
@@ -409,9 +397,7 @@ inline Vecteur<Dim> operator-(const Vecteur<Dim> &v, double r) {
 /*!
  * \brief Multiplication par un réel
  *
- * Fonction multipliant tous les elements d'un Vecteur par un réel.
- * Dans cette fonction, le premier argument est un double.
- *
+ * Fonction multipliant tous les éléments d'un Vecteur par un réel.
  * \param r Réel
  * \param v Référence sur le Vecteur que l'on multiplie par r 
  * \return Le Vecteur créé par multiplication de l'argument et de l'existant
@@ -427,9 +413,7 @@ inline Vecteur<Dim> operator*(double r, const Vecteur<Dim> &v) {
 /*!
  * \brief Multiplication par un réel
  *
- * Fonction multipliant tous les elements d'un Vecteur par un réel.
- * Dans cette fonction, le premier argument est un vecteur.
- *
+ * Fonction multipliant tous les éléments d'un Vecteur par un réel.
  * \param v Référence sur le Vecteur que l'on multiplie par r 
  * \param r Réel
  * \return Le Vecteur créé par multiplication de l'argument et de l'existant
@@ -444,7 +428,6 @@ inline Vecteur<Dim> operator*(const Vecteur<Dim> &v, double r) {
  * \brief Division par un réel
  *
  * Fonction divisant tous les éléments d'un Vecteur par un réel.
- *
  * \param v Référence sur le Vecteur divisé par r 
  * \param r Réel
  * \return Le Vecteur créé par division de l'argument et de l'existant
@@ -467,7 +450,6 @@ inline Vecteur<Dim> operator/(const Vecteur<Dim> &v, double r) {
  * \brief Division d'un réel
  *
  * Fonction retournant le résultat de la division terme à terme entre un Vecteur dont tous les élements sont égaux et un Vecteur.
- *
  * \param r Réel avec lequel on initialise le Vecteur à diviser
  * \param v Référence sur le Vecteur diviseur 
  * \return Le Vecteur créé par division de l'argument et de l'existant
@@ -483,7 +465,6 @@ inline Vecteur<Dim> operator/(double r, const Vecteur<Dim> &v) {
  * \brief Addition de deux objets de classe Vecteur
  *
  * Fonction additionnant deux objets de classe Vecteur.
- *
  * \param v1 Objet de type Vecteur, opérande gauche de l'addition
  * \param v2 Objet de type Vecteur, opérande droite de l'addition
  * \return Le Vecteur créé par addition des objets
@@ -501,7 +482,6 @@ inline Vecteur<Dim> operator+(const Vecteur<Dim> &v1, const Vecteur<Dim> &v2) {
  * \brief Soustraction de deux objets de classe Vecteur
  *
  * Fonction soustrayant deux objets de classe Vecteur.
- *
  * \param v1 Objet de type Vecteur, opérande gauche de la soustraction
  * \param v2 Objet de type Vecteur, opérande droite de la soustracion
  * \return Le Vecteur créé par soustraction de v1 par v2
@@ -518,7 +498,6 @@ inline Vecteur<Dim> operator-(const Vecteur<Dim> &v1, const Vecteur<Dim> &v2) {
  * \brief Multiplication de deux objets de classe Vecteur
  *
  * Fonction multipliant deux objets de classe Vecteur.
- *
  * \param v1 Objet de type Vecteur, opérande gauche de la multiplication
  * \param v2 Objet de type Vecteur, opérande droite de la multiplication
  * \return Le Vecteur créé par multiplication de v1 par v2 terme à terme
@@ -535,7 +514,6 @@ inline Vecteur<Dim> operator*(const Vecteur<Dim> &v1, const Vecteur<Dim> &v2) {
  * \brief Division de deux objets de classe Vecteur
  *
  * Fonction divisant deux objets de classe Vecteur.
- *
  * \param v1 Objet de type Vecteur, numérateur de la division
  * \param v2 Objet de type Vecteur, dénominateur de la division
  * \return Le Vecteur créé par division de v1 par v2 terme à terme
@@ -552,7 +530,6 @@ inline Vecteur<Dim> operator/(const Vecteur<Dim> &v1, const Vecteur<Dim> &v2) {
  * \brief Moins unaire sur un objet de classe Vecteur
  *
  * Fonction effectuant un moins unaire sur un objet de classe Vecteur.
- *
  * \param v Objet de type Vecteur
  * \return L'opposé de v
  *
@@ -567,12 +544,11 @@ inline Vecteur<Dim> operator-(const Vecteur<Dim> &v) {
 }
 
 /*!
- * \brief Procedure de lecture des entrées d'un Vecteur
+ * \brief Procédure de lecture des entrées d'un Vecteur
  *
- * Procedure affichant toutes les entrées d'un Vecteur
+ * Procédure affichant toutes les entrées d'un Vecteur.
  * Attention, aucune ligne n'est passée entre deux coordonnées ou à la fin de
  * l'affichage des coordonnées
- * 
  * \param O Référence sur un flux sortie
  * \param v Référence sur un objet de type Vecteur
  * \return Un flux sortie comportant les éléments de v

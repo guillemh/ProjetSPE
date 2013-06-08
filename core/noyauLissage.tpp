@@ -176,7 +176,7 @@ double NoyauLissageViscosite<Dim>::defaut(const Vecteur<Dim> r) const {
     if (r.norme() > this->h)
         return 0;
     return (this->coefDefaut * (-(pow(r.norme(), 3) / (2*hCube)) +
-            (pow(r.norme(), 2) / hCarre) + (this->h / (2*r.norme())) - 1));
+                                (pow(r.norme(), 2) / hCarre) + (this->h / (2*r.norme())) - 1));
 }
 
 
@@ -185,7 +185,7 @@ Vecteur<Dim> NoyauLissageViscosite<Dim>::gradient(const Vecteur<Dim> r) const {
     if (r.norme() > this->h)
         return Vecteur<Dim>();
     return (this->coefGradient * ((-(3*r.norme()) / (2*hCube))
-           + (2 / (pow(this->h, 2))) - (this->h / (2*pow(r.norme(), 3)))) * r);
+                                  + (2 / (pow(this->h, 2))) - (this->h / (2*pow(r.norme(), 3)))) * r);
 }
 
 template<unsigned int Dim>

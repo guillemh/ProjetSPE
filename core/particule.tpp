@@ -179,21 +179,21 @@ void Particule<Dim>::majPression (double dens) {
     double B = 100;
     pression = B * (pow(masse_volumique / dens, gamma) - 1);
     
-//    double B = dens * pow(son, 2.0) / gamma;
-//    pression = B * (pow(masse_volumique / dens, gamma));
-//    cout << "B = " << B << ", rho = " << masse_volumique << ", rho_0 = " << dens << ", rho/rho_0 = " << masse_volumique/dens << ", on obtient P = " << pression << endl;
+    //    double B = dens * pow(son, 2.0) / gamma;
+    //    pression = B * (pow(masse_volumique / dens, gamma));
+    //    cout << "B = " << B << ", rho = " << masse_volumique << ", rho_0 = " << dens << ", rho/rho_0 = " << masse_volumique/dens << ", on obtient P = " << pression << endl;
 }
 
 
 template<unsigned int Dim>
 double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
-//    double d = (pos - position).norme();
-//    if (d <= 1/3)
-//        return 1 - 3*d*d;
-//    if (d <= 1)
-//        return 3*(1-d)*(1-d)/2;
-//    else
-//        return 0;
+    //    double d = (pos - position).norme();
+    //    if (d <= 1/3)
+    //        return 1 - 3*d*d;
+    //    if (d <= 1)
+    //        return 3*(1-d)*(1-d)/2;
+    //    else
+    //        return 0;
 
     Vecteur<Dim> diff = (prec) ? pos - positionPrec : pos - position;
     double d = diff.scalaire(diff);
@@ -201,8 +201,8 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
         return 50000;
     return 1 / d;
 
-//    double d = (pos - position).norme();
-//    return exp(-rayon*d/2);
+    //    double d = (pos - position).norme();
+    //    return exp(-rayon*d/2);
 }
 
 
@@ -229,11 +229,11 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
 template<unsigned int Dim>
 void Particule<Dim>::draw() const {
 
-//    glColor3f(0.0, 1.0, 0.0);
-//    glPointSize(3.0f);
-//    glBegin(GL_POINTS);
-//    glVertex3f(position(1), position(2), position(3));
-//    glEnd();
+    //    glColor3f(0.0, 1.0, 0.0);
+    //    glPointSize(3.0f);
+    //    glBegin(GL_POINTS);
+    //    glVertex3f(position(1), position(2), position(3));
+    //    glEnd();
     
     glPushMatrix();
     glColor3f(0.0, 1.0, 0.0);

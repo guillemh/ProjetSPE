@@ -24,17 +24,23 @@ protected:
     /* ** Constructeurs ** */
 public:
     /**
+     * @brief Constructeur
+     *
      * Constructeur par défaut, met h à 0
      */
     NoyauLissage();
     
     /**
+     * @brief Constructeur
+     *
      * Constructeur prenant en argument le rayon du noyau
      * \param rayon Rayon de support
      */
     NoyauLissage(double rayon);
 
     /**
+     * @brief Destructeur
+     *
      * Destructeur
      */
     ~NoyauLissage();
@@ -43,6 +49,7 @@ public:
     /* ** Methodes ** */
 public:
     /**
+     * @brief Accesseur
      * \return Le rayon du noyau de lissage
      */
     inline double getRayon() const {
@@ -50,6 +57,8 @@ public:
     }
 
     /**
+     * @brief Calcul de valeur
+     *
      * Implémente la méthode par défaut de noyau de lissage
      * @param r Position de la particule
      * @return La valeur du noyau évalué en r
@@ -57,6 +66,8 @@ public:
     virtual double defaut(const Vecteur<Dim> r) const = 0; 
 
     /**
+     * @brief Calcul de valeur
+     *
      * Implémente la méthode de noyau de lissage avec le gradient
      * @param r Position de la particule
      * @return La valeur du gradient du noyau évalué en r
@@ -64,6 +75,8 @@ public:
     virtual Vecteur<Dim> gradient(const Vecteur<Dim> r) const = 0;
 
     /**
+     * @brief Calcul de valeur
+     *
      * Implémente la méthode de noyau de lissage avec le laplacien
      * @param r Position de la particule
      * @return La valeur du laplacien du noyau évalué en r
@@ -90,17 +103,23 @@ private:
     /* ** Constructeurs ** */
 public:
     /**
+     * @brief Constructeur
+     *
      * Constructeur par defaut, met h à 0
      */
     NoyauLissageDefaut();
     
     /**
+     * @brief Constructeur
+     *
      * Constructeur
      * \param rayon Rayon de support
      */
     NoyauLissageDefaut(double rayon);
 
     /**
+     * @brief Destructeur
+     *
      * Destructeur
      */
     ~NoyauLissageDefaut();
@@ -130,17 +149,23 @@ class NoyauLissagePression : public NoyauLissage<Dim> {
     /* ** Constructeurs ** */
 public:
     /**
+     * @brief Constructeur
+     *
      * Constructeur par defaut, met h à 0
      */
     NoyauLissagePression();
     
     /**
+     * @brief Constructeur
+     *
      * Constructeur
      * \param rayon Rayon de support
      */
     NoyauLissagePression(double rayon);
 
     /**
+     * @brief Destructeur
+     *
      * Destructeur
      */
     ~NoyauLissagePression();
@@ -176,17 +201,23 @@ private:
     /* ** Constructeurs ** */
 public:
     /**
+     * @brief Constructeur
+     *
      * Constructeur par defaut, met h à 0
      */
     NoyauLissageViscosite();
     
     /**
+     * @brief Constructeur
+     *
      * Constructeur
      * \param rayon Rayon de support
      */
     NoyauLissageViscosite(double rayon);
 
     /**
+     * @brief Destructeur
+     *
      * Destructeur
      */
     ~NoyauLissageViscosite();
@@ -218,17 +249,23 @@ class NoyauLissageMonaghan : public NoyauLissage<Dim> {
     /* ** Constructeurs ** */
 public:
     /**
+     * @brief Constructeur
+     *
      * Constructeur par defaut, met h à 0
      */
     NoyauLissageMonaghan();
     
     /**
+     * @brief Constructeur
+     *
      * Constructeur
      * \param rayon Rayon de support
      */
     NoyauLissageMonaghan(double rayon);
 
     /**
+     * @brief Destructeur
+     *
      * Destructeur
      */
     ~NoyauLissageMonaghan();
