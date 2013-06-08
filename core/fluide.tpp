@@ -4,7 +4,7 @@
 
 #include "fluide.hpp"
 #include "noyauLissage.hpp"
-#include "cascade.h"
+
 using std::cout;
 using std::endl;
 using std::pair;
@@ -536,13 +536,14 @@ Vecteur<Dim> Fluide<Dim>::collision(const Vecteur<Dim> & v) {
  */
 template<unsigned int Dim>
 Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v) {
-if (Dim == 2) {
+    // if (Dim == 2) {
         
-    } else {
-        if (v(1) < 0) 
+    // } else {
+    //     if (v(1) < 0) 
+    //         ;	   
 	   
-	   
-    }
+    // }
+
 }
 
 template<unsigned int Dim>
