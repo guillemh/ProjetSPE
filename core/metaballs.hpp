@@ -61,6 +61,7 @@ public:
      *
      * Calcule la valeur de la surface implicite définie par les particules du fluide pour tout point du maillage,
      * et attribue à chaque sommet sa couleur, ceci pour déterminer la configuration des cubes
+     * @param particules Liste des particules considérées
      */
     void coloration(list<Particule<3> *> &particules);
     // void coloration();
@@ -69,7 +70,8 @@ public:
      * \brief Coloration - fonction de debug
      *
      * Considère un maillage de l'espace de dimensions 1 x 1 x 1, et transforme les sommets de l'unique cube
-	 * de manière à obtenir la configuration d'identifiant passé en paramètre.
+     * de manière à obtenir la configuration d'identifiant passé en paramètre.
+     * @param config Configuration
      */
     void coloration(int config);
 
