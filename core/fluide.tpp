@@ -9,8 +9,8 @@ using std::cout;
 using std::endl;
 using std::pair;
 
-#define EPSR 0.00
-#define EPSF EPSR+0
+#define EPSR 4
+#define DELTA 150
 
 /* ** Constructeurs ** */
 
@@ -23,7 +23,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
       hash_voisins(),
       lgrHash(0),
       epsilonR(EPSR),
-      epsilonF(EPSF)
+      epsilonF(EPSR+DELTA)
 {
     /* Initilisation de la liste vide */
     particules = list<Particule<Dim> *>();
@@ -53,7 +53,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
       debutAnim(true),
       hash_voisins(),
       epsilonR(EPSR),
-      epsilonF(EPSF)
+      epsilonF(EPSR+DELTA)
 {
     /* Initialisation de listes vides */
     particules = list<Particule<Dim> *>();
@@ -102,10 +102,10 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
 
         /* On va ajouter des particules régulierement disposées sur les trois dimensions */
         /* On définit la largeur de la boîte */
-        x_min = -0.2;
-        x_max = 0.2;
-        y_min = -0.2;
-        y_max = 0.2;
+        x_min = -0.1;
+        x_max = 0.1;
+        y_min = -0.1;
+        y_max = 0.1;
         z_min = 0.0;
         
         /* On définit ensuite la position des particules */
@@ -613,7 +613,7 @@ void Fluide<Dim>::majPositionVitesse() {
         } else {
             fSurface = Vecteur<Dim>();
         }
-        
+
         /* Calcul de l'acceleration */
         // cout << (*it1)->getIndice() << ". totalforces : " << (fPression + fViscosite + fGravite + fSurface) << endl;
         (*it1)->setAcceleration((fPression + fViscosite + fGravite + fSurface) / masseVolumique_a);
@@ -750,11 +750,15 @@ Vecteur<Dim> Fluide<Dim>::calculForcesInteraction(Particule<Dim>* p1, Particule<
     double rho;
     Vecteur<Dim> drho;
     restriction(p2->getVitesse(), rho, drho);
+    // Vecteur<Dim> v2 = p2->getVitesse() * (1 - rho) - 0.5 * pow(p2->getVitesse().norme(), 2)
+    //     * p2->getMasseVolumique() * drho;
     Vecteur<Dim> v2 = p2->getVitesse() * (1 - rho) - 0.5 * pow(p2->getVitesse().norme(), 2)
-        * p2->getMasseVolumique() * drho;
+        * mat->getMasseParticules() * drho;
     restriction(p1->getVitesse(), rho, drho);
+    // Vecteur<Dim> v1 = p1->getVitesse() * (1 - rho) - 0.5 * pow(p1->getVitesse().norme(), 2)
+    //     * p1->getMasseVolumique() * drho;
     Vecteur<Dim> v1 = p1->getVitesse() * (1 - rho) - 0.5 * pow(p1->getVitesse().norme(), 2)
-        * p1->getMasseVolumique() * drho;
+        * mat->getMasseParticules() * drho;
     Vecteur<Dim> v_1_2 = v1 - v2;
     /* Renommages */
     double termePressionDensite_1 = p1->getPression() / pow(p1->getMasseVolumique(), 2);
@@ -815,11 +819,15 @@ Vecteur<Dim> Fluide<Dim>::calculForcesInteractionPrec(Particule<Dim>* p1, Partic
     double rho;
     Vecteur<Dim> drho;
     restriction(p2->getVitessePrec(), rho, drho);
+    // Vecteur<Dim> v2 = p2->getVitessePrec() * (1 - rho) - 0.5 * pow(p2->getVitessePrec().norme(), 2)
+    //     * p2->getMasseVolumiquePrec() * drho;
     Vecteur<Dim> v2 = p2->getVitessePrec() * (1 - rho) - 0.5 * pow(p2->getVitessePrec().norme(), 2)
-        * p2->getMasseVolumiquePrec() * drho;
+        * mat->getMasseParticules() * drho;
     restriction(p1->getVitessePrec(), rho, drho);
+    // Vecteur<Dim> v1 = p1->getVitessePrec() * (1 - rho) - 0.5 * pow(p1->getVitessePrec().norme(), 2)
+    //     * p1->getMasseVolumiquePrec() * drho;
     Vecteur<Dim> v1 = p1->getVitessePrec() * (1 - rho) - 0.5 * pow(p1->getVitessePrec().norme(), 2)
-        * p1->getMasseVolumiquePrec() * drho;
+        * mat->getMasseParticules() * drho;
     Vecteur<Dim> v_1_2 = v1 - v2;
     /* Renommages */
     double termePressionDensite_1 = p1->getPressionPrec() / pow(p1->getMasseVolumiquePrec(), 2);
@@ -1073,6 +1081,7 @@ void Fluide<Dim>::schemaIntegration() {
 
     /* Réinitialisation de la liste des particules actives */
     actives.clear();
+    cout << endl;
     // cout << endl << "********************************************" << endl;
     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
         /* Mise à jour de la liste des particules actives */
@@ -1082,6 +1091,8 @@ void Fluide<Dim>::schemaIntegration() {
         // cout << (*part_it)->getIndice() << ". Restriction : " << rho <<  " | " << drho << endl;
         if (rho < 1) {
             actives.push_back(*part_it);
+        } else {
+            cout << (*part_it)->getIndice() << " pas active" << endl;
         }
         /* Mise à jour des positions */
         Vecteur<Dim> incr = mat->getPasTemps() * 
@@ -1107,7 +1118,7 @@ void Fluide<Dim>::schemaIntegration() {
             
             /* Mise a jour de la vitesse */
             double vitesse = (*part_it)->getVitesse().scalaire(normale);
-            (*part_it)->setVitesse(-mat->getCoeffRestitution() *vitesse*normale + (*part_it)->getVitesse() - vitesse*normale);
+            (*part_it)->setVitesse(-mat->getCoeffRestitution() * vitesse*normale + (*part_it)->getVitesse() - vitesse*normale);
         }
     }
     
