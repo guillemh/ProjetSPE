@@ -47,9 +47,14 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
 
 
 template<unsigned int Dim>
-Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p)
+Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p, double xmin, double xmax, double ymin, double ymax, double zmin)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(-0.2, -0.2, 0.0), 0.05, mat->getRayonNoyau(), 0.5, 0.5, 1)),
+      ball (Metaballs(Vecteur<3>(xmin, ymin, zmin), 0.05, mat->getRayonNoyau(), xmax-xmin, ymax-ymin, 1)),
+      x_min(xmin),
+      x_max(xmax),
+      y_min(ymin),
+      y_max(ymax),
+      z_min(zmin),
       debutAnim(true),
       hash_voisins(),
       epsilonR(EPSR),
@@ -73,20 +78,12 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
     
         nbrParticules = nb[0]*nb[1];
         lgrHash = table.getPremier(2*nbrParticules);
-
-        /* On va ajouter des particules régulierement disposées sur les deux dimensions */
-        /* On définit la largeur de la boîte */
-        x_min = -0.5;
-        x_max = 0.5;
-        y_min = 0.0;
-        y_max = 1.0;
-        z_min = 0.0;
         
-        /* On définit ensuite la position des particules */
+        /* On définit la position des particules */
         for (int i = 0; i < nb[0]; i++) {
             for (int j = 0; j < nb[1]; j++) {
                 ++cpt;
-                Vecteur<Dim> vec = Vecteur<Dim>((i-nb[0]/2)*ecart, 0.1 + j*ecart);
+                Vecteur<Dim> vec = Vecteur<Dim>((i-nb[0]/2)*ecart, 0.01+ j*ecart);
                 Particule<Dim> *part = new Particule<Dim>(cpt, vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
                 particules.push_back(part);
                 noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
@@ -99,16 +96,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
     
         nbrParticules = nb[0]*nb[1]*nb[2];
         lgrHash = table.getPremier(2*nbrParticules);
-
-        /* On va ajouter des particules régulierement disposées sur les trois dimensions */
-        /* On définit la largeur de la boîte */
-        x_min = -0.1;
-        x_max = 0.1;
-        y_min = -0.1;
-        y_max = 0.1;
-        z_min = 0.0;
         
-        /* On définit ensuite la position des particules */
+        /* On définit la position des particules */
         double largeur_x = x_max - x_min;
         double largeur_y = y_max - y_min;
         
@@ -126,7 +115,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                     double y = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     double z = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     Vecteur<Dim> alea = Vecteur<Dim>(x,y,z);                    
-                    vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart) + alea;
+                    vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, k*ecart) + alea;
                     // vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
                     
                     part = new Particule<Dim>(cpt, vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
@@ -635,6 +624,7 @@ void Fluide<Dim>::majPositionVitesse() {
         
         /* Calcul de la nouvelle position (au temps t+Dt) */
         // cout << (*it1)->getIndice() << ". incrPos : " << mat->getPasTemps() * (*it1)->getVitesse() << endl;
+        (*it1)->setPositionPrec((*it1)->getPosition());
         (*it1)->incrPosition(mat->getPasTemps() * (*it1)->getVitesse());
         
         /* Détection des collisions */
@@ -673,48 +663,48 @@ void Fluide<Dim>::draw() {
     // for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
     //     (*it)->draw ();
     // }
-   
-    // ball.coloration(particules);
-    // ball.draw();
 
-    //  glPushMatrix();
-    //  glEnable (GL_BLEND);
-    //  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //  glColor4f(1.0, 1.0, 1.0, 0.1);
-    //  glBegin(GL_QUADS);
+//    ball.coloration(particules);
+//    ball.draw();
+
+    glPushMatrix();
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(1.0, 1.0, 1.0, 0.1);
+    glBegin(GL_QUADS);
     
-    //  glNormal3f(-1, 0, 0);
-    //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-    //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    //  glVertex3f(x_min - 0.025, y_max + 0.025, 1);
-    //  glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+    glNormal3f(-1, 0, 0);
+    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_min - 0.025, y_max + 0.025, 1);
+    glVertex3f(x_min - 0.025, y_min - 0.025, 1);
     
-    //  glNormal3f(0, -1, 0);
-    //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_min - 0.025, 1);
-    //  glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_min - 0.025, 1);
+    glVertex3f(x_min - 0.025, y_min - 0.025, 1);
     
-    //  glNormal3f(1, 0, 0);
-    //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-    //  glVertex3f(x_max + 0.025, y_min - 0.025, 1);
+    glNormal3f(1, 0, 0);
+    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, 1);
+    glVertex3f(x_max + 0.025, y_min - 0.025, 1);
     
-    //  glNormal3f(0, 1, 0);
-    //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-    //  glVertex3f(x_min - 0.025, y_max + 0.025, 1);
+    glNormal3f(0, 1, 0);
+    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, 1);
+    glVertex3f(x_min - 0.025, y_max + 0.025, 1);
     
-    //  glNormal3f(0, 0, -1);
-    //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-    //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+    glNormal3f(0, 0, -1);
+    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
     
-    //  glEnd();
-    //  glDisable (GL_BLEND);
+    glEnd();
+    glDisable (GL_BLEND);
 }
 
 

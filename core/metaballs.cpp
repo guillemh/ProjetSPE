@@ -201,89 +201,81 @@ Metaballs::~Metaballs() {
 /* ** Methodes ** */
 
 void Metaballs::coloration(list<Particule<3> *> &particules) {
-    cout << points[n - 1][p - 1][0] << endl;
 
     typename list<Particule<3> *>::iterator it;
-    double d = 10; // On considère ce support pour la fonction d'influence    
+    double d = 0.5; // On considère ce support pour la fonction d'influence    
+    
     // for (int i = 0; i < n; i++) {
-    // 	for (int j = 0; j < p; j++) {
-    // 	    for (int k = 0; k < q; k++) {
-    // 		points[i][j][k] = 0;
-    // 	    }
-    // 	}
+    //         for (int j = 0; j < p; j++) {
+    //             for (int k = 0; k < q; k++) {
+    //                 points[i][j][k] = 0;
+    //             }
+    //         }
     // }
-    int part = 0;
+    
     for (it = particules.begin(); it != particules.end(); it++) {
         
        // Si la particule a bougé
-       if ((*it)->getPositionPrec() != (*it)->getPosition()) {
+       if ((*it)->getVitesse() != Vecteur<3>()) {
     
-           // On selectionne les points influes par l'ancienne position de la particule
-           Vecteur<3> pos = (*it)->getPositionPrec() - origine;
-           int i_min = max(0, (int) ceil((fabs(pos(1)) - d)/cote));
-           int i_max = min(n-1, (int) floor((fabs(pos(1)) + d)/cote));
-           int j_min = max(0, (int) ceil((fabs(pos(2)) - d)/cote));
-           int j_max = min(p-1, (int) floor((fabs(pos(2)) + d)/cote));
-           int k_min = max(0, (int) ceil((fabs(pos(3)) - d)/cote));
-           int k_max = min(q-1, (int) floor((fabs(pos(3)) + d)/cote));
-           
-	   if (i_max == n - 1 && j_max == p - 1) {
-	       part++;
-	       cout << "Particule : " << part << endl;
-	   }
+            // On selectionne les points influes par l'ancienne position de la particule
+            Vecteur<3> pos = (*it)->getPositionPrec() - origine;
+            pos(1) = fabs(pos(1));
+            pos(2) = fabs(pos(2));
+            pos(3) = fabs(pos(3));
+            int i_min = max(0, (int) ceil((pos(1) - d)/cote));
+            int i_max = min(n-1, (int) floor((pos(1) + d)/cote));
+            int j_min = max(0, (int) ceil((pos(2) - d)/cote));
+            int j_max = min(p-1, (int) floor((pos(2) + d)/cote));
+            int k_min = max(0, (int) ceil((pos(3) - d)/cote));
+            int k_max = min(q-1, (int) floor((pos(3) + d)/cote));
 
-	   double contribution_n = 0.0;
-           // On boucle sur ces points pour supprimer son influence
-           for (int i = i_min; i <= i_max; i++) {
+            // On boucle sur ces points pour supprimer son influence
+            for (int i = i_min; i <= i_max; i++) {
                for (int j = j_min; j <= j_max; j++) {
                    for (int k = k_min; k <= k_max; k++) {
                        pos = origine + Vecteur<3>(i*cote, j*cote, k*cote);
                        points[i][j][k] -= (*it)->isosurface(pos, true);
-		       if (i_max == n - 1 && j_max == p - 1) {
-			   contribution_n += (*it)->isosurface(pos, true);
-		       }
                    }
                }
-           }
+            }
 
-	   cout << "On a retiré " << contribution_n << endl;
+            // On selectionne les points influes par la nouvelle position de la particule
+            pos = (*it)->getPosition() - origine;
+            pos(1) = fabs(pos(1));
+            pos(2) = fabs(pos(2));
+            pos(3) = fabs(pos(3));
+            i_min = max(0, (int) ceil((pos(1) - d)/cote));
+            i_max = min(n-1, (int) floor((pos(1) + d)/cote));
+            j_min = max(0, (int) ceil((pos(2) - d)/cote));
+            j_max = min(p-1, (int) floor((pos(2) + d)/cote));
+            k_min = max(0, (int) ceil((pos(3) - d)/cote));
+            k_max = min(q-1, (int) floor((pos(3) + d)/cote));
 
-           // On selectionne les points influes par la nouvelle position de la particule
-           pos = (*it)->getPosition() - origine;
-           i_min = max(0, (int) ceil((fabs(pos(1)) - d)/cote));
-           i_max = min(n-1, (int) floor((fabs(pos(1)) + d)/cote));
-           j_min = max(0, (int) ceil((fabs(pos(2)) - d)/cote));
-           j_max = min(p-1, (int) floor((fabs(pos(2)) + d)/cote));
-           k_min = max(0, (int) ceil((fabs(pos(3)) - d)/cote));
-           k_max = min(q-1, (int) floor((fabs(pos(3)) + d)/cote));
-      
-	   double contribution_p = 0.0;
-           // On boucle sur ces points pour ajouter son influence
-           for (int i = i_min; i <= i_max; i++) {
+            // On boucle sur ces points pour ajouter son influence
+            for (int i = i_min; i <= i_max; i++) {
                for (int j = j_min; j <= j_max; j++) {
                    for (int k = k_min; k <= k_max; k++) {
                        pos = origine + Vecteur<3>(i*cote, j*cote, k*cote);
                        points[i][j][k] += (*it)->isosurface(pos, false);
-		       if (i_max == n - 1 && j_max == p - 1) {
-			   contribution_p += (*it)->isosurface(pos, false);
-		       }
                    }
                }
-           }
-
-	   cout << "On a ajouté " << contribution_p << endl;
+            }
            
        // Au debut de l'animation, on ne prend en compte que la position courante de la particule
        } else if (debutAnim) {
             
             // On selectionne les points influes par la nouvelle position de la particule
             Vecteur<3> pos = (*it)->getPosition() - origine;
-            int i_min = max(0, (int) ceil((fabs(pos(1)) - d)/cote));
-            int i_max = min(n-1, (int) floor((fabs(pos(1)) + d)/cote));
-            int j_min = max(0, (int) ceil((fabs(pos(2)) - d)/cote));
-            int j_max = min(p-1, (int) floor((fabs(pos(2)) + d)/cote));
-            int k_min = max(0, (int) ceil((fabs(pos(3)) - d)/cote));
-            int k_max = min(q-1, (int) floor((fabs(pos(3)) + d)/cote));
+            pos(1) = fabs(pos(1));
+            pos(2) = fabs(pos(2));
+            pos(3) = fabs(pos(3));
+            int i_min = max(0, (int) ceil((pos(1) - d)/cote));
+            int i_max = min(n-1, (int) floor((pos(1) + d)/cote));
+            int j_min = max(0, (int) ceil((pos(2) - d)/cote));
+            int j_max = min(p-1, (int) floor((pos(2) + d)/cote));
+            int k_min = max(0, (int) ceil((pos(3) - d)/cote));
+            int k_max = min(q-1, (int) floor((pos(3) + d)/cote));
             
             // On boucle sur ces points pour ajouter son influence
             for (int i = i_min; i <= i_max; i++) {
@@ -361,11 +353,11 @@ void Metaballs::draw() {
 void Metaballs::drawCube(Vecteur<3> pos, double cote, int config) {
     int coef, numConfig;
     if (config < 128) {
-	coef = 1;
-	numConfig = config;
+        coef = 1;
+        numConfig = config;
     } else {
-	coef = -1;
-	numConfig = 255 - config;
+        coef = -1;
+        numConfig = 255 - config;
     } 
     int *listeAretes = configurations[numConfig];
     int i = 0;

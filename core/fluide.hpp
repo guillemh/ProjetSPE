@@ -73,8 +73,14 @@ public:
      * \param ecart Écart entre les particules
      * \param rho Masse volumique initiale des particules
      * \param p Pression initiale des particules
+     * \paam xmin Bord de la boite
+     * \paam xmax Bord de la boite
+     * \paam ymin Bord de la boite
+     * \paam ymax Bord de la boite
+     * \paam zmin Dessous de la boite
      */
-    Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p);
+    Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p,
+            double xmin = -0.2, double xmax = 0.2, double ymin = -0.2, double ymax = 0.2, double zmin = 0.0);
     
     /**
      * @brief Destructeur
