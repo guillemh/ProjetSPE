@@ -37,27 +37,3 @@ realclean.commands = ./mrproper.sh
 realclean.depends = FORCE
 
 QMAKE_EXTRA_TARGETS += realclean
-
-# Regle pour l execution de cascade
-
-cascade.target = cascade
-cascade.commands = ./cascade/release/cascade
-cascade.depends =
-
-QMAKE_EXTRA_TARGETS += cascade
-
-# Regle pour l execution des tests
-
-test.target = test
-test.commands = ./test/release/test
-test.depends = 
-
-QMAKE_EXTRA_TARGETS += test
-
-# Regle pour l execution de cascade_complexe
-
-cascade_complexe.target = cascade_complexe
-cascade_complexe.commands = ./cascade_complexe/release/cascade_complexe
-cascade_complexe.depends =
-
-QMAKE_EXTRA_TARGETS += cascade_complexe
