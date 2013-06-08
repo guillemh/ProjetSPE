@@ -14,9 +14,7 @@
 class SceneCascade {
     /* ** Attributs ** */
  private :
-  Cascade<3> *c1;  /*!< Pointeur vers la cascade utilisée */
-  Cascade<3> *c2;  /*!< Pointeur vers la cascade utilisée */
-  //Cascade<3> *c1;  /*!< Pointeur vers la cascade utilisée */
+  Cascade<3> *c;  /*!< Pointeur vers la cascade utilisée */
   Skybox *s;      /*!< Pointeur vers la skybox utilisée */
 
  public :
@@ -46,6 +44,8 @@ class SceneCascade {
      * Représentation de la scène
      */
     void draw();
+
+    void drawSphere(int scaley, int scalex, GLfloat r);
     
     /**
      * \brief Animation
