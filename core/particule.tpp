@@ -199,7 +199,7 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
     double d = diff.scalaire(diff);
     if (d == 0.0)
         return 50000;
-    return 1 / d;
+    return 1 / (2*d);
 
     //    double d = (pos - position).norme();
     //    return exp(-rayon*d/2);

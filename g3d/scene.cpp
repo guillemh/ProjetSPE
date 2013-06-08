@@ -17,7 +17,6 @@ Scene::Scene() {
     anim = false;
     m = new Materiau<3>(EAU);
     int d [3] = {2, 2, 50};
-    // int d [3] = {2, 2, 2};
     f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression()); 
     
     //    Vecteur<3> vec0 = Vecteur<3>();

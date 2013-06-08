@@ -49,7 +49,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(-0.2, -0.2, 0.0), 0.05, mat->getRayonNoyau(), 0.5, 0.5, 1)),
+      ball (Metaballs(Vecteur<3>(-0.2, -0.2, 0.0), 0.05, mat->getRayonNoyau(), 0.4, 0.4, 1)),
       debutAnim(true),
       hash_voisins(),
       epsilonR(EPSR),
@@ -86,7 +86,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         for (int i = 0; i < nb[0]; i++) {
             for (int j = 0; j < nb[1]; j++) {
                 ++cpt;
-                Vecteur<Dim> vec = Vecteur<Dim>((i-nb[0]/2)*ecart, 0.1 + j*ecart);
+                Vecteur<Dim> vec = Vecteur<Dim>((i-nb[0]/2)*ecart, 0.01+ j*ecart);
                 Particule<Dim> *part = new Particule<Dim>(cpt, vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
                 particules.push_back(part);
                 noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
@@ -635,6 +635,7 @@ void Fluide<Dim>::majPositionVitesse() {
         
         /* Calcul de la nouvelle position (au temps t+Dt) */
         // cout << (*it1)->getIndice() << ". incrPos : " << mat->getPasTemps() * (*it1)->getVitesse() << endl;
+        (*it1)->setPositionPrec((*it1)->getPosition());
         (*it1)->incrPosition(mat->getPasTemps() * (*it1)->getVitesse());
         
         /* Détection des collisions */
@@ -673,48 +674,48 @@ void Fluide<Dim>::draw() {
     // for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
     //     (*it)->draw ();
     // }
-   
-    // ball.coloration(particules);
-    // ball.draw();
 
-    //  glPushMatrix();
-    //  glEnable (GL_BLEND);
-    //  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //  glColor4f(1.0, 1.0, 1.0, 0.1);
-    //  glBegin(GL_QUADS);
+    ball.coloration(particules);
+    ball.draw();
+
+    glPushMatrix();
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(1.0, 1.0, 1.0, 0.1);
+    glBegin(GL_QUADS);
     
-    //  glNormal3f(-1, 0, 0);
-    //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-    //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    //  glVertex3f(x_min - 0.025, y_max + 0.025, 1);
-    //  glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+    glNormal3f(-1, 0, 0);
+    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_min - 0.025, y_max + 0.025, 1);
+    glVertex3f(x_min - 0.025, y_min - 0.025, 1);
     
-    //  glNormal3f(0, -1, 0);
-    //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_min - 0.025, 1);
-    //  glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_min - 0.025, 1);
+    glVertex3f(x_min - 0.025, y_min - 0.025, 1);
     
-    //  glNormal3f(1, 0, 0);
-    //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-    //  glVertex3f(x_max + 0.025, y_min - 0.025, 1);
+    glNormal3f(1, 0, 0);
+    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, 1);
+    glVertex3f(x_max + 0.025, y_min - 0.025, 1);
     
-    //  glNormal3f(0, 1, 0);
-    //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-    //  glVertex3f(x_min - 0.025, y_max + 0.025, 1);
+    glNormal3f(0, 1, 0);
+    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, 1);
+    glVertex3f(x_min - 0.025, y_max + 0.025, 1);
     
-    //  glNormal3f(0, 0, -1);
-    //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-    //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+    glNormal3f(0, 0, -1);
+    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
     
-    //  glEnd();
-    //  glDisable (GL_BLEND);
+    glEnd();
+    glDisable (GL_BLEND);
 }
 
 
