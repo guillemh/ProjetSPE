@@ -5,6 +5,7 @@
 #include "../cascade/cascade.hpp"
 #include "skybox.h"
 
+
 /**
  * \class SceneCascade 
  * @brief Classe contenant les objets représentés sur la scène 
@@ -16,7 +17,6 @@ class SceneCascade {
  private :
   Cascade<3> *c;  /*!< Pointeur vers la cascade utilisée */
   Skybox *s;      /*!< Pointeur vers la skybox utilisée */
-
  public :
     /**
      * \brief Constructeur
@@ -34,7 +34,7 @@ class SceneCascade {
      * @brief Initialisation
      *
      * Initialisations pour les objets de la scène
-     */
+     */  
     
     void init();
 
@@ -46,7 +46,7 @@ class SceneCascade {
     void draw();
 
     void drawSphere(int scaley, int scalex, GLfloat r);
-    
+        
     /**
      * \brief Animation
      *

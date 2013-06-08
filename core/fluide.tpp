@@ -4,6 +4,7 @@
 
 #include "fluide.hpp"
 #include "noyauLissage.hpp"
+#include "cascade.h"
 using std::cout;
 using std::endl;
 using std::pair;
@@ -433,6 +434,21 @@ Vecteur<Dim> Fluide<Dim>::collision(const Vecteur<Dim> & v) {
     return res;
 }
 
+/*
+ * Fonction interne appelée lors de la détection de collisions
+ * Elle détecte une collision avec les plans X=x_min, X=x_max, Y=y_min, Y=y_max et Z=z_min
+ * Elle renvoie le point de contact s'il y a collision, le Vecteur v sinon
+ */
+template<unsigned int Dim>
+Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v) {
+if (Dim == 2) {
+        
+    } else {
+        if (v(1) < 0) 
+	   
+	   
+    }
+}
 
 template<unsigned int Dim>
 void Fluide<Dim>::majPositionVitesse() {

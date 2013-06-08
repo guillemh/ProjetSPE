@@ -93,6 +93,13 @@ public:
      */
     Vecteur<Dim> collision(const Vecteur<Dim> & v);
 
+  /**
+     * Détecte une collision avec les parois de la cascade
+     * @param v 
+     * @return 
+     */
+    Vecteur<Dim> collisionCascade(const Vecteur<Dim> & v);
+
     /**
      * @return Le vecteur des particules mobiles utilisées dans le fluide
      */
