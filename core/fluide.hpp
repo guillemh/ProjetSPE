@@ -169,6 +169,13 @@ private:
      */
     Vecteur<Dim> collision(const Vecteur<Dim> & v);
 
+  /**
+   * Détecte une collision avec les parois de la cascade
+   * @param v 
+   * @return 
+   */
+  Vecteur<Dim> collisionCascade(const Vecteur<Dim> & v);
+
     /* 
      * Fonction de hashage 
      * ATTENTION : prend en argument le vecteur de position 

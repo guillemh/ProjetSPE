@@ -14,7 +14,7 @@ SceneCascade::SceneCascade()
     int d [3] = {5, 5, 5};
     Fluide<3> *f = new Fluide<3>(m, d, 0.1, m->getDensiteRepos(), m->getPression());
     c = new Cascade<3> (f);
-    s = new Skybox(c);
+    s = new Skybox(c);   
     init();
 }
 
@@ -29,7 +29,7 @@ void SceneCascade::draw()
 {
     glPushMatrix();
     c->draw();
-    
+   
     glPushMatrix();
     glTranslatef(-5,0,5);
     c->draw();
@@ -47,6 +47,7 @@ void SceneCascade::draw()
     s->draw();    
     glPopMatrix();
 }
+
 
 void SceneCascade::drawSphere(int scaley, int scalex, GLfloat r) {
     int i, j;
