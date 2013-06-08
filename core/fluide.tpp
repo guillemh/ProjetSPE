@@ -8,7 +8,8 @@ using std::cout;
 using std::endl;
 using std::pair;
 
-#define EPS 0.001
+#define EPSR 0.00
+#define EPSF EPSR+0
 
 /* ** Constructeurs ** */
 
@@ -20,8 +21,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
       debutAnim(true),
       hash_voisins(),
       lgrHash(0),
-      epsilonR(EPS),
-      epsilonF(EPS+1)
+      epsilonR(EPSR),
+      epsilonF(EPSF)
 {
     // Initilisation de la liste vide
     particules = list<Particule<Dim> *>();
@@ -50,8 +51,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
       ball (Metaballs(Vecteur<3>(-0.2, -0.2, 0.0), 0.05, mat->getRayonNoyau(), 0.5, 0.5, 1)),
       debutAnim(true),
       hash_voisins(),
-      epsilonR(EPS),
-      epsilonF(EPS+1)
+      epsilonR(EPSR),
+      epsilonF(EPSF)
 {
     // Initialisation de la liste vide
     particules = list<Particule<Dim> *>();
@@ -340,6 +341,101 @@ inline set<Particule<3>*> Fluide<3>::voisinage(Particule<3>& p) {
     return res;
 }
 
+template<>
+inline set<Particule<2>*> Fluide<2>::voisinagePrec(Particule<2>& p) {
+    set<Particule<2>*> res;
+    double rnoyau = mat->getRayonNoyau();
+    
+    /* Noeuds correspondant à la bounding box de la particule */
+    int bbmin[2] = {int(floor((p.getPositionPrec()(1)-2*rnoyau)/rnoyau)),
+                    int(floor((p.getPositionPrec()(2)-2*rnoyau)/rnoyau))};
+    int bbmax[2] = {int(floor((p.getPositionPrec()(1)+2*rnoyau)/rnoyau)),
+                    int(floor((p.getPositionPrec()(2)+2*rnoyau)/rnoyau))};
+                    
+    /* Paire d'itérateurs (début et fin) sur les particules de clé hash_key */
+    pair<multimap<int, Particule<2>*>::iterator,  multimap<int, Particule<2>*>::iterator> part_pit;
+    multimap<int, Particule<2>*>::iterator part_it;
+    int hash_key;
+
+    /* On boucle sur tous les noeuds de la bounding box */
+    for (int i = bbmin[0]; i <= bbmax[0]; ++i) {
+        for (int j = bbmin[1]; j <= bbmax[1]; ++j) {
+            hash_key = fonction_hashage(Vecteur<2>(i, j));
+            part_pit = hash_voisins.equal_range(hash_key);
+
+            /* On rajoute les particules trouvées dans la liste */
+            for (part_it = part_pit.first; part_it != part_pit.second; ++part_it) {
+                res.insert(part_it->second);
+            }
+        }
+    }
+
+    /* Dans ces voisins, on ne garde que ceux qui sont dans la sphère */
+    set<Particule<2>*>::iterator set_it;
+    set<Particule<2>*>::iterator a_suppr;
+    for (set_it = res.begin(); set_it != res.end(); ) {
+        if ((p.getPositionPrec() == (*set_it)->getPositionPrec())
+            || (p.getPositionPrec() - (*set_it)->getPositionPrec()).norme() > 2*rnoyau) {
+            a_suppr = set_it;
+            ++set_it;
+            res.erase(a_suppr);
+        } else {
+            ++set_it;
+        }
+    }
+    return res;
+}
+
+
+template<>
+inline set<Particule<3>*> Fluide<3>::voisinagePrec(Particule<3>& p) {
+    set<Particule<3>*> res;
+    double rnoyau = mat->getRayonNoyau();
+    
+    /* Noeuds correspondant à la bounding box de la particule */
+    int bbmin[3] = {int(floor((p.getPositionPrec()(1)-2*rnoyau)/rnoyau)),
+                    int(floor((p.getPositionPrec()(2)-2*rnoyau)/rnoyau)),
+                    int(floor((p.getPositionPrec()(3)-2*rnoyau)/rnoyau))};
+    int bbmax[3] = {int(floor((p.getPositionPrec()(1)+2*rnoyau)/rnoyau)),
+                    int(floor((p.getPositionPrec()(2)+2*rnoyau)/rnoyau)),
+                    int(floor((p.getPositionPrec()(3)+2*rnoyau)/rnoyau))};
+                    
+    /* Paire d'itérateurs (début et fin) sur les particules de clé hash_key */
+    pair<multimap<int, Particule<3>*>::iterator, multimap<int, Particule<3>*>::iterator> part_pit;
+    multimap<int, Particule<3>*>::iterator part_it;
+    int hash_key;
+
+    /* On boucle sur tous les noeuds de la bounding box */
+    for (int i = bbmin[0]; i <= bbmax[0]; ++i) {
+        for (int j = bbmin[1]; j <= bbmax[1]; ++j) {
+            for (int k = bbmin[2]; k <= bbmax[2]; ++k) {
+                hash_key = fonction_hashage(Vecteur<3>(i, j, k));
+                part_pit = hash_voisins.equal_range(hash_key);
+
+                /* On rajoute les particules trouvées dans la liste */
+                for (part_it = part_pit.first; part_it != part_pit.second; ++part_it) {
+                    res.insert(part_it->second);
+                }
+            }
+        }
+    }
+
+    /* Dans ces voisins, on ne garde que ceux qui sont dans la sphère */
+    set<Particule<3>*>::iterator set_it;
+    set<Particule<3>*>::iterator a_suppr;
+    for (set_it = res.begin(); set_it != res.end(); ) {
+        if ((p.getPositionPrec() == (*set_it)->getPositionPrec())
+            || (p.getPositionPrec() - (*set_it)->getPositionPrec()).norme() > 2*rnoyau) {
+            a_suppr = set_it;
+            ++set_it;
+            res.erase(a_suppr);
+        } else {
+            ++set_it;
+        }
+    }
+    return res;
+}
+
 
 template<unsigned int Dim>
 list<Particule<Dim> *> Fluide<Dim>::getParticulesMobiles() {
@@ -369,9 +465,12 @@ void Fluide<Dim>::majDensitePression() {
 
     // On boucle sur toutes les particules
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
+        /* On mémorise les valeurs précédentes */
+        (*it1)->setMasseVolumiquePrec((*it1)->getMasseVolumique());
+        (*it1)->setPressionPrec((*it1)->getPression());
     
         // On met leur masse volumique à jour
-	    double somme = noyau.defaut(Vecteur<Dim>());
+        double somme = noyau.defaut(Vecteur<Dim>());
         voisins = voisinage(*(*it1));
         
         for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
@@ -399,11 +498,6 @@ void Fluide<Dim>::majDensitePression() {
 }
 
 
-/*
- * Fonction interne appelée lors de la détection de collisions
- * Elle détecte une collision avec les plans X=x_min, X=x_max, Y=y_min, Y=y_max et Z=z_min
- * Elle renvoie le point de contact s'il y a collision, le Vecteur v sinon
- */
 template<unsigned int Dim>
 Vecteur<Dim> Fluide<Dim>::collision(const Vecteur<Dim> & v) {
     Vecteur<Dim> res = Vecteur<Dim>(v);
@@ -562,47 +656,47 @@ void Fluide<Dim>::draw() {
    //     (*it)->draw ();
    // }
    
-   ball.coloration(particules);
-   ball.draw();
+   // ball.coloration(particules);
+   // ball.draw();
 
-    glPushMatrix();
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(1.0, 1.0, 1.0, 0.1);
-    glBegin(GL_QUADS);
+   //  glPushMatrix();
+   //  glEnable (GL_BLEND);
+   //  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   //  glColor4f(1.0, 1.0, 1.0, 0.1);
+   //  glBegin(GL_QUADS);
     
-    glNormal3f(-1, 0, 0);
-    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_min - 0.025, y_max + 0.025, 1);
-    glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+   //  glNormal3f(-1, 0, 0);
+   //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+   //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+   //  glVertex3f(x_min - 0.025, y_max + 0.025, 1);
+   //  glVertex3f(x_min - 0.025, y_min - 0.025, 1);
     
-    glNormal3f(0, -1, 0);
-    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_min - 0.025, 1);
-    glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+   //  glNormal3f(0, -1, 0);
+   //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+   //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+   //  glVertex3f(x_max + 0.025, y_min - 0.025, 1);
+   //  glVertex3f(x_min - 0.025, y_min - 0.025, 1);
     
-    glNormal3f(1, 0, 0);
-    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-    glVertex3f(x_max + 0.025, y_min - 0.025, 1);
+   //  glNormal3f(1, 0, 0);
+   //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+   //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+   //  glVertex3f(x_max + 0.025, y_max + 0.025, 1);
+   //  glVertex3f(x_max + 0.025, y_min - 0.025, 1);
     
-    glNormal3f(0, 1, 0);
-    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-    glVertex3f(x_min - 0.025, y_max + 0.025, 1);
+   //  glNormal3f(0, 1, 0);
+   //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+   //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+   //  glVertex3f(x_max + 0.025, y_max + 0.025, 1);
+   //  glVertex3f(x_min - 0.025, y_max + 0.025, 1);
     
-    glNormal3f(0, 0, -1);
-    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+   //  glNormal3f(0, 0, -1);
+   //  glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+   //  glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+   //  glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+   //  glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
     
-    glEnd();
-    glDisable (GL_BLEND);
+   //  glEnd();
+   //  glDisable (GL_BLEND);
 }
 
 
@@ -702,18 +796,18 @@ Vecteur<Dim> Fluide<Dim>::calculForcesInteractionPrec(Particule<Dim>* p1, Partic
     /* On récupère la vitesse effective des particules, et non celle accumulée */
     double rho;
     Vecteur<Dim> drho;
-    restriction(p2->getVitesse(), rho, drho);
+    restriction(p2->getVitessePrec(), rho, drho);
     Vecteur<Dim> v2 = p2->getVitessePrec() * (1 - rho) - 0.5 * pow(p2->getVitessePrec().norme(), 2)
-        * p2->getMasseVolumique() * drho;
+        * p2->getMasseVolumiquePrec() * drho;
     restriction(p1->getVitessePrec(), rho, drho);
     Vecteur<Dim> v1 = p1->getVitessePrec() * (1 - rho) - 0.5 * pow(p1->getVitessePrec().norme(), 2)
-        * p1->getMasseVolumique() * drho;
+        * p1->getMasseVolumiquePrec() * drho;
     Vecteur<Dim> v_1_2 = v1 - v2;
     /* Renommages */
-    double termePressionDensite_1 = p1->getPression() / pow(p1->getMasseVolumique(), 2);
-    double masseVolumique_1 = p1->getMasseVolumique();
-    double termePressionDensite_2 = p2->getPression() / pow(p2->getMasseVolumique(), 2);
-    double masseVolumique_2 = p2->getMasseVolumique();
+    double termePressionDensite_1 = p1->getPressionPrec() / pow(p1->getMasseVolumiquePrec(), 2);
+    double masseVolumique_1 = p1->getMasseVolumiquePrec();
+    double termePressionDensite_2 = p2->getPressionPrec() / pow(p2->getMasseVolumiquePrec(), 2);
+    double masseVolumique_2 = p2->getMasseVolumiquePrec();
 
     /* **Expressions des forces** */
 
@@ -754,7 +848,7 @@ void Fluide<Dim>::integrationForces() {
     typename list<Particule<Dim> *>::iterator part_it;
     
     if (debutAnim) {
-        affiche();
+        // affiche();
         /* Premier pas de l'animation */
         for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
             /* On boucle sur toutes les particules */
@@ -771,7 +865,7 @@ void Fluide<Dim>::integrationForces() {
             }
             /* Ajout des forces non interactives */
             (*part_it)->incrForces((*part_it)->getMasseVolumique() * mat->getAccGrav());   // force de gravité
-            cout << (*part_it)->getIndice() << ". forces début : " << (*part_it)->getForces() << endl;
+            // cout << (*part_it)->getIndice() << ". forces début : " << (*part_it)->getForces() << endl;
         }
         debutAnim = false;
 
@@ -781,12 +875,12 @@ void Fluide<Dim>::integrationForces() {
         Vecteur<Dim> drho;
         
         /* On se base sur les anciennes positions pour enlever les anciennes forces */
-        cout << endl << "********************************************" << endl;
-        cout << "Forces enlevées :" << endl;
+        // cout << endl << "********************************************" << endl;
+        // cout << "Forces enlevées :" << endl;
         for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
             /* On boucle sur les particules actives */
-            vois = voisinage(*(*part_it));
-            cout << (*part_it)->getIndice() << ". forces précédentes : " << (*part_it)->getForces() << endl;
+            vois = voisinagePrec(*(*part_it));
+            // cout << (*part_it)->getIndice() << ". forces précédentes : " << (*part_it)->getForces() << endl;
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
                 restriction((*vois_it)->getVitesse(), rho, drho);
@@ -798,18 +892,18 @@ void Fluide<Dim>::integrationForces() {
                     Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
                     (*part_it)->decrForces(forcesPrec);
                     (*vois_it)->incrForces(forcesPrec);
-                    cout << " " << (*part_it)->getIndice() << " " << (*vois_it)->getIndice()
-                         << " " << forcesPrec << endl;
-                    cout << " => force intermédiaire : " << (*part_it)->getForces() << endl;
+                    // cout << " " << (*part_it)->getIndice() << " " << (*vois_it)->getIndice()
+                    //      << " " << forcesPrec << endl;
+                    // cout << " => force intermédiaire : " << (*part_it)->getForces() << endl;
                 }
             }
-            cout << endl;
+            // cout << endl;
         }
 
-        cout << "BILAN des forces :" << endl;
-        for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
-            cout << (*part_it)->getIndice() << " totalforces : " << (*part_it)->getForces() << endl;
-        }
+        // cout << "BILAN des forces :" << endl;
+        // for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
+        //     cout << (*part_it)->getIndice() << " totalforces : " << (*part_it)->getForces() << endl;
+        // }
 
 
         /*
@@ -838,7 +932,7 @@ void Fluide<Dim>::integrationForces() {
             // while (hash_it != part_pit.second && (*hash_it).second != *part_it) {
             while (hash_it->second != *part_it && hash_it != hash_voisins.end()) {
                 if (hash_it->first != hash_key) {
-                    cout << "**********************************oho" << endl;
+                    // cout << "**********************************oho" << endl;
                 }
                 ++hash_it;
             }
@@ -853,12 +947,12 @@ void Fluide<Dim>::integrationForces() {
         }
         
         /* On ajoute les forces correspondant aux nouvelles positions */
-        cout << endl << "********************************************" << endl;
-        cout << "Forces ajoutées :" << endl;
+        // cout << endl << "********************************************" << endl;
+        // cout << "Forces ajoutées :" << endl;
         for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
             /* On boucle sur les particules actives */
             vois = voisinage(*(*part_it));
-            cout << (*part_it)->getIndice() << ". forces précédentes : " << (*part_it)->getForces() << endl;
+            // cout << (*part_it)->getIndice() << ". forces précédentes : " << (*part_it)->getForces() << endl;
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
                 restriction((*vois_it)->getVitesse(), rho, drho);
@@ -870,18 +964,18 @@ void Fluide<Dim>::integrationForces() {
                     Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
                     (*part_it)->incrForces(forces);
                     (*vois_it)->decrForces(forces);
-                    cout << " " << (*part_it)->getIndice() << " " << (*vois_it)->getIndice()
-                         << " " << forces << endl;
-                    cout << " => force intermédiaire : " << (*part_it)->getForces() << endl;
+                    // cout << " " << (*part_it)->getIndice() << " " << (*vois_it)->getIndice()
+                    //      << " " << forces << endl;
+                    // cout << " => force intermédiaire : " << (*part_it)->getForces() << endl;
                 }
             }
-            cout << endl;
+            // cout << endl;
         }
 
-        cout << "BILAN des forces :" << endl;
-        for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
-            cout << (*part_it)->getIndice() << " totalforces : " << (*part_it)->getForces() << endl;
-        }
+        // cout << "BILAN des forces :" << endl;
+        // for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
+        //     cout << (*part_it)->getIndice() << " totalforces : " << (*part_it)->getForces() << endl;
+        // }
 
     }
 }
@@ -940,7 +1034,7 @@ void Fluide<Dim>::afficher_actives() {
 template<unsigned int Dim>
 void Fluide<Dim>::schemaIntegration() {
 
-    cout << endl << "|||||||||||||||||||||||||| NOUVEAU PAS ||||||||||||||||||||||||||" << endl;
+    // cout << endl << "|||||||||||||||||||||||||| NOUVEAU PAS ||||||||||||||||||||||||||" << endl;
     
     /* Mise à jour des densité et pression des particules */
     majDensitePression();
@@ -952,16 +1046,16 @@ void Fluide<Dim>::schemaIntegration() {
     typename list<Particule<Dim> *>::iterator part_it;
 
     /* Mise à jour des vitesses */
-    cout << endl << "********************************************" << endl;
+    // cout << endl << "********************************************" << endl;
     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
         (*part_it)->setVitessePrec((*part_it)->getVitesse());
-        cout << (*part_it)->getIndice() << ".Vitesse " << (*part_it)->getForces()*mat->getPasTemps()/(*part_it)->getMasseVolumique() << endl;
+        // cout << (*part_it)->getIndice() << ".Vitesse " << (*part_it)->getForces()*mat->getPasTemps()/(*part_it)->getMasseVolumique() << endl;
         (*part_it)->incrVitesse((*part_it)->getForces()*mat->getPasTemps()/(*part_it)->getMasseVolumique());
     }
 
     /* Réinitialisation de la liste des particules actives */
     actives.clear();
-    cout << endl << "********************************************" << endl;
+    // cout << endl << "********************************************" << endl;
     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
         /* Mise à jour de la liste des particules actives */
         double rho;
@@ -976,7 +1070,7 @@ void Fluide<Dim>::schemaIntegration() {
             ((*part_it)->getVitesse() * (1 - rho)
              - 0.5 * pow((*part_it)->getVitesse().norme(), 2) * mat->getMasseParticules() * drho
              );
-        cout << (*part_it)->getIndice() << ". Incr position " << incr << endl;
+        // cout << (*part_it)->getIndice() << ". Incr position " << incr << endl;
         (*part_it)->setPositionPrec((*part_it)->getPosition());
         (*part_it)->incrPosition(incr); 
         
@@ -984,7 +1078,7 @@ void Fluide<Dim>::schemaIntegration() {
         Vecteur<Dim> pos = (*part_it)->getPosition();
         Vecteur<Dim> contact = collision(pos);
         
-        /* S'il y a collision, on met à jour la position et la vitesse */
+        /* S'il y a collision, on met a jour la position et la vitesse */
         if (contact != pos) {
             pos = contact - pos;
             double dist = pos.norme();
@@ -993,15 +1087,13 @@ void Fluide<Dim>::schemaIntegration() {
             /* Mise à jour de la position */
             (*part_it)->setPosition(contact);
             
-            /* Mise à jour de la vitesse */
-            (*part_it)->setVitesse((*part_it)->getVitesse()
-                                   - (1 + mat->getCoeffRestitution() * dist
-                                      / (mat->getPasTemps() * ((*part_it)->getVitesse()).norme()))
-                                   * (((*part_it)->getVitesse()).scalaire(normale)) * normale);
+            /* Mise a jour de la vitesse */
+            double vitesse = (*part_it)->getVitesse().scalaire(normale);
+            (*part_it)->setVitesse(-mat->getCoeffRestitution() *vitesse*normale + (*part_it)->getVitesse() - vitesse*normale);
         }
     }
     
-    cout << endl << "********************************************" << endl;
-    afficher_actives();
+    // cout << endl << "********************************************" << endl;
+    // afficher_actives();
 
 }

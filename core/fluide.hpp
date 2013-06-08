@@ -87,13 +87,6 @@ public:
     void ajouteParticule(Particule<Dim> * part);
 
     /**
-     * Détecte une collision avec les parois de la boîte
-     * @param v 
-     * @return 
-     */
-    Vecteur<Dim> collision(const Vecteur<Dim> & v);
-
-    /**
      * @return Le vecteur des particules mobiles utilisées dans le fluide
      */
     list<Particule<Dim> *> getParticulesMobiles();
@@ -145,6 +138,14 @@ public:
     friend void test_voisins();
 
 private:
+    /*
+     * Fonction interne appelée lors de la détection de collisions
+     * Elle détecte une collision de la particule v avec la boîte
+     * de plans X=x_min, X=x_max, Y=y_min, Y=y_max et Z=z_min
+     * Elle renvoie le point de contact s'il y a collision, le Vecteur v sinon
+     */
+    Vecteur<Dim> collision(const Vecteur<Dim> & v);
+
     /* 
      * Fonction de hashage 
      * ATTENTION : prend en argument le vecteur de position 
@@ -154,6 +155,12 @@ private:
 
     /* Fonction d'accès au voisinage d'une particule */
     set<Particule<Dim>*> voisinage(Particule<Dim>&);
+
+    /*
+     * Fonction d'accès au voisinage d'une particule,
+     * en se basant sur les positions au pas de temps précédent
+     */
+    set<Particule<Dim>*> voisinagePrec(Particule<Dim>&);
 
     /* Mise à jour de la table : on la vide entièrement puis on réinsère les particules */
     void majTableHashage();

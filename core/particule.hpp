@@ -26,7 +26,11 @@ private:
     Vecteur<Dim> acceleration;   // Acceleration de la particule (m.s^-2)
     Vecteur<Dim> forces;         // Forces d'interaction s'exerçant sur la particule (kg.m.s -2)
     double masse_volumique;      // Masse volumique de la particule (kg.m^-3)
+    double masse_volumique_prec; // Masse volumique de la particule 
+                                 // au pas de temps précédent (kg.m^-3)
     double pression;             // Pression de la particule (Pa)
+    double pressionPrec;         // Pression de la particule 
+                                 // au pas de temps précédent (Pa) 
     double masse;                // Masse de la particule (m)
 
     /* ** Constructeurs ** */
@@ -50,6 +54,7 @@ public:
 
     /* ** Methodes ** */
 public:
+    /* ** Accesseurs ** */
     /**
      * \return Le numéro de la particule
      */
@@ -96,10 +101,21 @@ public:
     double getMasseVolumique() const;
 
     /**
+     * \return La masse volumique de la particule au pas de temps précédent
+     */
+    double getMasseVolumiquePrec() const;
+
+    /**
      * \return La pression de la particule
      */
     double getPression() const;
 
+    /**
+     * \return La pression de la particule au pas de temps précédent
+     */
+    double getPressionPrec() const;
+
+    /* ** Mutateurs ** */
     /**
      * Modifie la position de la particule
      * \param pos Nouvelle position de la particule
@@ -107,7 +123,7 @@ public:
     void setPosition(const Vecteur<Dim> &pos);
 
     /**
-     * Met à jour la position de la particule au pas de temps précédent
+     * Met à jour la position de la particule du pas de temps précédent
      * \param pos Nouvelle position précédente de la particule
      */
     void setPositionPrec(const Vecteur<Dim> &pos);
@@ -119,7 +135,7 @@ public:
     void setVitesse(const Vecteur<Dim> &vit);
 
     /**
-     * Met à jour la vitesse de la particule au pas de temps précédent
+     * Met à jour la vitesse de la particule du pas de temps précédent
      * \param pos Nouvelle vitesse précédente de la particule
      */
     void setVitessePrec(const Vecteur<Dim> &pos);
@@ -137,10 +153,22 @@ public:
     void setMasseVolumique(double rho);
 
     /**
+     * Met à jour la masse volumique de la particule du pas de temps précédent
+     * \param rho Nouvelle masse volumique précédente de la particule
+     */
+    void setMasseVolumiquePrec(double rho);
+
+    /**
      * Modifie la pression de la particule
      * \param p Nouvelle pression de la particule
      */
     void setPression(double p);
+
+    /**
+     * Met à jour la pression de la particule du pas de temps précédent
+     * \param p Nouvelle pression précédente de la particule
+     */
+    void setPressionPrec(double p);
 
     /**
      * Incrémente la position de la particule

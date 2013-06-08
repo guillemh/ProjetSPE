@@ -17,7 +17,9 @@ Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, 
       vitesse(vit),
       vitessePrec(vit),
       masse_volumique(rho),
+      masse_volumique_prec(rho),
       pression(p),
+      pressionPrec(p),
       masse(m)
 {
 }
@@ -76,10 +78,20 @@ double Particule<Dim>::getMasseVolumique() const {
     return masse_volumique;
 }
 
+template<unsigned int Dim>
+double Particule<Dim>::getMasseVolumiquePrec() const {
+    return masse_volumique_prec;
+}
+
 
 template<unsigned int Dim>
 double Particule<Dim>::getPression() const {
     return pression;
+}
+
+template<unsigned int Dim>
+double Particule<Dim>::getPressionPrec() const {
+    return pressionPrec;
 }
 
 
@@ -116,10 +128,20 @@ void Particule<Dim>::setMasseVolumique(double rho) {
     masse_volumique = rho;
 }
 
+template<unsigned int Dim>
+void Particule<Dim>::setMasseVolumiquePrec(double rho) {
+    masse_volumique_prec = rho;
+}
+
 
 template<unsigned int Dim>
 void Particule<Dim>::setPression(double p) {    
     pression = p;
+}
+
+template<unsigned int Dim>
+void Particule<Dim>::setPressionPrec(double p) {    
+    pressionPrec = p;
 }
 
 template<unsigned int Dim>
