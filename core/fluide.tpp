@@ -17,7 +17,7 @@ using std::pair;
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(-0.5, -0.5, 0.0), 0.05, mat->getRayonNoyau(), 1, 1, 0.5)),
+      ball (Metaballs(Vecteur<3>(-0.5, -0.5, 0.0), 0.01, mat->getRayonNoyau(), 1, 1, 0.5)),
       nbrParticules(0),
       debutAnim(true),
       hash_voisins(),
@@ -49,7 +49,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p, double xmin, double xmax, double ymin, double ymax, double zmin)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(xmin, ymin, zmin), 0.05, mat->getRayonNoyau(), xmax-xmin, ymax-ymin, 1)),
+      ball (Metaballs(Vecteur<3>(xmin, ymin, zmin), 0.01, mat->getRayonNoyau(), xmax-xmin, ymax-ymin, 1)),
       x_min(xmin),
       x_max(xmax),
       y_min(ymin),
@@ -684,8 +684,8 @@ void Fluide<Dim>::draw() {
     //     (*it)->draw ();
     // }
 
-//    ball.coloration(particules);
-//    ball.draw();
+   ball.coloration(particules);
+   ball.draw();
 
     glPushMatrix();
     glEnable (GL_BLEND);
