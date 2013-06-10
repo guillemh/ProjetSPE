@@ -71,7 +71,7 @@ Materiau<Dim>::Materiau(TypeFluide type) {
         seuil_surface = 7.065;
         rigidite_gaz = 3;
         //coeff_restitution = 0;
-        coeff_restitution = 0.5;
+        coeff_restitution = 0.25;
         nbr_noyau = 20;
         //rayon_noyau = 0.0457;
         rayon_noyau = 0.03;
@@ -196,6 +196,83 @@ double Materiau<Dim>::getCeleriteSon() {
 template <unsigned int Dim>
 double Materiau<Dim>::getConstanteViscosite() {
     return alpha;
+}
+
+template <unsigned int Dim>
+void Materiau<Dim>::changerNature(TypeFluide type) {
+    switch(Dim) {
+    case 2 :
+        acc_gravitation = Vecteur<Dim>(0, -9.82);
+        break;
+    case 3 :
+        acc_gravitation = Vecteur<Dim>(0, 0, -9.82);
+        break;
+    default :
+        cerr << "Gestion qu'en dimensions 2 ou 3" << endl;
+        exit(EXIT_FAILURE);
+        break;
+    }
+    pas_temps = 0.001;
+    temperature = 293.15;
+    pression_atm = 101325;
+
+    switch(type) {
+    case EAU :
+        //densite_repos = 998.29;
+        densite_repos = 160;
+        masse_particules = 0.02;
+        //masse_particules = 0.0065;
+        coeff_flottabilite = 0;
+        viscosite = 3.5;
+        tension_surface = 0.0728;
+        seuil_surface = 7.065;
+        rigidite_gaz = 3;
+        //coeff_restitution = 0;
+        coeff_restitution = 0.5;
+        nbr_noyau = 20;
+        //rayon_noyau = 0.0457;
+        rayon_noyau = 0.03;
+        //celerite_son = 1480;
+        celerite_son = 88.5;
+        //alpha = 0.5;
+        //alpha = 1;
+        alpha = 0.08;
+        break;
+    case MUCUS :
+        densite_repos = 1000;
+        masse_particules = 0.04;
+        coeff_flottabilite = 0;
+        viscosite = 36;
+        tension_surface = 6;
+        seuil_surface = 5;
+        rigidite_gaz = 5;
+        coeff_restitution = 0.5;
+        nbr_noyau = 40;
+        rayon_noyau = 0.0726;
+        celerite_son = 1480; // approximation
+        alpha = 0.5;
+        break;
+    case VAPEUR :
+        densite_repos = 0.59;
+        masse_particules = 0.00005;
+        coeff_flottabilite = 5;
+        viscosite = 0.01;
+        tension_surface = 0;
+        seuil_surface = -1;
+        rigidite_gaz = 4;
+        coeff_restitution = 0;
+        nbr_noyau = 12;
+        rayon_noyau = 0.0624;
+        celerite_son = 340; 
+        // approximation : on récupère la vitesse du son dans l'atmosphère en
+        // se prévalant du fait que l'hygrométrie influence peu dans le calcul pratique
+        alpha = 0.5;
+        break;
+    default :
+        cerr << "Type de fluide non existant" << endl;
+        exit(EXIT_FAILURE);
+        break;
+    }
 }
 
 template <unsigned int Dim>

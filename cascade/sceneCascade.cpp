@@ -11,12 +11,11 @@ using namespace std;
 SceneCascade::SceneCascade()
 {
     Materiau<3> *m = new Materiau<3>(EAU);
-    int d [3] = {2, 5, 50};
-    Fluide<3> *f = new Fluide<3>(m, d, 0.1, m->getDensiteRepos(), m->getPression(), Vecteur<3>());
-    //Fluide<3> *f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>()); 
-    f->colorationMetaball();
-    c = new Cascade<3> (f);
-    s = new Skybox(c);
+    Vecteur<3> d = Vecteur<3>(5, 5, 50);
+    Fluide<3> *f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression());
+    //f->colorationMetaball();
+    c1 = new Cascade<3> (f);
+    s = new Skybox(c1);
     init();
 }
 
@@ -30,12 +29,12 @@ void SceneCascade::init() {
 void SceneCascade::draw()
 {
     glPushMatrix();
-    c->draw();
+    c1->draw();    
+    glTranslatef(0, 0., -3.0);
     s->draw();
     glPopMatrix();
 }
 
 void SceneCascade::animate()
 {
-    c->animate();
-}
+    c1->animate();}

@@ -203,8 +203,7 @@ Metaballs::~Metaballs() {
 void Metaballs::coloration(list<Particule<3> *> &particules) {
 
     typename list<Particule<3> *>::iterator it;
-    double d = 0.2; // On considère ce support pour la fonction d'influence    
-    
+    double d = 0.1; // Rayon du support de la fonction d'influence
     // for (int i = 0; i < n; i++) {
     //         for (int j = 0; j < p; j++) {
     //             for (int k = 0; k < q; k++) {
@@ -212,8 +211,6 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
     //             }
     //         }
     // }
-    
-//    double y;
 
     for (it = particules.begin(); it != particules.end(); it++) {
         
@@ -241,12 +238,6 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
                     for (int k = k_min; k <= k_max; k++) {
                         pos = origine + Vecteur<3>(ic, jc, k*cote);
                         points[i][j][k] -= (*it)->isosurface(pos, true);
-//                        y = (*it)->isosurface(pos, true);
-//                        if (points[i][j][k] - y < 0.0) {
-//                            points[i][j][k] = 0.0;
-//                        } else {
-//                            points[i][j][k] -= y;
-//                        }
                     }
                 }
             }
@@ -271,12 +262,6 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
                     for (int k = k_min; k <= k_max; k++) {
                         pos = origine + Vecteur<3>(ic, jc, k*cote);
                         points[i][j][k] += (*it)->isosurface(pos, false);
-//                        y = (*it)->isosurface(pos, false);
-//                        if (points[i][j][k] + y > 1.0) {
-//                            points[i][j][k] = 1.0;
-//                        } else {
-//                            points[i][j][k] += y;
-//                        }
                     }
                 }
             }
@@ -305,12 +290,6 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
                     for (int k = k_min; k <= k_max; k++) {
                         pos = origine + Vecteur<3>(ic, jc, k*cote);
                         points[i][j][k] += (*it)->isosurface(pos, false);
-//                        y = (*it)->isosurface(pos, false);
-//                        if (points[i][j][k] + y > 1.0) {
-//                            points[i][j][k] = 1.0;
-//                        } else {
-//                            points[i][j][k] += y;
-//                        }
                     }
                 }
             }
@@ -340,9 +319,9 @@ void Metaballs::draw() {
                      * Si un point prend la valeur "vrai" il est considéré comme coloré
                      * c'est-à-dire à l'intérieur de la surface implicite
                      */
-                    bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 1/(rayon*rayon);
-                            // bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 0.99;
-                    config <<= 1;
+                    // bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 1/(rayon*rayon);
+		            bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 0.9;
+					config <<= 1;
                     config |= dedans;
                 }
                 // for (int s = 0 ; s < 8 ; s++) {
