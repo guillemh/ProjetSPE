@@ -20,7 +20,7 @@ void test_voisins() {
     list<Particule<2>*>::iterator it;
     set<Particule<2>*> voisins;
     set<Particule<2>*>::iterator v_it;
-    int tab2d[2] = {0, 2};
+    Vecteur<2> tab2d = Vecteur<2>(0, 2);
     rayon *= 2;  // car le noyau prend les particules dans un rayon 2*rnoyau
     
     dist = rayon+0.1;
@@ -75,7 +75,7 @@ void test_voisins() {
     list<Particule<3>*>::iterator part_it;
     set<Particule<3>*> vois;
     set<Particule<3>*>::iterator vois_it;
-    int tab3d[3] = {2, 2, 2};
+    Vecteur<3> tab3d = Vecteur<3>(2, 2, 2);
     rayon *= 2;
 
     succes = true;

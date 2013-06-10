@@ -10,7 +10,6 @@
 using namespace std;
 
 
-/* Constructeur à modifier, évidemment */
 Scene::Scene()
     : f(),
       m()
@@ -30,7 +29,7 @@ void Scene::init() {
     /* On supprime l'éventuelle scène précédente */
     clear();
 
-    /* On recréé la scène, avec les paramètres initiaux */
+    /* On créé la scène, avec les paramètres initiaux */
     anim = false;
     
     //    m = new Materiau<3>(EAU);
@@ -39,7 +38,7 @@ void Scene::init() {
     
     
     m = new Materiau<3>(EAU);
-    int d [3] = {2, 2, 50};
+    Vecteur<3> d = Vecteur<3>(2, 2, 50);
     f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>());
     
     
@@ -118,7 +117,7 @@ void Scene::animate() {
 }
 
 void Scene::interact() {
-    cout << "Quels paramètres voulez-vous modifier?" << endl;
+    cout << endl << "Quels paramètres voulez-vous modifier?" << endl;
     cout << " 1. Le matériau" << endl;
     cout << " 2. Les paramètres du matériau" << endl;
     cout << " 3. Les paramètres de l'agencement du fluide" << endl;
@@ -136,7 +135,15 @@ void Scene::interact() {
         f->changerParam();
         break;
     others:
-        return;
+        break;
+    }
+
+    cout << endl << "Où voulez-vous reprendre la simulation?" << endl;
+    cout << " 1. Reprendre là où elle en est" << endl;
+    cout << " 2. Recommencer avec les nouveaux paramètres" << endl;
+    cin >> numero;
+    if (numero == 2) {
+        f->init();
     }
 }
 
@@ -147,8 +154,20 @@ void Scene::changerMateriau() {
     cout << " 3. Vapeur" << endl;
     int numero;
     cin >> numero;
+    delete m;
+    TypeFluide type;
     switch(numero) {
+    case 1:
+        type = EAU;
+        break;
+    case 2:
+        type = MUCUS;
+        break;
+    case 3:
+        type = VAPEUR;
+        break;
     others:
         return;
     }
+    m->changerNature(type);
 }
