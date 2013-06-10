@@ -39,7 +39,7 @@ void Viewer::init()
     setSceneRadius(8.0f);
 	
     //=== INIT SCENE
-    s = new Scene () ;
+    s = new Scene();
 }
 
 
@@ -58,9 +58,9 @@ void Viewer::draw()
 void Viewer::animate()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glPushMatrix () ;
+    glPushMatrix();
     s->animate();
-    glPopMatrix () ;
+    glPopMatrix();
 }
 
 
@@ -82,6 +82,13 @@ void Viewer::keyPressEvent(QKeyEvent *e)
     } else if (e->key()==Qt::Key_Z) {
 	s->animer();
 	updateGL();
+    } else if ((e->key()==Qt::Key_Home) && (modifiers==Qt::NoButton)) {
+        // stop the animation, and reinit the scene
+        stopAnimation();
+        s->init();
+        toogleWireframe = true;
+        toogleLight = false;
+        updateGL();
     } else if (e->key()==Qt::Key_R) {
 	toogleRecord = !toogleRecord;
 	updateGL();

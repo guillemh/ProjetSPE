@@ -11,14 +11,31 @@ using namespace std;
 
 
 /* Constructeur à modifier, évidemment */
-Scene::Scene() {
+Scene::Scene()
+    : f(),
+      m()
+{
     
     srand (time (NULL));
+    init();
+    
+}
+
+Scene::~Scene() {
+    clear();
+}
+
+void Scene::init() {
+
+    /* On supprime l'éventuelle scène précédente */
+    clear();
+
+    /* On recréé la scène, avec les paramètres initiaux */
     anim = false;
     
-//    m = new Materiau<3>(EAU);
-//    int d [3] = {10, 10, 20};
-//    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), -0.25, 0.25, -0.25, 1.0, 0.0); 
+    //    m = new Materiau<3>(EAU);
+    //    int d [3] = {10, 10, 20};
+    //    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), -0.25, 0.25, -0.25, 1.0, 0.0); 
     
     
     m = new Materiau<3>(EAU);
@@ -62,20 +79,20 @@ Scene::Scene() {
     //    f->ajouteParticule(p9);
     //    f->ajouteParticule(p10);
 
-//      m = new Materiau<3>(EAU);
-//    
-//      Vecteur<3> vInit = Vecteur<3> (0, 0.1, 0);
-//      Vecteur<3> pos1 = Vecteur<3> (0, -0.02, 0);
-//      Vecteur<3> pos2 = Vecteur<3> (0, 0.02, 0);
-//      Particule<3> *p1 = new Particule<3> (1, pos1, Vecteur<3>(), m->getDensiteRepos(), m->getPression(), m->getMasseParticules());
-//      Particule<3> *p2 = new Particule<3> (2, pos2, Vecteur<3>(), m->getDensiteRepos(), m->getPression(), m->getMasseParticules());
-//    
-//      f = new Fluide<3> (m);
-//      f->ajouteParticule(p1);
-//      f->ajouteParticule(p2);
+    //      m = new Materiau<3>(EAU);
+    //    
+    //      Vecteur<3> vInit = Vecteur<3> (0, 0.1, 0);
+    //      Vecteur<3> pos1 = Vecteur<3> (0, -0.02, 0);
+    //      Vecteur<3> pos2 = Vecteur<3> (0, 0.02, 0);
+    //      Particule<3> *p1 = new Particule<3> (1, pos1, Vecteur<3>(), m->getDensiteRepos(), m->getPression(), m->getMasseParticules());
+    //      Particule<3> *p2 = new Particule<3> (2, pos2, Vecteur<3>(), m->getDensiteRepos(), m->getPression(), m->getMasseParticules());
+    //    
+    //      f = new Fluide<3> (m);
+    //      f->ajouteParticule(p1);
+    //      f->ajouteParticule(p2);
 }
 
-Scene::~Scene() {
+void Scene::clear() {
     delete m;
     delete f;
 }
@@ -89,10 +106,10 @@ void Scene::draw() {
 
 void Scene::animate() {
     // if (anim) {
-        f->majDensitePression();
-        f->majPositionVitesse();
-        // f->schemaIntegration();
-        // f->affiche();
+    f->majDensitePression();
+    f->majPositionVitesse();
+    // f->schemaIntegration();
+    // f->affiche();
     //     anim = false;
     // }    
 }
