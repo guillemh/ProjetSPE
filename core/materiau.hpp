@@ -182,6 +182,8 @@ public:
 
     /* ** Interaction utilisateur ** */
 
+    void changerSysteme();
+
     void changerNature(TypeFluide type);
 
     void changerParam();
