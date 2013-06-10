@@ -11,13 +11,14 @@ using std::pair;
 
 #define EPSR 4
 #define DELTA 150
+#define METABALLS 1 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
 
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(-0.5, -0.5, 0.0), 0.01, mat->getRayonNoyau(), 1, 1, 0.5)),
+      ball (Metaballs(Vecteur<3>(-0.5, -0.5, 0.0), 0.05, mat->getRayonNoyau(), 1, 1, 0.5)),
       nbrParticules(0),
       debutAnim(true),
       hash_voisins(),
@@ -27,7 +28,6 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
 {
     /* Initilisation de la liste vide */
     particules = list<Particule<Dim> *>();
-    lignedEau = list<Particule<Dim> *>();
     
     /* Définition des dimensions et de la metaball suivant la dimension */
     if (Dim == 2) {
@@ -47,9 +47,10 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
 
 
 template<unsigned int Dim>
-Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p, double xmin, double xmax, double ymin, double ymax, double zmin)
+Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p, Vecteur<Dim> v0,
+                    double xmin, double xmax, double ymin, double ymax, double zmin)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(xmin, ymin, zmin), 0.01, mat->getRayonNoyau(), xmax-xmin, ymax-ymin, 1)),
+      ball (Metaballs(Vecteur<3>(xmin, ymin, zmin), 0.05, mat->getRayonNoyau(), xmax-xmin, ymax-ymin, 1)),
       x_min(xmin),
       x_max(xmax),
       y_min(ymin),
@@ -62,7 +63,6 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
 {
     /* Initialisation de listes vides */
     particules = list<Particule<Dim> *>();
-    lignedEau = list<Particule<Dim> *>();
 
     // Création d'une table des nombres premiers 
     // pour calculer la dimension de la table de hashage
@@ -84,7 +84,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
             for (int j = 0; j < nb[1]; j++) {
                 ++cpt;
                 Vecteur<Dim> vec = Vecteur<Dim>((i-nb[0]/2)*ecart, 0.01+ j*ecart);
-                Particule<Dim> *part = new Particule<Dim>(cpt, vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
+                Particule<Dim> *part = new Particule<Dim>(cpt, vec, v0, mat->getMasseParticules(), rho, p);
                 particules.push_back(part);
                 noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
                 noeud_grille(2) = int(floor(part->getPosition()(2)/mat->getRayonNoyau()));
@@ -118,7 +118,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                     vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, k*ecart) + alea;
                     // vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
                     
-                    part = new Particule<Dim>(cpt, vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
+                    part = new Particule<Dim>(cpt, vec, v0, mat->getMasseParticules(), rho, p);
                     particules.push_back(part);
                     noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
                     noeud_grille(2) = int(floor(part->getPosition()(2)/mat->getRayonNoyau()));
@@ -127,20 +127,6 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                 }
             }
         }
-
-	// /* Ligne rigide de particules */
-	// int nb_x = largeur_x/0.03;
-	// int nb_y = largeur_y/0.03;
-	// for (int i = 0; i <= nb_x; i++) {
-	//     for (int j = 0; j <= nb_y; j++) {
-	// 	vec = Vecteur<Dim>((x_min + largeur_x*(double(i)/double(nb_x))),
-	// 			   (y_min + largeur_y*(double(j)/double(nb_y))),
-	// 			   z_min);
-	// 	part = new Particule<Dim> (vec, Vecteur<Dim>(), 0.0, rho, p);
-	// 	lignedEau.push_back(part);
-	// 	hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(part->getPosition()), part));
-	//     }
-	// }
 
     } else {
         cout << "Erreur (Fluide) : la dimension de l'espace doit être 2 ou 3" << endl;
@@ -154,9 +140,6 @@ Fluide<Dim>::~Fluide() {
     typename list<Particule<Dim> *>::iterator it;
     /* On libère toutes les particules */
     for (it = particules.begin(); it != particules.end();it++) {
-        delete (*it);
-    }
-    for (it = lignedEau.begin(); it != lignedEau.end();it++) {
         delete (*it);
     }
     hash_voisins.clear();
@@ -228,13 +211,6 @@ inline void Fluide<Dim>::majTableHashage() {
         hash_voisins.insert(pair<int, Particule<Dim>*>(hash_key, *part_it));
     }
     
-    // for (part_it = lignedEau.begin(); part_it != lignedEau.end(); part_it++) {
-    // 	for (unsigned int i = 1; i <= Dim; i++) {
-    // 	    noeud_grille(i) = int(floor((*part_it)->getPosition()(i)/mat->getRayonNoyau()));
-    // 	}
-    //     hash_key = fonction_hashage(noeud_grille);
-    //     hash_voisins.insert(pair<int, Particule<Dim>*>(hash_key, *part_it));
-    // }
 }
 
 template<>
@@ -435,12 +411,6 @@ list<Particule<Dim> *> Fluide<Dim>::getParticulesMobiles() {
 
 
 template<unsigned int Dim>
-list<Particule<Dim> *> Fluide<Dim>::getParticulesImmobiles() {
-    return lignedEau;
-}
-
-
-template<unsigned int Dim>
 Materiau<Dim>* Fluide<Dim>::getMateriau() {
     return mat;
 }
@@ -475,17 +445,6 @@ void Fluide<Dim>::majDensitePression() {
         (*it1)->majPression(mat->getDensiteRepos());
     }
 
-    // for (it1 = lignedEau.begin(); it1 != lignedEau.end(); it1++) {
-
-    //     // On met leur masse volumique à jour
-    //     double somme = noyau.defaut(Vecteur<Dim>());
-    //     voisins = voisinage(*(*it1));
-    //     for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
-    //         somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
-    //     (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);   
-    //     // On met la pression a jour
-    //     (*it1)->majPression(mat->getCeleriteSon(), mat->getDensiteRepos());
-    // }
 }
 
 
@@ -669,24 +628,31 @@ void Fluide<Dim>::majPositionVitesse() {
 
     /* On met la table de hachage à jour */
     majTableHashage();
+    
     /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
-    // ball.coloration(particules);
+    if (METABALLS)
+        ball.coloration(particules);
+}
+
+
+template<unsigned int Dim>
+void Fluide<Dim>::colorationMetaball() {
+    if (METABALLS)
+        ball.coloration(particules);
 }
 
 
 template<unsigned int Dim>
 void Fluide<Dim>::draw() {
 
-    typename list<Particule<Dim> *>::const_iterator it;
-    for (it = particules.begin (); it != particules.end (); it++) {
-        (*it)->draw ();
+    if (METABALLS) {
+        ball.draw();
+    } else {
+        typename list<Particule<Dim> *>::const_iterator it;
+        for (it = particules.begin(); it != particules.end(); it++) {
+            (*it)->draw();
+        }
     }
-    
-    // for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
-    //     (*it)->draw ();
-    // }
-
-    // ball.draw();
 
     glPushMatrix();
     glEnable (GL_BLEND);
