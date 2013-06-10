@@ -24,7 +24,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
       hash_voisins(),
       lgrHash(0),
       epsilonR(EPSR),
-      epsilonF(EPSR+DELTA)
+      epsilonF(EPSR+DELTA),
+      ecart(0)
 {
     /* Initilisation de la liste vide */
     particules = list<Particule<Dim> *>();
@@ -47,7 +48,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
 
 
 template<unsigned int Dim>
-Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p, Vecteur<Dim> v0,
+Fluide<Dim>::Fluide(Materiau<Dim> * m, Vecteur<Dim> nbP, double e, double rho, double p, Vecteur<Dim> v0,
                     double xmin, double xmax, double ymin, double ymax, double zmin)
     : mat(m),
       ball (Metaballs(Vecteur<3>(xmin, ymin, zmin), 0.05, mat->getRayonNoyau(), xmax-xmin, ymax-ymin, 1)),
@@ -56,13 +57,46 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
       y_min(ymin),
       y_max(ymax),
       z_min(zmin),
-      debutAnim(true),
+      vitInit(v0),
+      densiteInit(rho),
+      pressionInit(p),
       hash_voisins(),
       epsilonR(EPSR),
-      epsilonF(EPSR+DELTA)
+      epsilonF(EPSR+DELTA),
+      nbPart(nbP),
+      ecart(e)
 {
-    /* Initialisation de listes vides */
     particules = list<Particule<Dim> *>();
+
+    init();
+}
+
+
+template<unsigned int Dim>
+Fluide<Dim>::~Fluide() {
+    clear();
+}
+
+template<unsigned int Dim>
+void Fluide<Dim>::clear() {
+    typename list<Particule<Dim> *>::iterator it;
+    /* On libère toutes les particules */
+    for (it = particules.begin(); it != particules.end();it++) {
+        delete (*it);
+    }
+    hash_voisins.clear();
+}
+
+template <unsigned int Dim>
+void Fluide<Dim>::init() {
+
+    /* On supprime les anciennes particules etc */
+    clear();
+    
+    /* Initialisation de liste vide */
+    particules = list<Particule<Dim> *>();
+
+    debutAnim = true;
 
     // Création d'une table des nombres premiers 
     // pour calculer la dimension de la table de hashage
@@ -75,7 +109,11 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
     unsigned int cpt = 0;
 
     if (Dim == 2) {
-    
+
+        /* Initialisation de nb */
+        int nb[2] = {int(nbPart(1)),
+                     int(nbPart(2))};
+        
         nbrParticules = nb[0]*nb[1];
         lgrHash = table.getPremier(2*nbrParticules);
         
@@ -84,7 +122,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
             for (int j = 0; j < nb[1]; j++) {
                 ++cpt;
                 Vecteur<Dim> vec = Vecteur<Dim>((i-nb[0]/2)*ecart, 0.01+ j*ecart);
-                Particule<Dim> *part = new Particule<Dim>(cpt, vec, v0, mat->getMasseParticules(), rho, p);
+                Particule<Dim> *part = new Particule<Dim>(cpt, vec, vitInit, mat->getMasseParticules(), densiteInit, pressionInit);
                 particules.push_back(part);
                 noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
                 noeud_grille(2) = int(floor(part->getPosition()(2)/mat->getRayonNoyau()));
@@ -94,6 +132,11 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         
     } else if (Dim == 3) {
     
+        /* Initialisation de nb */
+        int nb[3] = {int(nbPart(1)),
+                     int(nbPart(2)),
+                     int(nbPart(3))};
+        
         nbrParticules = nb[0]*nb[1]*nb[2];
         lgrHash = table.getPremier(2*nbrParticules);
         
@@ -118,7 +161,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                     vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, k*ecart) + alea;
                     // vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
                     
-                    part = new Particule<Dim>(cpt, vec, v0, mat->getMasseParticules(), rho, p);
+                    part = new Particule<Dim>(cpt, vec, vitInit, mat->getMasseParticules(), densiteInit, pressionInit);
                     particules.push_back(part);
                     noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
                     noeud_grille(2) = int(floor(part->getPosition()(2)/mat->getRayonNoyau()));
@@ -127,25 +170,12 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                 }
             }
         }
-
     } else {
         cout << "Erreur (Fluide) : la dimension de l'espace doit être 2 ou 3" << endl;
         exit(1);
     }
+
 }
-
-
-template<unsigned int Dim>
-Fluide<Dim>::~Fluide() {
-    typename list<Particule<Dim> *>::iterator it;
-    /* On libère toutes les particules */
-    for (it = particules.begin(); it != particules.end();it++) {
-        delete (*it);
-    }
-    hash_voisins.clear();
-}
-
-
 
 /* Fonction de hashage */
 
@@ -648,17 +678,18 @@ void Fluide<Dim>::majPositionVitesse() {
     majTableHashage();
     
     /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
-    if (METABALLS)
+    if (METABALLS) {
         ball.coloration(particules);
+	}
 }
 
 
 template<unsigned int Dim>
 void Fluide<Dim>::colorationMetaball() {
-    if (METABALLS)
+    if (METABALLS) {
         ball.coloration(particules);
+	}
 }
-
 
 template<unsigned int Dim>
 void Fluide<Dim>::draw() {
@@ -672,7 +703,7 @@ void Fluide<Dim>::draw() {
         }
     }
 
-    /*glPushMatrix();
+    glPushMatrix();
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4f(1.0, 1.0, 1.0, 0.1);
@@ -709,7 +740,7 @@ void Fluide<Dim>::draw() {
     glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
     
     glEnd();
-    glDisable (GL_BLEND);*/
+    glDisable (GL_BLEND);
 }
 
 
