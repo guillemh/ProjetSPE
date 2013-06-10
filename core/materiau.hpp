@@ -179,6 +179,11 @@ public:
      * intervenant dans le calcul de la force de viscosité
      */
     double getConstanteViscosite();
+
+    /* ** Interaction utilisateur ** */
+
+    void changerParam();
+    
 };
 
 #include "materiau.tpp"

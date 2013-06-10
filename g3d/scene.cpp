@@ -113,3 +113,39 @@ void Scene::animate() {
     //     anim = false;
     // }    
 }
+
+void Scene::interact() {
+    cout << "Quels paramètres voulez-vous modifier?" << endl;
+    cout << " 1. Le matériau" << endl;
+    cout << " 2. Les paramètres du matériau" << endl;
+    cout << " 3. Les paramètres de l'agencement du fluide" << endl;
+    cout << " autre. Annuler et revenir à la simulation" << endl;
+    int numero;
+    cin >> numero;
+    switch (numero) {
+    case 1:
+        changerMateriau();
+        break;
+    case 2:
+        m->changerParam();
+        break;
+    case 3:
+        f->changerParam();
+        break;
+    others:
+        return;
+    }
+}
+
+void Scene::changerMateriau() {
+    cout << "Quel matériau voulez-vous?" << endl;
+    cout << " 1. Eau" << endl;
+    cout << " 2. Mucus" << endl;
+    cout << " 3. Vapeur" << endl;
+    int numero;
+    cin >> numero;
+    switch(numero) {
+    others:
+        return;
+    }
+}

@@ -48,6 +48,11 @@ class Scene {
      * Permet une animation pas à pas
      */
     void animer() {anim = true;}
+
+    /* ** Interaction utilisateur ** */
+    void interact();
+
+    void changerMateriau();
     
  private :
     Fluide<3> *f;   /*!< Pointeur sur un fluide */

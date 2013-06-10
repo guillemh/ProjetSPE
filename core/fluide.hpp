@@ -156,6 +156,9 @@ public:
      */
     void schemaIntegration();
 
+    /* ** Interaction utilisateur ** */
+    void changerParam();
+
     /**
      * Fonction de tests basiques sur l'insertion dans la table de hashage,
      * qui a besoin de l'accès direct à celle-ci

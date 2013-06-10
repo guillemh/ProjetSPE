@@ -1137,3 +1137,8 @@ void Fluide<Dim>::schemaIntegration() {
     // afficher_actives();
 
 }
+
+template <unsigned int Dim>
+void Fluide<Dim>::changerParam() {
+    cout << "Quels paramètres voulez-vous modifier?" << endl;
+}
