@@ -576,7 +576,6 @@ void Fluide<Dim>::majPositionVitesse() {
 
     typename set<Particule<Dim>*>::iterator it2;
     
-    #pragma omp parallel for
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
  
         /* Définition de toutes les forces */
