@@ -2,7 +2,8 @@ TEMPLATE = app
 TARGET   = test_metaballs
 CONFIG  += qt opengl glut warn_on thread openmp debug # release 
 QT *= xml opengl 
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CFLAGS += -O3
+QMAKE_CXXFLAGS += -std=c++0x -O3
 
 HEADERS  = viewer.h scene.h metaballs.hpp
 SOURCES  = main.cpp viewer.cpp scene.cpp metaballs.cpp

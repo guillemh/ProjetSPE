@@ -16,7 +16,8 @@ else {
 DESTDIR = $${DBGNAME}
 
 QT *= xml opengl 
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CFLAGS += -O3
+QMAKE_CXXFLAGS += -std=c++0x -O3
 
 HEADERS  = viewer.h sceneCascade.h skybox.h cascade.hpp 
 SOURCES  = main.cpp viewer.cpp sceneCascade.cpp skybox.cpp ../metaballs/metaballs.cpp
