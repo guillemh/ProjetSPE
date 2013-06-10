@@ -202,15 +202,8 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
     //     return 50000;
     // return 1 / (2*r);
 
-    // double r = (pos - position).norme();
-    // double d = 0.125;
-    // double epsilon = 0.001;
-    // double f_epsilon = 2*log(1.0/epsilon);
-    // cout << 2*d*d*f_epsilon << " ";
-    // cout << pow(0.1, 10000*r*r) << " ";
     return pow(0.1, 10000*r*r);
     // return exp(-r*r/0.0003910);
-    
 }
 
 

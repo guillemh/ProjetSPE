@@ -64,6 +64,10 @@ class Viewer : public QGLViewer
      */
     virtual void keyPressEvent(QKeyEvent *e);
 
+    virtual QString helpString() const;
+
+    void interact();
+    
     Scene *s ;
 };
 

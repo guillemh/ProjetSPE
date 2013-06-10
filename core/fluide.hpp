@@ -28,7 +28,6 @@ class Fluide {
 private:
     Materiau<Dim> * mat;               /*!< Materiau du fluide (avec toutes les constantes) */
     list<Particule<Dim> *> particules; /*!< Ensemble des particules mobiles */
-    list<Particule<Dim> *> lignedEau;  /*!< Ensemble des particules immobiles sur le plan z = z_min */
     Metaballs ball;                     /*!< Metaball permettant de dessiner le fluide */
 public:
     double x_min;                        /*!< Définit le plan d'équation x = x_min (provisoire) */
@@ -40,6 +39,10 @@ public:
 private:
     int nbrParticules;                   /*!< Nombre de particules du fluide */
     bool debutAnim;                      /*!< Indique si on est au debut de l'animation */
+
+    Vecteur<Dim> vitInit;
+    double densiteInit;
+    double pressionInit;
 
     /* Table de nombre premiers pour le calcul de la longueur de la table de hashage */
     Premier<Dim> table;
@@ -54,6 +57,8 @@ private:
     /* Liste des particules actives */
     list<Particule<Dim>*> actives;
 
+    Vecteur<Dim> nbPart;
+    double ecart;
 
     /* ** Constructeurs ** */
 public:
@@ -70,17 +75,18 @@ public:
      *
      * Constructeur avec initialisation d'un parallélépipède de particules
      * \param m Matériau du fluide
-     * \param nb Tableau du nombre de particules sur chacune des dimensions
-     * \param ecart Écart entre les particules
+     * \param nbP Tableau du nombre de particules sur chacune des dimensions
+     * \param e Écart entre les particules
      * \param rho Masse volumique initiale des particules
      * \param p Pression initiale des particules
+     * \param v0 Vitesse initiale des particules
      * \param xmin Bord de la boite
      * \param xmax Bord de la boite
      * \param ymin Bord de la boite
      * \param ymax Bord de la boite
      * \param zmin Dessous de la boite
      */
-    Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p,
+    Fluide(Materiau<Dim> * m, Vecteur<Dim> nbP, double e, double rho, double p, Vecteur<Dim> v0 = Vecteur<Dim>(),
             double xmin = -0.2, double xmax = 0.2, double ymin = -0.2, double ymax = 0.2, double zmin = 0.0);
     
     /**
@@ -90,7 +96,8 @@ public:
      */
     ~Fluide();
 
-
+    void init();
+    
     /* ** Methodes ** */
     /**
      * @brief Ajout au fluide
@@ -106,13 +113,6 @@ public:
      * @return Le vecteur des particules mobiles utilisées dans le fluide
      */
     list<Particule<Dim> *> getParticulesMobiles();
-
-    /**
-     * @brief Accesseur
-     *
-     * @return Le vecteur des particules immobiles utilisées dans le fluide
-     */
-    list<Particule<Dim> *> getParticulesImmobiles();
 
     /**
      * @brief Accesseur
@@ -136,6 +136,13 @@ public:
     void majPositionVitesse();
     
     /**
+     * @brief Coloration des metaball
+     *
+     * A appeler apres la construction du fluide dans la scene
+     */
+    void colorationMetaball();
+    
+    /**
      * @brief Affichage graphique
      *
      * Fonction d'affichage du fluide
@@ -156,6 +163,9 @@ public:
      */
     void schemaIntegration();
 
+    /* ** Interaction utilisateur ** */
+    void changerParam();
+
     /**
      * Fonction de tests basiques sur l'insertion dans la table de hashage,
      * qui a besoin de l'accès direct à celle-ci
@@ -168,6 +178,9 @@ public:
     friend void test_voisins();
 
 private:
+
+    void clear();
+    
     /*
      * Fonction interne appelée lors de la détection de collisions
      * Elle détecte une collision de la particule v avec la boîte

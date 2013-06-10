@@ -39,15 +39,16 @@ void tests_unitaires_fluide() {
     cout<<"OK"<<endl;
     //f1.affiche();
     
-    cout << "->Mise a jour de la position et de la vitesse : ";
-    f1.majPositionVitesse();
-    cout<<"OK"<<endl;
+    // Impossible en 2D a cause des metaballs
+    //cout << "->Mise a jour de la position et de la vitesse : ";
+    //f1.majPositionVitesse();
+    //cout<<"OK"<<endl;
     //f1.affiche();
 
 
     cout << "2 − Creation d'un fluide 2D carré : ";
-    int tab2d[2] = {3, 3};
-    Fluide<2> f2 = Fluide<2>(&mateau2d, tab2d, 0.05, mateau2d.getDensiteRepos(), mateau2d.getPression());
+    Vecteur<2> tab2d = Vecteur<2>(3, 3);
+    Fluide<2> f2 = Fluide<2>(&mateau2d, tab2d, 0.05, mateau2d.getDensiteRepos(), mateau2d.getPression(), Vecteur<2>());
     cout<<"OK"<<endl;
     //f2.affiche();
     
@@ -61,9 +62,10 @@ void tests_unitaires_fluide() {
     cout<<"OK"<<endl;
     //f2.affiche();
     
-    cout << "->Mise a jour de la position et de la vitesse : ";
-    f2.majPositionVitesse();
-    cout<<"OK"<<endl;
+    // Impossible en 2D a cause des metaballs
+    //cout << "->Mise a jour de la position et de la vitesse : ";
+    //f2.majPositionVitesse();
+    //cout<<"OK"<<endl;
     //f2.affiche();
     
     
@@ -89,8 +91,8 @@ void tests_unitaires_fluide() {
 
 
     cout << "4 − Creation d'un fluide 3D carré : ";
-    int tab3d[3] = {3, 3, 3};
-    Fluide<3> f4 = Fluide<3>(&mateau3d, tab3d, 0.05, 900.0, 100000.0);
+    Vecteur<3> tab3d = Vecteur<3>(3, 3, 3);
+    Fluide<3> f4 = Fluide<3>(&mateau3d, tab3d, 0.05, 900.0, 100000.0, Vecteur<3>());
     cout<<"OK"<<endl;
     //f4.affiche();
     

@@ -6,7 +6,6 @@ SUBDIRS =   core \
             run \
             g3d \
             cascade \
-            cascade_complexe \
             metaballs \
 
 #Precise les dependances entre les sous-dossiers
