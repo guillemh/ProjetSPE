@@ -11,7 +11,7 @@ using std::pair;
 
 #define EPSR 4
 #define DELTA 150
-#define METABALLS 0 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
+#define METABALLS 1 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
 
 /* ** Constructeurs ** */
 
@@ -170,7 +170,6 @@ void Fluide<Dim>::init() {
                 }
             }
         }
-
     } else {
         cout << "Erreur (Fluide) : la dimension de l'espace doit être 2 ou 3" << endl;
         exit(1);
@@ -679,17 +678,18 @@ void Fluide<Dim>::majPositionVitesse() {
     majTableHashage();
     
     /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
-    if (METABALLS)
+    if (METABALLS) {
         ball.coloration(particules);
+	}
 }
 
 
 template<unsigned int Dim>
 void Fluide<Dim>::colorationMetaball() {
-    if (METABALLS)
+    if (METABALLS) {
         ball.coloration(particules);
+	}
 }
-
 
 template<unsigned int Dim>
 void Fluide<Dim>::draw() {
@@ -703,7 +703,7 @@ void Fluide<Dim>::draw() {
         }
     }
 
-    /*glPushMatrix();
+    glPushMatrix();
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4f(1.0, 1.0, 1.0, 0.1);
@@ -740,7 +740,7 @@ void Fluide<Dim>::draw() {
     glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
     
     glEnd();
-    glDisable (GL_BLEND);*/
+    glDisable (GL_BLEND);
 }
 
 
