@@ -40,6 +40,7 @@ private:
     int nbrParticules;                   /*!< Nombre de particules du fluide */
     bool debutAnim;                      /*!< Indique si on est au debut de l'animation */
 
+    /* Paramètres nécessaires à la réinitialisation du fluide */
     Vecteur<Dim> vitInit;
     double densiteInit;
     double pressionInit;
@@ -57,6 +58,7 @@ private:
     /* Liste des particules actives */
     list<Particule<Dim>*> actives;
 
+    /* Paramètres nécessaires à la réinitialisation du fluide */
     Vecteur<Dim> nbPart;
     double ecart;
 
@@ -96,9 +98,12 @@ public:
      */
     ~Fluide();
 
+    /**
+     * Méthode appelée par le constructeur, qui recréé le fluide
+     */
     void init();
     
-    /* ** Methodes ** */
+    /* ** Méthodes ** */
     /**
      * @brief Ajout au fluide
      *
@@ -164,7 +169,11 @@ public:
     void schemaIntegration();
 
     /* ** Interaction utilisateur ** */
-    void changerParam();
+    /**
+     * Modification interactive des paramètres du fluide
+     * @return True ssi il faut recommencer la simulation après modification
+     */
+    bool changerParam();
 
     /**
      * Fonction de tests basiques sur l'insertion dans la table de hashage,

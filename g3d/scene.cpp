@@ -117,31 +117,40 @@ void Scene::animate() {
 
 void Scene::interact() {
     cout << endl << "Quels paramètres voulez-vous modifier?" << endl;
-    cout << " 1. Le matériau" << endl;
-    cout << " 2. Les paramètres du matériau" << endl;
-    cout << " 3. Les paramètres de l'agencement du fluide" << endl;
-    cout << " autre. Annuler et revenir à la simulation" << endl;
+    cout << " 1. Les paramètres du système" << endl;
+    cout << " 2. Le matériau" << endl;
+    cout << " 3. Les paramètres du matériau" << endl;
+    cout << " 4. Les paramètres du fluide" << endl;
+    cout << "autre. Annuler et revenir à la simulation" << endl;
     int numero;
     cin >> numero;
+    bool chgt = false;
     switch (numero) {
     case 1:
-        changerMateriau();
+        m->changerSysteme();
         break;
     case 2:
-        m->changerParam();
+        changerMateriau();
         break;
     case 3:
-        f->changerParam();
+        m->changerParam();
         break;
-    others:
+    case 4:
+        chgt = f->changerParam();
+        break;
+    default:
         break;
     }
 
-    cout << endl << "Où voulez-vous reprendre la simulation?" << endl;
-    cout << " 1. Reprendre là où elle en est" << endl;
-    cout << " 2. Recommencer avec les nouveaux paramètres" << endl;
-    cin >> numero;
-    if (numero == 2) {
+    if (!chgt) {
+        cout << endl << "Où voulez-vous reprendre la simulation?" << endl;
+        cout << " 1. Reprendre là où elle en est" << endl;
+        cout << " 2. Recommencer avec les nouveaux paramètres" << endl;
+        cin >> numero;
+        if (numero == 2) {
+            f->init();
+        }
+    } else {
         f->init();
     }
 }
@@ -164,7 +173,7 @@ void Scene::changerMateriau() {
     case 3:
         type = VAPEUR;
         break;
-    others:
+    default:
         return;
     }
     m->changerNature(type);
