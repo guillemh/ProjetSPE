@@ -22,7 +22,7 @@ Scene::Scene() {
     
     
     m = new Materiau<3>(EAU);
-    int d [3] = {2, 2, 50};
+    int d [3] = {2, 2, 25};
     f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression()); 
     
     

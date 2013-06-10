@@ -17,7 +17,7 @@ using std::pair;
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(-0.5, -0.5, 0.0), 0.01, mat->getRayonNoyau(), 1, 1, 0.5)),
+      ball (Metaballs(Vecteur<3>(-0.5, -0.5, 0.0), 0.05, mat->getRayonNoyau(), 1, 1, 0.5)),
       nbrParticules(0),
       debutAnim(true),
       hash_voisins(),
@@ -127,6 +127,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                 }
             }
         }
+
+	// ball.coloration(particules);
 
 	// /* Ligne rigide de particules */
 	// int nb_x = largeur_x/0.03;
@@ -670,9 +672,10 @@ void Fluide<Dim>::majPositionVitesse() {
     /* On met la table de hachage à jour */
     majTableHashage();
     /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
-    // ball.coloration(particules);
+    // if (Dim == 3) {
+    // 	ball.coloration(particules);
+    // }
 }
-
 
 template<unsigned int Dim>
 void Fluide<Dim>::draw() {

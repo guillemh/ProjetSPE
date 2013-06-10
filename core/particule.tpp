@@ -1,5 +1,6 @@
 #include <GL/glut.h>
 #include <math.h>
+#include <stdio.h>
 #include "particule.hpp"
 
 #define PI 3.1415926535
@@ -196,13 +197,20 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
     //        return 0;
 
     Vecteur<Dim> diff = (prec) ? pos - positionPrec : pos - position;
-    double d = diff.scalaire(diff);
-    // if (d == 0.0)
+    double r = diff.scalaire(diff);
+    // if (r == 0.0)
     //     return 50000;
-    // return 1 / (2*d);
+    // return 1 / (2*r);
 
-    // double d = (pos - position).norme();
-    return exp(-d*d/0.0002715);
+    // double r = (pos - position).norme();
+    // double d = 0.125;
+    // double epsilon = 0.001;
+    // double f_epsilon = 2*log(1.0/epsilon);
+    // cout << 2*d*d*f_epsilon << " ";
+    // cout << pow(0.1, 10000*r*r) << " ";
+    return pow(0.1, 10000*r*r);
+    // return exp(-r*r/0.0003910);
+    
 }
 
 
