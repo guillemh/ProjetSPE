@@ -28,7 +28,6 @@ class Fluide {
 private:
     Materiau<Dim> * mat;               /*!< Materiau du fluide (avec toutes les constantes) */
     list<Particule<Dim> *> particules; /*!< Ensemble des particules mobiles */
-    list<Particule<Dim> *> lignedEau;  /*!< Ensemble des particules immobiles sur le plan z = z_min */
     Metaballs ball;                     /*!< Metaball permettant de dessiner le fluide */
 public:
     double x_min;                        /*!< Définit le plan d'équation x = x_min (provisoire) */
@@ -107,13 +106,6 @@ public:
      * @return Le vecteur des particules mobiles utilisées dans le fluide
      */
     list<Particule<Dim> *> getParticulesMobiles();
-
-    /**
-     * @brief Accesseur
-     *
-     * @return Le vecteur des particules immobiles utilisées dans le fluide
-     */
-    list<Particule<Dim> *> getParticulesImmobiles();
 
     /**
      * @brief Accesseur

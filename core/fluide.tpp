@@ -28,7 +28,6 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
 {
     /* Initilisation de la liste vide */
     particules = list<Particule<Dim> *>();
-    lignedEau = list<Particule<Dim> *>();
     
     /* Définition des dimensions et de la metaball suivant la dimension */
     if (Dim == 2) {
@@ -64,7 +63,6 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
 {
     /* Initialisation de listes vides */
     particules = list<Particule<Dim> *>();
-    lignedEau = list<Particule<Dim> *>();
 
     // Création d'une table des nombres premiers 
     // pour calculer la dimension de la table de hashage
@@ -130,20 +128,6 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
             }
         }
 
-	// /* Ligne rigide de particules */
-	// int nb_x = largeur_x/0.03;
-	// int nb_y = largeur_y/0.03;
-	// for (int i = 0; i <= nb_x; i++) {
-	//     for (int j = 0; j <= nb_y; j++) {
-	// 	vec = Vecteur<Dim>((x_min + largeur_x*(double(i)/double(nb_x))),
-	// 			   (y_min + largeur_y*(double(j)/double(nb_y))),
-	// 			   z_min);
-	// 	part = new Particule<Dim> (vec, Vecteur<Dim>(), 0.0, rho, p);
-	// 	lignedEau.push_back(part);
-	// 	hash_voisins.insert(pair<int, Particule<Dim>*>(fonction_hashage(part->getPosition()), part));
-	//     }
-	// }
-
     } else {
         cout << "Erreur (Fluide) : la dimension de l'espace doit être 2 ou 3" << endl;
         exit(1);
@@ -156,9 +140,6 @@ Fluide<Dim>::~Fluide() {
     typename list<Particule<Dim> *>::iterator it;
     /* On libère toutes les particules */
     for (it = particules.begin(); it != particules.end();it++) {
-        delete (*it);
-    }
-    for (it = lignedEau.begin(); it != lignedEau.end();it++) {
         delete (*it);
     }
     hash_voisins.clear();
@@ -230,13 +211,6 @@ inline void Fluide<Dim>::majTableHashage() {
         hash_voisins.insert(pair<int, Particule<Dim>*>(hash_key, *part_it));
     }
     
-    // for (part_it = lignedEau.begin(); part_it != lignedEau.end(); part_it++) {
-    // 	for (unsigned int i = 1; i <= Dim; i++) {
-    // 	    noeud_grille(i) = int(floor((*part_it)->getPosition()(i)/mat->getRayonNoyau()));
-    // 	}
-    //     hash_key = fonction_hashage(noeud_grille);
-    //     hash_voisins.insert(pair<int, Particule<Dim>*>(hash_key, *part_it));
-    // }
 }
 
 template<>
@@ -437,12 +411,6 @@ list<Particule<Dim> *> Fluide<Dim>::getParticulesMobiles() {
 
 
 template<unsigned int Dim>
-list<Particule<Dim> *> Fluide<Dim>::getParticulesImmobiles() {
-    return lignedEau;
-}
-
-
-template<unsigned int Dim>
 Materiau<Dim>* Fluide<Dim>::getMateriau() {
     return mat;
 }
@@ -477,17 +445,6 @@ void Fluide<Dim>::majDensitePression() {
         (*it1)->majPression(mat->getDensiteRepos());
     }
 
-    // for (it1 = lignedEau.begin(); it1 != lignedEau.end(); it1++) {
-
-    //     // On met leur masse volumique à jour
-    //     double somme = noyau.defaut(Vecteur<Dim>());
-    //     voisins = voisinage(*(*it1));
-    //     for (it2 = voisins.begin(); it2 != voisins.end(); it2++)
-    //         somme += noyau.defaut((*it1)->getPosition() - (*it2)->getPosition());
-    //     (*it1)->setMasseVolumique((mat->getMasseParticules())*somme);   
-    //     // On met la pression a jour
-    //     (*it1)->majPression(mat->getCeleriteSon(), mat->getDensiteRepos());
-    // }
 }
 
 
@@ -695,10 +652,6 @@ void Fluide<Dim>::draw() {
         for (it = particules.begin(); it != particules.end(); it++) {
             (*it)->draw();
         }
-    
-        // for (it = lignedEau.begin(); it != lignedEau.end(); it++) {
-        //     (*it)->draw();
-        // }
     }
 
     glPushMatrix();
