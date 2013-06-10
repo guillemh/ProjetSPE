@@ -50,7 +50,7 @@ template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p, Vecteur<Dim> v0,
                     double xmin, double xmax, double ymin, double ymax, double zmin)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(xmin, ymin, zmin), 0.05, mat->getRayonNoyau(), xmax-xmin, ymax-ymin, 1)),
+      ball (Metaballs(Vecteur<3>(xmin, ymin, zmin), 0.01, mat->getRayonNoyau(), xmax-xmin, ymax-ymin, 1)),
       x_min(xmin),
       x_max(xmax),
       y_min(ymin),
@@ -528,6 +528,7 @@ void Fluide<Dim>::majPositionVitesse() {
 
     typename set<Particule<Dim>*>::iterator it2;
     
+    #pragma omp parallel for
     for (it1 = particules.begin(); it1 != particules.end(); it1++) {
  
         /* Définition de toutes les forces */

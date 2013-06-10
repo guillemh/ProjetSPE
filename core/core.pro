@@ -13,7 +13,8 @@ else {
 DESTDIR = $${DBGNAME}
 
 QT += xml opengl
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CFLAGS += -march=native -fopenmp -O3
+QMAKE_CXXFLAGS += -std=c++0x -march=native -fopenmp -O3
 
 HEADERS += fluide.hpp materiau.hpp noyauLissage.hpp particule.hpp vecteur.hpp premier.hpp metaballs.hpp
 SOURCES += metaballs.cpp
