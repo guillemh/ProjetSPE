@@ -648,8 +648,8 @@ void Fluide<Dim>::majPositionVitesse() {
         
         /* Détection des collisions */
         Vecteur<Dim> pos = (*it1)->getPosition();
-        Vecteur<Dim> contact = collision(pos);
-	//Vecteur<Dim> contact = collisionCascade(pos, mat, 2.0, 1.0, 0.5);
+        //Vecteur<Dim> contact = collision(pos);
+	Vecteur<Dim> contact = collisionCascade(pos, mat, 2.0, 1.0, 0.5);
         
         /* S'il y a collision, on met a jour la position et la vitesse */
         if (contact != pos) {
