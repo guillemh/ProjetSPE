@@ -91,7 +91,7 @@ void Scene::init() {
 //      f->ajouteParticule(p2);
 
 
-    f->colorationMetaball();
+    // f->colorationMetaball();
 }
 
 void Scene::clear() {
@@ -154,7 +154,6 @@ void Scene::changerMateriau() {
     cout << " 3. Vapeur" << endl;
     int numero;
     cin >> numero;
-    delete m;
     TypeFluide type;
     switch(numero) {
     case 1:

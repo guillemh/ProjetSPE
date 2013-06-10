@@ -11,7 +11,7 @@ using std::pair;
 
 #define EPSR 4
 #define DELTA 150
-#define METABALLS 1 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
+#define METABALLS 0 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
 
 /* ** Constructeurs ** */
 
