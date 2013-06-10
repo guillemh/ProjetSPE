@@ -539,17 +539,35 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
     if (Dim == 2) {
         
     } else {
-	if ((v(3)-rayon) < 0 && (v(1)+rayon) < bassin_x) // En dessous du fond du bassin
-	    res(3) = 0+rayon;
-        if ((v(1)-rayon) < 0 && (v(3)-rayon) < bassin_z) // Derrière la boite
-	      res(1) = 0+rayon;
-	if ((v(1)+rayon) >= bassin_x && (v(1)+rayon) <= (bassin_x+2*rayon) && (v(3)-rayon) < bassin_z/3) // Devant la boite
-	    res(1) = bassin_x-rayon;
-	if ((v(2)-rayon) < -bassin_y/2 && (v(3)-rayon) < bassin_z) // Coté gauche du bassin
-	    res(2) = -bassin_y/2+rayon;
-	if ((v(2)+rayon) > bassin_y/2 && (v(3)-rayon) < bassin_z) // Coté droit du bassin
-	    res(2) = bassin_y/2-rayon;
-
+	if (v(1)-rayon < -bassin_x/2) // Derrière le bassin
+	    if (v(3)+rayon < bassin_z) // Sous le fond du bassin
+		res(1) = -bassin_x/2+rayon;
+        if (v(1)+rayon > bassin_x/2) { // Devant le bassin
+	    if (v(1)+rayon > bassin_x/2+rayon) // Au dessus de la hauteur de la face avant
+		;
+	    else if (v(3)-rayon < bassin_z/5) // En dessous de la hauteur de la face avant
+		res(1) = bassin_x/2-rayon;
+	}
+        if (v(2)-rayon < -bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A gauche du bassin
+	    if (v(3)+rayon < bassin_z)
+		res(2) = -bassin_y/2+rayon;
+        if (v(2)+rayon > bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A droite du bassin
+	    if (v(3)+rayon < bassin_z)
+		res(2) = bassin_y/2-rayon;
+        if (v(3)-rayon < 0) // Fond du bassin
+	    if (v(1)+rayon > -bassin_x/2 && v(1)-rayon < bassin_x/2) 
+		res(3) = 0+rayon;
+	if (v(3)-rayon < -2.0) 		
+	    if (v(1)+rayon > bassin_x && v(1)-rayon < 4*bassin_x && v(2)-rayon < 2*bassin_y && v(2)+rayon > -2*bassin_y) 
+		res(3) = -2.0+rayon;
+	if (v(1)+rayon > 4*bassin_x)
+	    res(1) = 4*bassin_x-rayon;
+	if (v(1)-rayon < bassin_x && v(3)-rayon < -2.0+bassin_z)
+	    res(1) = bassin_x+rayon;
+	if (v(2)+rayon > 2*bassin_y)
+	    res(2) = 2*bassin_y-rayon;
+	if (v(2)-rayon < -2*bassin_y)
+	    res(2) = -2*bassin_y+rayon;	
     }
     return res;
 }
@@ -648,8 +666,8 @@ void Fluide<Dim>::majPositionVitesse() {
         
         /* Détection des collisions */
         Vecteur<Dim> pos = (*it1)->getPosition();
-        //Vecteur<Dim> contact = collision(pos);
-	Vecteur<Dim> contact = collisionCascade(pos, mat, 2.0, 1.0, 0.5);
+        Vecteur<Dim> contact = collision(pos);
+	//Vecteur<Dim> contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
         
         /* S'il y a collision, on met a jour la position et la vitesse */
         if (contact != pos) {
@@ -688,7 +706,7 @@ void Fluide<Dim>::draw() {
 
     // ball.draw();
 
-    glPushMatrix();
+    /*glPushMatrix();
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4f(1.0, 1.0, 1.0, 0.1);
@@ -725,7 +743,7 @@ void Fluide<Dim>::draw() {
     glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
     
     glEnd();
-    glDisable (GL_BLEND);
+    glDisable (GL_BLEND);*/
 }
 
 

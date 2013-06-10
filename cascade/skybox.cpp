@@ -93,13 +93,13 @@ void Skybox::drawSky()
     glBegin(GL_QUADS);
     // face droite
     glNormal3d(0, 0, 1);
-    glTexCoord2f(0,0);
-    glVertex3f(-0.5*box_x, 0.5*box_x, 0);
     glTexCoord2f(1,0);
+    glVertex3f(-0.5*box_x, 0.5*box_x, 0);
+    glTexCoord2f(0,0);
     glVertex3f(0.5*box_x, 0.5*box_x, 0);
-    glTexCoord2f(1,1);
-    glVertex3f(0.5*box_x, 0.5*box_x, 1*box_x/2);
     glTexCoord2f(0,1);
+    glVertex3f(0.5*box_x, 0.5*box_x, 1*box_x/2);
+    glTexCoord2f(1,1);
     glVertex3f(-0.5*box_x, 0.5*box_x, 1*box_x/2);
  
     glEnd();
@@ -135,13 +135,13 @@ void Skybox::drawSky()
     glBegin(GL_QUADS);
     // face gauche
     glNormal3d(0, -1, 0);
-    glTexCoord2f(0, 0);
-    glVertex3d(0.5*box_x, -0.5*box_x, 0);
     glTexCoord2f(1, 0);
+    glVertex3d(0.5*box_x, -0.5*box_x, 0);
+    glTexCoord2f(0, 0);
     glVertex3d(-0.5*box_x, -0.5*box_x, 0);
-    glTexCoord2f(1, 1);
-    glVertex3d(-0.5*box_x, -0.5*box_x, box_x/2);
     glTexCoord2f(0, 1);
+    glVertex3d(-0.5*box_x, -0.5*box_x, box_x/2);
+    glTexCoord2f(1, 1);
     glVertex3d(0.5*box_x, -0.5*box_x, box_x/2);
  
     glEnd();
