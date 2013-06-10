@@ -203,7 +203,7 @@ Metaballs::~Metaballs() {
 void Metaballs::coloration(list<Particule<3> *> &particules) {
 
     typename list<Particule<3> *>::iterator it;
-    double d = 0.0375; // On considère ce support pour la fonction d'influence    
+    double d = 0.2; // On considère ce support pour la fonction d'influence    
     
     // for (int i = 0; i < n; i++) {
     //         for (int j = 0; j < p; j++) {
@@ -213,12 +213,12 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
     //         }
     // }
     
-    double y;
+//    double y;
 
     for (it = particules.begin(); it != particules.end(); it++) {
         
-	// Si la particule a bougé
-	if ((*it)->getVitesse() != Vecteur<3>()) {
+        // Si la particule a bougé
+        if ((*it)->getPosition() != (*it)->getPositionPrec()) {
     
             // On selectionne les points influes par l'ancienne position de la particule
             Vecteur<3> pos = (*it)->getPositionPrec() - origine;
@@ -232,23 +232,23 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
             int k_min = max(0, (int) ceil((pos(3) - d)/cote));
             int k_max = min(q-1, (int) floor((pos(3) + d)/cote));
 
-	    double ic, jc;
+            double ic, jc;
             // On boucle sur ces points pour supprimer son influence
             for (int i = i_min; i <= i_max; i++) {
-		ic = i*cote;
-		for (int j = j_min; j <= j_max; j++) {
-		    jc = j*cote;
-		    for (int k = k_min; k <= k_max; k++) {
-			pos = origine + Vecteur<3>(ic, jc, k*cote);
-			// points[i][j][k] -= (*it)->isosurface(pos, true);
-			y = (*it)->isosurface(pos, true);
-			if (points[i][j][k] - y < 0.0) {
-			    points[i][j][k] = 0.0;
-			} else {
-			    points[i][j][k] -= y;
-			}
-		    }
-		}
+                ic = i*cote;
+                for (int j = j_min; j <= j_max; j++) {
+                    jc = j*cote;
+                    for (int k = k_min; k <= k_max; k++) {
+                        pos = origine + Vecteur<3>(ic, jc, k*cote);
+                        points[i][j][k] -= (*it)->isosurface(pos, true);
+//                        y = (*it)->isosurface(pos, true);
+//                        if (points[i][j][k] - y < 0.0) {
+//                            points[i][j][k] = 0.0;
+//                        } else {
+//                            points[i][j][k] -= y;
+//                        }
+                    }
+                }
             }
 
             // On selectionne les points influes par la nouvelle position de la particule
@@ -265,24 +265,24 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
 
             // On boucle sur ces points pour ajouter son influence
             for (int i = i_min; i <= i_max; i++) {
-		ic = i*cote;
-		for (int j = j_min; j <= j_max; j++) {
-		    jc = j*cote;
-		    for (int k = k_min; k <= k_max; k++) {
-			pos = origine + Vecteur<3>(ic, jc, k*cote);
-			// points[i][j][k] += (*it)->isosurface(pos, false);
-			y = (*it)->isosurface(pos, false);
-			if (points[i][j][k] + y > 1.0) {
-			    points[i][j][k] = 1.0;
-			} else {
-			    points[i][j][k] += y;
-			}
-		    }
-		}
+                ic = i*cote;
+                for (int j = j_min; j <= j_max; j++) {
+                    jc = j*cote;
+                    for (int k = k_min; k <= k_max; k++) {
+                        pos = origine + Vecteur<3>(ic, jc, k*cote);
+                        points[i][j][k] += (*it)->isosurface(pos, false);
+//                        y = (*it)->isosurface(pos, false);
+//                        if (points[i][j][k] + y > 1.0) {
+//                            points[i][j][k] = 1.0;
+//                        } else {
+//                            points[i][j][k] += y;
+//                        }
+                    }
+                }
             }
            
-	    // Au debut de l'animation, on ne prend en compte que la position courante de la particule
-	} else if (debutAnim) {
+            // Au debut de l'animation, on ne prend en compte que la position courante de la particule
+        } else if (debutAnim) {
             
             // On selectionne les points influes par la nouvelle position de la particule
             Vecteur<3> pos = (*it)->getPosition() - origine;
@@ -296,21 +296,21 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
             int k_min = max(0, (int) ceil((pos(3) - d)/cote));
             int k_max = min(q-1, (int) floor((pos(3) + d)/cote));
             
-	    double ic, jc;
+            double ic, jc;
             // On boucle sur ces points pour ajouter son influence
             for (int i = i_min; i <= i_max; i++) {
-		ic = i*cote;
+                ic = i*cote;
                 for (int j = j_min; j <= j_max; j++) {
-		    jc = j*cote;
+                    jc = j*cote;
                     for (int k = k_min; k <= k_max; k++) {
                         pos = origine + Vecteur<3>(ic, jc, k*cote);
-                        // points[i][j][k] += (*it)->isosurface(pos, false);
-			y = (*it)->isosurface(pos, false);
-			if (points[i][j][k] + y > 1.0) {
-			    points[i][j][k] = 1.0;
-			} else {
-			    points[i][j][k] += y;
-			}
+                        points[i][j][k] += (*it)->isosurface(pos, false);
+//                        y = (*it)->isosurface(pos, false);
+//                        if (points[i][j][k] + y > 1.0) {
+//                            points[i][j][k] = 1.0;
+//                        } else {
+//                            points[i][j][k] += y;
+//                        }
                     }
                 }
             }
@@ -322,11 +322,6 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
     
 }
 
-void Metaballs::coloration(int config) {
-    for (int s = 0 ; s < 8 ; s++) {
-        points[((s >> 1) & 1)][((s + (s >> 1)) & 1)][(s >> 2)] = ((config >> (7 - s)) % 2);
-    }
-}
 
 void Metaballs::draw() {
     int config = 0 ;
@@ -345,8 +340,8 @@ void Metaballs::draw() {
                      * Si un point prend la valeur "vrai" il est considéré comme coloré
                      * c'est-à-dire à l'intérieur de la surface implicite
                      */
-                    // bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 1/(rayon*rayon);
-		    bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 0.99;
+                    bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 1/(rayon*rayon);
+                            // bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 0.99;
                     config <<= 1;
                     config |= dedans;
                 }
@@ -378,6 +373,7 @@ void Metaballs::draw() {
     
     // TODO : cas limites (bords de la boîte) (éventuellement)
 }
+
 
 void Metaballs::drawCube(Vecteur<3> pos, double cote, int config) {
     int coef, numConfig;

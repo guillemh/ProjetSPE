@@ -16,27 +16,47 @@ class Scene {
      *
      * Constructeur par défaut d'un objet de classe Scène
      */
-    Scene () ;
+    Scene ();
 
     /**
      * \brief Destructeur
      */
-    ~Scene () ;
+    ~Scene ();
 
     /**
      * \brief Représentation
      *
      * Représentation de la scène
      */
-    void draw() ;
-    
-    void animate() ;
+    void draw();
 
+    /**
+     * Initialisation de la scène; appelée par le constructeur,
+     * et lors de la réinitialisation de la scène
+     */
+    void init();
+    
+    /**
+     * Supprime les éléments; appelée par le destructeur,
+     * et lors de la réinitialisation de la scène
+     */
+    void clear();
+    
+    void animate();
+
+    /**
+     * Permet une animation pas à pas
+     */
     void animer() {anim = true;}
+
+    /* ** Interaction utilisateur ** */
+    void interact();
+
+    void changerMateriau();
     
  private :
-    Fluide<3> *f ; /*!< Pointeur sur un fluide */
-    Materiau<3> *m ; /*!< Pointeur sur un matériau */
+    Fluide<3> *f;   /*!< Pointeur sur un fluide */
+    Materiau<3> *m; /*!< Pointeur sur un matériau */
 
     bool anim;  /* pour faire l'animation pas à pas */
 };

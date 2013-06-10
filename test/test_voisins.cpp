@@ -24,7 +24,7 @@ void test_voisins() {
     rayon *= 2;  // car le noyau prend les particules dans un rayon 2*rnoyau
     
     dist = rayon+0.1;
-    Fluide<2> f = Fluide<2>(&mateau2d, tab2d, dist, mateau2d.getDensiteRepos(), mateau2d.getPression());
+    Fluide<2> f = Fluide<2>(&mateau2d, tab2d, dist, mateau2d.getDensiteRepos(), mateau2d.getPression(), Vecteur<2>());
     cout << " Distance entre particules " << dist << endl;
     it = f.particules.begin();
     while (it != f.particules.end()) {
@@ -48,7 +48,7 @@ void test_voisins() {
 
     succes = true;
     dist = rayon-0.02;
-    Fluide<2> fp = Fluide<2>(&mateau2d, tab2d, dist, mateau2d.getDensiteRepos(), mateau2d.getPression());
+    Fluide<2> fp = Fluide<2>(&mateau2d, tab2d, dist, mateau2d.getDensiteRepos(), mateau2d.getPression(), Vecteur<2>());
     cout << " Distance entre particules " << dist << endl;
     it = fp.particules.begin();
     while (it != fp.particules.end()) {
@@ -80,7 +80,7 @@ void test_voisins() {
 
     succes = true;
     dist = rayon*10;
-    Fluide<3> f1 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression());
+    Fluide<3> f1 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression(), Vecteur<3>());
     cout << "1.Distance entre particules " << dist << endl;
     //f1.afficher_hash();
     part_it = f1.particules.begin();
@@ -105,7 +105,7 @@ void test_voisins() {
 
     succes = true;
     dist = rayon+rayon/2;
-    Fluide<3> f2 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression());
+    Fluide<3> f2 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression(), Vecteur<3>());
     cout << "2.Distance entre particules " << dist << endl;
     //f2.afficher_hash();
     part_it = f2.particules.begin();
@@ -130,7 +130,7 @@ void test_voisins() {
 
     succes = true;
     dist = rayon+0.02;
-    Fluide<3> f3 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression());
+    Fluide<3> f3 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression(), Vecteur<3>());
     cout << "3.Distance entre particules " << dist << endl;
     //f3.afficher_hash();
     part_it = f3.particules.begin();
@@ -155,7 +155,7 @@ void test_voisins() {
 
     succes = true;
     dist = rayon-0.01;
-    Fluide<3> f4 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression());
+    Fluide<3> f4 = Fluide<3>(&mateau3d, tab3d, dist, mateau3d.getDensiteRepos(), mateau3d.getPression(), Vecteur<3>());
     cout << "4.Distance entre particules " << dist << endl;
     //f4.afficher_hash();
     part_it = f4.particules.begin();

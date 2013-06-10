@@ -1,6 +1,7 @@
 #include <iostream>
 using std::cerr;
 using std::endl;
+using std::cin;
 
 template<unsigned int Dim>
 Materiau<Dim>::Materiau(
@@ -195,4 +196,42 @@ double Materiau<Dim>::getCeleriteSon() {
 template <unsigned int Dim>
 double Materiau<Dim>::getConstanteViscosite() {
     return alpha;
+}
+
+template <unsigned int Dim>
+void Materiau<Dim>::changerParam() {
+    cout << "Quel paramètre voulez-vous changer?" << endl;
+    cout << " 1. Masse des particules" << endl;
+    cout << " 2. Densité au repos" << endl;
+    cout << " 3. Coefficient de restitution" << endl;
+    cout << " 4. Rayon du noyau" << endl;
+    int numero;
+    cin >> numero;
+    switch (numero) {
+    case 1:
+        double m;
+        cout << "Nouvelle masse des particules (actuelle = "
+             << masse_particules << " kg)?" << endl;
+        cin >> m;
+        masse_particules = m;
+        break;
+    case 2:
+        double d;
+        cin >> d;
+        densite_repos = d;
+        break;
+    case 3:
+        double cr;
+        cin >> cr;
+        coeff_restitution = cr;
+        break;
+    case 4:
+        double r;
+        cin >> r;
+        rayon_noyau = r;
+        break;
+    others:
+        cout << "retour" << endl;
+        return;
+    }
 }

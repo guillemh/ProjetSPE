@@ -197,12 +197,12 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
 
     Vecteur<Dim> diff = (prec) ? pos - positionPrec : pos - position;
     double d = diff.scalaire(diff);
-    // if (d == 0.0)
-    //     return 50000;
-    // return 1 / (2*d);
+    if (d == 0.0)
+        return 50000;
+    return 1 / (2*d);
 
     // double d = (pos - position).norme();
-    return exp(-d*d/0.0002715);
+    // return exp(-d*d/0.0002715);
 }
 
 

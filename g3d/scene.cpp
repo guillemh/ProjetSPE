@@ -11,19 +11,36 @@ using namespace std;
 
 
 /* Constructeur à modifier, évidemment */
-Scene::Scene() {
+Scene::Scene()
+    : f(),
+      m()
+{
     
     srand (time (NULL));
+    init();
+    
+}
+
+Scene::~Scene() {
+    clear();
+}
+
+void Scene::init() {
+
+    /* On supprime l'éventuelle scène précédente */
+    clear();
+
+    /* On recréé la scène, avec les paramètres initiaux */
     anim = false;
     
-//    m = new Materiau<3>(EAU);
-//    int d [3] = {10, 10, 20};
-//    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), -0.25, 0.25, -0.25, 1.0, 0.0); 
+    //    m = new Materiau<3>(EAU);
+    //    int d [3] = {10, 10, 20};
+    //    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -0.25, 0.25, -0.25, 1.0, 0.0); 
     
     
     m = new Materiau<3>(EAU);
     int d [3] = {2, 2, 50};
-    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression()); 
+    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>());
     
     
     //    Vecteur<3> vec0 = Vecteur<3>();
@@ -73,9 +90,12 @@ Scene::Scene() {
 //      f = new Fluide<3> (m);
 //      f->ajouteParticule(p1);
 //      f->ajouteParticule(p2);
+
+
+    f->colorationMetaball();
 }
 
-Scene::~Scene() {
+void Scene::clear() {
     delete m;
     delete f;
 }
@@ -89,10 +109,46 @@ void Scene::draw() {
 
 void Scene::animate() {
     // if (anim) {
-        f->majDensitePression();
-        f->majPositionVitesse();
-        // f->schemaIntegration();
-        // f->affiche();
+    f->majDensitePression();
+    f->majPositionVitesse();
+    // f->schemaIntegration();
+    // f->affiche();
     //     anim = false;
     // }    
+}
+
+void Scene::interact() {
+    cout << "Quels paramètres voulez-vous modifier?" << endl;
+    cout << " 1. Le matériau" << endl;
+    cout << " 2. Les paramètres du matériau" << endl;
+    cout << " 3. Les paramètres de l'agencement du fluide" << endl;
+    cout << " autre. Annuler et revenir à la simulation" << endl;
+    int numero;
+    cin >> numero;
+    switch (numero) {
+    case 1:
+        changerMateriau();
+        break;
+    case 2:
+        m->changerParam();
+        break;
+    case 3:
+        f->changerParam();
+        break;
+    others:
+        return;
+    }
+}
+
+void Scene::changerMateriau() {
+    cout << "Quel matériau voulez-vous?" << endl;
+    cout << " 1. Eau" << endl;
+    cout << " 2. Mucus" << endl;
+    cout << " 3. Vapeur" << endl;
+    int numero;
+    cin >> numero;
+    switch(numero) {
+    others:
+        return;
+    }
 }
