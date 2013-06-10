@@ -116,7 +116,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                     double x = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     double y = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     double z = 0.02 * (rand() / double(RAND_MAX) - 0.5);
-                    Vecteur<Dim> alea = Vecteur<Dim>(x,y,z);                    
+                    Vecteur<Dim> alea = Vecteur<Dim>(x,y,fabs(z));                    
                     vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, k*ecart) + alea;
                     // vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
                     
