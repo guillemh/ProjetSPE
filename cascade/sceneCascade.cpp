@@ -12,8 +12,9 @@ SceneCascade::SceneCascade()
 {
     Materiau<3> *m = new Materiau<3>(EAU);
     int d [3] = {2, 5, 50};
-    Fluide<3> *f = new Fluide<3>(m, d, 0.1, m->getDensiteRepos(), m->getPression());
-    //Fluide<3> *f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression()); 
+    Fluide<3> *f = new Fluide<3>(m, d, 0.1, m->getDensiteRepos(), m->getPression(), Vecteur<3>());
+    //Fluide<3> *f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>()); 
+    f->colorationMetaball();
     c = new Cascade<3> (f);
     s = new Skybox(c);
     init();

@@ -11,13 +11,14 @@ using std::pair;
 
 #define EPSR 4
 #define DELTA 150
+#define METABALLS 1 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
 
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(-0.5, -0.5, 0.0), 0.01, mat->getRayonNoyau(), 1, 1, 0.5)),
+      ball (Metaballs(Vecteur<3>(-0.5, -0.5, 0.0), 0.05, mat->getRayonNoyau(), 1, 1, 0.5)),
       nbrParticules(0),
       debutAnim(true),
       hash_voisins(),
@@ -47,9 +48,10 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
 
 
 template<unsigned int Dim>
-Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p, double xmin, double xmax, double ymin, double ymax, double zmin)
+Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p, Vecteur<Dim> v0,
+                    double xmin, double xmax, double ymin, double ymax, double zmin)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(xmin, ymin, zmin), 0.01, mat->getRayonNoyau(), xmax-xmin, ymax-ymin, 1)),
+      ball (Metaballs(Vecteur<3>(xmin, ymin, zmin), 0.05, mat->getRayonNoyau(), xmax-xmin, ymax-ymin, 1)),
       x_min(xmin),
       x_max(xmax),
       y_min(ymin),
@@ -84,7 +86,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
             for (int j = 0; j < nb[1]; j++) {
                 ++cpt;
                 Vecteur<Dim> vec = Vecteur<Dim>((i-nb[0]/2)*ecart, 0.01+ j*ecart);
-                Particule<Dim> *part = new Particule<Dim>(cpt, vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
+                Particule<Dim> *part = new Particule<Dim>(cpt, vec, v0, mat->getMasseParticules(), rho, p);
                 particules.push_back(part);
                 noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
                 noeud_grille(2) = int(floor(part->getPosition()(2)/mat->getRayonNoyau()));
@@ -118,7 +120,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                     vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, k*ecart) + alea;
                     // vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
                     
-                    part = new Particule<Dim>(cpt, vec, Vecteur<Dim>(), mat->getMasseParticules(), rho, p);
+                    part = new Particule<Dim>(cpt, vec, v0, mat->getMasseParticules(), rho, p);
                     particules.push_back(part);
                     noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
                     noeud_grille(2) = int(floor(part->getPosition()(2)/mat->getRayonNoyau()));
@@ -669,24 +671,35 @@ void Fluide<Dim>::majPositionVitesse() {
 
     /* On met la table de hachage à jour */
     majTableHashage();
+    
     /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
-    // ball.coloration(particules);
+    if (METABALLS)
+        ball.coloration(particules);
+}
+
+
+template<unsigned int Dim>
+void Fluide<Dim>::colorationMetaball() {
+    if (METABALLS)
+        ball.coloration(particules);
 }
 
 
 template<unsigned int Dim>
 void Fluide<Dim>::draw() {
 
-    typename list<Particule<Dim> *>::const_iterator it;
-    for (it = particules.begin (); it != particules.end (); it++) {
-        (*it)->draw ();
-    }
+    if (METABALLS) {
+        ball.draw();
+    } else {
+        typename list<Particule<Dim> *>::const_iterator it;
+        for (it = particules.begin(); it != particules.end(); it++) {
+            (*it)->draw();
+        }
     
-    // for (it = lignedEau.begin (); it != lignedEau.end (); it++) {
-    //     (*it)->draw ();
-    // }
-
-    // ball.draw();
+        // for (it = lignedEau.begin(); it != lignedEau.end(); it++) {
+        //     (*it)->draw();
+        // }
+    }
 
     glPushMatrix();
     glEnable (GL_BLEND);

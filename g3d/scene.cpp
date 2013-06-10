@@ -18,12 +18,12 @@ Scene::Scene() {
     
 //    m = new Materiau<3>(EAU);
 //    int d [3] = {10, 10, 20};
-//    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), -0.25, 0.25, -0.25, 1.0, 0.0); 
+//    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -0.25, 0.25, -0.25, 1.0, 0.0); 
     
     
     m = new Materiau<3>(EAU);
     int d [3] = {2, 2, 50};
-    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression()); 
+    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>());
     
     
     //    Vecteur<3> vec0 = Vecteur<3>();
@@ -73,6 +73,9 @@ Scene::Scene() {
 //      f = new Fluide<3> (m);
 //      f->ajouteParticule(p1);
 //      f->ajouteParticule(p2);
+
+
+    f->colorationMetaball();
 }
 
 Scene::~Scene() {
