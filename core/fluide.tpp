@@ -669,6 +669,8 @@ void Fluide<Dim>::majPositionVitesse() {
 
     /* On met la table de hachage à jour */
     majTableHashage();
+    /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
+    // ball.coloration(particules);
 }
 
 
@@ -684,8 +686,7 @@ void Fluide<Dim>::draw() {
     //     (*it)->draw ();
     // }
 
-   ball.coloration(particules);
-   ball.draw();
+    // ball.draw();
 
     glPushMatrix();
     glEnable (GL_BLEND);
