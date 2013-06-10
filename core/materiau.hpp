@@ -182,10 +182,29 @@ public:
 
     /* ** Interaction utilisateur ** */
 
+    /**
+     * @brief Interaction utilisateur
+     *
+     * Méthode permettant de modifier les paramètres communs à tous les fluides
+     * de manière interactive pendant la simulation
+     */
     void changerSysteme();
 
+    /**
+     * @brief Interaction utilisateur
+     *
+     * Méthode permettant de modifier le type du fluide
+     * de manière interactive pendant la simulation
+     * @param type Nouveau type du fluide
+     */
     void changerNature(TypeFluide type);
 
+    /**
+     * @brief Interaction utilisateur
+     *
+     * Méthode permettant de modifier les paramètres propres aux fluides
+     * de manière interactive pendant la simulation
+     */
     void changerParam();
     
 };

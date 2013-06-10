@@ -99,7 +99,9 @@ public:
     ~Fluide();
 
     /**
-     * Méthode appelée par le constructeur, qui recréé le fluide
+     * @brief Initialisation
+     *
+     * Méthode appelée par le constructeur, qui (re)créé le fluide
      */
     void init();
     
