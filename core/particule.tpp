@@ -4,7 +4,7 @@
 #include "particule.hpp"
 
 #define PI 3.1415926535
-#define COLORATION 0 // Mettre a 1 pour obtenir une coloration des particules en fonction de leur activité
+#define COLORATION 1 // Mettre a 1 pour obtenir une coloration des particules en fonction de leur activité
 
 using std::endl;
 using std::ostream;
@@ -12,7 +12,7 @@ using std::ostream;
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
-Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m, bool a)
+Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m, int a)
     : indice(ind),
       position(pos),
       positionPrec(pos),
@@ -98,7 +98,7 @@ double Particule<Dim>::getPressionPrec() const {
 }
 
 template<unsigned int Dim>
-double Particule<Dim>::getActive() const {
+int Particule<Dim>::getActive() const {
     return active;
 }
 
@@ -175,7 +175,7 @@ void Particule<Dim>::decrForces(const Vecteur<Dim> &f) {
 }
 
 template<unsigned int Dim>
-void Particule<Dim>::setActive(const bool &b) {
+void Particule<Dim>::setActive(const int &b) {
     active = b;
 }
 
@@ -252,10 +252,12 @@ void Particule<Dim>::draw() const {
     if (!COLORATION) {
        glColor3f(0.0, 1.0, 0.0);
     } else {
-      if (active) {
+      if (active == 1) {
       	  glColor3f(1.0,0.0,0.0);       
-      } else {     
+      } else if (active == 2) {     
       	  glColor3f(0.0,0.0,1.0);    
+      } else if (active == 3) {
+	glColor3f(0.0, 1.0, 0.0);
       }
     }
 
