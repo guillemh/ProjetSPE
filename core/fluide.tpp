@@ -931,7 +931,6 @@ void Fluide<Dim>::integrationForces() {
         /* Au milieu de l'algorithme incrémental */
         double rho;
         Vecteur<Dim> drho;
-        
         /* On se base sur les anciennes positions pour enlever les anciennes forces */
         // cout << endl << "********************************************" << endl;
         // cout << "Forces enlevées :" << endl;
@@ -941,7 +940,7 @@ void Fluide<Dim>::integrationForces() {
             // cout << (*part_it)->getIndice() << ". forces précédentes : " << (*part_it)->getForces() << endl;
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
-                restriction((*vois_it)->getVitesse(), rho, drho);
+                restriction((*vois_it)->getVitessePrec(), rho, drho);
                 if (rho == 1  // la particule voisine n'est pas active : il faut quand même
                               // mettre à jour les forces d'interaction entre elles,
                               // mais vois_it ne pourra pas le faire
@@ -1013,7 +1012,7 @@ void Fluide<Dim>::integrationForces() {
             // cout << (*part_it)->getIndice() << ". forces précédentes : " << (*part_it)->getForces() << endl;
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
-                restriction((*vois_it)->getVitesse(), rho, drho);
+                restriction((*vois_it)->getVitessePrec(), rho, drho);
                 if (rho == 1  // la particule voisine n'est pas active : il faut quand même
                               // mettre à jour les forces d'interaction entre elles,
                               // mais vois_it ne pourra pas le faire
@@ -1113,7 +1112,7 @@ void Fluide<Dim>::schemaIntegration() {
 
     /* Réinitialisation de la liste des particules actives */
     actives.clear();
-    cout << endl;
+    // cout << endl;
     // cout << endl << "********************************************" << endl;
     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
         /* Mise à jour de la liste des particules actives */
@@ -1125,7 +1124,7 @@ void Fluide<Dim>::schemaIntegration() {
             actives.push_back(*part_it);
 	    (*part_it)->setActive(true);
         } else {
-            cout << (*part_it)->getIndice() << " pas active" << endl;
+            // cout << (*part_it)->getIndice() << " pas active" << endl;
 	    (*part_it)->setActive(false);
         }
         /* Mise à jour des positions */
@@ -1153,6 +1152,17 @@ void Fluide<Dim>::schemaIntegration() {
             /* Mise a jour de la vitesse */
             double vitesse = (*part_it)->getVitesse().scalaire(normale);
             (*part_it)->setVitesse(-mat->getCoeffRestitution() * vitesse*normale + (*part_it)->getVitesse() - vitesse*normale);
+
+            /* Mise à jour de la liste des actives */
+            // restriction((*part_it)->getVitesse(), rho, drho);
+            // if (!(*part_it)->getActive() && rho < 1) {
+            //     actives.push_back(*part_it);
+            //     (*part_it)->setActive(true);
+            // } else if ((*part_it)->getActive() && rho == 1) {
+            //     cout << "remove" << endl;
+            //     actives.remove(*part_it);
+            //     (*part_it)->setActive(true);
+            // }
         }
     }
     

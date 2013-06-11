@@ -31,7 +31,7 @@ void Scene::init() {
 
     /* On créé la scène, avec les paramètres initiaux */
     anim = false;
-    arps = false;
+    arps = true;
     
     //    m = new Materiau<3>(EAU);
     //    int d [3] = {10, 10, 20};
@@ -108,13 +108,13 @@ void Scene::draw() {
 
 void Scene::animate() {
     // if (anim) {
-    if (arps) {
-        f->schemaIntegration();
-    } else {
-        f->majDensitePression();
-        f->majPositionVitesse();
-    }
-    // f->affiche();
+        if (arps) {
+            f->schemaIntegration();
+        } else {
+            f->majDensitePression();
+            f->majPositionVitesse();
+        }
+    //     f->affiche();
     //     anim = false;
     // }    
 }
