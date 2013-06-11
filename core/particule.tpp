@@ -4,6 +4,7 @@
 #include "particule.hpp"
 
 #define PI 3.1415926535
+#define COLORATION 0 // Mettre a 1 pour obtenir une coloration des particules en fonction de leur activité
 
 using std::endl;
 using std::ostream;
@@ -11,7 +12,7 @@ using std::ostream;
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
-Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m)
+Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m, bool a)
     : indice(ind),
       position(pos),
       positionPrec(pos),
@@ -21,7 +22,8 @@ Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, 
       masse_volumique_prec(rho),
       pression(p),
       pressionPrec(p),
-      masse(m)
+      masse(m),
+      active(a)
 {
 }
 
@@ -93,6 +95,11 @@ double Particule<Dim>::getPression() const {
 template<unsigned int Dim>
 double Particule<Dim>::getPressionPrec() const {
     return pressionPrec;
+}
+
+template<unsigned int Dim>
+double Particule<Dim>::getActive() const {
+    return active;
 }
 
 
@@ -167,6 +174,11 @@ void Particule<Dim>::decrForces(const Vecteur<Dim> &f) {
     forces -= f;
 }
 
+template<unsigned int Dim>
+void Particule<Dim>::setActive(const bool &b) {
+    active = b;
+}
+
 
 template<unsigned int Dim>
 void Particule<Dim>::majPression (double dens) {
@@ -210,7 +222,6 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
 template<unsigned int Dim>
 void Particule<Dim>::draw(Materiau<Dim> *mat) const {
     // glPushMatrix();
-    glColor3f(1.0, 0.0, 0.0);
     // glTranslatef(position(1), position(2), position(3));
     /* Calcul du rayon de la sphère :
      * r = racine cubique (3 * m / (4 * PI * rho)) 
@@ -221,6 +232,7 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
      * ce qui simplifie le calcul
      */
     double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * mat->getPression()), 1.0/3.0);
+
     glutSolidSphere(rayon, 12, 12);
     glVertex3f(position(1), position(2), position(3));
     // glPopMatrix();
@@ -237,7 +249,17 @@ void Particule<Dim>::draw() const {
     //glEnd();
     
     glPushMatrix();
-    glColor3f(0.0, 1.0, 0.0);
+    if (!COLORATION) {
+       glColor3f(0.0, 1.0, 0.0);
+    } else {
+
+      if (active) {
+      	  glColor3f(1.0,0.0,0.0);       
+      } else {     
+      	  glColor3f(0.0,0.0,1.0);    
+      }
+    }
+
     glTranslatef(position(1), position(2), position(3));
     glutSolidSphere(0.025, 8, 8);
     glPopMatrix();
