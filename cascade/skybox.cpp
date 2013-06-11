@@ -28,8 +28,11 @@ void Skybox::init()
 
 void Skybox::initSky()
 {
-   	
-    loadTexture(TEX_SKY, "cascade/images/sky.tiff");
+    if (fopen("cascade/images/sky.tiff", "rb") != NULL) {
+	loadTexture(TEX_SKY, "cascade/images/sky.tiff");
+    } else {
+	loadTexture(TEX_SKY, "images/sky.tiff");
+    }
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
@@ -41,8 +44,11 @@ void Skybox::initSky()
 
 void Skybox::initSol()
 {
-  	
-    loadTexture(TEX_HERBE, "cascade/images/herbe.tiff");
+  	if (fopen("cascade/images/herbe.tiff", "rb") != NULL) {
+	    loadTexture(TEX_HERBE, "cascade/images/herbe.tiff");
+	} else {
+	    loadTexture(TEX_HERBE, "images/herbe.tiff");
+	}
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);

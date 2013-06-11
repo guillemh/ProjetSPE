@@ -1128,7 +1128,7 @@ void Fluide<Dim>::schemaIntegration() {
 
     /* Réinitialisation de la liste des particules actives */
     actives.clear();
-    cout << endl;
+    // cout << endl;
     // cout << endl << "********************************************" << endl;
     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
         /* Mise à jour de la liste des particules actives */
@@ -1140,7 +1140,7 @@ void Fluide<Dim>::schemaIntegration() {
             actives.push_back(*part_it);
 	    (*part_it)->setActive(true);
         } else {
-            cout << (*part_it)->getIndice() << " pas active" << endl;
+            // cout << (*part_it)->getIndice() << " pas active" << endl;
 	    (*part_it)->setActive(false);
         }
         /* Mise à jour des positions */
@@ -1156,9 +1156,9 @@ void Fluide<Dim>::schemaIntegration() {
         Vecteur<Dim> pos = (*part_it)->getPosition();
         Vecteur<Dim> contact;
 	if (!CASCADE) {
-           contact = collision(pos);
+	    contact = collision(pos);
 	} else {
-	  contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+	    contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
 	}
         
         /* S'il y a collision, on met a jour la position et la vitesse */
