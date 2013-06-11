@@ -4,7 +4,7 @@
 #include "particule.hpp"
 
 #define PI 3.1415926535
-#define COLORATION 0
+#define COLORATION 0 // Mettre a 1 pour obtenir une coloration des particules en fonction de leur activité
 
 using std::endl;
 using std::ostream;

@@ -12,6 +12,8 @@ using std::pair;
 #define EPSR 1
 #define DELTA 15
 #define METABALLS 0 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
+#define CASCADE 0 // Mettre a 1 pour les collisions avec la cascade
+
 
 /* ** Constructeurs ** */
 
@@ -655,8 +657,12 @@ void Fluide<Dim>::majPositionVitesse() {
         
         /* Détection des collisions */
         Vecteur<Dim> pos = (*it1)->getPosition();
-        //Vecteur<Dim> contact = collision(pos);
-	Vecteur<Dim> contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+	Vecteur<Dim> contact;
+	if (!CASCADE) {
+           contact = collision(pos);
+	} else {
+	  contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+	}
         
         /* S'il y a collision, on met a jour la position et la vitesse */
         if (contact != pos) {
