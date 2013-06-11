@@ -1,6 +1,10 @@
 #ifndef _FLUIDE_HPP_
 #define _FLUIDE_HPP_
 
+#include <QVector>
+#include <QVector2D>
+#include <QVector4D>
+
 #include <iostream>
 #include <map>
 #include <list>
@@ -162,6 +166,16 @@ public:
     void draw();
 
     /**
+     * @brief Affichage graphique
+     *
+     * Fonction d'affichage du fluide en utilisant les shaders
+     * @param vertices Pointeur sur un tableau de type QGLBuffer où stocker la position des particules composant le fluide
+     * @param colors Pointeur sur un tableau de type QGLBuffer où stocker la couleur des particules composant le fluide
+     * @param indices Pointeurs sur un tableau contenant les indices de ces particules
+     */
+    void draw(struct QVector<QVector3D> *vertices, struct QVector<QVector4D> *colors, struct QVector<int> *indices);
+
+    /**
      * @brief Trace de debug
      *
      * Affichage des particules du fluide
@@ -177,6 +191,8 @@ public:
 
     /* ** Interaction utilisateur ** */
     /**
+     * @brief Interaction utilisateur
+     *
      * Modification interactive des paramètres du fluide
      * @return True ssi il faut recommencer la simulation après modification
      */
@@ -193,6 +209,13 @@ public:
      * Modification interactive du mode d'affichage
      */
     void changerAffichageAuto();
+
+    /**
+     * @brief Interaction utilisateur
+     *
+     * Modification interactive des seuils de l'ARPS
+     */
+    void changerArps();
 
     /**
      * Fonction de tests basiques sur l'insertion dans la table de hashage,

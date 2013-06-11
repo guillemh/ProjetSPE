@@ -32,6 +32,8 @@ private :
     double pente_y;       /*!< Largeur de la pente */
     double pente_z;       /*!< Hauteur des bords de la pente */
 
+    bool arps;   /* pour choisir entre l'arps ou pas pour l'animation */
+
 public :
     
     /**
@@ -86,8 +88,10 @@ public :
      * \brief Animation physique
      * 
      * Anime physiquement les particules de l'objet de type Cascade
+     * @param arps Booléen valant True ssi on veut utiliser l'ARPS
+     * pour la simulation
      */
-    void animate();
+    void animate(bool arps);
 
     /**
      * @brief Accesseur

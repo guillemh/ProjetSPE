@@ -32,6 +32,7 @@ private:
     double pressionPrec;         // Pression de la particule 
                                  // au pas de temps précédent (Pa) 
     double masse;                // Masse de la particule (m)
+    bool active;              // Activite de la particule
 
     /* ** Constructeurs ** */
 public:
@@ -46,7 +47,7 @@ public:
      * \param rho Masse volumique initiale
      * \param p Pression initiale
      */
-    Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0, double m = 0);
+  Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0, double m = 0, bool active = true);
     
     /**
      * @brief Destructeur
@@ -142,6 +143,15 @@ public:
      * \return La pression de la particule au pas de temps précédent
      */
     double getPressionPrec() const;
+
+   /**
+     * @brief Accesseur
+     *
+     * \return L'activité de la particule
+     */
+    double getActive() const;
+
+  
 
     /* ** Mutateurs ** */
     /**
@@ -247,6 +257,15 @@ public:
      * @param f Facteur de décrémentation des forces (forces -= f)
      */
     void decrForces(const Vecteur<Dim>& f);
+
+   /**
+     * @brief Mutateur
+     *
+     * Met à jour l'activité de la particule
+     * @param b Booleen associé à l'activité de la particule
+     */
+    void setActive(const bool &b);
+  
 
     /**
      * @brief Mise à jour de la particule pour un pas de temps

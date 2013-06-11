@@ -12,7 +12,8 @@ using std::pair;
 #define EPSR 1
 #define DELTA 15
 #define METABALLS 0 // Mettre a 1 pour dessiner des surfaces, 0 pour des particules
-#define POINT 0 // Mettre a 1 pour dessiner des points, 0 pour des spheres
+#define POINT 0     // Mettre a 1 pour dessiner des points, 0 pour des spheres
+#define CASCADE 0   // Mettre a 1 pour les collisions avec la cascade
 
 /* ** Constructeurs ** */
 
@@ -663,8 +664,12 @@ void Fluide<Dim>::majPositionVitesse() {
         
         /* Détection des collisions */
         Vecteur<Dim> pos = (*it1)->getPosition();
-        Vecteur<Dim> contact = collision(pos);
-	//Vecteur<Dim> contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+	Vecteur<Dim> contact;
+	if (!CASCADE) {
+           contact = collision(pos);
+	} else {
+	  contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+	}
         
         /* S'il y a collision, on met a jour la position et la vitesse */
         if (contact != pos) {
@@ -756,6 +761,21 @@ void Fluide<Dim>::draw() {
     glDisable (GL_BLEND);
 }
 
+template<unsigned int Dim>
+void Fluide<Dim>::draw(struct QVector<QVector3D> *vertices, struct QVector<QVector4D> *colors, struct QVector<int> *indices) {
+    vertices->clear();
+    colors->clear();
+    indices->clear();
+    typename list<Particule<Dim> *>::const_iterator it;
+    int i = 0;
+    for (it = particules.begin(); it != particules.end(); it++) {
+	Vecteur<Dim> posIt = (*it)->getPosition();
+	vertices->push_back(QVector3D(posIt(1), posIt(2), posIt(3)));
+	colors->push_back(QVector4D(0.0, 1.0, 0.0, 0.0));
+	indices->push_back(i);
+	i++;
+    }
+}
 
 template<unsigned int Dim>
 void Fluide<Dim>::affiche() {
@@ -1120,7 +1140,7 @@ void Fluide<Dim>::schemaIntegration() {
 
     /* Réinitialisation de la liste des particules actives */
     actives.clear();
-    cout << endl;
+    // cout << endl;
     // cout << endl << "********************************************" << endl;
     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
         /* Mise à jour de la liste des particules actives */
@@ -1130,8 +1150,10 @@ void Fluide<Dim>::schemaIntegration() {
         // cout << (*part_it)->getIndice() << ". Restriction : " << rho <<  " | " << drho << endl;
         if (rho < 1) {
             actives.push_back(*part_it);
+	    (*part_it)->setActive(true);
         } else {
-            cout << (*part_it)->getIndice() << " pas active" << endl;
+            // cout << (*part_it)->getIndice() << " pas active" << endl;
+	    (*part_it)->setActive(false);
         }
         /* Mise à jour des positions */
         Vecteur<Dim> incr = mat->getPasTemps() * 
@@ -1144,7 +1166,12 @@ void Fluide<Dim>::schemaIntegration() {
         
         /* Détection des collisions */
         Vecteur<Dim> pos = (*part_it)->getPosition();
-        Vecteur<Dim> contact = collision(pos);
+        Vecteur<Dim> contact;
+	if (!CASCADE) {
+	    contact = collision(pos);
+	} else {
+	    contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+	}
         
         /* S'il y a collision, on met a jour la position et la vitesse */
         if (contact != pos) {
@@ -1337,4 +1364,22 @@ void Fluide<Dim>::changerAffichageAuto() {
         afficheMetaballs = true;
         ball->initColoration(particules);
     }
+    
+}
+
+
+template <unsigned int Dim>
+void Fluide<Dim>::changerArps() {
+    
+    cout << "Nouveau seuil de dynamique restreinte (actuel = "
+         << epsilonR << ")?" << endl;
+    double eps;
+    cin >> eps;
+    epsilonR = eps;
+    cout << "Nouvel écart entre les seuils de dynamique restreinte et entière (actuel = "
+         << epsilonF - epsilonR << ")?" << endl;
+    double delta;
+    cin >> delta;
+    epsilonF = epsilonR + delta;
+
 }

@@ -14,9 +14,12 @@
 class SceneCascade {
     /* ** Attributs ** */
  private :
-    Cascade<3> *c1;  /*!< Pointeur vers la cascade utilisée */
-    Cascade<3> *c2;  /*!< Pointeur vers la cascade utilisée */
-    Skybox *s;      /*!< Pointeur vers la skybox utilisée */
+    Cascade<3> *c1;  /* Pointeur vers la cascade utilisée */
+    Cascade<3> *c2;  /* Pointeur vers la cascade utilisée */
+    Skybox *s;       /* Pointeur vers la skybox utilisée */
+    Fluide<3> *f;    /* Pointeur vers le fluide utilisé */
+
+    bool arps;   /* permet de changer entre l'arps ou non */
 
  public :
     /**
@@ -32,11 +35,16 @@ class SceneCascade {
     ~SceneCascade();
 
     /**
+     * Supprime les éléments; appelée par le destructeur,
+     * et lors de la réinitialisation de la scène
+     */
+    void clear();
+    
+    /**
      * @brief Initialisation
      *
      * Initialisations pour les objets de la scène
-     */
-    
+     */    
     void init();
 
     /**
@@ -53,5 +61,15 @@ class SceneCascade {
      */
     void animate();
 
+    /**
+     * @brief Interaction utilisateur
+     *
+     * Méthode permettant de changer interactivement entre l'ARPS
+     * et le SPH traditionnel, ainsi que les seuils de l'ARPS
+     */
+    void interact();
+    
+    void changerAffichage();
+    
 };
 #endif

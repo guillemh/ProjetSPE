@@ -33,12 +33,17 @@ Viewer::Viewer(QWidget *parent):
 
     //Initialisation de la position de la souris et de la camera
     mousePosition = QPoint(0, 0);
+    dist = 3.0;
     camera3D = Camera();
 
     //Initialisation des parametres de lanimation
     animationTimerId = 0;
     stopAnimation();
     animationPeriod=40; // frequence : 25Hz = 40 ms
+    
+    Materiau<3> *m = new Materiau<3>(EAU);
+    d = Vecteur<3>(2, 2, 5);
+    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>());
 }
 
 Viewer::~Viewer(){}
@@ -47,7 +52,7 @@ void Viewer::resetView()
 {
     //Initialize camera
     QVector3D target(0.0,0.0,0.0);
-    camera3D = Camera(target, 3, 0.0, 0.0, 60.0, width() / (double) height(), 0.01, 1000.0, width(), height());
+    camera3D = Camera(target, dist, 0.0, 0.0, 60.0, width() / (double) height(), 0.01, 1000.0, width(), height());
 
     //Initialize model matrix : object position
     model.setToIdentity();
@@ -57,7 +62,7 @@ void Viewer::initializeGL()
 {
     //Initialize camera
     QVector3D target(0.0,0.0,0.0);
-    camera3D = Camera(target, 3, 0.0, 0.0, 60.0, width() / (double) height(), 0.01, 1000.0, width(), height());
+    camera3D = Camera(target, dist, 0.0, 0.0, 60.0, width() / (double) height(), 0.01, 1000.0, width(), height());
 
     //Initialize model matrix : object position
     model.setToIdentity();
@@ -89,7 +94,6 @@ void Viewer::initializeGL()
     }
 
     m_colors_attribute = m_program.attributeLocation("color");
-
     if(m_colors_attribute == -1)
     {
         std::cerr << "Identifiant de la variable attribute color : -1" << std::endl;
@@ -100,24 +104,49 @@ void Viewer::initializeGL()
 
     m_program.release();
 
+    /* Création des axes */
+
+    // Vertex buffer init
+    // m_vertexbuffer.create();
+    // m_vertexbuffer.bind(); //precise que lon va travailler dessus avec la fonction bind
+    // m_vertexbuffer.allocate(m_vertices.constData(), m_vertices.size() * sizeof(QVector3D)); //allocation de la memoire
+    // m_vertexbuffer.release(); //fin d'utilisation
+
+    // // Color buffer init
+    // m_colorbuffer.create();
+    // m_colorbuffer.bind(); //precise que lon va travailler dessus avec la fonction bind
+    // m_colorbuffer.allocate(m_colors.constData(), m_colors.size() * sizeof(QVector4D)); //allocation de la memoire
+    // m_colorbuffer.release(); //fin d'utilisation
+
+    // // Indices buffer init
+    // m_indicebuffer.create();
+    // m_indicebuffer.bind();
+    // m_indicebuffer.allocate(m_indices.constData(), m_indices.size() * sizeof(GLuint));
+    // m_indicebuffer.release();
+
+    /* Création des particules */
+
+    f->draw (&m_pts_vertices, &m_pts_colors, &m_pts_indices);
+
+    int nbParticules = d(1) * d(2) * d(3);
+    cout << nbParticules << endl;
     // Vertex buffer init
     m_vertexbuffer.create();
     m_vertexbuffer.bind(); //precise que lon va travailler dessus avec la fonction bind
-    m_vertexbuffer.allocate(m_vertices.constData(), m_vertices.size() * sizeof(QVector3D)); //allocation de la memoire
+    m_vertexbuffer.allocate(m_pts_vertices.constData(), nbParticules * sizeof(QVector3D)); //allocation de la memoire
     m_vertexbuffer.release(); //fin d'utilisation
 
     // Color buffer init
     m_colorbuffer.create();
     m_colorbuffer.bind(); //precise que lon va travailler dessus avec la fonction bind
-    m_colorbuffer.allocate(m_colors.constData(), m_colors.size() * sizeof(QVector4D)); //allocation de la memoire
+    m_colorbuffer.allocate(m_pts_colors.constData(), nbParticules * sizeof(QVector4D)); //allocation de la memoire
     m_colorbuffer.release(); //fin d'utilisation
 
     // Indices buffer init
     m_indicebuffer.create();
     m_indicebuffer.bind();
-    m_indicebuffer.allocate(m_indices.constData(), m_indices.size() * sizeof(GLuint));
+    m_indicebuffer.allocate(m_pts_indices.constData(), nbParticules * sizeof(GLuint));
     m_indicebuffer.release();
-
 
     // Set up the rendering context, define display lists etc.:
     glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -146,6 +175,9 @@ void Viewer::render()
     m_program.setUniformValue(m_matrix_location, camera3D.projection() * camera3D.view());
 
     //indique à la carte graphique que lon travaille avec des vertex array
+
+    /* Représentation des axes */
+
     glEnableClientState(GL_VERTEX_ARRAY);
 
     //Vertex buffer
@@ -162,10 +194,33 @@ void Viewer::render()
 
     //Vertex And Color indice buffer
     m_indicebuffer.bind();
-    glDrawElements(GL_LINES, m_indices.size(), GL_UNSIGNED_INT, NULL);
+    glDrawElements(GL_POINTS, m_pts_indices.size(), GL_UNSIGNED_INT, NULL);
     m_indicebuffer.release();
 
     glDisableClientState(GL_VERTEX_ARRAY);
+
+    /* Représentation des particules */
+
+    // glEnableClientState(GL_VERTEX_ARRAY);
+
+    // //Vertex buffer
+    // m_vertexbuffer.bind(); //active le buffer
+    // m_program.enableAttributeArray(m_vertices_attribute); //indique a opengl que l'on utilise un buffer comme variable
+    // m_program.setAttributeBuffer(m_vertices_attribute,GL_FLOAT, 0, 3); //appel des fonctions opengl
+    // m_vertexbuffer.release(); //desactive le buffer
+
+    // //Color buffer
+    // m_colorbuffer.bind();
+    // m_program.enableAttributeArray(m_colors_attribute);
+    // m_program.setAttributeBuffer(m_colors_attribute,GL_FLOAT, 0, 4);
+    // m_colorbuffer.release();
+
+    // //Vertex And Color indice buffer
+    // m_indicebuffer.bind();
+    // glDrawElements(GL_POINTS, m_pts_indices.size(), GL_UNSIGNED_INT, NULL);
+    // m_indicebuffer.release();
+
+    // glDisableClientState(GL_VERTEX_ARRAY);
 
     //libere les buffer utilises
     m_program.disableAttributeArray(m_colors_attribute);
@@ -186,31 +241,33 @@ void Viewer::render()
 
 void Viewer::paintGL()
 {
-    //Scene rendering
+    // Mise à jour des tableaux de données
+    f->draw (&m_pts_vertices, &m_pts_colors, &m_pts_indices);
+    // Scene rendering
     render();
 }
 
 void Viewer::keyPressEvent(QKeyEvent *e)
 {
-    if (e->key() == Qt::Key_R)
-    {
+    if (e->key() == Qt::Key_R) {
         resetView(); updateGL();
-    }
-    else if (e->key() == Qt::Key_A)
-    {
-        if( animationStarted == false)
-        {
+    } else if (e->key() == Qt::Key_A) {
+        if (animationStarted == false) {
             startAnimation();
             animationStarted = true;
-        }
-        else
-        {
+        } else {
             stopAnimation();
             animationStarted = false;
         }
-    }
-    else
-    {
+    } else if (e->key() == Qt::Key_Up) {
+	dist -= 0.1;
+	resetView();
+	updateGL();
+    } else if (e->key() == Qt::Key_Down) {
+	dist += 0.1;
+	resetView();
+	updateGL();
+    } else {
         std::cout << "Key Not Mapped" << std::endl;
     }
 }
@@ -257,6 +314,5 @@ void Viewer::stopAnimation()
     if(animationTimerId != 0) 
     {  
         killTimer(animationTimerId);
-
     }  
 }  
