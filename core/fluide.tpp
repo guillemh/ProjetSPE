@@ -1139,7 +1139,12 @@ void Fluide<Dim>::schemaIntegration() {
         
         /* Détection des collisions */
         Vecteur<Dim> pos = (*part_it)->getPosition();
-        Vecteur<Dim> contact = collision(pos);
+        Vecteur<Dim> contact;
+	if (!CASCADE) {
+           contact = collision(pos);
+	} else {
+	  contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+	}
         
         /* S'il y a collision, on met a jour la position et la vitesse */
         if (contact != pos) {
