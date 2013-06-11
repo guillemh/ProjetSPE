@@ -8,9 +8,6 @@
 in vec4 vertex;
 in vec4 color;
 
-in vec4 pts_vertex;
-in vec4 pts_color;
-
 uniform mat4 matrixpmv; //matrix projection model view
 
 //smooth means smooth_color is an output from vertex shader and input to fragment shader
@@ -25,7 +22,4 @@ void main(void)
     //gl_Position : renvoie la position du vertex apres transformation
     smooth_color = color;
     gl_Position = matrixpmv * vertex;
-
-    smooth_color = pts_color;
-    gl_Position = matrixpmv * pts_vertex;
 }
