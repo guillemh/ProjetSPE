@@ -90,7 +90,7 @@ void Scene::init() {
 //      f->ajouteParticule(p2);
 
 
-    f->colorationMetaball();
+    //f->colorationMetaball();
 }
 
 void Scene::clear() {
@@ -142,7 +142,15 @@ void Scene::interact() {
         break;
     }
 
+    int on;
     if (!chgt) {
+        cout << "Voulez-vous effectuer une nouvelle modification?" << endl;
+        cout << " 1 => Oui" << endl << " 0 => Non" << endl;
+        cin >> on;
+        if (on == 1) {
+            interact();
+            return;
+        }
         cout << endl << "Où voulez-vous reprendre la simulation?" << endl;
         cout << " 1. Reprendre là où elle en est" << endl;
         cout << " 2. Recommencer avec les nouveaux paramètres" << endl;
