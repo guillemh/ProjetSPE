@@ -172,10 +172,19 @@ public:
 
     /* ** Interaction utilisateur ** */
     /**
+     * @brief Interaction utilisateur
+     *
      * Modification interactive des paramètres du fluide
      * @return True ssi il faut recommencer la simulation après modification
      */
     bool changerParam();
+
+    /**
+     * @brief Interaction utilisateur
+     *
+     * Modification interactive des seuils de l'ARPS
+     */
+    void changerArps();
 
     /**
      * Fonction de tests basiques sur l'insertion dans la table de hashage,

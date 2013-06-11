@@ -51,6 +51,11 @@ class Viewer : public QGLViewer
      */
     virtual void draw();
     
+    /**
+     * @brief Animation
+     *
+     * Animation des objets
+     */
     virtual void animate();
 
     bool toogleWireframe; /*!< Booléen indiquant ou non si on dessine la scène sous une forme de maillage ou de faces pleines */

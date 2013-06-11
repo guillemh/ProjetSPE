@@ -1289,3 +1289,19 @@ bool Fluide<Dim>::changerParam() {
     }
     return false;
 }
+
+template <unsigned int Dim>
+void Fluide<Dim>::changerArps() {
+    
+    cout << "Nouveau seuil de dynamique restreinte (actuel = "
+         << epsilonR << ")?" << endl;
+    double eps;
+    cin >> eps;
+    epsilonR = eps;
+    cout << "Nouvel écart entre les seuils de dynamique restreinte et entière (actuel = "
+         << epsilonF - epsilonR << ")?" << endl;
+    double delta;
+    cin >> delta;
+    epsilonF = epsilonR + delta;
+
+}
