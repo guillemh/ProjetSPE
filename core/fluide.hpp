@@ -1,6 +1,10 @@
 #ifndef _FLUIDE_HPP_
 #define _FLUIDE_HPP_
 
+#include <QVector>
+#include <QVector2D>
+#include <QVector4D>
+
 #include <iostream>
 #include <map>
 #include <list>
@@ -88,8 +92,17 @@ public:
      * \param ymax Bord de la boite
      * \param zmin Dessous de la boite
      */
-    Fluide(Materiau<Dim> * m, Vecteur<Dim> nbP, double e, double rho, double p, Vecteur<Dim> v0 = Vecteur<Dim>(),
-            double xmin = -0.2, double xmax = 0.2, double ymin = -0.2, double ymax = 0.2, double zmin = 0.0);
+    Fluide(Materiau<Dim> * m, 
+	   Vecteur<Dim> nbP, 
+	   double e, 
+	   double rho, 
+	   double p, 
+	   Vecteur<Dim> v0 = Vecteur<Dim>(),
+            double xmin = -0.2, 
+	   double xmax = 0.2, 
+	   double ymin = -0.2, 
+	   double ymax = 0.2, 
+	   double zmin = 0.0);
     
     /**
      * @brief Destructeur
@@ -155,6 +168,16 @@ public:
      * Fonction d'affichage du fluide
      */
     void draw();
+
+    /**
+     * @brief Affichage graphique
+     *
+     * Fonction d'affichage du fluide en utilisant les shaders
+     * @param vertices Pointeur sur un tableau de type QGLBuffer où stocker la position des particules composant le fluide
+     * @param colors Pointeur sur un tableau de type QGLBuffer où stocker la couleur des particules composant le fluide
+     * @param indices Pointeurs sur un tableau contenant les indices de ces particules
+     */
+    void draw(struct QVector<QVector3D> *vertices, struct QVector<QVector4D> *colors, struct QVector<int> *indices);
 
     /**
      * @brief Trace de debug
