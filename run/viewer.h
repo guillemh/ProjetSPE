@@ -13,6 +13,10 @@
 #include <QVector4D>
 #include "camera.h"
 
+#include "../core/vecteur.hpp"
+#include "../core/materiau.hpp"
+#include "../core/fluide.hpp"
+
 class Viewer : public QGLWidget
 {
     Q_OBJECT        // must include this if you use Qt signals/slots
@@ -26,15 +30,27 @@ class Viewer : public QGLWidget
         //              SHADER DATA
         //-----------------------------------------------
         QGLShaderProgram m_program; //manipule les shaders
-        QVector< QVector3D > m_vertices; //sommets
-        QVector< QVector4D > m_colors;  //couleurs
-        QVector< int > m_indices;   //indices
-        QGLBuffer m_vertexbuffer;   //buffer des sommets
-        QGLBuffer m_colorbuffer;    //buffer des couleurs
-        QGLBuffer m_indicebuffer;   //buffer des indices
-        int m_matrix_location; //id of projection-view-model matrice send to graphic card
+
+        QVector< QVector3D > m_vertices; //sommets des axes
+        QVector< QVector4D > m_colors;  //couleurs des axes
+        QVector< int > m_indices;   //indices des axes
+        QGLBuffer m_vertexbuffer;   //buffer des sommets des axes
+        QGLBuffer m_colorbuffer;    //buffer des couleurs des axes
+        QGLBuffer m_indicebuffer;   //buffer des indices des axes
+
+        QVector< QVector3D > m_pts_vertices; //sommets des particules
+        QVector< QVector4D > m_pts_colors;  //couleurs des particules
+        QVector< int > m_pts_indices;   //indices des particules
+        QGLBuffer m_pts_vertexbuffer;   //buffer des sommets des particules
+        QGLBuffer m_pts_colorbuffer;    //buffer des couleurs des particules
+        QGLBuffer m_pts_indicebuffer;   //buffer des indices des particules
+
+        int m_matrix_location; //id of projection-view-model matrice sent to graphic card
         int m_vertices_attribute; //data id
         int m_colors_attribute; //color id
+
+        int m_pts_vertices_attribute; //data id
+        int m_pts_colors_attribute; //color id
 
         //-----------------------------------------------
         //              CAMERA
@@ -50,6 +66,9 @@ class Viewer : public QGLWidget
         bool animationStarted;
         int animationTimerId;
         int animationPeriod;
+
+	Vecteur<3> d;
+	Fluide<3> *f;
 
     protected:
         void resetView();

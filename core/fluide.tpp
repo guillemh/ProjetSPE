@@ -743,6 +743,21 @@ void Fluide<Dim>::draw() {
     glDisable (GL_BLEND);
 }
 
+template<unsigned int Dim>
+void Fluide<Dim>::draw(struct QVector<QVector3D> *vertices, struct QVector<QVector4D> *colors, struct QVector<int> *indices) {
+    vertices->clear();
+    colors->clear();
+    indices->clear();
+    typename list<Particule<Dim> *>::const_iterator it;
+    int i = 0;
+    for (it = particules.begin(); it != particules.end(); it++) {
+	Vecteur<Dim> posIt = (*it)->getPosition();
+	vertices->push_back(QVector3D(posIt(1), posIt(2), posIt(3)));
+	colors->push_back(QVector4D(0.0, 1.0, 0.0, 0.0));
+	indices->push_back(i);
+	i++;
+    }
+}
 
 template<unsigned int Dim>
 void Fluide<Dim>::affiche() {

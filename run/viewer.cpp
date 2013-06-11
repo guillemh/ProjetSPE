@@ -4,7 +4,10 @@ Viewer::Viewer(QWidget *parent):
     QGLWidget(parent),
     m_vertexbuffer(QGLBuffer::VertexBuffer), //specifie ce que vont contenir les buffer
     m_colorbuffer(QGLBuffer::VertexBuffer),
-    m_indicebuffer(QGLBuffer::IndexBuffer)
+    m_indicebuffer(QGLBuffer::IndexBuffer),
+    m_pts_vertexbuffer(QGLBuffer::VertexBuffer),
+    m_pts_colorbuffer(QGLBuffer::VertexBuffer),
+    m_pts_indicebuffer(QGLBuffer::IndexBuffer)
 {
 
     //Definition des sommets du repere
@@ -39,6 +42,10 @@ Viewer::Viewer(QWidget *parent):
     animationTimerId = 0;
     stopAnimation();
     animationPeriod=40; // frequence : 25Hz = 40 ms
+    
+    Materiau<3> *m = new Materiau<3>(EAU);
+    d = Vecteur<3>(2, 2, 5);
+    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>());
 }
 
 Viewer::~Viewer(){}
@@ -89,16 +96,29 @@ void Viewer::initializeGL()
     }
 
     m_colors_attribute = m_program.attributeLocation("color");
-
     if(m_colors_attribute == -1)
     {
         std::cerr << "Identifiant de la variable attribute color : -1" << std::endl;
+    }
+
+    m_pts_vertices_attribute = m_program.attributeLocation("pts_vertex");
+    if(m_pts_vertices_attribute == -1)
+    {
+        std::cerr << "Identifiant de la variable attribute pts_vertex: -1" << std::endl;
+    }
+
+    m_pts_colors_attribute = m_program.attributeLocation("pts_color");
+    if(m_colors_attribute == -1)
+    {
+        std::cerr << "Identifiant de la variable attribute pts_color : -1" << std::endl;
     }
 
     //    //Envoie des parametre constants
     //    m_program.setUniformValue("fixed_color", QColor(Qt::red)); //couleur
 
     m_program.release();
+
+    /* Création des axes */
 
     // Vertex buffer init
     m_vertexbuffer.create();
@@ -118,6 +138,26 @@ void Viewer::initializeGL()
     m_indicebuffer.allocate(m_indices.constData(), m_indices.size() * sizeof(GLuint));
     m_indicebuffer.release();
 
+    /* Création des particules */
+
+    int nbParticules = d(1) * d(2) * d(3);
+    // Vertex buffer init
+    m_pts_vertexbuffer.create();
+    m_pts_vertexbuffer.bind(); //precise que lon va travailler dessus avec la fonction bind
+    m_pts_vertexbuffer.allocate(m_pts_vertices.constData(), nbParticules * sizeof(QVector3D)); //allocation de la memoire
+    m_pts_vertexbuffer.release(); //fin d'utilisation
+
+    // Color buffer init
+    m_pts_colorbuffer.create();
+    m_pts_colorbuffer.bind(); //precise que lon va travailler dessus avec la fonction bind
+    m_pts_colorbuffer.allocate(m_pts_colors.constData(), nbParticules * sizeof(QVector4D)); //allocation de la memoire
+    m_pts_colorbuffer.release(); //fin d'utilisation
+
+    // Indices buffer init
+    m_pts_indicebuffer.create();
+    m_pts_indicebuffer.bind();
+    m_pts_indicebuffer.allocate(m_pts_indices.constData(), nbParticules * sizeof(GLuint));
+    m_pts_indicebuffer.release();
 
     // Set up the rendering context, define display lists etc.:
     glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -146,6 +186,9 @@ void Viewer::render()
     m_program.setUniformValue(m_matrix_location, camera3D.projection() * camera3D.view());
 
     //indique à la carte graphique que lon travaille avec des vertex array
+
+    /* Représentation des axes */
+
     glEnableClientState(GL_VERTEX_ARRAY);
 
     //Vertex buffer
@@ -171,6 +214,33 @@ void Viewer::render()
     m_program.disableAttributeArray(m_colors_attribute);
     m_program.disableAttributeArray(m_vertices_attribute);
 
+    /* Représentation des particules */
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+
+    //Vertex buffer
+    m_pts_vertexbuffer.bind(); //active le buffer
+    m_program.enableAttributeArray(m_pts_vertices_attribute); //indique a opengl que l'on utilise un buffer comme variable
+    m_program.setAttributeBuffer(m_pts_vertices_attribute,GL_FLOAT, 0, 3); //appel des fonctions opengl
+    m_pts_vertexbuffer.release(); //desactive le buffer
+
+    //Color buffer
+    m_pts_colorbuffer.bind();
+    m_program.enableAttributeArray(m_pts_colors_attribute);
+    m_program.setAttributeBuffer(m_pts_colors_attribute,GL_FLOAT, 0, 4);
+    m_pts_colorbuffer.release();
+
+    //Vertex And Color indice buffer
+    m_pts_indicebuffer.bind();
+    glDrawElements(GL_POINTS, m_pts_indices.size(), GL_UNSIGNED_INT, NULL);
+    m_pts_indicebuffer.release();
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+
+    //libere les buffer utilises
+    m_program.disableAttributeArray(m_colors_attribute);
+    m_program.disableAttributeArray(m_vertices_attribute);
+
     //Desactive QGLShaderProgram
     //Restaurer le contexte de rendu par défaut
     m_program.release();
@@ -186,7 +256,9 @@ void Viewer::render()
 
 void Viewer::paintGL()
 {
-    //Scene rendering
+    // Mise à jour des tableaux de données
+    f->draw (&m_pts_vertices, &m_pts_colors, &m_pts_indices);
+    // Scene rendering
     render();
 }
 
@@ -257,6 +329,5 @@ void Viewer::stopAnimation()
     if(animationTimerId != 0) 
     {  
         killTimer(animationTimerId);
-
     }  
 }  

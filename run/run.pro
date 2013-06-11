@@ -1,4 +1,7 @@
 TEMPLATE = app
+
+CXXFLAGS = -g -Wall
+
 CONFIG += debug_and_release
 CONFIG(release, debug|release){
     DBGNAME = release
@@ -20,9 +23,18 @@ DEPENDPATH += .. #check si les fichiers ont été modifiés
 HEADERS += viewer.h \
             viewer.hpp \
             mainwindow.h \
-            camera.h
+            camera.h \
+            ../core/vecteur.hpp \
+            ../core/particule.hpp \
+            ../core/materiau.hpp \
+            ../core/premier.hpp \
+            ../core/noyauLissage.hpp \
+            ../core/fluide.hpp \
+            ../core/metaballs.hpp \
+            
 
 SOURCES += main.cpp \
             viewer.cpp \
             mainwindow.cpp \
-            camera.cpp
+            camera.cpp \
+            ../core/metaballs.cpp \
