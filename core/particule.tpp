@@ -4,7 +4,7 @@
 #include "particule.hpp"
 
 #define PI 3.1415926535
-#define COLORATION 1 // Mettre a 1 pour obtenir une coloration des particules en fonction de leur activité
+#define COLORATION 0 // Mettre a 1 pour obtenir une coloration des particules en fonction de leur activité
 
 using std::endl;
 using std::ostream;
@@ -252,7 +252,6 @@ void Particule<Dim>::draw() const {
     if (!COLORATION) {
        glColor3f(0.0, 1.0, 0.0);
     } else {
-
       if (active) {
       	  glColor3f(1.0,0.0,0.0);       
       } else {     
