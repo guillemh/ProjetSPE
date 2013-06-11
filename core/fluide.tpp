@@ -1117,8 +1117,10 @@ void Fluide<Dim>::schemaIntegration() {
         // cout << (*part_it)->getIndice() << ". Restriction : " << rho <<  " | " << drho << endl;
         if (rho < 1) {
             actives.push_back(*part_it);
+	    (*part_it)->setActive(true);
         } else {
             cout << (*part_it)->getIndice() << " pas active" << endl;
+	    (*part_it)->setActive(false);
         }
         /* Mise à jour des positions */
         Vecteur<Dim> incr = mat->getPasTemps() * 
