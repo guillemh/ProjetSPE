@@ -12,7 +12,7 @@ using std::pair;
 #define EPSR 1
 #define DELTA 15
 #define METABALLS 0 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
-#define CASCADE 0 // Mettre a 1 pour les collisions avec la cascade
+#define CASCADE 1 // Mettre a 1 pour les collisions avec la cascade
 
 
 /* ** Constructeurs ** */
@@ -1113,7 +1113,7 @@ void Fluide<Dim>::schemaIntegration() {
 
     /* Réinitialisation de la liste des particules actives */
     actives.clear();
-    cout << endl;
+    // cout << endl;
     // cout << endl << "********************************************" << endl;
     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
         /* Mise à jour de la liste des particules actives */
@@ -1125,7 +1125,7 @@ void Fluide<Dim>::schemaIntegration() {
             actives.push_back(*part_it);
 	    (*part_it)->setActive(true);
         } else {
-            cout << (*part_it)->getIndice() << " pas active" << endl;
+            // cout << (*part_it)->getIndice() << " pas active" << endl;
 	    (*part_it)->setActive(false);
         }
         /* Mise à jour des positions */
@@ -1139,7 +1139,12 @@ void Fluide<Dim>::schemaIntegration() {
         
         /* Détection des collisions */
         Vecteur<Dim> pos = (*part_it)->getPosition();
-        Vecteur<Dim> contact = collision(pos);
+        Vecteur<Dim> contact;
+	if (!CASCADE) {
+	    contact = collision(pos);
+	} else {
+	    contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+	}
         
         /* S'il y a collision, on met a jour la position et la vitesse */
         if (contact != pos) {
