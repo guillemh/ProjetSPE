@@ -18,7 +18,6 @@ class Metaballs {
 
     /* ** Attributs ** */
 private:
-    bool debutAnim;              /*!< Indique si on est au début de l'animation */
     int n;                       /*!< Nombre de cubes selon l'axe (Ox) */
     int p;                       /*!< Nombre de cubes selon l'axe (Oy) */
     int q;                       /*!< Nombre de cubes selon l'axe (Oz) */
@@ -56,6 +55,15 @@ public:
 
     /* ** Methodes ** */
 public:
+    /**
+     * \brief Coloration
+     *
+     * Calcule la valeur de la surface implicite définie par les particules du fluide pour tout point du maillage,
+     * et attribue à chaque sommet sa couleur, ceci pour déterminer la configuration des cubes
+     * @param particules Liste des particules considérées
+     */
+    void initColoration(list<Particule<3> *> &particules);
+    
     /**
      * \brief Coloration
      *

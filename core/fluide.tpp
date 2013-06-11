@@ -11,16 +11,18 @@ using std::pair;
 
 #define EPSR 1
 #define DELTA 15
-#define METABALLS 0 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
+#define METABALLS 0 // Mettre a 1 pour dessiner des surfaces, 0 pour des particules
+#define POINT 0 // Mettre a 1 pour dessiner des points, 0 pour des spheres
 
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(-0.5, -0.5, 0.0), 0.05, mat->getRayonNoyau(), 1, 1, 0.5)),
       nbrParticules(0),
       debutAnim(true),
+      afficheMetaballs(METABALLS),
+      affichePoint(POINT),
       hash_voisins(),
       lgrHash(0),
       epsilonR(EPSR),
@@ -51,12 +53,14 @@ template<unsigned int Dim>
 Fluide<Dim>::Fluide(Materiau<Dim> * m, Vecteur<Dim> nbP, double e, double rho, double p, Vecteur<Dim> v0,
                     double xmin, double xmax, double ymin, double ymax, double zmin)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(xmin, ymin, zmin), 0.01, mat->getRayonNoyau(), xmax-xmin, ymax-ymin, 1)),
       x_min(xmin),
       x_max(xmax),
       y_min(ymin),
       y_max(ymax),
       z_min(zmin),
+      debutAnim(true),
+      afficheMetaballs(METABALLS),
+      affichePoint(POINT),
       vitInit(v0),
       densiteInit(rho),
       pressionInit(p),
@@ -95,8 +99,6 @@ void Fluide<Dim>::init() {
     
     /* Initialisation de liste vide */
     particules = list<Particule<Dim> *>();
-
-    debutAnim = true;
 
     // Création d'une table des nombres premiers 
     // pour calculer la dimension de la table de hashage
@@ -170,11 +172,17 @@ void Fluide<Dim>::init() {
                 }
             }
         }
+    
+        /* Initialisation de la metaball */
+        ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1);
+        if (afficheMetaballs) {
+            ball->initColoration(particules);
+        }
+
     } else {
         cout << "Erreur (Fluide) : la dimension de l'espace doit être 2 ou 3" << endl;
         exit(1);
     }
-
 }
 
 /* Fonction de hashage */
@@ -678,28 +686,33 @@ void Fluide<Dim>::majPositionVitesse() {
     majTableHashage();
     
     /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
-    if (METABALLS) {
-        ball.coloration(particules);
+    if (afficheMetaballs) {
+        ball->coloration(particules);
 	}
 }
 
 
 template<unsigned int Dim>
 void Fluide<Dim>::colorationMetaball() {
-    if (METABALLS) {
-        ball.coloration(particules);
+    if (afficheMetaballs) {
+        if (debutAnim) {
+            ball->initColoration(particules);
+        } else {
+            ball->coloration(particules);
+        }
 	}
 }
+
 
 template<unsigned int Dim>
 void Fluide<Dim>::draw() {
 
-    if (METABALLS) {
-        ball.draw();
+    if (afficheMetaballs) {
+        ball->draw();
     } else {
         typename list<Particule<Dim> *>::const_iterator it;
         for (it = particules.begin(); it != particules.end(); it++) {
-            (*it)->draw();
+            (*it)->draw(affichePoint);
         }
     }
 
@@ -1280,4 +1293,48 @@ bool Fluide<Dim>::changerParam() {
         break;
     }
     return false;
+}
+
+
+template<unsigned int Dim>
+void Fluide<Dim>::changerAffichage() {
+    cout << endl << "Quel affichage désirez-vous ?" << endl;
+    cout << " 1. Particules assimilées à des billes" << endl;
+    cout << " 2. Particules assimilées à des points" << endl;
+    cout << " 3. Surfaces générées grâce aux marching cubes" << endl;
+    int numero;
+    cin >> numero;
+    switch (numero) {
+    case (1):
+        afficheMetaballs = true;
+        ball->initColoration(particules);
+        break;
+    case (2):
+        afficheMetaballs = false;
+        affichePoint = true;
+        break;
+    case (3):
+        afficheMetaballs = false;
+        affichePoint = false;
+        break;
+    default:
+        cout << "retour" << endl;
+        break;
+    }
+}
+
+
+template<unsigned int Dim>
+void Fluide<Dim>::changerAffichageAuto() {
+
+    if (afficheMetaballs) {
+        afficheMetaballs = false;
+        affichePoint = true;
+    } else if (affichePoint) {
+        afficheMetaballs = false;
+        affichePoint = false;
+    } else {
+        afficheMetaballs = true;
+        ball->initColoration(particules);
+    }
 }

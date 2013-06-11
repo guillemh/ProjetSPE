@@ -11,19 +11,15 @@ void tests_unitaires_fluide() {
     cout << "## Rq : ce test ne peut pas vérifier les résultats mais ##" << endl
          << "## seulement la bonne exécution (décommenter affiche()) ##" << endl;
 
+
+    /* 2D impossible actuellement a cause des metaballs */
+/*
     Materiau<2> mateau2d = Materiau<2>(EAU);
     Vecteur<2> vec2d1 = Vecteur<2>(5.0, 8.0);
     Vecteur<2> vec2d2 = Vecteur<2>(1.0, 3.0);
     Particule<2> * p1 = new Particule<2>(1, vec2d1, vec2d2, 1000, 100000);
     Particule<2> * p3 = new Particule<2>(2, vec2d1, vec2d2, 1000, 100000);
     
-    Materiau<3> mateau3d = Materiau<3>(EAU);
-    Vecteur<3> vec3d1 = Vecteur<3>(2.0, 1.0, 3.0);
-    Vecteur<3> vec3d2 = Vecteur<3>();
-    Particule<3> * p2 = new Particule<3>(1, vec3d1, vec3d2, 950, 101558);
-    Particule<3> * p4 = new Particule<3>(2, vec3d1, vec3d2, 950, 101558);
-
-
     cout << "1 − Creation d'un fluide 2D vide : ";
     Fluide<2> f1 = Fluide<2>(&mateau2d);
     cout<<"OK"<<endl;
@@ -39,10 +35,9 @@ void tests_unitaires_fluide() {
     cout<<"OK"<<endl;
     //f1.affiche();
     
-    // Impossible en 2D a cause des metaballs
-    //cout << "->Mise a jour de la position et de la vitesse : ";
-    //f1.majPositionVitesse();
-    //cout<<"OK"<<endl;
+    cout << "->Mise a jour de la position et de la vitesse : ";
+    f1.majPositionVitesse();
+    cout<<"OK"<<endl;
     //f1.affiche();
 
 
@@ -62,11 +57,18 @@ void tests_unitaires_fluide() {
     cout<<"OK"<<endl;
     //f2.affiche();
     
-    // Impossible en 2D a cause des metaballs
-    //cout << "->Mise a jour de la position et de la vitesse : ";
-    //f2.majPositionVitesse();
-    //cout<<"OK"<<endl;
+    cout << "->Mise a jour de la position et de la vitesse : ";
+    f2.majPositionVitesse();
+    cout<<"OK"<<endl;
     //f2.affiche();
+*/    
+    
+    
+    Materiau<3> mateau3d = Materiau<3>(EAU);
+    Vecteur<3> vec3d1 = Vecteur<3>(2.0, 1.0, 3.0);
+    Vecteur<3> vec3d2 = Vecteur<3>();
+    Particule<3> * p2 = new Particule<3>(1, vec3d1, vec3d2, 950, 101558);
+    Particule<3> * p4 = new Particule<3>(2, vec3d1, vec3d2, 950, 101558);
     
     
     cout << "3 − Creation d'un fluide 3D vide : ";
