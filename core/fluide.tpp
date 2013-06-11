@@ -9,8 +9,8 @@ using std::cout;
 using std::endl;
 using std::pair;
 
-#define EPSR 4
-#define DELTA 150
+#define EPSR 1
+#define DELTA 15
 #define METABALLS 0 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
 
 /* ** Constructeurs ** */
@@ -1270,7 +1270,7 @@ bool Fluide<Dim>::changerParam() {
         break;
     case 7:
         cout << "Nouvel écart entre les seuils de dynamique restreinte et entière (actuel = "
-             << epsilonR - epsilonF << ")?" << endl;
+             << epsilonF - epsilonR << ")?" << endl;
         double delta;
         cin >> delta;
         epsilonF = epsilonR + delta;

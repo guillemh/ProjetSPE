@@ -59,5 +59,6 @@ class Scene {
     Materiau<3> *m; /*!< Pointeur sur un matériau */
 
     bool anim;  /* pour faire l'animation pas à pas */
+    bool arps;  /* pour changer entre l'arps ou pas */
 };
 #endif
