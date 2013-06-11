@@ -9,9 +9,11 @@ using std::cout;
 using std::endl;
 using std::pair;
 
-#define EPSR 4
-#define DELTA 150
-#define METABALLS 1 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
+#define EPSR 1
+#define DELTA 15
+#define METABALLS 0 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
+#define CASCADE 0 // Mettre a 1 pour les collisions avec la cascade
+
 
 /* ** Constructeurs ** */
 
@@ -655,8 +657,12 @@ void Fluide<Dim>::majPositionVitesse() {
         
         /* Détection des collisions */
         Vecteur<Dim> pos = (*it1)->getPosition();
-        Vecteur<Dim> contact = collision(pos);
-	//Vecteur<Dim> contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+	Vecteur<Dim> contact;
+	if (!CASCADE) {
+           contact = collision(pos);
+	} else {
+	  contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+	}
         
         /* S'il y a collision, on met a jour la position et la vitesse */
         if (contact != pos) {
@@ -1132,8 +1138,10 @@ void Fluide<Dim>::schemaIntegration() {
         // cout << (*part_it)->getIndice() << ". Restriction : " << rho <<  " | " << drho << endl;
         if (rho < 1) {
             actives.push_back(*part_it);
+	    (*part_it)->setActive(true);
         } else {
             cout << (*part_it)->getIndice() << " pas active" << endl;
+	    (*part_it)->setActive(false);
         }
         /* Mise à jour des positions */
         Vecteur<Dim> incr = mat->getPasTemps() * 
@@ -1146,7 +1154,12 @@ void Fluide<Dim>::schemaIntegration() {
         
         /* Détection des collisions */
         Vecteur<Dim> pos = (*part_it)->getPosition();
-        Vecteur<Dim> contact = collision(pos);
+        Vecteur<Dim> contact;
+	if (!CASCADE) {
+           contact = collision(pos);
+	} else {
+	  contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+	}
         
         /* S'il y a collision, on met a jour la position et la vitesse */
         if (contact != pos) {
@@ -1285,7 +1298,7 @@ bool Fluide<Dim>::changerParam() {
         break;
     case 7:
         cout << "Nouvel écart entre les seuils de dynamique restreinte et entière (actuel = "
-             << epsilonR - epsilonF << ")?" << endl;
+             << epsilonF - epsilonR << ")?" << endl;
         double delta;
         cin >> delta;
         epsilonF = epsilonR + delta;
@@ -1295,4 +1308,20 @@ bool Fluide<Dim>::changerParam() {
         break;
     }
     return false;
+}
+
+template <unsigned int Dim>
+void Fluide<Dim>::changerArps() {
+    
+    cout << "Nouveau seuil de dynamique restreinte (actuel = "
+         << epsilonR << ")?" << endl;
+    double eps;
+    cin >> eps;
+    epsilonR = eps;
+    cout << "Nouvel écart entre les seuils de dynamique restreinte et entière (actuel = "
+         << epsilonF - epsilonR << ")?" << endl;
+    double delta;
+    cin >> delta;
+    epsilonF = epsilonR + delta;
+
 }

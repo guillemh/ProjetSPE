@@ -31,6 +31,7 @@ void Scene::init() {
 
     /* On créé la scène, avec les paramètres initiaux */
     anim = false;
+    arps = false;
     
     //    m = new Materiau<3>(EAU);
     //    int d [3] = {10, 10, 20};
@@ -39,7 +40,7 @@ void Scene::init() {
     
     m = new Materiau<3>(EAU);
     Vecteur<3> d = Vecteur<3>(2, 2, 50);
-    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>());
+    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -0.1, 0.1, -0.1, 0.1, 0.);
     
     //    Vecteur<3> vec0 = Vecteur<3>();
     //    
@@ -90,7 +91,7 @@ void Scene::init() {
 //      f->ajouteParticule(p2);
 
 
-    f->colorationMetaball();
+    //f->colorationMetaball();
 }
 
 void Scene::clear() {
@@ -107,9 +108,12 @@ void Scene::draw() {
 
 void Scene::animate() {
     // if (anim) {
-    f->majDensitePression();
-    f->majPositionVitesse();
-    // f->schemaIntegration();
+    if (arps) {
+        f->schemaIntegration();
+    } else {
+        f->majDensitePression();
+        f->majPositionVitesse();
+    }
     // f->affiche();
     //     anim = false;
     // }    
@@ -121,6 +125,7 @@ void Scene::interact() {
     cout << " 2. Le matériau" << endl;
     cout << " 3. Les paramètres du matériau" << endl;
     cout << " 4. Les paramètres du fluide" << endl;
+    cout << " 5. La méthode de simulation" << endl;
     cout << "autre. Annuler et revenir à la simulation" << endl;
     int numero;
     cin >> numero;
@@ -138,11 +143,37 @@ void Scene::interact() {
     case 4:
         chgt = f->changerParam();
         break;
+    case 5:
+        cout << "Quel algorithme de simulation voulez-vous (actuel = ";
+        if (arps) {
+            cout << "ARPS)?" << endl;
+        } else {
+            cout << "SPH traditionnel)?" << endl;
+        }
+        cout << " 1. SPH traditionnel" << endl;
+        cout << " 2. ARPS" << endl;
+        int num;
+        cin >> num;
+        if (num == 1) {
+            arps = false;
+        } else if (num == 2) {
+            arps = true;
+        }
+        break;
     default:
+        return;
         break;
     }
 
+    int on;
     if (!chgt) {
+        cout << "Voulez-vous effectuer une nouvelle modification?" << endl;
+        cout << " 1 => Oui" << endl << " 0 => Non" << endl;
+        cin >> on;
+        if (on == 1) {
+            interact();
+            return;
+        }
         cout << endl << "Où voulez-vous reprendre la simulation?" << endl;
         cout << " 1. Reprendre là où elle en est" << endl;
         cout << " 2. Recommencer avec les nouveaux paramètres" << endl;

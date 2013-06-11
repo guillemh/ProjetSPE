@@ -13,6 +13,7 @@ Cascade<Dim>::Cascade(Fluide<Dim> *_f) {
     pente_x = 3.0;
     pente_y = 0.7*bassin_y;
     pente_z = 0.5;
+    arps = false;
 }
 
 template<unsigned int Dim>
@@ -195,9 +196,13 @@ void Cascade<Dim>::draw() {
 }
 
 template<unsigned int Dim>
-void Cascade<Dim>::animate() {
-    f->majDensitePression();
-    f->majPositionVitesse();
+void Cascade<Dim>::animate(bool arps) {
+    if (arps) {
+        f->schemaIntegration();
+    } else {
+        f->majDensitePression();
+        f->majPositionVitesse();
+    }
 }
 
 template<unsigned int Dim>
