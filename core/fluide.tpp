@@ -11,8 +11,8 @@ using std::pair;
 
 #define EPSR 1
 #define DELTA 15
-#define METABALLS 0 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
-#define CASCADE 1 // Mettre a 1 pour les collisions avec la cascade
+#define METABALLS 1 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
+#define CASCADE 0 // Mettre a 1 pour les collisions avec la cascade
 
 
 /* ** Constructeurs ** */
@@ -172,6 +172,9 @@ void Fluide<Dim>::init() {
                 }
             }
         }
+		if (METABALLS) {
+			ball.coloration (particules);
+		}
     } else {
         cout << "Erreur (Fluide) : la dimension de l'espace doit être 2 ou 3" << endl;
         exit(1);
