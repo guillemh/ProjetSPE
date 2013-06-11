@@ -4,6 +4,7 @@
 #include "particule.hpp"
 
 #define PI 3.1415926535
+#define COLORATION 0
 
 using std::endl;
 using std::ostream;
@@ -221,11 +222,6 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
 template<unsigned int Dim>
 void Particule<Dim>::draw(Materiau<Dim> *mat) const {
     // glPushMatrix();
-    if (getActive) {
-       glColor3f(1.0,0.0,0.0);
-    } else {
-      glColor3f(0.0,1.0,0.0);
-    }
     // glTranslatef(position(1), position(2), position(3));
     /* Calcul du rayon de la sphère :
      * r = racine cubique (3 * m / (4 * PI * rho)) 
@@ -236,6 +232,7 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
      * ce qui simplifie le calcul
      */
     double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * mat->getPression()), 1.0/3.0);
+
     glutSolidSphere(rayon, 12, 12);
     glVertex3f(position(1), position(2), position(3));
     // glPopMatrix();
@@ -252,7 +249,17 @@ void Particule<Dim>::draw() const {
     //glEnd();
     
     glPushMatrix();
-    glColor3f(0.0, 1.0, 0.0);
+    if (!COLORATION) {
+       glColor3f(0.0, 1.0, 0.0);
+    } else {
+
+      if (active) {
+      	  glColor3f(1.0,0.0,0.0);       
+      } else {     
+      	  glColor3f(0.0,0.0,1.0);    
+      }
+    }
+
     glTranslatef(position(1), position(2), position(3));
     glutSolidSphere(0.025, 8, 8);
     glPopMatrix();
