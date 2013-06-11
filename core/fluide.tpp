@@ -24,7 +24,8 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
       hash_voisins(),
       lgrHash(0),
       epsilonR(EPSR),
-      epsilonF(EPSR+DELTA)
+      epsilonF(EPSR+DELTA),
+      ecart(0)
 {
     /* Initilisation de la liste vide */
     particules = list<Particule<Dim> *>();
@@ -47,22 +48,55 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m)
 
 
 template<unsigned int Dim>
-Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, double p, Vecteur<Dim> v0,
+Fluide<Dim>::Fluide(Materiau<Dim> * m, Vecteur<Dim> nbP, double e, double rho, double p, Vecteur<Dim> v0,
                     double xmin, double xmax, double ymin, double ymax, double zmin)
     : mat(m),
-      ball (Metaballs(Vecteur<3>(xmin, ymin, zmin), 0.05, mat->getRayonNoyau(), xmax-xmin, ymax-ymin, 1)),
+      ball (Metaballs(Vecteur<3>(xmin, ymin, zmin), 0.01, mat->getRayonNoyau(), xmax-xmin, ymax-ymin, 1)),
       x_min(xmin),
       x_max(xmax),
       y_min(ymin),
       y_max(ymax),
       z_min(zmin),
-      debutAnim(true),
+      vitInit(v0),
+      densiteInit(rho),
+      pressionInit(p),
       hash_voisins(),
       epsilonR(EPSR),
-      epsilonF(EPSR+DELTA)
+      epsilonF(EPSR+DELTA),
+      nbPart(nbP),
+      ecart(e)
 {
-    /* Initialisation de listes vides */
     particules = list<Particule<Dim> *>();
+
+    init();
+}
+
+
+template<unsigned int Dim>
+Fluide<Dim>::~Fluide() {
+    clear();
+}
+
+template<unsigned int Dim>
+void Fluide<Dim>::clear() {
+    typename list<Particule<Dim> *>::iterator it;
+    /* On libère toutes les particules */
+    for (it = particules.begin(); it != particules.end();it++) {
+        delete (*it);
+    }
+    hash_voisins.clear();
+}
+
+template <unsigned int Dim>
+void Fluide<Dim>::init() {
+
+    /* On supprime les anciennes particules etc */
+    clear();
+    
+    /* Initialisation de liste vide */
+    particules = list<Particule<Dim> *>();
+
+    debutAnim = true;
 
     // Création d'une table des nombres premiers 
     // pour calculer la dimension de la table de hashage
@@ -75,7 +109,11 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
     unsigned int cpt = 0;
 
     if (Dim == 2) {
-    
+
+        /* Initialisation de nb */
+        int nb[2] = {int(nbPart(1)),
+                     int(nbPart(2))};
+        
         nbrParticules = nb[0]*nb[1];
         lgrHash = table.getPremier(2*nbrParticules);
         
@@ -84,7 +122,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
             for (int j = 0; j < nb[1]; j++) {
                 ++cpt;
                 Vecteur<Dim> vec = Vecteur<Dim>((i-nb[0]/2)*ecart, 0.01+ j*ecart);
-                Particule<Dim> *part = new Particule<Dim>(cpt, vec, v0, mat->getMasseParticules(), rho, p);
+                Particule<Dim> *part = new Particule<Dim>(cpt, vec, vitInit, mat->getMasseParticules(), densiteInit, pressionInit);
                 particules.push_back(part);
                 noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
                 noeud_grille(2) = int(floor(part->getPosition()(2)/mat->getRayonNoyau()));
@@ -94,6 +132,11 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
         
     } else if (Dim == 3) {
     
+        /* Initialisation de nb */
+        int nb[3] = {int(nbPart(1)),
+                     int(nbPart(2)),
+                     int(nbPart(3))};
+        
         nbrParticules = nb[0]*nb[1]*nb[2];
         lgrHash = table.getPremier(2*nbrParticules);
         
@@ -118,7 +161,7 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                     vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, k*ecart) + alea;
                     // vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
                     
-                    part = new Particule<Dim>(cpt, vec, v0, mat->getMasseParticules(), rho, p);
+                    part = new Particule<Dim>(cpt, vec, vitInit, mat->getMasseParticules(), densiteInit, pressionInit);
                     particules.push_back(part);
                     noeud_grille(1) = int(floor(part->getPosition()(1)/mat->getRayonNoyau()));
                     noeud_grille(2) = int(floor(part->getPosition()(2)/mat->getRayonNoyau()));
@@ -127,25 +170,12 @@ Fluide<Dim>::Fluide(Materiau<Dim> * m, int nb[Dim], double ecart, double rho, do
                 }
             }
         }
-
     } else {
         cout << "Erreur (Fluide) : la dimension de l'espace doit être 2 ou 3" << endl;
         exit(1);
     }
+
 }
-
-
-template<unsigned int Dim>
-Fluide<Dim>::~Fluide() {
-    typename list<Particule<Dim> *>::iterator it;
-    /* On libère toutes les particules */
-    for (it = particules.begin(); it != particules.end();it++) {
-        delete (*it);
-    }
-    hash_voisins.clear();
-}
-
-
 
 /* Fonction de hashage */
 
@@ -648,17 +678,18 @@ void Fluide<Dim>::majPositionVitesse() {
     majTableHashage();
     
     /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
-    if (METABALLS)
+    if (METABALLS) {
         ball.coloration(particules);
+	}
 }
 
 
 template<unsigned int Dim>
 void Fluide<Dim>::colorationMetaball() {
-    if (METABALLS)
+    if (METABALLS) {
         ball.coloration(particules);
+	}
 }
-
 
 template<unsigned int Dim>
 void Fluide<Dim>::draw() {
@@ -672,7 +703,7 @@ void Fluide<Dim>::draw() {
         }
     }
 
-    /*glPushMatrix();
+    glPushMatrix();
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4f(1.0, 1.0, 1.0, 0.1);
@@ -709,7 +740,7 @@ void Fluide<Dim>::draw() {
     glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
     
     glEnd();
-    glDisable (GL_BLEND);*/
+    glDisable (GL_BLEND);
 }
 
 
@@ -1123,6 +1154,130 @@ void Fluide<Dim>::schemaIntegration() {
 }
 
 template <unsigned int Dim>
-void Fluide<Dim>::changerParam() {
-    cout << "Quels paramètres voulez-vous modifier?" << endl;
+bool Fluide<Dim>::changerParam() {
+    cout << endl << "Quels paramètres voulez-vous modifier?" << endl;
+    cout << " 1. Paramètres de la boîte de collision" << endl;
+    cout << " 2. Vitesse initiale des particules" << endl;
+    cout << " 3. Masse volumique initiale des particules" << endl;
+    cout << " 4. Nombre de particules sur les différentes dimensions" << endl;
+    cout << " 5. Écart initial entre les particules" << endl;
+    cout << " 6. Seuil de dynamique restreinte (ARPS)" << endl;
+    cout << " 7. Écart entre les seuils de dynamique restreinte et entière (ARPS)" << endl;
+    int numero;
+    cin >> numero;
+    Vecteur<Dim> vec;
+    int on;
+    switch (numero) {
+    case 1:
+        cout << "ATTENTION : après ces modifications, la simulation sera reprise depuis le début;" << endl
+             << "êtes-vous sûr(e) de vouloir continuer?" << endl;
+        cout << " 1 => Oui" << endl << " 0 => Non" << endl;
+        cin >> on;
+        if (on == 1) {
+            cout << "Nouvelles dimensions de la boîte entourant le fluide?" << endl;
+            double c;
+            cout << "x_min (actuel = " << x_min << ")" << endl;
+            cin >> c;
+            x_min = c;
+            cout << "x_max (actuel = " << x_max << ")" << endl;
+            cin >> c;
+            x_max = c;
+            cout << "y_min (actuel = " << y_min << ")" << endl;
+            cin >> c;
+            y_min = c;
+            cout << "y_max (actuel = " << y_max << ")" << endl;
+            cin >> c;
+            y_max = c;
+            cout << "z_min (actuel = " << z_min << ")" << endl;
+            cin >> c;
+            z_min = c;
+            return true;
+        }
+        break;
+    case 2:
+        cout << "ATTENTION : après ces modifications, la simulation sera reprise depuis le début;" << endl
+             << "êtes-vous sûr(e) de vouloir continuer?" << endl;
+        cout << " 1 => Oui" << endl << " 0 => Non" << endl;
+        cin >> on;
+        if (on == 1) {
+            cout << "Nouvelles composantes de la vitesse initiale des particules (actuelle = "
+                 << vitInit << " m.s-1)?" << endl;
+            cout << "En x :" << endl;
+            cin >> vec(1);
+            cout << "En y :" << endl;
+            cin >> vec(2);
+            if (Dim == 3) {
+                cout << "En z :" << endl;
+                cin >> vec(3);
+            }
+            vitInit = vec;
+            return true;
+        }
+        break;
+    case 3:
+        cout << "ATTENTION : après ces modifications, la simulation sera reprise depuis le début;" << endl
+             << "êtes-vous sûr(e) de vouloir continuer?" << endl;
+        cout << " 1 => Oui" << endl << " 0 => Non" << endl;
+        cin >> on;
+        if (on == 1) {
+            cout << "Nouvelle masse volumique initiale des particules (actuelle = "
+                 << densiteInit << " kg.m-3)?" << endl;
+            double rho;
+            cin >> rho;
+            densiteInit = rho;
+            return true;
+        }
+        break;
+    case 4:
+        cout << "ATTENTION : après ces modifications, la simulation sera reprise depuis le début;" << endl
+             << "êtes-vous sûr(e) de vouloir continuer?" << endl;
+        cout << " 1 => Oui" << endl << " 0 => Non" << endl;
+        cin >> on;
+        if (on == 1) {
+            cout << "Nouvelle répartition des particules?" << endl;
+            cout << "En x (actuel = " << nbPart(1) << ")" << endl;
+            cin >> vec(1);
+            cout << "En y (actuel = " << nbPart(2) << ")" << endl;
+            cin >> vec(2);
+            if (Dim == 3) {
+                cout << "En z (actuel = " << nbPart(3) << ")" << endl;
+                cin >> vec(3);
+            }
+            nbPart = vec;
+            return true;
+        }
+        break;
+    case 5:
+        cout << "ATTENTION : après ces modifications, la simulation sera reprise depuis le début;" << endl
+             << "êtes-vous sûr(e) de vouloir continuer?" << endl;
+        cout << " 1 => Oui" << endl << " 0 => Non" << endl;
+        cin >> on;
+        if (on == 1) {
+            cout << "Nouvel écart initial entre les particules (actuel = "
+                 << ecart << " m)?" << endl;
+            double e;
+            cin >> e;
+            ecart = e;
+            return true;
+        }
+        break;
+    case 6:
+        cout << "Nouveau seuil de dynamique restreinte (actuel = "
+             << epsilonR << ")?" << endl;
+        double eps;
+        cin >> eps;
+        epsilonR = eps;
+        break;
+    case 7:
+        cout << "Nouvel écart entre les seuils de dynamique restreinte et entière (actuel = "
+             << epsilonR - epsilonF << ")?" << endl;
+        double delta;
+        cin >> delta;
+        epsilonF = epsilonR + delta;
+        break;
+    default:
+        cout << "retour" << endl;
+        break;
+    }
+    return false;
 }

@@ -16,7 +16,8 @@ DESTDIR = $${DBGNAME}
 
 QT += xml opengl
 LIBS += -lqglviewer-qt4 -L./../core/$${DBGNAME}/ -lcore
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CFLAGS += -O3
+QMAKE_CXXFLAGS += -std=c++0x -O3
 
 INCLUDEPATH += ..
 DEPENDPATH += .. #check si les fichiers ont été modifiés
