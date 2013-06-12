@@ -32,7 +32,8 @@ class Fluide {
 private:
     Materiau<Dim> * mat;               /*!< Materiau du fluide (avec toutes les constantes) */
     list<Particule<Dim> *> particules; /*!< Ensemble des particules mobiles */
-    Metaballs ball;                     /*!< Metaball permettant de dessiner le fluide */
+    Metaballs * ball;                  /*!< Metaball permettant de dessiner le fluide */
+    
 public:
     double x_min;                        /*!< Définit le plan d'équation x = x_min (provisoire) */
     double x_max;                        /*!< Définit le plan d'équation x = x_max (provisoire) */
@@ -43,6 +44,8 @@ public:
 private:
     int nbrParticules;                   /*!< Nombre de particules du fluide */
     bool debutAnim;                      /*!< Indique si on est au debut de l'animation */
+    bool afficheMetaballs;               /*!< Indique si l'on doit afficher les métaballs lors de l'animation */
+    bool affichePoint;                    /*!< Indique si les particules sont affichées comme des points ou des spheres */
 
     /* Paramètres nécessaires à la réinitialisation du fluide */
     Vecteur<Dim> vitInit;
@@ -59,12 +62,14 @@ private:
     /* Seuils pour le critère d'activité des particules */
     double epsilonR;  // Seuil de dynamique restreinte (en-dessous duquel les particules restent immobiles)
     double epsilonF;  // Seuil de dynamique entière (au-dessus duquel les particules sont complètement libres)
+    
     /* Liste des particules actives */
     list<Particule<Dim>*> actives;
 
     /* Paramètres nécessaires à la réinitialisation du fluide */
     Vecteur<Dim> nbPart;
     double ecart;
+
 
     /* ** Constructeurs ** */
 public:
@@ -192,6 +197,8 @@ public:
      * Mise à jour du système avec le schéma d'intégration de l'ARPS
      */
     void schemaIntegration();
+    /* Avec des traces */
+    void schemaIntegration_Traces();
 
     /* ** Interaction utilisateur ** */
     /**
@@ -201,6 +208,18 @@ public:
      * @return True ssi il faut recommencer la simulation après modification
      */
     bool changerParam();
+
+    /* ** Interaction utilisateur ** */
+    /**
+     * Modification interactive du mode d'affichage
+     */
+    void changerAffichage();
+
+    /* ** Interaction utilisateur ** */
+    /**
+     * Modification interactive du mode d'affichage
+     */
+    void changerAffichageAuto();
 
     /**
      * @brief Interaction utilisateur
@@ -222,6 +241,10 @@ public:
 
 private:
 
+    /*
+     * Supprime les éléments du fluide; appelée par le destructeur
+     * et lors des réinitialisations
+     */
     void clear();
     
     /*
@@ -262,6 +285,9 @@ private:
 
     /* Mise à jour de la table : on la vide entièrement puis on réinsère les particules */
     void majTableHashage();
+
+    /* Mise à jour d'une particule dans la table de hashage */
+    void reinsertionTable(Particule<Dim>*);
     
     /* DEBUG : affichage de la table de hashage */
     void afficher_hash();
@@ -280,6 +306,8 @@ private:
      * par l'algorithme incrémental de l'ARPS
      */
     void integrationForces();
+    /* Avec des traces de débug */
+    void integrationForces_Traces();
 
     /* Fonction de calcul d'un critère de restriction */
     double calculCritere(const Vecteur<Dim>&);

@@ -297,9 +297,10 @@ public:
     /**
      * @brief Affichage graphique
      *
-     * Fonction d'affichage de la particule sous la forme d'un point
+     * Fonction d'affichage de la particule sous la forme d'un point ou d'une sphere
+     * \param point Indique si on doit afficher un point (true) ou une sphere (false)
      */
-    void draw() const;
+    void draw(bool point) const;
 };
 
 /**

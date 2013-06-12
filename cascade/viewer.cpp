@@ -94,6 +94,9 @@ void Viewer::keyPressEvent(QKeyEvent *e)
         stopAnimation();
         interact();
         updateGL();
+    } else if (e->key()==Qt::Key_V) {
+        s->changerAffichage();
+        updateGL();
     } else {
 	QGLViewer::keyPressEvent(e);
     }

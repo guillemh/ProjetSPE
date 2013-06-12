@@ -240,15 +240,8 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
 
 
 template<unsigned int Dim>
-void Particule<Dim>::draw() const {
+void Particule<Dim>::draw(bool point) const {
 
-    //glColor3f(0.0, 1.0, 0.0);
-    //glPointSize(3.0f);
-    //glBegin(GL_POINTS);
-    //glVertex3f(position(1), position(2), position(3));
-    //glEnd();
-    
-    glPushMatrix();
     if (!COLORATION) {
        glColor3f(0.0, 1.0, 0.0);
     } else {
@@ -260,17 +253,27 @@ void Particule<Dim>::draw() const {
 	glColor3f(0.0, 1.0, 0.0);
       }
     }
-
-    glTranslatef(position(1), position(2), position(3));
-    glutSolidSphere(0.025, 8, 8);
-    glPopMatrix();
+    
+    if (point) {
+        glPointSize(3.0f);
+        glBegin(GL_POINTS);
+        glVertex3f(position(1), position(2), position(3));
+        glEnd();
+    } else {
+        glPushMatrix();
+        glTranslatef(position(1), position(2), position(3));
+        glutSolidSphere(0.025, 8, 8);
+        glPopMatrix();
+    }
 }
 
 
 template<unsigned int Dim>
 ostream& operator<<(ostream& os, const Particule<Dim>& p) {
-    os << "pos : " << p.getPosition() << endl
-       << "    vit : " << p.getVitesse() <<  endl
+    os << "pos : " << p.getPosition() 
+       << "    p_p : " << p.getPositionPrec() << endl
+       << "    vit : " << p.getVitesse()
+       << "    v_p : " << p.getVitessePrec() << endl
        << "    m_v : " << p.getMasseVolumique() << endl
        << "    pre : " << p.getPression();
     return os;

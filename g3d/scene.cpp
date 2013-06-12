@@ -9,6 +9,7 @@
 
 using namespace std;
 
+#define TRACES 0  // 0 si on ne veut aucune trace à l'exécution
 
 Scene::Scene()
     : f(),
@@ -33,50 +34,10 @@ void Scene::init() {
     anim = false;
     arps = true;
     
-    //    m = new Materiau<3>(EAU);
-    //    int d [3] = {10, 10, 20};
-    //    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -0.25, 0.25, -0.25, 1.0, 0.0); 
-    
     
     m = new Materiau<3>(EAU);
-    Vecteur<3> d = Vecteur<3>(2, 2, 5);
+    Vecteur<3> d = Vecteur<3>(2, 2, 50);
     f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -0.2, 0.2, -0.2, 0.2, 0.);
-    
-    //    Vecteur<3> vec0 = Vecteur<3>();
-    //    
-    //    Vecteur<3> vec1 = Vecteur<3>(0, 0, 0.1);
-    //    Vecteur<3> vec2 = Vecteur<3>(0, 0.07, 0.02);
-    //    Vecteur<3> vec3 = Vecteur<3>(0.02, 0.05, 0.09);
-    //    Vecteur<3> vec4 = Vecteur<3>(0.07, 0.04, 0.05);
-    //    Vecteur<3> vec5 = Vecteur<3>(0.03, 0.04, 0.06);
-    //    Vecteur<3> vec6 = Vecteur<3>(0.04, 0.07, 0.03);
-    //    Vecteur<3> vec7 = Vecteur<3>(0.03, 0.1, 0.04);
-    //    Vecteur<3> vec8 = Vecteur<3>(0.07, 0.07, 0.1);
-    //    Vecteur<3> vec9 = Vecteur<3>(0.06, 0.04, 0.03);
-    //    Vecteur<3> vec10 = Vecteur<3>(0.06, 0.05, 0.08);
-    //    
-    //    Particule<3> *p1 = new Particule<3>(1, vec1, vec0);
-    //    Particule<3> *p2 = new Particule<3>(2, vec2, vec0);
-    //    Particule<3> *p3 = new Particule<3>(3, vec3, vec0);
-    //    Particule<3> *p4 = new Particule<3>(4, vec4, vec0);
-    //    Particule<3> *p5 = new Particule<3>(5, vec5, vec0);
-    //    Particule<3> *p6 = new Particule<3>(6, vec6, vec0);
-    //    Particule<3> *p7 = new Particule<3>(7, vec7, vec0);
-    //    Particule<3> *p8 = new Particule<3>(8, vec8, vec0);
-    //    Particule<3> *p9 = new Particule<3>(9, vec9, vec0);
-    //    Particule<3> *p10 = new Particule<3>(10, vec10, vec0);
-    //    
-    //    f = new Fluide<3>(m);
-    //    f->ajouteParticule(p1);
-    //    f->ajouteParticule(p2);
-    //    f->ajouteParticule(p3);
-    //    f->ajouteParticule(p4);
-    //    f->ajouteParticule(p5);
-    //    f->ajouteParticule(p6);
-    //    f->ajouteParticule(p7);
-    //    f->ajouteParticule(p8);
-    //    f->ajouteParticule(p9);
-    //    f->ajouteParticule(p10);
 
 //      m = new Materiau<3>(EAU);
 //    
@@ -90,8 +51,6 @@ void Scene::init() {
 //      f->ajouteParticule(p1);
 //      f->ajouteParticule(p2);
 
-
-    //f->colorationMetaball();
 }
 
 void Scene::clear() {
@@ -102,21 +61,25 @@ void Scene::clear() {
 void Scene::draw() {
     glPushMatrix();
     f->draw();
-    f->affiche();
+    // f->affiche();
     glPopMatrix();
 }
 
 void Scene::animate() {
     // if (anim) {
         if (arps) {
-            f->schemaIntegration();
+            if (TRACES) {
+                f->schemaIntegration_Traces();
+            } else {
+                f->schemaIntegration();
+            }
         } else {
             f->majDensitePression();
             f->majPositionVitesse();
         }
-    //     f->affiche();
+        // f->affiche();
     //     anim = false;
-    // }    
+    // }
 }
 
 void Scene::interact() {
@@ -126,7 +89,9 @@ void Scene::interact() {
     cout << " 3. Les paramètres du matériau" << endl;
     cout << " 4. Les paramètres du fluide" << endl;
     cout << " 5. La méthode de simulation" << endl;
-    cout << "autre. Annuler et revenir à la simulation" << endl;
+    cout << " 6. L'affichage (fonctionne aussi avec la touche v)" << endl;
+    cout << " 7. Redémarrer l'animation" << endl;
+    cout << " autre. Annuler et revenir à la simulation" << endl;
     int numero;
     cin >> numero;
     bool chgt = false;
@@ -159,6 +124,13 @@ void Scene::interact() {
         } else if (num == 2) {
             arps = true;
         }
+        break;
+    case 6:
+        f->changerAffichage();
+        break;
+    case 7:
+        f->init();
+        return;
         break;
     default:
         return;
@@ -208,4 +180,8 @@ void Scene::changerMateriau() {
         return;
     }
     m->changerNature(type);
+}
+
+void Scene::changerAffichage() {
+    f->changerAffichageAuto();
 }
