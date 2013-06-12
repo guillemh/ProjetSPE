@@ -39,6 +39,8 @@ class Viewer : public QGLViewer
      */
     virtual ~Viewer ();
 
+    bool toggleRecord;
+
  protected :
 
     /**
