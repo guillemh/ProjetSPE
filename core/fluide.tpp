@@ -1141,7 +1141,7 @@ void Fluide<Dim>::schemaIntegration() {
         (*part_it)->incrPosition(incr); 
         
         /* Détection des collisions */
-	if ((*part_it)->getEtat() != 2) {
+	if ((*part_it)->getEtat() != INACTIVE) {
             /* Uniquement pour les particules actives */
 	    Vecteur<Dim> pos = (*part_it)->getPosition();
 	    Vecteur<Dim> contact;
