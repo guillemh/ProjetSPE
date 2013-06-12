@@ -243,14 +243,14 @@ template<unsigned int Dim>
 void Particule<Dim>::draw(bool point) const {
 
     if (!COLORATION) {
-       glColor3f(0.0, 1.0, 0.0);
+       glColor3f(0.0, 0.0, 1.0);
     } else {
       if (active == 1) {
-      	  glColor3f(1.0,0.0,0.0);       
+      	  glColor3f(0.0,0.0,1.0);  // Bleu : particule active     
       } else if (active == 2) {     
-      	  glColor3f(0.0,0.0,1.0);    
+      	  glColor3f(1.0,1.0,0.0);  //  Rouge : particule inactive
       } else if (active == 3) {
-	glColor3f(0.0, 1.0, 0.0);
+	  glColor3f(0.0, 1.0, 0.0);  // Vert : particule en transition
       }
     }
     
