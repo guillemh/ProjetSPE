@@ -5,6 +5,16 @@
 #include "../core/vecteur.hpp"
 #include "../core/materiau.hpp"
 
+/**
+ * @enum TypeFluide 
+ * Permet de définir par défaut des types de fluides
+ */
+enum EtatParticule {
+    ACTIVE,
+    INACTIVE,
+    TRANSITION
+};
+
 /** 
  * \class Particule 
  * @brief Classe des particules constituant le fluide
@@ -32,7 +42,8 @@ private:
     double pressionPrec;         // Pression de la particule 
                                  // au pas de temps précédent (Pa) 
     double masse;                // Masse de la particule (m)
-    int active;              // Activite de la particule
+    EtatParticule etat;          // Etat d'acivité de la particule
+
 
     /* ** Constructeurs ** */
 public:
@@ -46,8 +57,9 @@ public:
      * \param m Masse de la particule
      * \param rho Masse volumique initiale
      * \param p Pression initiale
+     * \param e Etat de la particule
      */
-  Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0, double m = 0, int active = 1);
+  Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0, double m = 0, EtatParticule e = ACTIVE);
     
     /**
      * @brief Destructeur
@@ -144,12 +156,14 @@ public:
      */
     double getPressionPrec() const;
 
-   /**
+
+     /**
      * @brief Accesseur
      *
-     * \return L'activité de la particule
+     * \return Etat d'acivité de la particule
      */
-    int getActive() const;
+    EtatParticule getEtat() const;
+    
 
   
 
@@ -257,15 +271,14 @@ public:
      * @param f Facteur de décrémentation des forces (forces -= f)
      */
     void decrForces(const Vecteur<Dim>& f);
-
-   /**
+  
+    /**
      * @brief Mutateur
      *
      * Met à jour l'activité de la particule
-     * @param b Booleen associé à l'activité de la particule
+     * @param e Etat associé à l'activité de la particule
      */
-    void setActive(const int &b);
-  
+    void setEtat(const EtatParticule &e);
 
     /**
      * @brief Mise à jour de la particule pour un pas de temps

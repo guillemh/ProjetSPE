@@ -322,8 +322,14 @@ void Metaballs::draw() {
                      * Si un point prend la valeur "vrai" il est considéré comme coloré
                      * c'est-à-dire à l'intérieur de la surface implicite
                      */
+                    // Isovaleur de la fonction F(x) = 1/x²
                     // bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 1/(rayon*rayon);
-		            bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 0.9;
+                    
+                    // Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391)
+		            // bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 0.9;
+		            
+		            // Isovaleur de la fonction F(x) = a/(1+b*x²)
+		            bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 1.41/9.75;
 					config <<= 1;
                     config |= dedans;
                 }

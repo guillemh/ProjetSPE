@@ -1235,15 +1235,16 @@ void Fluide<Dim>::schemaIntegration() {
         if (rho == 0) {
             /* Particule complètement active */
             actives.push_back(*part_it);
-            (*part_it)->setActive(1);
+            (*part_it)->setEtat(ACTIVE);
         } else if (rho < 1) {
             /* Particule en transition */
             actives.push_back(*part_it);
-            (*part_it)->setActive(3);
+            (*part_it)->setEtat(TRANSITION);
         } else {
             /* Particule inactive */
-	    (*part_it)->setActive(2);
+	    (*part_it)->setEtat(INACTIVE);
         }
+
         /* Mise à jour des positions */
         Vecteur<Dim> incr = mat->getPasTemps() * 
             ((*part_it)->getVitesse() * (1 - rho)
@@ -1253,7 +1254,7 @@ void Fluide<Dim>::schemaIntegration() {
         (*part_it)->incrPosition(incr); 
         
         /* Détection des collisions */
-	if ((*part_it)->getActive() != 2) {
+	if ((*part_it)->getEtat() != 2) {
             /* Uniquement pour les particules actives */
 	    Vecteur<Dim> pos = (*part_it)->getPosition();
 	    Vecteur<Dim> contact;
@@ -1279,7 +1280,7 @@ void Fluide<Dim>::schemaIntegration() {
                 if (rho >= 1) {
                     reinsertionTable(*part_it);
                     actives.remove(*part_it);
-                    (*part_it)->setActive(2);
+                    (*part_it)->setEtat(INACTIVE);
                 }
 	    }
         }
@@ -1321,15 +1322,15 @@ void Fluide<Dim>::schemaIntegration_Traces() {
         if (rho == 0) {
             /* Particule complètement active */
             actives.push_back(*part_it);
-            (*part_it)->setActive(1);
+            (*part_it)->setEtat(ACTIVE);
         } else if (rho < 1) {
             /* Particule en transition */
             actives.push_back(*part_it);
-            (*part_it)->setActive(3);
+            (*part_it)->setEtat(TRANSITION);
         } else {
             /* Particule inactive */
             // cout << (*part_it)->getIndice() << " pas active" << endl;
-	    (*part_it)->setActive(2);
+	    (*part_it)->setEtat(INACTIVE);
         }
         /* Mise à jour des positions */
         Vecteur<Dim> incr = mat->getPasTemps() * 
@@ -1341,7 +1342,7 @@ void Fluide<Dim>::schemaIntegration_Traces() {
         (*part_it)->incrPosition(incr); 
         
         /* Détection des collisions */
-	if ((*part_it)->getActive() != 2) {
+	if ((*part_it)->getEtat() == ACTIVE) {
             /* Uniquement pour les particules actives */
 	    Vecteur<Dim> pos = (*part_it)->getPosition();
 	    Vecteur<Dim> contact;
@@ -1372,7 +1373,7 @@ void Fluide<Dim>::schemaIntegration_Traces() {
                     // cout << (*part_it)->getIndice() << ". réinsertion" << endl;
                     reinsertionTable(*part_it);
                     actives.remove(*part_it);
-                    (*part_it)->setActive(2);
+                    (*part_it)->setEtat(INACTIVE);
                 }
 	    }
         }

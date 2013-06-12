@@ -12,7 +12,7 @@ using std::ostream;
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
-Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m, int a)
+Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m, EtatParticule e)
     : indice(ind),
       position(pos),
       positionPrec(pos),
@@ -23,7 +23,7 @@ Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, 
       pression(p),
       pressionPrec(p),
       masse(m),
-      active(a)
+      etat(e)
 {
 }
 
@@ -98,8 +98,8 @@ double Particule<Dim>::getPressionPrec() const {
 }
 
 template<unsigned int Dim>
-int Particule<Dim>::getActive() const {
-    return active;
+EtatParticule Particule<Dim>::getEtat() const {
+    return etat;
 }
 
 
@@ -175,8 +175,8 @@ void Particule<Dim>::decrForces(const Vecteur<Dim> &f) {
 }
 
 template<unsigned int Dim>
-void Particule<Dim>::setActive(const int &b) {
-    active = b;
+void Particule<Dim>::setEtat(const EtatParticule &e) {
+    etat = e;
 }
 
 
@@ -200,22 +200,23 @@ void Particule<Dim>::majPression (double dens) {
 
 template<unsigned int Dim>
 double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
-    //    double d = (pos - position).norme();
-    //    if (d <= 1/3)
-    //        return 1 - 3*d*d;
-    //    if (d <= 1)
-    //        return 3*(1-d)*(1-d)/2;
-    //    else
-    //        return 0;
 
     Vecteur<Dim> diff = (prec) ? pos - positionPrec : pos - position;
     double r = diff.scalaire(diff);
+    
+    // Fonction F(x) = 1/x²
     // if (r == 0.0)
     //     return 50000;
-    // return 1 / (2*r);
+    // return 1/r;
 
-    return pow(0.1, 10000*r*r);
+    // Fonction F(x) = 0.1^10000x²
+    // return pow(0.1, 10000*r*r);
+    
+    // Fonction F(x) = exp(-x^4/0.000391)
     // return exp(-r*r/0.0003910);
+    
+    // Fonction F(x) = a/(1+b*x²) avec a = 1.41 et b = 14000
+    return 1.41/(1+14000*r);
 }
 
 
@@ -243,14 +244,14 @@ template<unsigned int Dim>
 void Particule<Dim>::draw(bool point) const {
 
     if (!COLORATION) {
-       glColor3f(0.0, 1.0, 0.0);
+       glColor3f(0.0, 0.0, 1.0);
     } else {
-      if (active == 1) {
-      	  glColor3f(1.0,0.0,0.0);       
-      } else if (active == 2) {     
-      	  glColor3f(0.0,0.0,1.0);    
-      } else if (active == 3) {
-	glColor3f(0.0, 1.0, 0.0);
+      if (etat == ACTIVE) {
+      	  glColor3f(0.0,0.0,1.0);  // Bleu : particule active     
+      } else if (etat == INACTIVE) {     
+      	  glColor3f(1.0,0.0,0.0);  //  Rouge : particule inactive
+      } else if (etat == TRANSITION) {
+	  glColor3f(0.0, 1.0, 0.0);  // Vert : particule en transition
       }
     }
     
