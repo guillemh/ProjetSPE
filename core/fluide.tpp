@@ -1150,13 +1150,13 @@ void Fluide<Dim>::schemaIntegration() {
         if (rho < 1) {
             actives.push_back(*part_it);
 	    if (rho == 0) {
-	      (*part_it)->setActive(1);
+	      (*part_it)->setEtat(ACTIVE);
 	    } else {
-	      (*part_it)->setActive(3);
+	      (*part_it)->setEtat(TRANSITION);
 	    }
         } else {
             // cout << (*part_it)->getIndice() << " pas active" << endl;
-	    (*part_it)->setActive(2);
+	    (*part_it)->setEtat(INACTIVE);
         }
         /* Mise à jour des positions */
         Vecteur<Dim> incr = mat->getPasTemps() * 
@@ -1168,7 +1168,7 @@ void Fluide<Dim>::schemaIntegration() {
         (*part_it)->incrPosition(incr); 
         
         /* Détection des collisions */
-	if ((*part_it)->getActive()) {
+	if ((*part_it)->getEtat() == ACTIVE) {
 	    Vecteur<Dim> pos = (*part_it)->getPosition();
 	    Vecteur<Dim> contact;
 	    if (!CASCADE) {
