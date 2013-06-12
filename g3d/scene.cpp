@@ -39,8 +39,8 @@ void Scene::init() {
     
     
     m = new Materiau<3>(EAU);
-    Vecteur<3> d = Vecteur<3>(2, 2, 50);
-    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -0.1, 0.1, -0.1, 0.1, 0.);
+    Vecteur<3> d = Vecteur<3>(2, 2, 5);
+    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -0.2, 0.2, -0.2, 0.2, 0.);
     
     //    Vecteur<3> vec0 = Vecteur<3>();
     //    
@@ -102,7 +102,7 @@ void Scene::clear() {
 void Scene::draw() {
     glPushMatrix();
     f->draw();
-    //f->affiche();
+    f->affiche();
     glPopMatrix();
 }
 
