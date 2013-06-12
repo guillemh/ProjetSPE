@@ -97,8 +97,17 @@ public:
      * \param ymax Bord de la boite
      * \param zmin Dessous de la boite
      */
-    Fluide(Materiau<Dim> * m, Vecteur<Dim> nbP, double e, double rho, double p, Vecteur<Dim> v0 = Vecteur<Dim>(),
-            double xmin = -0.2, double xmax = 0.2, double ymin = -0.2, double ymax = 0.2, double zmin = 0.0);
+    Fluide(Materiau<Dim> * m, 
+	   Vecteur<Dim> nbP, 
+	   double e, 
+	   double rho, 
+	   double p, 
+	   Vecteur<Dim> v0 = Vecteur<Dim>(),
+            double xmin = -0.2, 
+	   double xmax = 0.2, 
+	   double ymin = -0.2, 
+	   double ymax = 0.2, 
+	   double zmin = 0.0);
     
     /**
      * @brief Destructeur

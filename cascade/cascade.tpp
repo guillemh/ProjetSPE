@@ -6,31 +6,15 @@ Cascade<Dim>::Cascade(Fluide<Dim> *_f) {
     bassin_x = 0.5;
     bassin_y = 0.5;
     bassin_z = 0.5;
-    obstacle_x = 0.1 * bassin_x ;
-    obstacle_y = 0.15 * bassin_y ;
-    obstacle_z = 1.1 * bassin_z ;
-    pente_angle = 15;
-    pente_x = 3.0;
-    pente_y = 0.7*bassin_y;
-    pente_z = 0.5;
     arps = false;
 }
 
 template<unsigned int Dim>
-Cascade<Dim>::Cascade(Fluide<Dim> *_f, double _bassin_x, double _bassin_y, double _bassin_z,
-		      double _obstacle_x, double _obstacle_y, double _obstacle_z, 
-		      double _pente_angle, double _pente_x, double _pente_y, double _pente_z) {
+Cascade<Dim>::Cascade(Fluide<Dim> *_f, double _bassin_x, double _bassin_y, double _bassin_z) {
     f = _f;
     bassin_x = _bassin_x;
     bassin_y = _bassin_y;
     bassin_z = _bassin_z;
-    obstacle_x = _obstacle_x;
-    obstacle_y = _obstacle_y;
-    obstacle_z = _obstacle_z;
-    pente_angle = _pente_angle;
-    pente_x = _pente_x;
-    pente_y = _pente_y;
-    pente_z = _pente_z;
 }
 
 template<unsigned int Dim>
@@ -222,53 +206,3 @@ const double & Cascade<Dim>::getBassinZ() const
 {
     return bassin_z;
 }
-
-template<unsigned int Dim>
-const double & Cascade<Dim>::getObstacleX() const
-{
-	return obstacle_x;
-}
-
-template<unsigned int Dim>
-const double & Cascade<Dim>::getObstacleY() const
-{
-	return obstacle_y;
-}
-
-template<unsigned int Dim>
-const double & Cascade<Dim>::getObstacleZ() const
-{
-	return obstacle_z;
-}
-
-template<unsigned int Dim>
-const double & Cascade<Dim>::getPenteAngle() const
-{
-	return pente_angle;
-}
-
-template<unsigned int Dim>
-const double & Cascade<Dim>::getPenteX() const
-{
-	return pente_x;
-}
-
-template<unsigned int Dim>
-const double & Cascade<Dim>::getPenteY() const
-{
-	return pente_y;
-}
-
-template<unsigned int Dim>
-const double & Cascade<Dim>::getPenteZ() const
-{
-	return pente_z;	
-}
-
-
-/*
- * Pente : a pour équation x*sin(alpha) + (z - bassin_z)*cos(alpha) = 0
- * -> en fonction de y, gérer le cas où on a x*sin() + (z - b_z)*cos() <= 0
- *
- * Les autres plans s'expriment simplement
- */
