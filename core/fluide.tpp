@@ -11,7 +11,7 @@ using std::pair;
 
 #define EPSR 1
 #define DELTA 15
-#define METABALLS 1 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
+#define METABALLS 0 // Mettre a 1 pour dessiner les surface implicites, 0 sinon
 #define CASCADE 0 // Mettre a 1 pour les collisions avec la cascade
 
 

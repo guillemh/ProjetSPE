@@ -17,8 +17,7 @@ Viewer::~Viewer()
 
 
 void Viewer::init()
-{
-
+{  
     //=== VIEWING PARAMETERS
     restoreStateFromFile();
     toogleWireframe = false;  // filled faces
@@ -94,6 +93,9 @@ void Viewer::keyPressEvent(QKeyEvent *e)
         stopAnimation();
         interact();
         updateGL();
+
+    } else if (e->key()==Qt::Key_R){
+      toogleRecord = !toogleRecord;
     } else {
 	QGLViewer::keyPressEvent(e);
     }
