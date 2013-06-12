@@ -1043,119 +1043,6 @@ void Fluide<Dim>::integrationForces() {
     }
 }
 
-template<unsigned int Dim>
-void Fluide<Dim>::integrationForces_Traces() {
-    set<Particule<Dim>*> vois;
-    typename set<Particule<Dim>*>::iterator vois_it;
-    typename list<Particule<Dim> *>::iterator part_it;
-    
-    if (debutAnim) {
-        affiche();
-        /* Premier pas de l'animation */
-        for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
-            /* On boucle sur toutes les particules */
-            vois = voisinage(*(*part_it));
-            for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
-                /* Boucle sur tous les voisins de la particule */
-                if ((*part_it)->getIndice() < (*vois_it)->getIndice()) {
-                    /* On ne veut considérer les couples qu'une fois */
-                    /* Ajouter interactions */
-                    Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
-                    (*part_it)->incrForces(forces);
-                    (*vois_it)->decrForces(forces);
-                }
-            }
-            /* Ajout des forces non interactives */
-            (*part_it)->incrForces((*part_it)->getMasseVolumique() * mat->getAccGrav());   // force de gravité
-            cout << (*part_it)->getIndice() << ". forces début : " << (*part_it)->getForces() << endl;
-        }
-        debutAnim = false;
-
-    } else {
-        /* Au milieu de l'algorithme incrémental */
-        double rho;
-        Vecteur<Dim> drho;
-        // affiche();
-        /* On se base sur les anciennes positions pour enlever les anciennes forces */
-        cout << endl << "********************************************" << endl;
-        cout << "Forces enlevées :" << endl;
-        for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
-            /* On boucle sur les particules actives */
-            vois = voisinagePrec(*(*part_it));
-            cout << (*part_it)->getIndice() << ". forces précédentes : " << (*part_it)->getForces() << endl;
-            for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
-                /* Boucle sur tous les voisins de la particule */
-                restriction((*vois_it)->getVitesse(), rho, drho);
-                if (rho == 1  // la particule voisine n'est pas active : il faut quand même
-                              // mettre à jour les forces d'interaction entre elles,
-                              // mais vois_it ne pourra pas le faire
-                    || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
-                    /* Enlever interactions */
-                    Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
-                    (*part_it)->decrForces(forcesPrec);
-                    (*vois_it)->incrForces(forcesPrec);
-                    cout << " " << (*part_it)->getIndice() << " " << (*vois_it)->getIndice()
-                         << " " << forcesPrec << endl;
-                    cout << " => force intermédiaire : " << (*part_it)->getForces() << endl;
-                }
-            }
-            cout << endl;
-        }
-
-        cout << "BILAN des forces intermédiaire :" << endl;
-        for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
-            cout << (*part_it)->getIndice() << " totalforces : " << (*part_it)->getForces() << endl;
-        }
-
-        /*
-         * On met à jour les positions dans la grille de voxels :
-         * on met à jour la hashtable, uniquement pour les particules actives,
-         * car les autres n'ont pas modifié leur position
-         */
-        // majTableHashage();
-        /* On boucle sur les particules actives */
-        // afficher_hash();
-        // cout << "MAJ table hashage" << endl;
-        // afficher_actives();
-        for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
-            reinsertionTable(*part_it);
-        }
-        // afficher_hash();
-
-        /* On ajoute les forces correspondant aux nouvelles positions */
-        cout << endl << "********************************************" << endl;
-        cout << "Forces ajoutées :" << endl;
-        for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
-            /* On boucle sur les particules actives */
-            vois = voisinage(*(*part_it));
-            cout << (*part_it)->getIndice() << ". forces précédentes : " << (*part_it)->getForces() << endl;
-            for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
-                /* Boucle sur tous les voisins de la particule */
-                restriction((*vois_it)->getVitesse(), rho, drho);
-                if (rho == 1  // la particule voisine n'est pas active : il faut quand même
-                              // mettre à jour les forces d'interaction entre elles,
-                              // mais vois_it ne pourra pas le faire
-                    || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
-                    /* Ajouter interactions */
-                    Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
-                    (*part_it)->incrForces(forces);
-                    (*vois_it)->decrForces(forces);
-                    cout << " " << (*part_it)->getIndice() << " " << (*vois_it)->getIndice()
-                         << " " << forces << endl;
-                    cout << " => force intermédiaire : " << (*part_it)->getForces() << endl;
-                }
-            }
-            cout << endl;
-        }
-
-        cout << "BILAN des forces :" << endl;
-        for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
-            cout << (*part_it)->getIndice() << " totalforces : " << (*part_it)->getForces() << endl;
-        }
-
-    }
-}
-
 template <unsigned int Dim>
 double Fluide<Dim>::calculCritere(const Vecteur<Dim>& moment) {
     double critere = 0;
@@ -1289,6 +1176,119 @@ void Fluide<Dim>::schemaIntegration() {
 }
 
 template<unsigned int Dim>
+void Fluide<Dim>::integrationForces_Traces() {
+    set<Particule<Dim>*> vois;
+    typename set<Particule<Dim>*>::iterator vois_it;
+    typename list<Particule<Dim> *>::iterator part_it;
+    
+    if (debutAnim) {
+        affiche();
+        /* Premier pas de l'animation */
+        for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
+            /* On boucle sur toutes les particules */
+            vois = voisinage(*(*part_it));
+            for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+                /* Boucle sur tous les voisins de la particule */
+                if ((*part_it)->getIndice() < (*vois_it)->getIndice()) {
+                    /* On ne veut considérer les couples qu'une fois */
+                    /* Ajouter interactions */
+                    Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
+                    (*part_it)->incrForces(forces);
+                    (*vois_it)->decrForces(forces);
+                }
+            }
+            /* Ajout des forces non interactives */
+            (*part_it)->incrForces((*part_it)->getMasseVolumique() * mat->getAccGrav());   // force de gravité
+            cout << (*part_it)->getIndice() << ". forces début : " << (*part_it)->getForces() << endl;
+        }
+        debutAnim = false;
+
+    } else {
+        /* Au milieu de l'algorithme incrémental */
+        double rho;
+        Vecteur<Dim> drho;
+        // affiche();
+        /* On se base sur les anciennes positions pour enlever les anciennes forces */
+        cout << endl << "********************************************" << endl;
+        cout << "Forces enlevées :" << endl;
+        for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
+            /* On boucle sur les particules actives */
+            vois = voisinagePrec(*(*part_it));
+            cout << (*part_it)->getIndice() << ". forces précédentes : " << (*part_it)->getForces() << endl;
+            for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+                /* Boucle sur tous les voisins de la particule */
+                restriction((*vois_it)->getVitesse(), rho, drho);
+                if (rho == 1  // la particule voisine n'est pas active : il faut quand même
+                              // mettre à jour les forces d'interaction entre elles,
+                              // mais vois_it ne pourra pas le faire
+                    || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
+                    /* Enlever interactions */
+                    Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
+                    (*part_it)->decrForces(forcesPrec);
+                    (*vois_it)->incrForces(forcesPrec);
+                    cout << " " << (*part_it)->getIndice() << " " << (*vois_it)->getIndice()
+                         << " " << forcesPrec << endl;
+                    cout << " => force intermédiaire : " << (*part_it)->getForces() << endl;
+                }
+            }
+            cout << endl;
+        }
+
+        cout << "BILAN des forces intermédiaire :" << endl;
+        for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
+            cout << (*part_it)->getIndice() << " totalforces : " << (*part_it)->getForces() << endl;
+        }
+
+        /*
+         * On met à jour les positions dans la grille de voxels :
+         * on met à jour la hashtable, uniquement pour les particules actives,
+         * car les autres n'ont pas modifié leur position
+         */
+        // majTableHashage();
+        /* On boucle sur les particules actives */
+        // afficher_hash();
+        // cout << "MAJ table hashage" << endl;
+        // afficher_actives();
+        for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
+            reinsertionTable(*part_it);
+        }
+        // afficher_hash();
+
+        /* On ajoute les forces correspondant aux nouvelles positions */
+        cout << endl << "********************************************" << endl;
+        cout << "Forces ajoutées :" << endl;
+        for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
+            /* On boucle sur les particules actives */
+            vois = voisinage(*(*part_it));
+            cout << (*part_it)->getIndice() << ". forces précédentes : " << (*part_it)->getForces() << endl;
+            for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+                /* Boucle sur tous les voisins de la particule */
+                restriction((*vois_it)->getVitesse(), rho, drho);
+                if (rho == 1  // la particule voisine n'est pas active : il faut quand même
+                              // mettre à jour les forces d'interaction entre elles,
+                              // mais vois_it ne pourra pas le faire
+                    || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
+                    /* Ajouter interactions */
+                    Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
+                    (*part_it)->incrForces(forces);
+                    (*vois_it)->decrForces(forces);
+                    cout << " " << (*part_it)->getIndice() << " " << (*vois_it)->getIndice()
+                         << " " << forces << endl;
+                    cout << " => force intermédiaire : " << (*part_it)->getForces() << endl;
+                }
+            }
+            cout << endl;
+        }
+
+        cout << "BILAN des forces :" << endl;
+        for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
+            cout << (*part_it)->getIndice() << " totalforces : " << (*part_it)->getForces() << endl;
+        }
+
+    }
+}
+
+template<unsigned int Dim>
 void Fluide<Dim>::schemaIntegration_Traces() {
 
     cout << endl << "|||||||||||||||||||||||||| NOUVEAU PAS ||||||||||||||||||||||||||" << endl;
@@ -1303,16 +1303,16 @@ void Fluide<Dim>::schemaIntegration_Traces() {
     typename list<Particule<Dim> *>::iterator part_it;
 
     /* Mise à jour des vitesses */
-    // cout << endl << "********************************************" << endl;
+    cout << endl << "********************************************" << endl;
     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
         (*part_it)->setVitessePrec((*part_it)->getVitesse());
-        // cout << (*part_it)->getIndice() << ".Vitesse " << (*part_it)->getForces()*mat->getPasTemps()/(*part_it)->getMasseVolumique() << endl;
+        cout << (*part_it)->getIndice() << ".Vitesse " << (*part_it)->getForces()*mat->getPasTemps()/(*part_it)->getMasseVolumique() << endl;
         (*part_it)->incrVitesse((*part_it)->getForces()*mat->getPasTemps()/(*part_it)->getMasseVolumique());
     }
 
     /* Réinitialisation de la liste des particules actives */
     actives.clear();
-    // cout << endl << "********************************************" << endl;
+    cout << endl << "********************************************" << endl;
     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
         /* Mise à jour de la liste des particules actives */
         double rho;
@@ -1337,12 +1337,12 @@ void Fluide<Dim>::schemaIntegration_Traces() {
             ((*part_it)->getVitesse() * (1 - rho)
              - 0.5 * pow((*part_it)->getVitesse().norme(), 2) * mat->getMasseParticules() * drho
              );
-        // cout << (*part_it)->getIndice() << ". Incr position " << incr << endl;
+        cout << (*part_it)->getIndice() << ". Incr position " << incr << endl;
         (*part_it)->setPositionPrec((*part_it)->getPosition());
         (*part_it)->incrPosition(incr); 
         
         /* Détection des collisions */
-	if ((*part_it)->getEtat() == ACTIVE) {
+	if ((*part_it)->getEtat() != INACTIVE) {
             /* Uniquement pour les particules actives */
 	    Vecteur<Dim> pos = (*part_it)->getPosition();
 	    Vecteur<Dim> contact;
@@ -1360,6 +1360,7 @@ void Fluide<Dim>::schemaIntegration_Traces() {
         
                 /* Mise à jour de la position */
                 //(*part_it)->setPositionPrec((*part_it)->getPosition());
+                cout << (*part_it)->getIndice() << ". maj pos " << contact << endl;
                 (*part_it)->setPosition(contact);
             
                 /* Mise à jour de la vitesse */
@@ -1369,8 +1370,8 @@ void Fluide<Dim>::schemaIntegration_Traces() {
                 (*part_it)->incrVitesse(-mat->getCoeffRestitution() * vitesse*normale - vitesse*normale);
                 restriction((*part_it)->getVitesse(), rho, drho);
                 if (rho >= 1) {
-                    // cout << (*part_it)->getIndice() << ". MAJ actives collision" << endl;
-                    // cout << (*part_it)->getIndice() << ". réinsertion" << endl;
+                    cout << (*part_it)->getIndice() << ". MAJ actives collision" << endl;
+                    cout << (*part_it)->getIndice() << ". réinsertion" << endl;
                     reinsertionTable(*part_it);
                     actives.remove(*part_it);
                     (*part_it)->setEtat(INACTIVE);
@@ -1381,8 +1382,8 @@ void Fluide<Dim>::schemaIntegration_Traces() {
     
     cout << endl << "********************************************" << endl;
     afficher_actives();
-    // cout << endl << "********************************************" << endl;
-    // affiche();
+    cout << endl << "********************************************" << endl;
+    affiche();
 
 }
 
