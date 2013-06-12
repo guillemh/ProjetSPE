@@ -54,6 +54,8 @@ class Scene {
 
     void changerMateriau();
     
+    void changerAffichage();
+    
  private :
     Fluide<3> *f;   /*!< Pointeur sur un fluide */
     Materiau<3> *m; /*!< Pointeur sur un matériau */

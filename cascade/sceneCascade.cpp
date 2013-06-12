@@ -15,6 +15,11 @@ SceneCascade::SceneCascade()
       f(),
       arps(false)
 {
+    Materiau<3> *m = new Materiau<3>(EAU);
+    Vecteur<3> d = Vecteur<3>(5, 5, 50);
+    Fluide<3> *f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression());
+    c1 = new Cascade<3> (f);
+    s = new Skybox(c1);
     init();
 }
 
@@ -63,6 +68,8 @@ void SceneCascade::interact() {
     cout << endl << "Quels paramètres voulez-vous modifier?" << endl;
     cout << " 1. La méthode de simulation" << endl;
     cout << " 2. Les seuils de l'ARPS" << endl;
+    cout << " 3. L'affichage (fonctionne aussi avec la touche v)" << endl;
+    cout << " 4. Redémarrer l'animation" << endl;
     cout << "autre. Annuler et revenir à la simulation" << endl;
     int numero;
     cin >> numero;
@@ -87,6 +94,13 @@ void SceneCascade::interact() {
     case 2:
         f->changerArps();
         break;
+    case 3:
+        f->changerAffichage();
+        break;
+    case 4:
+        f->init();
+        return;
+        break;
     default:
         return;
         break;
@@ -100,4 +114,8 @@ void SceneCascade::interact() {
         interact();
         return;
     }
+}
+
+void SceneCascade::changerAffichage() {
+    f->changerAffichageAuto();
 }

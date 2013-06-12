@@ -12,7 +12,7 @@ using std::ostream;
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
-Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m, int a)
+Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m, EtatParticule e)
     : indice(ind),
       position(pos),
       positionPrec(pos),
@@ -23,7 +23,7 @@ Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, 
       pression(p),
       pressionPrec(p),
       masse(m),
-      active(a)
+      etat(e)
 {
 }
 
@@ -98,8 +98,8 @@ double Particule<Dim>::getPressionPrec() const {
 }
 
 template<unsigned int Dim>
-int Particule<Dim>::getActive() const {
-    return active;
+EtatParticule Particule<Dim>::getEtat() const {
+    return etat;
 }
 
 
@@ -175,8 +175,8 @@ void Particule<Dim>::decrForces(const Vecteur<Dim> &f) {
 }
 
 template<unsigned int Dim>
-void Particule<Dim>::setActive(const int &b) {
-    active = b;
+void Particule<Dim>::setEtat(const EtatParticule &e) {
+    etat = e;
 }
 
 
@@ -240,30 +240,31 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
 
 
 template<unsigned int Dim>
-void Particule<Dim>::draw() const {
+void Particule<Dim>::draw(bool point) const {
 
-    //glColor3f(0.0, 1.0, 0.0);
-    //glPointSize(3.0f);
-    //glBegin(GL_POINTS);
-    //glVertex3f(position(1), position(2), position(3));
-    //glEnd();
-    
-    glPushMatrix();
     if (!COLORATION) {
-       glColor3f(0.0, 1.0, 0.0);
+       glColor3f(0.0, 0.0, 1.0);
     } else {
-      if (active == 1) {
-      	  glColor3f(1.0,0.0,0.0);       
-      } else if (active == 2) {     
-      	  glColor3f(0.0,0.0,1.0);    
-      } else if (active == 3) {
-	glColor3f(0.0, 1.0, 0.0);
+      if (etat == ACTIVE) {
+      	  glColor3f(0.0,0.0,1.0);  // Bleu : particule active     
+      } else if (etat == INACTIVE) {     
+      	  glColor3f(1.0,0.0,0.0);  //  Rouge : particule inactive
+      } else if (etat == TRANSITION) {
+	  glColor3f(0.0, 1.0, 0.0);  // Vert : particule en transition
       }
     }
-
-    glTranslatef(position(1), position(2), position(3));
-    glutSolidSphere(0.025, 8, 8);
-    glPopMatrix();
+    
+    if (point) {
+        glPointSize(3.0f);
+        glBegin(GL_POINTS);
+        glVertex3f(position(1), position(2), position(3));
+        glEnd();
+    } else {
+        glPushMatrix();
+        glTranslatef(position(1), position(2), position(3));
+        glutSolidSphere(0.025, 8, 8);
+        glPopMatrix();
+    }
 }
 
 

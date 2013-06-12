@@ -69,5 +69,7 @@ class SceneCascade {
      */
     void interact();
     
+    void changerAffichage();
+    
 };
 #endif
