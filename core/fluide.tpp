@@ -1303,16 +1303,16 @@ void Fluide<Dim>::schemaIntegration_Traces() {
     typename list<Particule<Dim> *>::iterator part_it;
 
     /* Mise à jour des vitesses */
-    cout << endl << "********************************************" << endl;
+    // cout << endl << "********************************************" << endl;
     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
         (*part_it)->setVitessePrec((*part_it)->getVitesse());
-        cout << (*part_it)->getIndice() << ".Vitesse " << (*part_it)->getForces()*mat->getPasTemps()/(*part_it)->getMasseVolumique() << endl;
+        // cout << (*part_it)->getIndice() << ".Vitesse " << (*part_it)->getForces()*mat->getPasTemps()/(*part_it)->getMasseVolumique() << endl;
         (*part_it)->incrVitesse((*part_it)->getForces()*mat->getPasTemps()/(*part_it)->getMasseVolumique());
     }
 
     /* Réinitialisation de la liste des particules actives */
     actives.clear();
-    cout << endl << "********************************************" << endl;
+    // cout << endl << "********************************************" << endl;
     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
         /* Mise à jour de la liste des particules actives */
         double rho;
@@ -1337,7 +1337,7 @@ void Fluide<Dim>::schemaIntegration_Traces() {
             ((*part_it)->getVitesse() * (1 - rho)
              - 0.5 * pow((*part_it)->getVitesse().norme(), 2) * mat->getMasseParticules() * drho
              );
-        cout << (*part_it)->getIndice() << ". Incr position " << incr << endl;
+        // cout << (*part_it)->getIndice() << ". Incr position " << incr << endl;
         (*part_it)->setPositionPrec((*part_it)->getPosition());
         (*part_it)->incrPosition(incr); 
         
@@ -1360,7 +1360,7 @@ void Fluide<Dim>::schemaIntegration_Traces() {
         
                 /* Mise à jour de la position */
                 //(*part_it)->setPositionPrec((*part_it)->getPosition());
-                cout << (*part_it)->getIndice() << ". maj pos " << contact << endl;
+                // cout << (*part_it)->getIndice() << ". maj pos " << contact << endl;
                 (*part_it)->setPosition(contact);
             
                 /* Mise à jour de la vitesse */
@@ -1370,8 +1370,8 @@ void Fluide<Dim>::schemaIntegration_Traces() {
                 (*part_it)->incrVitesse(-mat->getCoeffRestitution() * vitesse*normale - vitesse*normale);
                 restriction((*part_it)->getVitesse(), rho, drho);
                 if (rho >= 1) {
-                    cout << (*part_it)->getIndice() << ". MAJ actives collision" << endl;
-                    cout << (*part_it)->getIndice() << ". réinsertion" << endl;
+                    // cout << (*part_it)->getIndice() << ". MAJ actives collision" << endl;
+                    // cout << (*part_it)->getIndice() << ". réinsertion" << endl;
                     reinsertionTable(*part_it);
                     actives.remove(*part_it);
                     (*part_it)->setEtat(INACTIVE);
@@ -1382,8 +1382,8 @@ void Fluide<Dim>::schemaIntegration_Traces() {
     
     cout << endl << "********************************************" << endl;
     afficher_actives();
-    cout << endl << "********************************************" << endl;
-    affiche();
+    // cout << endl << "********************************************" << endl;
+    // affiche();
 
 }
 
