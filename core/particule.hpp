@@ -42,7 +42,7 @@ private:
     double pressionPrec;         // Pression de la particule 
                                  // au pas de temps précédent (Pa) 
     double masse;                // Masse de la particule (m)
-    EtatParticule etat;          // Etat d'acivité de la particule
+    EtatParticule etat;          // Etat d'activité de la particule (ARPS)
 
 
     /* ** Constructeurs ** */
@@ -156,7 +156,6 @@ public:
      */
     double getPressionPrec() const;
 
-
      /**
      * @brief Accesseur
      *
@@ -164,8 +163,6 @@ public:
      */
     EtatParticule getEtat() const;
     
-
-  
 
     /* ** Mutateurs ** */
     /**
@@ -243,6 +240,15 @@ public:
     /**
      * @brief Mutateur
      *
+     * Modifie l'état de la particule
+     * @param e Etat associé à l'activité de la particule
+     */
+    void setEtat(const EtatParticule &e);
+
+    
+    /**
+     * @brief Mutateur
+     *
      * Incrémente la position de la particule
      * \param pos Vecteur de déplacement de la particule (position += pos)
      */
@@ -272,14 +278,6 @@ public:
      */
     void decrForces(const Vecteur<Dim>& f);
   
-    /**
-     * @brief Mutateur
-     *
-     * Met à jour l'activité de la particule
-     * @param e Etat associé à l'activité de la particule
-     */
-    void setEtat(const EtatParticule &e);
-
     /**
      * @brief Mise à jour de la particule pour un pas de temps
      *

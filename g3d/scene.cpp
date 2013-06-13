@@ -36,7 +36,7 @@ void Scene::init() {
     
     
     m = new Materiau<3>(EAU);
-    Vecteur<3> d = Vecteur<3>(1, 1, 3);
+    Vecteur<3> d = Vecteur<3>(1, 1, 2);
     double bord = 0.01;
     double ecart = 0.5;
     f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, bord, 0.);

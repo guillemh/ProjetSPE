@@ -781,7 +781,7 @@ void Fluide<Dim>::affiche() {
     typename list<Particule<Dim> *>::iterator it;
     int i = 0;
     for (it = particules.begin(); it != particules.end(); it++) {
-        cout << "P" << i << " : " << endl;
+        cout << "P" << i+1 << " : " << endl;
         cout << "    " << (**it) << endl;
         i++;
     }
@@ -838,8 +838,9 @@ Vecteur<Dim> Fluide<Dim>::calculForcesInteraction(Particule<Dim>* p1, Particule<
     }
 
     /* Force de tension de surface */
-    colorfield += noyauMonaghan.laplacien(x_1_2) / masseVolumique_2;
-    fSurface += noyauMonaghan.gradient(x_1_2) / masseVolumique_2;
+    double moy_mv = (masseVolumique_1 + masseVolumique_2) / 2;
+    colorfield += noyauMonaghan.laplacien(x_1_2) / moy_mv;
+    fSurface += noyauMonaghan.gradient(x_1_2) / moy_mv;
     double norme = fSurface.norme();
     if (norme >= mat->getSeuilSurface()) {
         colorfield *= masse;
@@ -849,8 +850,8 @@ Vecteur<Dim> Fluide<Dim>::calculForcesInteraction(Particule<Dim>* p1, Particule<
     }
 
     /* Multiplications par les facteurs constants */
-    fPression *= masse * masseVolumique_1 / 100;
-    fViscosite *= masse * masseVolumique_1;
+    fPression *= masse * moy_mv / 100;
+    fViscosite *= masse * moy_mv;
     fSurface *= masse;
     
     return fPression + fViscosite + fSurface;
@@ -907,8 +908,9 @@ Vecteur<Dim> Fluide<Dim>::calculForcesInteractionPrec(Particule<Dim>* p1, Partic
     }
 
     /* Force de tension de surface */
-    colorfield += noyauMonaghan.laplacien(x_1_2) / masseVolumique_2;
-    fSurface += noyauMonaghan.gradient(x_1_2) / masseVolumique_2;
+    double moy_mv = (masseVolumique_1 + masseVolumique_2) / 2;
+    colorfield += noyauMonaghan.laplacien(x_1_2) / moy_mv;
+    fSurface += noyauMonaghan.gradient(x_1_2) / moy_mv;
     double norme = fSurface.norme();
     if (norme >= mat->getSeuilSurface()) {
         colorfield *= masse;
@@ -918,8 +920,8 @@ Vecteur<Dim> Fluide<Dim>::calculForcesInteractionPrec(Particule<Dim>* p1, Partic
     }
 
     /* Multiplications par les facteurs constants */
-    fPression *= masse * masseVolumique_1 / 100;
-    fViscosite *= masse * masseVolumique_1;
+    fPression *= masse * moy_mv / 100;
+    fViscosite *= masse * moy_mv;
     fSurface *= masse;
     
     return fPression + fViscosite + fSurface;
@@ -937,19 +939,13 @@ void Fluide<Dim>::reinsertionTable(Particule<Dim>* part) {
         noeud_grille(i) = int(floor(part->getPositionPrec()(i)/mat->getRayonNoyau()));
     }
     int hash_key = fonction_hashage(noeud_grille);
-    //part_pit = hash_voisins.equal_range(hash_key);
 
     /* On récupère la particule courante */
-    //hash_it = part_pit.first;
     hash_it = hash_voisins.find(hash_key);
     // if (hash_it == hash_voisins.end()) {
     //     cout << "(" << hash_key << ", " << part->getIndice() << ") oups pas trouvée" << endl;
     // }
-    // while (hash_it != part_pit.second && (*hash_it).second != *part_it) {
     while (hash_it->second != part && hash_it != hash_voisins.end()) {
-        if (hash_it->first != hash_key) {
-            // cout << "**********************************oho" << endl;
-        }
         ++hash_it;
     }
     /* On enlève la particule de la table des voisins */
@@ -1369,8 +1365,9 @@ void Fluide<Dim>::schemaIntegration_Traces() {
                 // cout << (*part_it)->getIndice() << ". maj vitesse" << endl;
                 (*part_it)->incrVitesse(-mat->getCoeffRestitution() * vitesse*normale - vitesse*normale);
                 restriction((*part_it)->getVitesse(), rho, drho);
+                   
                 if (rho >= 1) {
-                    // cout << (*part_it)->getIndice() << ". MAJ actives collision" << endl;
+                    cout << (*part_it)->getIndice() << ". MAJ actives collision" << endl;
                     // cout << (*part_it)->getIndice() << ". réinsertion" << endl;
                     reinsertionTable(*part_it);
                     actives.remove(*part_it);
@@ -1382,8 +1379,8 @@ void Fluide<Dim>::schemaIntegration_Traces() {
     
     cout << endl << "********************************************" << endl;
     afficher_actives();
-    // cout << endl << "********************************************" << endl;
-    // affiche();
+    cout << endl << "********************************************" << endl;
+    affiche();
 
 }
 

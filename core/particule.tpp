@@ -275,8 +275,10 @@ ostream& operator<<(ostream& os, const Particule<Dim>& p) {
        << "    p_p : " << p.getPositionPrec() << endl
        << "    vit : " << p.getVitesse()
        << "    v_p : " << p.getVitessePrec() << endl
-       << "    m_v : " << p.getMasseVolumique() << endl
-       << "    pre : " << p.getPression();
+       << "    m_v : " << p.getMasseVolumique()
+       << "    mvp : " << p.getMasseVolumiquePrec() << endl
+       << "    pre : " << p.getPression()
+       << "    prp : " << p.getPressionPrec();
     return os;
 }
 
