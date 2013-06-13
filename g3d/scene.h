@@ -49,7 +49,9 @@ class Scene {
      */
     void animer() {anim = true;}
 
+
     /* ** Interaction utilisateur ** */
+
     void interact();
 
     void changerMateriau();

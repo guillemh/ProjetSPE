@@ -32,7 +32,7 @@ void Scene::init() {
 
     /* On créé la scène, avec les paramètres initiaux */
     anim = false;
-    arps = true;
+    arps = false;
     
     
 
@@ -76,7 +76,7 @@ void Scene::draw() {
 }
 
 void Scene::animate() {
-    if (anim) {
+ //   if (anim) {
         if (arps) {
             if (TRACES) {
                 f->schemaIntegration_Traces();
@@ -88,8 +88,8 @@ void Scene::animate() {
             f->majPositionVitesse();
         }
         // f->affiche();
-        anim = false;
-    }
+ //       anim = false;
+ //   }
 }
 
 void Scene::interact() {
