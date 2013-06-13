@@ -201,7 +201,13 @@ public:
      * Mise à jour du système avec le schéma d'intégration de l'ARPS
      */
     void schemaIntegration();
-    /* Avec des traces */
+
+    /**
+     * @brief Mise à jour des particules pour un pas de temps
+     *
+     * Mise à jour du système avec le schéma d'intégration de l'ARPS,
+     * avec des traces dans le terminal concernant l'évolution du système
+     */
     void schemaIntegration_Traces();
 
     /* ** Interaction utilisateur ** */
@@ -213,14 +219,16 @@ public:
      */
     bool changerParam();
 
-    /* ** Interaction utilisateur ** */
     /**
+     * @brief Interaction utilisateur
+     *
      * Modification interactive du mode d'affichage
      */
     void changerAffichage();
 
-    /* ** Interaction utilisateur ** */
     /**
+     * @brief Interaction utilisateur
+     *
      * Modification interactive du mode d'affichage
      */
     void changerAffichageAuto();
@@ -232,6 +240,7 @@ public:
      */
     void changerArps();
 
+    /* ** Fonction amies ** */
     /**
      * Fonction de tests basiques sur l'insertion dans la table de hashage,
      * qui a besoin de l'accès direct à celle-ci

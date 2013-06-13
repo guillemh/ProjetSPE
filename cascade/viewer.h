@@ -39,8 +39,6 @@ class Viewer : public QGLViewer
      */
     virtual ~Viewer ();
 
-    bool toggleRecord;
-
  protected :
 
     /**
@@ -76,8 +74,20 @@ class Viewer : public QGLViewer
      */
     virtual void keyPressEvent(QKeyEvent *e);
 
+    /**
+     * @brief Fenêtre d'aide
+     *
+     * Définit le texte présent dans la fenêtre d'aide de QglViewer,
+     * affichée avec la touche 'H'
+     * @return Le texte en question
+     */
     virtual QString helpString() const;
     
+    /**
+     * @brief Interaction utilisateur
+     *
+     * Déclenche l'interaction utilisateur sur le terminal
+     */
     void interact();
 
     SceneCascade *s;    /*!< Objet contenant tous les éléments de la scène */

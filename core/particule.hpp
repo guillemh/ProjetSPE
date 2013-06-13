@@ -59,7 +59,7 @@ public:
      * \param p Pression initiale
      * \param e Etat de la particule
      */
-  Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0, double m = 0, EtatParticule e = ACTIVE);
+    Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0, double m = 0, EtatParticule e = ACTIVE);
     
     /**
      * @brief Destructeur
@@ -156,7 +156,7 @@ public:
      */
     double getPressionPrec() const;
 
-     /**
+    /**
      * @brief Accesseur
      *
      * \return Etat d'acivité de la particule

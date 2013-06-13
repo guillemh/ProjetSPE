@@ -1,7 +1,6 @@
 #include <GL/glut.h>
 #include <math.h>
 #include <stdio.h>
-#include "particule.hpp"
 
 #define PI 3.1415926535
 #define COLORATION 1 // Mettre a 1 pour obtenir une coloration des particules en fonction de leur activité
@@ -31,7 +30,7 @@ template<unsigned int Dim>
 Particule<Dim>::~Particule() {
 }
 
-/* ** Methodes ** */
+/* ** Méthodes ** */
 
 template<unsigned int Dim>
 unsigned int Particule<Dim>::getIndice() const {
