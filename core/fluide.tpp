@@ -9,8 +9,8 @@ using std::cout;
 using std::endl;
 using std::pair;
 
-#define EPSR 1
-#define DELTA 15
+#define EPSR 10
+#define DELTA 50
 #define METABALLS 0 // Mettre a 1 pour dessiner des surfaces, 0 pour des particules
 #define POINT 0     // Mettre a 1 pour dessiner des points, 0 pour des spheres
 #define CASCADE 0   // Mettre a 1 pour les collisions avec la cascade
@@ -119,6 +119,7 @@ void Fluide<Dim>::init() {
         
         nbrParticules = nb[0]*nb[1];
         lgrHash = table.getPremier(2*nbrParticules);
+        matF = MatriceForces<Dim>(nbrParticules);
         
         /* On définit la position des particules */
         for (int i = 0; i < nb[0]; i++) {
@@ -142,6 +143,7 @@ void Fluide<Dim>::init() {
         
         nbrParticules = nb[0]*nb[1]*nb[2];
         lgrHash = table.getPremier(2*nbrParticules);
+        matF = MatriceForces<Dim>(nbrParticules);
         
         /* On définit la position des particules */
         double largeur_x = x_max - x_min;
@@ -976,6 +978,7 @@ void Fluide<Dim>::integrationForces() {
                     /* On ne veut considérer les couples qu'une fois */
                     /* Ajouter interactions */
                     Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
+                    matF((*part_it)->getIndice(), (*vois_it)->getIndice()) = forces;
                     (*part_it)->incrForces(forces);
                     (*vois_it)->decrForces(forces);
                 }
@@ -1001,7 +1004,11 @@ void Fluide<Dim>::integrationForces() {
                               // mais vois_it ne pourra pas le faire
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Enlever interactions */
-                    Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
+                    // Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
+                    Vecteur<Dim> forcesPrec = matF((*part_it)->getIndice(), (*vois_it)->getIndice());
+                    if ((*part_it)->getIndice() > (*vois_it)->getIndice()) {
+                        forcesPrec = -forcesPrec;
+                    }
                     (*part_it)->decrForces(forcesPrec);
                     (*vois_it)->incrForces(forcesPrec);
                 }
@@ -1030,6 +1037,11 @@ void Fluide<Dim>::integrationForces() {
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Ajouter interactions */
                     Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
+                    if ((*part_it)->getIndice() < (*vois_it)->getIndice()) {
+                        matF((*part_it)->getIndice(), (*vois_it)->getIndice()) = forces;
+                    } else {
+                        matF((*part_it)->getIndice(), (*vois_it)->getIndice()) = -forces;
+                    }
                     (*part_it)->incrForces(forces);
                     (*vois_it)->decrForces(forces);
                 }
@@ -1189,6 +1201,7 @@ void Fluide<Dim>::integrationForces_Traces() {
                     /* On ne veut considérer les couples qu'une fois */
                     /* Ajouter interactions */
                     Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
+                    matF((*part_it)->getIndice(), (*vois_it)->getIndice()) = forces;
                     (*part_it)->incrForces(forces);
                     (*vois_it)->decrForces(forces);
                 }
@@ -1207,6 +1220,8 @@ void Fluide<Dim>::integrationForces_Traces() {
         /* On se base sur les anciennes positions pour enlever les anciennes forces */
         cout << endl << "********************************************" << endl;
         cout << "Forces enlevées :" << endl;
+        // matF.afficher();
+        cout << endl << "********************************************" << endl;        
         for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
             /* On boucle sur les particules actives */
             vois = voisinagePrec(*(*part_it));
@@ -1219,7 +1234,11 @@ void Fluide<Dim>::integrationForces_Traces() {
                               // mais vois_it ne pourra pas le faire
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Enlever interactions */
-                    Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
+                    // Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
+                    Vecteur<Dim> forcesPrec = matF((*part_it)->getIndice(), (*vois_it)->getIndice());
+                    if ((*part_it)->getIndice() > (*vois_it)->getIndice()) {
+                        forcesPrec = -forcesPrec;
+                    }
                     (*part_it)->decrForces(forcesPrec);
                     (*vois_it)->incrForces(forcesPrec);
                     cout << " " << (*part_it)->getIndice() << " " << (*vois_it)->getIndice()
@@ -1253,6 +1272,8 @@ void Fluide<Dim>::integrationForces_Traces() {
         /* On ajoute les forces correspondant aux nouvelles positions */
         cout << endl << "********************************************" << endl;
         cout << "Forces ajoutées :" << endl;
+        // matF.afficher();
+        cout << endl << "********************************************" << endl;        
         for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
             /* On boucle sur les particules actives */
             vois = voisinage(*(*part_it));
@@ -1266,6 +1287,11 @@ void Fluide<Dim>::integrationForces_Traces() {
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Ajouter interactions */
                     Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
+                    if ((*part_it)->getIndice() < (*vois_it)->getIndice()) {
+                        matF((*part_it)->getIndice(), (*vois_it)->getIndice()) = forces;
+                    } else {
+                        matF((*part_it)->getIndice(), (*vois_it)->getIndice()) = -forces;
+                    }
                     (*part_it)->incrForces(forces);
                     (*vois_it)->decrForces(forces);
                     cout << " " << (*part_it)->getIndice() << " " << (*vois_it)->getIndice()
@@ -1380,7 +1406,7 @@ void Fluide<Dim>::schemaIntegration_Traces() {
     cout << endl << "********************************************" << endl;
     afficher_actives();
     cout << endl << "********************************************" << endl;
-    affiche();
+    // affiche();
 
 }
 

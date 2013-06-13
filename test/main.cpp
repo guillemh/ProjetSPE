@@ -8,6 +8,8 @@
 #include "test_performances_premier.cpp"
 #include "test_voisins.cpp"
 #include "test_metaballs.cpp"
+#include "test_matforces.cpp"
+
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -52,6 +54,10 @@ int main()
     cout << endl << endl;
     cout << "***** Test metaballs : *****" << endl;
     test_metaballs();
+
+    cout << endl << endl;
+    cout << "***** Test matrice des forces : *****" << endl;
+    test_matforces();
 
     return 0;
 }

@@ -14,6 +14,7 @@
 #include "vecteur.hpp"
 #include "premier.hpp"
 #include "metaballs.hpp"
+#include "matriceForces.hpp"
 
 using std::multimap;
 using std::list;
@@ -65,6 +66,9 @@ private:
     
     /* Liste des particules actives */
     list<Particule<Dim>*> actives;
+
+    /* Table des forces agissant entre les particules */
+    MatriceForces<Dim> matF;
 
     /* Paramètres nécessaires à la réinitialisation du fluide */
     Vecteur<Dim> nbPart;
