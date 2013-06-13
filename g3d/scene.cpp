@@ -32,10 +32,10 @@ void Scene::init() {
 
     /* On créé la scène, avec les paramètres initiaux */
     anim = false;
-    arps = true;
+    arps = false;
     
     
-    m = new Materiau<3>(MUCUS);
+    m = new Materiau<3>(EAU);
     Vecteur<3> d = Vecteur<3>(2, 2, 50);
     double bord = 0.2;
     double ecart = 0.05;
@@ -68,7 +68,7 @@ void Scene::draw() {
 }
 
 void Scene::animate() {
-    if (anim) {
+ //   if (anim) {
         if (arps) {
             if (TRACES) {
                 f->schemaIntegration_Traces();
@@ -80,8 +80,8 @@ void Scene::animate() {
             f->majPositionVitesse();
         }
         // f->affiche();
-        anim = false;
-    }
+ //       anim = false;
+ //   }
 }
 
 void Scene::interact() {
