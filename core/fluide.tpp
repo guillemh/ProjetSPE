@@ -175,7 +175,7 @@ void Fluide<Dim>::init() {
         }
     
         /* Initialisation de la metaball */
-        ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1);
+        ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1.1);
         if (afficheMetaballs) {
             ball->initColoration(particules);
         }
@@ -729,26 +729,26 @@ void Fluide<Dim>::draw() {
     glNormal3f(-1, 0, 0);
     glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
     glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_min - 0.025, y_max + 0.025, 1);
-    glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+    glVertex3f(x_min - 0.025, y_max + 0.025, 1.1);
+    glVertex3f(x_min - 0.025, y_min - 0.025, 1.1);
     
     glNormal3f(0, -1, 0);
     glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
     glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_min - 0.025, 1);
-    glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+    glVertex3f(x_max + 0.025, y_min - 0.025, 1.1);
+    glVertex3f(x_min - 0.025, y_min - 0.025, 1.1);
     
     glNormal3f(1, 0, 0);
     glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
     glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-    glVertex3f(x_max + 0.025, y_min - 0.025, 1);
+    glVertex3f(x_max + 0.025, y_max + 0.025, 1.1);
+    glVertex3f(x_max + 0.025, y_min - 0.025, 1.1);
     
     glNormal3f(0, 1, 0);
     glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
     glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-    glVertex3f(x_min - 0.025, y_max + 0.025, 1);
+    glVertex3f(x_max + 0.025, y_max + 0.025, 1.1);
+    glVertex3f(x_min - 0.025, y_max + 0.025, 1.1);
     
     glNormal3f(0, 0, -1);
     glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
