@@ -37,11 +37,11 @@ void Scene::init() {
     
 
     m = new Materiau<3>(EAU);
-    // Vecteur<3> d = Vecteur<3>(11, 11, 20);
-    // f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -0.25, 0.25, -0.25, 1.0, 0.0);
+    Vecteur<3> d = Vecteur<3>(11, 11, 20);
+    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -0.25, 0.25, -0.25, 1.0, 0.0);
 
-    Vecteur<3> d = Vecteur<3>(2, 2, 50);
-    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -0.2, 0.2, -0.2, 0.2, 0.0);
+    // Vecteur<3> d = Vecteur<3>(2, 2, 50);
+    // f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -0.2, 0.2, -0.2, 0.2, 0.0);
 
     // m = new Materiau<3>(EAU);
     // Vecteur<3> d = Vecteur<3>(1, 1, 3);
