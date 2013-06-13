@@ -13,7 +13,7 @@ using std::pair;
 #define DELTA 15
 #define METABALLS 0 // Mettre a 1 pour dessiner des surfaces, 0 pour des particules
 #define POINT 0     // Mettre a 1 pour dessiner des points, 0 pour des spheres
-#define CASCADE 0   // Mettre a 1 pour les collisions avec la cascade
+#define CASCADE 1   // Mettre a 1 pour les collisions avec la cascade
 
 /* ** Constructeurs ** */
 
@@ -536,38 +536,58 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
     if (Dim == 2) {
         
     } else {
-	if (v(1)-rayon < -bassin_x/2) // Derrière le bassin
-	    if (v(3)+rayon < bassin_z) // Sous le fond du bassin
-		res(1) = -bassin_x/2+rayon;
-        if (v(1)+rayon > bassin_x/2) { // Devant le bassin
-	    if (v(1)+rayon > bassin_x/2+rayon) // Au dessus de la hauteur de la face avant
-		;
-	    else if (v(3)-rayon < bassin_z/5) // En dessous de la hauteur de la face avant
-		res(1) = bassin_x/2-rayon;
-	}
-        if (v(2)-rayon < -bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A gauche du bassin
-	    if (v(3)+rayon < bassin_z)
-		res(2) = -bassin_y/2+rayon;
-        if (v(2)+rayon > bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A droite du bassin
-	    if (v(3)+rayon < bassin_z)
-		res(2) = bassin_y/2-rayon;
-        if (v(3)-rayon < 0) // Fond du bassin
-	    if (v(1)+rayon > -bassin_x/2 && v(1)-rayon < bassin_x/2) 
-		res(3) = 0+rayon;
-	if (v(3)-rayon < -2.0) 		
-	    if (v(1)+rayon > bassin_x && v(1)-rayon < 4*bassin_x && v(2)-rayon < 2*bassin_y && v(2)+rayon > -2*bassin_y) 
+	if (v(3)-rayon > 0 || (v(3)-rayon < 0 && v(3)+rayon > 0 && v(1)+rayon < bassin_x/2+rayon)) { // Niveau de la cascade supérieure	
+	    if (v(1)-rayon < -bassin_x/2) // Derrière le bassin
+		if (v(3)+rayon < bassin_z) // Sous le fond du bassin
+		    res(1) = -bassin_x/2+rayon;
+	    if (v(1)+rayon > bassin_x/2) { // Devant le bassin
+		if (v(2)-rayon > 0-bassin_y/5 && v(2)+rayon < 0+bassin_y/5 && v(3)+rayon < bassin_z/5) { // Au niveau du trou de la face avant
+		    ;
+		} else { // Ailleurs sur la face avant
+		    res(1) = bassin_x/2-rayon;
+		}
+	    }
+	    if (v(2)-rayon < -bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A gauche du bassin
+		if (v(3)+rayon < bassin_z)
+		    res(2) = -bassin_y/2+rayon;
+	    if (v(2)+rayon > bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A droite du bassin
+		if (v(3)+rayon < bassin_z)
+		    res(2) = bassin_y/2-rayon;
+	    if (v(3)-rayon < 0 && v(3)+rayon > 0) // Fond du bassin
+		if (v(1)+rayon > -bassin_x/2 && v(1)-rayon < bassin_x/2) 
+		    res(3) = 0+rayon;
+	} else if (v(3)-rayon > -1.0 || (v(3)-rayon < -1.0 && v(3)+rayon > -1.0 && v(1)+rayon < 2*bassin_x+rayon)) { // Niveau du bassin intermédiaire
+
+	    if (v(3)-rayon < -1.0 && v(3)+rayon > -1.0 && v(1)+rayon > bassin_x && v(1)-rayon < 2*bassin_x && v(2)-rayon < bassin_y/3 && v(2)+rayon > -bassin_y/3) 
+		res(3) = -1.0+rayon;
+	    //if (v(1)+rayon > 2*bassin_x && v(3)-rayon < -1.0 && v(3)+rayon > -1.0)
+	    if (v(1)+rayon > 2*bassin_x)
+		if (v(3)-rayon > -1.0+bassin_z/7 || v(1)+rayon > 2*bassin_x+rayon)
+		    ;
+		else
+		    res(1) = 2*bassin_x-rayon;
+	    if (v(1)-rayon < bassin_x/2 && v(3)-rayon < -1.0+bassin_z/3)
+		res(1) = bassin_x/2+rayon;
+	    if (v(2)+rayon > bassin_y/3)
+		res(2) = bassin_y/3-rayon;
+	    if (v(2)-rayon < -bassin_y/3)
+		res(2) = -bassin_y/3+rayon;	
+
+	} else if (v(3)-rayon > -2.0 || (v(3)-rayon < -2.0 && v(3)+rayon > -2.0)) { // Niveau du bassin inférieur
+	    if (v(3)-rayon < -2.0 && v(3)+rayon > -2.0 && v(1)+rayon > bassin_x && v(1)-rayon < 4*bassin_x && v(2)-rayon < 2*bassin_y && v(2)+rayon > -2*bassin_y) 
 		res(3) = -2.0+rayon;
-	if (v(1)+rayon > 4*bassin_x)
-	    res(1) = 4*bassin_x-rayon;
-	if (v(1)-rayon < bassin_x && v(3)-rayon < -2.0+bassin_z)
-	    res(1) = bassin_x+rayon;
-	if (v(2)+rayon > 2*bassin_y)
-	    res(2) = 2*bassin_y-rayon;
-	if (v(2)-rayon < -2*bassin_y)
-	    res(2) = -2*bassin_y+rayon;	
+	    if (v(1)+rayon > 4*bassin_x && v(3)-rayon < -2.0 && v(3)+rayon > -2.0)
+		res(1) = 4*bassin_x-rayon;
+	    if (v(1)-rayon < bassin_x && v(3)-rayon < -2.0+bassin_z)
+		res(1) = bassin_x+rayon;
+	    if (v(2)+rayon > 2*bassin_y)
+		res(2) = 2*bassin_y-rayon;
+	    if (v(2)-rayon < -2*bassin_y)
+		res(2) = -2*bassin_y+rayon;	
+	}
     }
-    return res;
-}
+	return res;
+    }
 
 template<unsigned int Dim>
 void Fluide<Dim>::majPositionVitesse() {
