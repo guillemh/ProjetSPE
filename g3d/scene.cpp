@@ -35,10 +35,10 @@ void Scene::init() {
     arps = true;
     
     
-    m = new Materiau<3>(EAU);
-    Vecteur<3> d = Vecteur<3>(1, 1, 3);
-    double bord = 0.01;
-    double ecart = 0.5;
+    m = new Materiau<3>(MUCUS);
+    Vecteur<3> d = Vecteur<3>(2, 2, 50);
+    double bord = 0.2;
+    double ecart = 0.05;
     f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, bord, 0.);
 
 //      m = new Materiau<3>(EAU);
