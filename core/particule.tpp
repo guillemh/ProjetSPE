@@ -4,7 +4,7 @@
 #include "particule.hpp"
 
 #define PI 3.1415926535
-#define COLORATION 0 // Mettre a 1 pour obtenir une coloration des particules en fonction de leur activité
+#define COLORATION 1 // Mettre a 1 pour obtenir une coloration des particules en fonction de leur activité
 
 using std::endl;
 using std::ostream;
@@ -290,8 +290,10 @@ void Particule<Dim>::draw(bool point) const {
 
 template<unsigned int Dim>
 ostream& operator<<(ostream& os, const Particule<Dim>& p) {
-    os << "pos : " << p.getPosition() << endl
-       << "    vit : " << p.getVitesse() <<  endl
+    os << "pos : " << p.getPosition() 
+       << "    p_p : " << p.getPositionPrec() << endl
+       << "    vit : " << p.getVitesse()
+       << "    v_p : " << p.getVitessePrec() << endl
        << "    m_v : " << p.getMasseVolumique() << endl
        << "    pre : " << p.getPression();
     return os;

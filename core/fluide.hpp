@@ -197,6 +197,8 @@ public:
      * Mise à jour du système avec le schéma d'intégration de l'ARPS
      */
     void schemaIntegration();
+    /* Avec des traces */
+    void schemaIntegration_Traces();
 
     /* ** Interaction utilisateur ** */
     /**
@@ -239,6 +241,10 @@ public:
 
 private:
 
+    /*
+     * Supprime les éléments du fluide; appelée par le destructeur
+     * et lors des réinitialisations
+     */
     void clear();
     
     /*
@@ -279,6 +285,9 @@ private:
 
     /* Mise à jour de la table : on la vide entièrement puis on réinsère les particules */
     void majTableHashage();
+
+    /* Mise à jour d'une particule dans la table de hashage */
+    void reinsertionTable(Particule<Dim>*);
     
     /* DEBUG : affichage de la table de hashage */
     void afficher_hash();
@@ -297,6 +306,8 @@ private:
      * par l'algorithme incrémental de l'ARPS
      */
     void integrationForces();
+    /* Avec des traces de débug */
+    void integrationForces_Traces();
 
     /* Fonction de calcul d'un critère de restriction */
     double calculCritere(const Vecteur<Dim>&);
