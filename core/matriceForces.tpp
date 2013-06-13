@@ -50,18 +50,12 @@ Vecteur<Dim>& MatriceForces<Dim>::operator () (unsigned int i, unsigned int j) c
 
 template <unsigned int Dim>
 MatriceForces<Dim>& MatriceForces<Dim>::operator = (const MatriceForces<Dim> &mF) {
-    cout << "Opérateur affectation MatriceForces" << endl;
     taille = mF.taille;
     nbr = mF.nbr;
-    cout << "Taille : " << taille << endl;
     if (data != NULL) {
-        cout << "Delete ancienne data" << endl;
         delete [] data;
     }
     data = new Vecteur<Dim>[taille];
-    if (mF.data == NULL) {
-        cout << "lala" << endl;
-    }
     memcpy(data, &(mF(1,2)), taille * sizeof(Vecteur<Dim>));
     return *this;
 }

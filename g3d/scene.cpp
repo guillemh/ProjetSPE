@@ -32,7 +32,7 @@ void Scene::init() {
 
     /* On créé la scène, avec les paramètres initiaux */
     anim = false;
-    arps = true;
+    arps = false;
     
     
     m = new Materiau<3>(EAU);

@@ -538,35 +538,78 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
     if (Dim == 2) {
         
     } else {
-	if (v(1)-rayon < -bassin_x/2) // Derrière le bassin
-	    if (v(3)+rayon < bassin_z) // Sous le fond du bassin
+	if (v(3)-rayon > 0-0.025 || (v(3)-rayon < 0-0.025 && v(3)+rayon > 0-0.025 && v(1)+rayon < bassin_x/2+rayon)) { // Niveau de la cascade supérieure	
+	    if (v(3)-rayon < bassin_z/5-0.025) {
+		if (v(3)-rayon > bassin_z/5+rayon-0.025 || v(3)-rayon < bassin_z/5-rayon-0.025) {
+		    ;
+		} else if (v(2)-rayon > -2*rayon && v(2)+rayon < 2*rayon && v(1)-rayon < -bassin_x/2+2*rayon) { 
+		    ;
+		} else if (!(v(2)-rayon > 0-4*rayon) || !(v(2)+rayon < 0+4*rayon) || !(v(1)-rayon < -bassin_x+4*rayon)) { 	
+		    res(3) = bassin_z/5+rayon-0.025;
+		}
+	    }
+
+	    if (v(1)-rayon < -bassin_x/2) { // Derrière le bassin
+		//if (v(3)+rayon < bassin_z) // Sous le fond du bassin
 		res(1) = -bassin_x/2+rayon;
-        if (v(1)+rayon > bassin_x/2) { // Devant le bassin
-	    if (v(1)+rayon > bassin_x/2+rayon) // Au dessus de la hauteur de la face avant
-		;
-	    else if (v(3)-rayon < bassin_z/5) // En dessous de la hauteur de la face avant
-		res(1) = bassin_x/2-rayon;
-	}
-        if (v(2)-rayon < -bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A gauche du bassin
-	    if (v(3)+rayon < bassin_z)
+	    }
+	    if (v(1)+rayon > bassin_x/2) { // Devant le bassin
+		if ((v(2)-rayon > 0-bassin_y/5 && v(2)+rayon < bassin_y/5 && v(3)+rayon < bassin_z/5-0.025) || v(1)+rayon>bassin_x/2+rayon) { // Au niveau du trou de la face avant
+		    ;
+		} else { // Ailleurs sur la face avant
+		    res(1) = bassin_x/2-rayon;
+		}
+	    }
+	    if (v(2)-rayon < -bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A gauche du bassin
+		//if (v(3)+rayon < bassin_z)
 		res(2) = -bassin_y/2+rayon;
-        if (v(2)+rayon > bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A droite du bassin
-	    if (v(3)+rayon < bassin_z)
+	    if (v(2)+rayon > bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A droite du bassin
+		//if (v(3)+rayon < bassin_z)
 		res(2) = bassin_y/2-rayon;
-        if (v(3)-rayon < 0) // Fond du bassin
-	    if (v(1)+rayon > -bassin_x/2 && v(1)-rayon < bassin_x/2) 
-		res(3) = 0+rayon;
-	if (v(3)-rayon < -2.0) 		
-	    if (v(1)+rayon > bassin_x && v(1)-rayon < 4*bassin_x && v(2)-rayon < 2*bassin_y && v(2)+rayon > -2*bassin_y) 
+	    if (v(3)-rayon < 0-0.025 && v(3)+rayon > 0-0.025) // Fond du bassin
+		if (v(1)+rayon > -bassin_x/2 && v(1)-rayon < bassin_x/2) 
+		    res(3) = 0+rayon-0.025;
+	} else if (v(3)-rayon > -1.0 || (v(3)-rayon < -1.0 && v(3)+rayon > -1.0 && v(1)+rayon < 2*bassin_x+rayon)) { // Niveau du bassin intermédiaire
+
+	    if (v(3)-rayon < -1.0 && v(3)+rayon > -1.0 && v(1)+rayon > bassin_x/2 && v(1)-rayon < 2*bassin_x && v(2)-rayon < bassin_y/3 && v(2)+rayon > -bassin_y/3) 
+		res(3) = -1.0+rayon;
+	    //if (v(1)+rayon > 2*bassin_x && v(3)-rayon < -1.0 && v(3)+rayon > -1.0)
+	    if (v(1)+rayon > 2*bassin_x) {
+		if (v(3)-rayon >= -1.0+bassin_z/7 || v(1)+rayon > 2*bassin_x+rayon)
+		    ;
+		else
+		    res(1) = 2*bassin_x-rayon;
+	    }
+	    if (v(1)-rayon < bassin_x/2 && v(3)-rayon < -1.0+bassin_z/3)
+		res(1) = bassin_x/2+rayon;
+	    if (v(2)+rayon > bassin_y/3)
+		res(2) = bassin_y/3-rayon;
+	    if (v(2)-rayon < -bassin_y/3)
+		res(2) = -bassin_y/3+rayon;	
+
+	} else if (v(3)-rayon > -2.0 || (v(3)-rayon < -2.0 && v(3)+rayon > -2.0)) { // Niveau du bassin inférieur
+	    if (v(3)-rayon < -2.0 && v(3)+rayon > -2.0 && v(1)+rayon > 2*bassin_x && v(1)-rayon < 6*bassin_x && v(2)-rayon < bassin_y/3 && v(2)+rayon > -bassin_y/3) 
 		res(3) = -2.0+rayon;
-	if (v(1)+rayon > 4*bassin_x)
-	    res(1) = 4*bassin_x-rayon;
-	if (v(1)-rayon < bassin_x && v(3)-rayon < -2.0+bassin_z)
-	    res(1) = bassin_x+rayon;
-	if (v(2)+rayon > 2*bassin_y)
-	    res(2) = 2*bassin_y-rayon;
-	if (v(2)-rayon < -2*bassin_y)
-	    res(2) = -2*bassin_y+rayon;	
+	    if (v(1)+rayon > 6*bassin_x && v(3)-rayon < -2.0+bassin_z)
+		res(1) = 6*bassin_x-rayon;
+	    if (v(1)-rayon < 2*bassin_x && v(3)-rayon < -2.0+bassin_z)
+		res(1) = 2*bassin_x+rayon;
+	    if (v(2)+rayon > bassin_y/3)
+		res(2) = bassin_y/3-rayon;
+	    if (v(2)-rayon < -bassin_y/3)
+		res(2) = -bassin_y/3+rayon;	
+	} else if (v(3)-rayon > -3.0 || (v(3)-rayon < -3.0 && v(3)+rayon > -3.0)) { // Niveau du bassin inférieur 2
+	    if (v(3)-rayon < -3.0 && v(3)+rayon > -3.0 && v(1)+rayon > bassin_x && v(1)-rayon < 6*bassin_x && v(2)-rayon < bassin_y && v(2)+rayon > -bassin_y) 
+		res(3) = -3.0+rayon;
+	    if (v(1)+rayon > 6*bassin_x)
+		res(1) = 6*bassin_x-rayon;
+	    if (v(1)-rayon < bassin_x && v(3)-rayon < -3.0+bassin_z)
+		res(1) = bassin_x+rayon;
+	    if (v(2)+rayon > bassin_y)
+		res(2) = bassin_y-rayon;
+	    if (v(2)-rayon < -bassin_y)
+		res(2) = -bassin_y+rayon;
+	}
     }
     return res;
 }
@@ -667,9 +710,9 @@ void Fluide<Dim>::majPositionVitesse() {
         Vecteur<Dim> pos = (*it1)->getPosition();
 	Vecteur<Dim> contact;
 	if (!CASCADE) {
-           contact = collision(pos);
+	    contact = collision(pos);
 	} else {
-	  contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+	    contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
 	}
         
         /* S'il y a collision, on met a jour la position et la vitesse */
@@ -694,7 +737,7 @@ void Fluide<Dim>::majPositionVitesse() {
     /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
     if (afficheMetaballs) {
         ball->coloration(particules);
-	}
+    }
 }
 
 
@@ -706,7 +749,7 @@ void Fluide<Dim>::colorationMetaball() {
         } else {
             ball->coloration(particules);
         }
-	}
+    }
 }
 
 
@@ -721,45 +764,48 @@ void Fluide<Dim>::draw() {
             (*it)->draw(affichePoint);
         }
     }
+    
+    if (!CASCADE) {
 
-    glPushMatrix();
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(1.0, 1.0, 1.0, 0.1);
-    glBegin(GL_QUADS);
+	glPushMatrix();
+	glEnable (GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glColor4f(1.0, 1.0, 1.0, 0.1);
+	glBegin(GL_QUADS);
     
-    glNormal3f(-1, 0, 0);
-    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_min - 0.025, y_max + 0.025, 1);
-    glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+	glNormal3f(-1, 0, 0);
+	glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+	glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+	glVertex3f(x_min - 0.025, y_max + 0.025, 1);
+	glVertex3f(x_min - 0.025, y_min - 0.025, 1);
     
-    glNormal3f(0, -1, 0);
-    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_min - 0.025, 1);
-    glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+	glNormal3f(0, -1, 0);
+	glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+	glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+	glVertex3f(x_max + 0.025, y_min - 0.025, 1);
+	glVertex3f(x_min - 0.025, y_min - 0.025, 1);
     
-    glNormal3f(1, 0, 0);
-    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-    glVertex3f(x_max + 0.025, y_min - 0.025, 1);
+	glNormal3f(1, 0, 0);
+	glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+	glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+	glVertex3f(x_max + 0.025, y_max + 0.025, 1);
+	glVertex3f(x_max + 0.025, y_min - 0.025, 1);
     
-    glNormal3f(0, 1, 0);
-    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-    glVertex3f(x_min - 0.025, y_max + 0.025, 1);
+	glNormal3f(0, 1, 0);
+	glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+	glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+	glVertex3f(x_max + 0.025, y_max + 0.025, 1);
+	glVertex3f(x_min - 0.025, y_max + 0.025, 1);
     
-    glNormal3f(0, 0, -1);
-    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+	glNormal3f(0, 0, -1);
+	glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
+	glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
+	glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
+	glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
     
-    glEnd();
-    glDisable (GL_BLEND);
+	glEnd();
+	glDisable (GL_BLEND);
+    }
 }
 
 template<unsigned int Dim>
