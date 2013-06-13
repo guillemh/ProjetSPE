@@ -5,7 +5,4 @@ X Recherche des plus proches voisins
 - ARPS
 - Rendu de la scène
 X SHEME
-- Shaders
 X Rendu réaliste de la scène : marching cubes, splatting images
-- Optimisation par parallélisation des calculs (sur GPU ?)
-- Assimiler les bords de la boite par un ensemble de particules fixes (Abandonné ?)
