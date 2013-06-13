@@ -4,7 +4,7 @@
 #include "particule.hpp"
 
 #define PI 3.1415926535
-#define COLORATION 0 // Mettre a 1 pour obtenir une coloration des particules en fonction de leur activité
+#define COLORATION 1 // Mettre a 1 pour obtenir une coloration des particules en fonction de leur activité
 
 using std::endl;
 using std::ostream;
@@ -200,22 +200,23 @@ void Particule<Dim>::majPression (double dens) {
 
 template<unsigned int Dim>
 double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
-    //    double d = (pos - position).norme();
-    //    if (d <= 1/3)
-    //        return 1 - 3*d*d;
-    //    if (d <= 1)
-    //        return 3*(1-d)*(1-d)/2;
-    //    else
-    //        return 0;
 
     Vecteur<Dim> diff = (prec) ? pos - positionPrec : pos - position;
     double r = diff.scalaire(diff);
+    
+    // Fonction F(x) = 1/x²
     // if (r == 0.0)
     //     return 50000;
-    // return 1 / (2*r);
+    // return 1/r;
 
-    return pow(0.1, 10000*r*r);
+    // Fonction F(x) = 0.1^10000x²
+    // return pow(0.1, 10000*r*r);
+    
+    // Fonction F(x) = exp(-x^4/0.000391)
     // return exp(-r*r/0.0003910);
+    
+    // Fonction F(x) = a/(1+b*x²) avec a = 1.41 et b = 14000
+    return 1.41/(1+14000*r);
 }
 
 
@@ -270,8 +271,10 @@ void Particule<Dim>::draw(bool point) const {
 
 template<unsigned int Dim>
 ostream& operator<<(ostream& os, const Particule<Dim>& p) {
-    os << "pos : " << p.getPosition() << endl
-       << "    vit : " << p.getVitesse() <<  endl
+    os << "pos : " << p.getPosition() 
+       << "    p_p : " << p.getPositionPrec() << endl
+       << "    vit : " << p.getVitesse()
+       << "    v_p : " << p.getVitessePrec() << endl
        << "    m_v : " << p.getMasseVolumique() << endl
        << "    pre : " << p.getPression();
     return os;
