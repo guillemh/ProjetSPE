@@ -194,6 +194,8 @@ public:
      * Affichage des particules du fluide
      */
     void affiche();
+
+    void afficheHauteur(double);
     
     /**
      * @brief Mise à jour des particules pour un pas de temps
@@ -201,6 +203,7 @@ public:
      * Mise à jour du système avec le schéma d'intégration de l'ARPS
      */
     void schemaIntegration();
+    void schemaIntegrationBis();
 
     /**
      * @brief Mise à jour des particules pour un pas de temps
@@ -314,11 +317,15 @@ private:
     /* Calcul des forces d'interaction entre 2 particules au pas de temps précédent */
     Vecteur<Dim> calculForcesInteractionPrec(Particule<Dim>*, Particule<Dim>*);
 
+    /* Renvoie True ssi au moins un nombre nbr_limite voisins de la particule sont inactifs */
+    bool voisinsInactifs(Particule<Dim>* part, int nbr_limite);
+
     /*
      * Mise à jour des forces s'exerçant sur les particules du fluide,
      * par l'algorithme incrémental de l'ARPS
      */
     void integrationForces();
+    void integrationForcesBis();
     /* Avec des traces de débug */
     void integrationForces_Traces();
 
