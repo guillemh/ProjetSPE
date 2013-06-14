@@ -34,7 +34,7 @@ void Scene::init() {
     anim = false;
     arps = true;
     
-    
+
     /* Filet d'eau */
    // m = new Materiau<3>(EAU);
    // Vecteur<3> d = Vecteur<3>(2, 2, 50);
@@ -49,7 +49,6 @@ void Scene::init() {
     double bord = 0.25;
     double ecart = 0.05;
     f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, 1, 0.);
-
 
     /* Deux particules */
 //      m = new Materiau<3>(EAU);
@@ -80,7 +79,7 @@ void Scene::draw() {
 }
 
 void Scene::animate() {
-    if (anim) {
+    //if (anim) {
         if (arps) {
             if (TRACES) {
                 f->schemaIntegration_Traces();
@@ -92,9 +91,9 @@ void Scene::animate() {
             f->majDensitePression();
             f->majPositionVitesse();
         }
-        // f->affiche();
-        anim = false;
-    }
+        //f->affiche();
+    //    anim = false;
+    //}
 }
 
 void Scene::interact() {

@@ -86,6 +86,7 @@ class Viewer : public QGLViewer
     void interact();
     
     Scene *s;    /*!< Objet contenant tous les éléments de la scène */
+    int nbShot;  /*!< Nombre de captures faites (pour lancer les calculs pendant la nuit */
 };
 
 #endif

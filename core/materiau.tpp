@@ -71,7 +71,7 @@ Materiau<Dim>::Materiau(TypeFluide type) {
         seuil_surface = 7.065;
         rigidite_gaz = 3;
         //coeff_restitution = 0;
-        coeff_restitution = 0.75;
+        coeff_restitution = 0.3;
         nbr_noyau = 20;
         //rayon_noyau = 0.0457;
         rayon_noyau = 0.03;
@@ -228,7 +228,7 @@ void Materiau<Dim>::changerNature(TypeFluide type) {
         seuil_surface = 7.065;
         rigidite_gaz = 3;
         //coeff_restitution = 0;
-        coeff_restitution = 0.5;
+        coeff_restitution = 0.3;
         nbr_noyau = 20;
         //rayon_noyau = 0.0457;
         rayon_noyau = 0.03;

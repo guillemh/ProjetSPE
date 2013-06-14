@@ -7,6 +7,9 @@
 #include "scene.h"
 using std::list ;
 
+#define NBSHOTMAX 3000
+
+
 Viewer::Viewer () {
 }
 
@@ -19,11 +22,12 @@ Viewer::~Viewer()
 
 void Viewer::init()
 {
-    toggleFPSIsDisplayed();
+    //toggleFPSIsDisplayed();
     //=== VIEWING PARAMETERS
     restoreStateFromFile();
     toogleWireframe = true;  // filled faces
     toogleLight = false;     // light off
+    nbShot = 0;
 
     if (toogleLight == true) glEnable(GL_LIGHTING);
     else glDisable(GL_LIGHTING);
@@ -51,6 +55,10 @@ void Viewer::draw()
     glPopMatrix();
     if (toogleRecord) {
         saveSnapshot();
+        nbShot++;
+    }
+    if (nbShot > NBSHOTMAX) {
+        exit(1);
     }
 }
 
@@ -103,6 +111,7 @@ void Viewer::keyPressEvent(QKeyEvent *e)
         updateGL();
     } else if (e->key()==Qt::Key_R) {
         toogleRecord = !toogleRecord;
+        nbShot = 0;
         updateGL();
     } else {
         QGLViewer::keyPressEvent(e);
