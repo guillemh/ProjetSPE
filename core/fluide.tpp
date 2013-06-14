@@ -548,17 +548,19 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
 		}
 	    }        
 
-	    if (v(1)-rayon < -bassin_x/2)  // Derrière le bassin
+	    if (v(1)-rayon < -bassin_x/2) {  // Derrière le bassin
 		res(1) = -bassin_x/2+rayon;
 	    
-	    if ((v(1)+rayon > bassin_x/2) && (!((v(2)-rayon > -bassin_y/5 && v(2)+rayon < bassin_y/5 && v(3)+rayon < bassin_z/5-0.025) || v(1)+rayon>bassin_x/2+rayon)))  // Devant le bassin, en dehors du trou de la face avant	    
+	    } else if ((v(1)+rayon > bassin_x/2) && (!((v(2)-rayon > -bassin_y/5 && v(2)+rayon < bassin_y/5 && v(3)+rayon < bassin_z/5-0.025) || v(1)+rayon>bassin_x/2+rayon))) { // Devant le bassin, en dehors du trou de la face avant	    
 		res(1) = bassin_x/2-rayon;   		
+	    }
 	    
-	    if (v(2)-rayon < -bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A gauche du bassin
+	    if (v(2)-rayon < -bassin_y/2 && !(v(1)-rayon > bassin_x/2)) { // A gauche du bassin
 		res(2) = -bassin_y/2+rayon;
 
-	    if (v(2)+rayon > bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A droite du bassin
+	    } else if (v(2)+rayon > bassin_y/2 && !(v(1)-rayon > bassin_x/2)) { // A droite du bassin
 		res(2) = bassin_y/2-rayon;
+	    }
 
 	    if ((v(3)-rayon < -0.025 && v(3)+rayon > -0.025) && (v(1)+rayon > -bassin_x/2 && v(1)-rayon < bassin_x/2))  // Fond du bassin		
 		    res(3) = rayon-0.025;
@@ -568,17 +570,19 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
 	    if (v(3)-rayon < -1.0 && v(3)+rayon > -1.0 && v(1)+rayon > bassin_x/2 && v(1)-rayon < 2*bassin_x && v(2)-rayon < bassin_y/3 && v(2)+rayon > -bassin_y/3) // Fond du bassin
 		res(3) = -1.0+rayon;
 
-	    if ((v(1)+rayon > 2*bassin_x) && !((v(3)-rayon >= -1.0+bassin_z/7 || v(1)+rayon > 2*bassin_x+rayon)))  // Devant de le bassin, sous le niveau de la paroie
+	    if ((v(1)+rayon > 2*bassin_x) && !((v(3)-rayon >= -1.0+bassin_z/7 || v(1)+rayon > 2*bassin_x+rayon))) { // Devant de le bassin, sous le niveau de la paroie
 		res(1) = 2*bassin_x-rayon;
 	    
-	    if (v(1)-rayon < bassin_x/2 && v(3)-rayon < -1.0+bassin_z/3) // Derrière le bassin
+	    } else if (v(1)-rayon < bassin_x/2 && v(3)-rayon < -1.0+bassin_z/3) { // Derrière le bassin
 		res(1) = bassin_x/2+rayon;
+	    }
 
-	    if (v(2)+rayon > bassin_y/3) // A droite du bassin
+	    if (v(2)+rayon > bassin_y/3) { // A droite du bassin
 		res(2) = bassin_y/3-rayon;
 
-	    if (v(2)-rayon < -bassin_y/3) // A gauche du bassin
+	    } else if (v(2)-rayon < -bassin_y/3) { // A gauche du bassin
 		res(2) = -bassin_y/3+rayon;	
+	    }
 
 	} else if (v(3)-rayon > -2.0 || (v(3)-rayon < -2.0 && v(3)+rayon > -2.0)) { // Niveau du bassin inférieur 1
 	    if (v(3)-rayon < -2.0 && v(3)+rayon > -2.0 && v(1)+rayon > 2*bassin_x && v(1)-rayon < 4*bassin_x && v(2)-rayon < bassin_y/3 && v(2)+rayon > -bassin_y/3) // Fond du bassin
