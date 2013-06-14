@@ -177,7 +177,7 @@ void Fluide<Dim>::init() {
         }
     
         /* Initialisation de la metaball */
-        ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1);
+        ball = new Metaballs(Vecteur<3>(x_min-0.5, y_min-0.5, z_min-0.5), 0.01, mat->getRayonNoyau(), x_max-x_min+1, y_max-y_min+1, 2);
         if (afficheMetaballs) {
             ball->initColoration(particules);
         }
@@ -771,7 +771,15 @@ void Fluide<Dim>::majPositionVitesse() {
             
             /* Mise a jour de la vitesse */
             double vitesse = (*it1)->getVitesse().scalaire(normale);
-            (*it1)->setVitesse(-mat->getCoeffRestitution() *vitesse*normale + (*it1)->getVitesse() - vitesse*normale);
+            
+            (*it1)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse*normale);
+            /* Technique plus adaptee dans le cas de la vague, qui consiste a empecher 
+             * Les particules de s'empiler sur un bord */
+            // if (normale(3) < 0.001 && (*it1)->getVitesse()(3) < 0.0) {
+            //     (*it1)->incrVitesse(-3 * vitesse * normale);
+            // } else {
+            //     (*it1)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
+            // }
         }
     }
     debutAnim = false;
@@ -812,6 +820,12 @@ void Fluide<Dim>::draw() {
     
     if (!CASCADE) {
 
+        double decalage;
+        if (afficheMetaballs)
+            decalage = 0.08;
+        else
+            decalage = 0.025;
+
         glPushMatrix();
         glEnable (GL_BLEND);
         glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -819,34 +833,34 @@ void Fluide<Dim>::draw() {
         glBegin(GL_QUADS);
     
         glNormal3f(-1, 0, 0);
-        glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-        glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-        glVertex3f(x_min - 0.025, y_max + 0.025, 1);
-        glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+        glVertex3f(x_min - decalage, y_min - decalage, z_min - decalage);
+        glVertex3f(x_min - decalage, y_max + decalage, z_min - decalage);
+        glVertex3f(x_min - decalage, y_max + decalage, 1.2);
+        glVertex3f(x_min - decalage, y_min - decalage, 1.2);
     
         glNormal3f(0, -1, 0);
-        glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-        glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
-        glVertex3f(x_max + 0.025, y_min - 0.025, 1);
-        glVertex3f(x_min - 0.025, y_min - 0.025, 1);
+        glVertex3f(x_min - decalage, y_min - decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_min - decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_min - decalage, 1.2);
+        glVertex3f(x_min - decalage, y_min - decalage, 1.2);
     
         glNormal3f(1, 0, 0);
-        glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
-        glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-        glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-        glVertex3f(x_max + 0.025, y_min - 0.025, 1);
+        glVertex3f(x_max + decalage, y_min - decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_max + decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_max + decalage, 1.2);
+        glVertex3f(x_max + decalage, y_min - decalage, 1.2);
     
         glNormal3f(0, 1, 0);
-        glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-        glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-        glVertex3f(x_max + 0.025, y_max + 0.025, 1);
-        glVertex3f(x_min - 0.025, y_max + 0.025, 1);
+        glVertex3f(x_min - decalage, y_max + decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_max + decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_max + decalage, 1.2);
+        glVertex3f(x_min - decalage, y_max + decalage, 1.2);
     
         glNormal3f(0, 0, -1);
-        glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-        glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-        glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-        glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+        glVertex3f(x_min - decalage, y_min - decalage, z_min - decalage);
+        glVertex3f(x_min - decalage, y_max + decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_max + decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_min - decalage, z_min - decalage);
     
         glEnd();
         glDisable (GL_BLEND);
@@ -1261,7 +1275,15 @@ void Fluide<Dim>::schemaIntegration() {
             
                 /* Mise à jour de la vitesse */
                 double vitesse = (*part_it)->getVitesse().scalaire(normale);
-                (*part_it)->incrVitesse(-mat->getCoeffRestitution() * vitesse*normale - vitesse*normale);
+                (*part_it)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
+                /* Technique plus adaptee dans le cas de la vague, qui consiste a empecher 
+                 * Les particules de s'empiler sur un bord */
+                // if (normale(3) < 0.001 && (*part_it)->getVitesse()(3) < 0.0) {
+                //     (*part_it)->incrVitesse(-3 * vitesse * normale);
+                // } else {
+                //     (*part_it)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
+                // }
+                
                 restriction((*part_it)->getVitesse(), rho, drho);
                 if (rho >= 1) {
                     reinsertionTable(*part_it);
@@ -1480,7 +1502,15 @@ void Fluide<Dim>::schemaIntegration_Traces() {
                 double vitesse = (*part_it)->getVitesse().scalaire(normale);
                 //(*part_it)->setVitessePrec((*part_it)->getVitesse());
                 // cout << (*part_it)->getIndice() << ". maj vitesse" << endl;
-                (*part_it)->incrVitesse(-mat->getCoeffRestitution() * vitesse*normale - vitesse*normale);
+                
+                (*part_it)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
+                /* Technique plus adaptee dans le cas de la vague, qui consiste a empecher 
+                 * Les particules de s'empiler sur un bord */
+                // if (normale(3) < 0.001 && (*part_it)->getVitesse()(3) < 0.0) {
+                //     (*part_it)->incrVitesse(-3 * vitesse * normale);
+                // } else {
+                //     (*part_it)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
+                // }
                 restriction((*part_it)->getVitesse(), rho, drho);
                    
                 if (rho >= 1) {
