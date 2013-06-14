@@ -79,7 +79,7 @@ void Scene::draw() {
 }
 
 void Scene::animate() {
-    // if (anim) {
+    //if (anim) {
         if (arps) {
             if (TRACES) {
                 f->schemaIntegration_Traces();
@@ -90,9 +90,9 @@ void Scene::animate() {
             f->majDensitePression();
             f->majPositionVitesse();
         }
-        // f->affiche();
-    //     anim = false;
-    // }
+        //f->affiche();
+    //    anim = false;
+    //}
 }
 
 void Scene::interact() {
