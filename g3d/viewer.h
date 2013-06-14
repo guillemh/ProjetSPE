@@ -58,9 +58,9 @@ class Viewer : public QGLViewer
      */
     virtual void animate();
 
-    bool toogleWireframe; /*!< Booléen indiquant ou non si on dessine la scène sous une forme de maillage ou de faces pleines */
-    bool toogleLight; /*!< Booléen indiquant si le modèle d'illumination d'OpenGL (modèle de Phong) doit être respecté */
-    bool toogleRecord; /*!< Enregistrer ou non une vidéo */
+    bool toogleWireframe;  /*!< Booléen indiquant ou non si on dessine la scène sous une forme de maillage ou de faces pleines */
+    bool toogleLight;      /*!< Booléen indiquant si le modèle d'illumination d'OpenGL (modèle de Phong) doit être respecté */
+    bool toogleRecord;     /*!< Enregistrer ou non une vidéo */
 
     /**
      * \brief Interaction avec l'utilisateur
@@ -69,11 +69,24 @@ class Viewer : public QGLViewer
      */
     virtual void keyPressEvent(QKeyEvent *e);
 
+    /**
+     * @brief Fenêtre d'aide
+     *
+     * Définit le texte présent dans la fenêtre d'aide de QglViewer,
+     * affichée avec la touche 'H'
+     * @return Le texte en question
+     */
     virtual QString helpString() const;
 
+    /**
+     * @brief Interaction utilisateur
+     *
+     * Déclenche l'interaction utilisateur sur le terminal
+     */
     void interact();
     
-    Scene *s ;
+    Scene *s;    /*!< Objet contenant tous les éléments de la scène */
+    int nbShot;  /*!< Nombre de captures faites (pour lancer les calculs pendant la nuit */
 };
 
 #endif

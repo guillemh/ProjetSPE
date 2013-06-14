@@ -9,8 +9,8 @@ using std::cout;
 using std::endl;
 using std::pair;
 
-#define EPSR 1
-#define DELTA 15
+#define EPSR 10
+#define DELTA 50
 #define METABALLS 0 // Mettre a 1 pour dessiner des surfaces, 0 pour des particules
 #define POINT 0     // Mettre a 1 pour dessiner des points, 0 pour des spheres
 #define CASCADE 0   // Mettre a 1 pour les collisions avec la cascade
@@ -119,6 +119,7 @@ void Fluide<Dim>::init() {
         
         nbrParticules = nb[0]*nb[1];
         lgrHash = table.getPremier(2*nbrParticules);
+        matF = MatriceForces<Dim>(nbrParticules);
         
         /* On définit la position des particules */
         for (int i = 0; i < nb[0]; i++) {
@@ -142,6 +143,7 @@ void Fluide<Dim>::init() {
         
         nbrParticules = nb[0]*nb[1]*nb[2];
         lgrHash = table.getPremier(2*nbrParticules);
+        matF = MatriceForces<Dim>(nbrParticules);
         
         /* On définit la position des particules */
         double largeur_x = x_max - x_min;
@@ -175,7 +177,9 @@ void Fluide<Dim>::init() {
         }
     
         /* Initialisation de la metaball */
-        ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1.1);
+
+        // ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1.1);
+        ball = new Metaballs(Vecteur<3>(x_min-0.5, y_min-0.5, z_min-0.5), 0.01, mat->getRayonNoyau(), x_max-x_min+1, y_max-y_min+1, 2);
         if (afficheMetaballs) {
             ball->initColoration(particules);
         }
@@ -491,23 +495,29 @@ Vecteur<Dim> Fluide<Dim>::collision(const Vecteur<Dim> & v) {
     Vecteur<Dim> res = Vecteur<Dim>(v);
 
     if (Dim == 2) {
-        if (v(1) < x_min)
+        if (v(1) < x_min) {
             res(1) = x_min;
-        if (v(1) > x_max)
+        } else if (v(1) > x_max) {
             res(1) = x_max;
-        if (v(2) < y_min)
+        }
+
+        if (v(2) < y_min) {
             res(2) = y_min;
-        if (v(2) > y_max)
+        } else if (v(2) > y_max) {
             res(2) = y_max;
+        }
     } else {
-        if (v(1) < x_min)
+        if (v(1) < x_min) {
             res(1) = x_min;
-        if (v(1) > x_max)
+        } else if (v(1) > x_max) {
             res(1) = x_max;
-        if (v(2) < y_min)
+        }
+
+        if (v(2) < y_min) {
             res(2) = y_min;
-        if (v(2) > y_max)
+        } else if (v(2) > y_max) {
             res(2) = y_max;
+        }
         if (v(3) < z_min)
             res(3) = z_min;
     }
@@ -524,10 +534,10 @@ template<unsigned int Dim>
 //Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,  const Cascade<Dim> c) {
 
 Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
-					   Materiau<Dim> *mat,
-					   const double bassin_x,
-					   const double bassin_y,
-					   const double bassin_z) {
+                                           Materiau<Dim> *mat,
+                                           const double bassin_x,
+                                           const double bassin_y,
+                                           const double bassin_z) {
 
     Vecteur<Dim> res = Vecteur<Dim>(v);
     double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * mat->getPression()), 1.0/3.0);
@@ -536,36 +546,118 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
     if (Dim == 2) {
         
     } else {
-	if (v(1)-rayon < -bassin_x/2) // Derrière le bassin
-	    if (v(3)+rayon < bassin_z) // Sous le fond du bassin
-		res(1) = -bassin_x/2+rayon;
-        if (v(1)+rayon > bassin_x/2) { // Devant le bassin
-	    if (v(1)+rayon > bassin_x/2+rayon) // Au dessus de la hauteur de la face avant
-		;
-	    else if (v(3)-rayon < bassin_z/5) // En dessous de la hauteur de la face avant
-		res(1) = bassin_x/2-rayon;
-	}
-        if (v(2)-rayon < -bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A gauche du bassin
-	    if (v(3)+rayon < bassin_z)
-		res(2) = -bassin_y/2+rayon;
-        if (v(2)+rayon > bassin_y/2 && !(v(1)-rayon > bassin_x/2)) // A droite du bassin
-	    if (v(3)+rayon < bassin_z)
-		res(2) = bassin_y/2-rayon;
-        if (v(3)-rayon < 0) // Fond du bassin
-	    if (v(1)+rayon > -bassin_x/2 && v(1)-rayon < bassin_x/2) 
-		res(3) = 0+rayon;
-	if (v(3)-rayon < -2.0) 		
-	    if (v(1)+rayon > bassin_x && v(1)-rayon < 4*bassin_x && v(2)-rayon < 2*bassin_y && v(2)+rayon > -2*bassin_y) 
-		res(3) = -2.0+rayon;
-	if (v(1)+rayon > 4*bassin_x)
-	    res(1) = 4*bassin_x-rayon;
-	if (v(1)-rayon < bassin_x && v(3)-rayon < -2.0+bassin_z)
-	    res(1) = bassin_x+rayon;
-	if (v(2)+rayon > 2*bassin_y)
-	    res(2) = 2*bassin_y-rayon;
-	if (v(2)-rayon < -2*bassin_y)
-	    res(2) = -2*bassin_y+rayon;	
+
+        const double v1mr = v(1)-rayon;
+        const double v1pr = v(1)+rayon;
+        const double v2mr = v(2)-rayon;
+        const double v2pr = v(2)+rayon;
+        const double v3mr = v(3)-rayon;
+        const double v3pr = v(3)+rayon;
+
+        if (v3mr > -0.025 || (v3mr < -0.025 && v3pr > -0.025 && v1pr < bassin_x/2+rayon)) { // Niveau de la cascade supérieure
+
+            const double bassin_xd2 = bassin_x/2;
+            const double bassin_yd2 = bassin_y/2;
+            const double bassin_zd5 = bassin_z/5;            
+        
+            if (v3mr < bassin_zd5-0.025) { // Niveau du palier
+                if ((v3mr > bassin_zd5+rayon-0.025 || v3mr < bassin_zd5-rayon-0.025) || (v2mr > -2*rayon && v2pr < 2*rayon && v1mr < -bassin_xd2+2*rayon))  { // Au dessus du palier
+                    ;
+                } else if (!(v2mr > -4*rayon) || !(v2pr < 4*rayon) || !(v1mr < -bassin_x+4*rayon)) { // Sur le palier en dehors du sas        
+                    res(3) = bassin_zd5+rayon-0.025;
+                }
+            }        
+
+            if (v1mr < -bassin_xd2) {  // Derrière le bassin
+                res(1) = -bassin_xd2+rayon;
+            
+            } else if ((v1pr > bassin_xd2) && (!((v2mr > -bassin_y/5 && v2pr < bassin_y/5 && v3pr < bassin_zd5-0.025) || v1pr>bassin_xd2+rayon))) { // Devant le bassin, en dehors du trou de la face avant            
+                res(1) = bassin_xd2-rayon;                   
+            }
+            
+            if (v2mr < -bassin_yd2 && !(v1mr > bassin_xd2)) { // A gauche du bassin
+                res(2) = -bassin_yd2+rayon;
+
+            } else if (v2pr > bassin_yd2 && !(v1mr > bassin_xd2)) { // A droite du bassin
+                res(2) = bassin_yd2-rayon;
+            }
+
+            if ((v3mr < -0.025 && v3pr > -0.025) && (v1pr > -bassin_xd2 && v1mr < bassin_xd2))  // Fond du bassin                
+                res(3) = rayon-0.025;
+
+        } else if (v3mr > -1.0 || (v3mr < -1.0 && v3pr > -1.0 && v1pr < 2*bassin_x+rayon)) { // Niveau du bassin intermédiaire
+
+            const double bassin_xd2 = bassin_x/2;
+            const double bassin_yd3 = bassin_y/3;
+
+
+            if (v3mr < -1.0 && v3pr > -1.0 && v1pr > bassin_xd2 && v1mr < 2*bassin_x && v2mr < bassin_yd3 && v2pr > -bassin_yd3) // Fond du bassin
+                res(3) = -1.0+rayon;
+
+            if ((v1pr > 2*bassin_x) && !((v3mr >= -1.0+bassin_z/7 || v1pr > 2*bassin_x+rayon))) { // Devant de le bassin, sous le niveau de la paroie
+                res(1) = 2*bassin_x-rayon;
+            
+            } else if (v1mr < bassin_xd2 && v3mr < -1.0+bassin_z/3) { // Derrière le bassin
+                res(1) = bassin_xd2+rayon;
+            }
+
+            if (v2pr > bassin_yd3) { // A droite du bassin
+                res(2) = bassin_yd3-rayon;
+
+            } else if (v2mr < -bassin_yd3) { // A gauche du bassin
+                res(2) = -bassin_yd3+rayon;        
+            }
+
+        } else if (v3mr > -2.0 || (v3mr < -2.0 && v3pr > -2.0)) { // Niveau du bassin inférieur 1
+
+            const double bassin_xf2 = 2*bassin_x;
+            const double bassin_xf4 = 4*bassin_x;
+            const double bassin_yd2 = bassin_y/2;
+
+            if (v3mr < -2.0 && v3pr > -2.0 && v1pr > bassin_xf2 && v1mr < bassin_xf4 && v2mr < bassin_yd2 && v2pr > -bassin_yd2) // Fond du bassin
+                res(3) = -2.0+rayon;
+
+            //if (v1pr > bassin_xf4 && v3mr < -2.0+bassin_z/5) { // Devant le bassin 
+            if (v1pr > bassin_xf4 && !((v3mr >= -2.0+bassin_z/5 || v1pr > bassin_xf4+rayon))) {
+                res(1) = bassin_xf4-rayon;
+
+                //} else if (v1mr < bassin_xf2 && v3mr < -2.0+bassin_z/5) { // Derrière le bassin
+            } else if (v1mr < bassin_xf2 && !((v3mr >= -2.0+bassin_z/5 || v1mr < bassin_xf2-rayon))) {
+                res(1) = bassin_xf2+rayon;
+            }
+
+            //if (v2pr > bassin_yd2) { // A droite du bassin
+            if (v2pr > bassin_yd2 && !((v3mr >= -2.0+bassin_z/5 || v2pr > bassin_yd2+rayon))) {
+                res(2) = bassin_yd2-rayon;
+
+                //} else if (v2mr < -bassin_yd2) { // A gauche du bassin
+            } else if (v2mr < -bassin_yd2 && !((v3mr >= -2.0+bassin_z/5 || v2mr < -bassin_yd2-rayon))) {
+                res(2) = -bassin_yd2+rayon;
+            }
+        
+        } else if (v3mr > -3.0 || (v3mr < -3.0 && v3pr > -3.0)) { // Niveau du bassin inférieur 2
+
+            const double bassin_xf6 = 6*bassin_x;
+
+            if (v3mr < -3.0 && v3pr > -3.0 && v1pr > bassin_x && v1mr < bassin_xf6 && v2mr < bassin_y && v2pr > -bassin_y) // Fond du bassin
+                res(3) = -3.0+rayon;
+
+            if (v1pr > bassin_xf6) { // Devant le bassin
+                res(1) = bassin_xf6-rayon;
+
+            } else if (v1mr < bassin_x && v3mr < -3.0+bassin_z) { // Derrière le bassin 
+                res(1) = bassin_x+rayon;
+            }
+
+            if (v2pr > bassin_y) { // A droite du bassin
+                res(2) = bassin_y-rayon;
+
+            } else if (v2mr < -bassin_y) { // A gauche du bassin
+                res(2) = -bassin_y+rayon;
+            }
+        }
     }
+    
     return res;
 }
 
@@ -663,12 +755,12 @@ void Fluide<Dim>::majPositionVitesse() {
         
         /* Détection des collisions */
         Vecteur<Dim> pos = (*it1)->getPosition();
-	Vecteur<Dim> contact;
-	if (!CASCADE) {
-           contact = collision(pos);
-	} else {
-	  contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
-	}
+        Vecteur<Dim> contact;
+        if (!CASCADE) {
+            contact = collision(pos);
+        } else {
+            contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+        }
         
         /* S'il y a collision, on met a jour la position et la vitesse */
         if (contact != pos) {
@@ -681,7 +773,15 @@ void Fluide<Dim>::majPositionVitesse() {
             
             /* Mise a jour de la vitesse */
             double vitesse = (*it1)->getVitesse().scalaire(normale);
-            (*it1)->setVitesse(-mat->getCoeffRestitution() *vitesse*normale + (*it1)->getVitesse() - vitesse*normale);
+            
+            (*it1)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse*normale);
+            /* Technique plus adaptee dans le cas de la vague, qui consiste a empecher 
+             * Les particules de s'empiler sur un bord */
+            // if (normale(3) < 0.001 && (*it1)->getVitesse()(3) < 0.0) {
+            //     (*it1)->incrVitesse(-3 * vitesse * normale);
+            // } else {
+            //     (*it1)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
+            // }
         }
     }
     debutAnim = false;
@@ -692,7 +792,7 @@ void Fluide<Dim>::majPositionVitesse() {
     /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
     if (afficheMetaballs) {
         ball->coloration(particules);
-	}
+    }
 }
 
 
@@ -704,7 +804,7 @@ void Fluide<Dim>::colorationMetaball() {
         } else {
             ball->coloration(particules);
         }
-	}
+    }
 }
 
 
@@ -719,12 +819,6 @@ void Fluide<Dim>::draw() {
             (*it)->draw(affichePoint);
         }
     }
-
-    glPushMatrix();
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(1.0, 1.0, 1.0, 0.1);
-    glBegin(GL_QUADS);
     
     glNormal3f(-1, 0, 0);
     glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
@@ -749,15 +843,54 @@ void Fluide<Dim>::draw() {
     glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
     glVertex3f(x_max + 0.025, y_max + 0.025, 1.1);
     glVertex3f(x_min - 0.025, y_max + 0.025, 1.1);
+
+    if (!CASCADE) {
+
+        double decalage;
+        if (afficheMetaballs)
+            decalage = 0.08;
+        else
+            decalage = 0.025;
+
+        glPushMatrix();
+        glEnable (GL_BLEND);
+        glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glColor4f(1.0, 1.0, 1.0, 0.1);
+        glBegin(GL_QUADS);
     
-    glNormal3f(0, 0, -1);
-    glVertex3f(x_min - 0.025, y_min - 0.025, z_min - 0.025);
-    glVertex3f(x_min - 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_max + 0.025, z_min - 0.025);
-    glVertex3f(x_max + 0.025, y_min - 0.025, z_min - 0.025);
+        glNormal3f(-1, 0, 0);
+        glVertex3f(x_min - decalage, y_min - decalage, z_min - decalage);
+        glVertex3f(x_min - decalage, y_max + decalage, z_min - decalage);
+        glVertex3f(x_min - decalage, y_max + decalage, 1.2);
+        glVertex3f(x_min - decalage, y_min - decalage, 1.2);
     
-    glEnd();
-    glDisable (GL_BLEND);
+        glNormal3f(0, -1, 0);
+        glVertex3f(x_min - decalage, y_min - decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_min - decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_min - decalage, 1.2);
+        glVertex3f(x_min - decalage, y_min - decalage, 1.2);
+    
+        glNormal3f(1, 0, 0);
+        glVertex3f(x_max + decalage, y_min - decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_max + decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_max + decalage, 1.2);
+        glVertex3f(x_max + decalage, y_min - decalage, 1.2);
+    
+        glNormal3f(0, 1, 0);
+        glVertex3f(x_min - decalage, y_max + decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_max + decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_max + decalage, 1.2);
+        glVertex3f(x_min - decalage, y_max + decalage, 1.2);
+    
+        glNormal3f(0, 0, -1);
+        glVertex3f(x_min - decalage, y_min - decalage, z_min - decalage);
+        glVertex3f(x_min - decalage, y_max + decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_max + decalage, z_min - decalage);
+        glVertex3f(x_max + decalage, y_min - decalage, z_min - decalage);
+    
+        glEnd();
+        glDisable (GL_BLEND);
+    }
 }
 
 template<unsigned int Dim>
@@ -768,11 +901,11 @@ void Fluide<Dim>::draw(struct QVector<QVector3D> *vertices, struct QVector<QVect
     typename list<Particule<Dim> *>::const_iterator it;
     int i = 0;
     for (it = particules.begin(); it != particules.end(); it++) {
-	Vecteur<Dim> posIt = (*it)->getPosition();
-	vertices->push_back(QVector3D(posIt(1), posIt(2), posIt(3)));
-	colors->push_back(QVector4D(0.0, 1.0, 0.0, 0.0));
-	indices->push_back(i);
-	i++;
+        Vecteur<Dim> posIt = (*it)->getPosition();
+        vertices->push_back(QVector3D(posIt(1), posIt(2), posIt(3)));
+        colors->push_back(QVector4D(0.0, 1.0, 0.0, 0.0));
+        indices->push_back(i);
+        i++;
     }
 }
 
@@ -781,7 +914,7 @@ void Fluide<Dim>::affiche() {
     typename list<Particule<Dim> *>::iterator it;
     int i = 0;
     for (it = particules.begin(); it != particules.end(); it++) {
-        cout << "P" << i << " : " << endl;
+        cout << "P" << i+1 << " : " << endl;
         cout << "    " << (**it) << endl;
         i++;
     }
@@ -838,8 +971,9 @@ Vecteur<Dim> Fluide<Dim>::calculForcesInteraction(Particule<Dim>* p1, Particule<
     }
 
     /* Force de tension de surface */
-    colorfield += noyauMonaghan.laplacien(x_1_2) / masseVolumique_2;
-    fSurface += noyauMonaghan.gradient(x_1_2) / masseVolumique_2;
+    double moy_mv = (masseVolumique_1 + masseVolumique_2) / 2;
+    colorfield += noyauMonaghan.laplacien(x_1_2) / moy_mv;
+    fSurface += noyauMonaghan.gradient(x_1_2) / moy_mv;
     double norme = fSurface.norme();
     if (norme >= mat->getSeuilSurface()) {
         colorfield *= masse;
@@ -849,8 +983,8 @@ Vecteur<Dim> Fluide<Dim>::calculForcesInteraction(Particule<Dim>* p1, Particule<
     }
 
     /* Multiplications par les facteurs constants */
-    fPression *= masse * masseVolumique_1 / 100;
-    fViscosite *= masse * masseVolumique_1;
+    fPression *= masse * moy_mv / 100;
+    fViscosite *= masse * moy_mv;
     fSurface *= masse;
     
     return fPression + fViscosite + fSurface;
@@ -907,8 +1041,9 @@ Vecteur<Dim> Fluide<Dim>::calculForcesInteractionPrec(Particule<Dim>* p1, Partic
     }
 
     /* Force de tension de surface */
-    colorfield += noyauMonaghan.laplacien(x_1_2) / masseVolumique_2;
-    fSurface += noyauMonaghan.gradient(x_1_2) / masseVolumique_2;
+    double moy_mv = (masseVolumique_1 + masseVolumique_2) / 2;
+    colorfield += noyauMonaghan.laplacien(x_1_2) / moy_mv;
+    fSurface += noyauMonaghan.gradient(x_1_2) / moy_mv;
     double norme = fSurface.norme();
     if (norme >= mat->getSeuilSurface()) {
         colorfield *= masse;
@@ -918,8 +1053,8 @@ Vecteur<Dim> Fluide<Dim>::calculForcesInteractionPrec(Particule<Dim>* p1, Partic
     }
 
     /* Multiplications par les facteurs constants */
-    fPression *= masse * masseVolumique_1 / 100;
-    fViscosite *= masse * masseVolumique_1;
+    fPression *= masse * moy_mv / 100;
+    fViscosite *= masse * moy_mv;
     fSurface *= masse;
     
     return fPression + fViscosite + fSurface;
@@ -937,19 +1072,13 @@ void Fluide<Dim>::reinsertionTable(Particule<Dim>* part) {
         noeud_grille(i) = int(floor(part->getPositionPrec()(i)/mat->getRayonNoyau()));
     }
     int hash_key = fonction_hashage(noeud_grille);
-    //part_pit = hash_voisins.equal_range(hash_key);
 
     /* On récupère la particule courante */
-    //hash_it = part_pit.first;
     hash_it = hash_voisins.find(hash_key);
     // if (hash_it == hash_voisins.end()) {
     //     cout << "(" << hash_key << ", " << part->getIndice() << ") oups pas trouvée" << endl;
     // }
-    // while (hash_it != part_pit.second && (*hash_it).second != *part_it) {
     while (hash_it->second != part && hash_it != hash_voisins.end()) {
-        if (hash_it->first != hash_key) {
-            // cout << "**********************************oho" << endl;
-        }
         ++hash_it;
     }
     /* On enlève la particule de la table des voisins */
@@ -980,6 +1109,7 @@ void Fluide<Dim>::integrationForces() {
                     /* On ne veut considérer les couples qu'une fois */
                     /* Ajouter interactions */
                     Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
+                    matF((*part_it)->getIndice(), (*vois_it)->getIndice()) = forces;
                     (*part_it)->incrForces(forces);
                     (*vois_it)->decrForces(forces);
                 }
@@ -1005,7 +1135,11 @@ void Fluide<Dim>::integrationForces() {
                               // mais vois_it ne pourra pas le faire
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Enlever interactions */
-                    Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
+                    // Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
+                    Vecteur<Dim> forcesPrec = matF((*part_it)->getIndice(), (*vois_it)->getIndice());
+                    if ((*part_it)->getIndice() > (*vois_it)->getIndice()) {
+                        forcesPrec = -forcesPrec;
+                    }
                     (*part_it)->decrForces(forcesPrec);
                     (*vois_it)->incrForces(forcesPrec);
                 }
@@ -1034,6 +1168,11 @@ void Fluide<Dim>::integrationForces() {
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Ajouter interactions */
                     Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
+                    if ((*part_it)->getIndice() < (*vois_it)->getIndice()) {
+                        matF((*part_it)->getIndice(), (*vois_it)->getIndice()) = forces;
+                    } else {
+                        matF((*part_it)->getIndice(), (*vois_it)->getIndice()) = -forces;
+                    }
                     (*part_it)->incrForces(forces);
                     (*vois_it)->decrForces(forces);
                 }
@@ -1129,7 +1268,7 @@ void Fluide<Dim>::schemaIntegration() {
             (*part_it)->setEtat(TRANSITION);
         } else {
             /* Particule inactive */
-	    (*part_it)->setEtat(INACTIVE);
+            (*part_it)->setEtat(INACTIVE);
         }
 
         /* Mise à jour des positions */
@@ -1141,18 +1280,18 @@ void Fluide<Dim>::schemaIntegration() {
         (*part_it)->incrPosition(incr); 
         
         /* Détection des collisions */
-	if ((*part_it)->getEtat() != INACTIVE) {
+        if ((*part_it)->getEtat() != INACTIVE) {
             /* Uniquement pour les particules actives */
-	    Vecteur<Dim> pos = (*part_it)->getPosition();
-	    Vecteur<Dim> contact;
-	    if (!CASCADE) {
+            Vecteur<Dim> pos = (*part_it)->getPosition();
+            Vecteur<Dim> contact;
+            if (!CASCADE) {
                 contact = collision(pos);
-	    } else {
+            } else {
                 contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
-	    }
+            }
         
-	    /* S'il y a collision, on met à jour la position et la vitesse */
-	    if (contact != pos) {
+            /* S'il y a collision, on met à jour la position et la vitesse */
+            if (contact != pos) {
                 pos = contact - pos;
                 double dist = pos.norme();
                 Vecteur<Dim> normale = pos / dist;
@@ -1162,14 +1301,22 @@ void Fluide<Dim>::schemaIntegration() {
             
                 /* Mise à jour de la vitesse */
                 double vitesse = (*part_it)->getVitesse().scalaire(normale);
-                (*part_it)->incrVitesse(-mat->getCoeffRestitution() * vitesse*normale - vitesse*normale);
+                (*part_it)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
+                /* Technique plus adaptee dans le cas de la vague, qui consiste a empecher 
+                 * Les particules de s'empiler sur un bord */
+                // if (normale(3) < 0.001 && (*part_it)->getVitesse()(3) < 0.0) {
+                //     (*part_it)->incrVitesse(-3 * vitesse * normale);
+                // } else {
+                //     (*part_it)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
+                // }
+                
                 restriction((*part_it)->getVitesse(), rho, drho);
                 if (rho >= 1) {
                     reinsertionTable(*part_it);
                     actives.remove(*part_it);
                     (*part_it)->setEtat(INACTIVE);
                 }
-	    }
+            }
         }
     }
 
@@ -1193,6 +1340,7 @@ void Fluide<Dim>::integrationForces_Traces() {
                     /* On ne veut considérer les couples qu'une fois */
                     /* Ajouter interactions */
                     Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
+                    matF((*part_it)->getIndice(), (*vois_it)->getIndice()) = forces;
                     (*part_it)->incrForces(forces);
                     (*vois_it)->decrForces(forces);
                 }
@@ -1211,6 +1359,8 @@ void Fluide<Dim>::integrationForces_Traces() {
         /* On se base sur les anciennes positions pour enlever les anciennes forces */
         cout << endl << "********************************************" << endl;
         cout << "Forces enlevées :" << endl;
+        // matF.afficher();
+        cout << endl << "********************************************" << endl;        
         for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
             /* On boucle sur les particules actives */
             vois = voisinagePrec(*(*part_it));
@@ -1223,7 +1373,11 @@ void Fluide<Dim>::integrationForces_Traces() {
                               // mais vois_it ne pourra pas le faire
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Enlever interactions */
-                    Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
+                    // Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
+                    Vecteur<Dim> forcesPrec = matF((*part_it)->getIndice(), (*vois_it)->getIndice());
+                    if ((*part_it)->getIndice() > (*vois_it)->getIndice()) {
+                        forcesPrec = -forcesPrec;
+                    }
                     (*part_it)->decrForces(forcesPrec);
                     (*vois_it)->incrForces(forcesPrec);
                     cout << " " << (*part_it)->getIndice() << " " << (*vois_it)->getIndice()
@@ -1257,6 +1411,8 @@ void Fluide<Dim>::integrationForces_Traces() {
         /* On ajoute les forces correspondant aux nouvelles positions */
         cout << endl << "********************************************" << endl;
         cout << "Forces ajoutées :" << endl;
+        // matF.afficher();
+        cout << endl << "********************************************" << endl;        
         for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
             /* On boucle sur les particules actives */
             vois = voisinage(*(*part_it));
@@ -1270,6 +1426,11 @@ void Fluide<Dim>::integrationForces_Traces() {
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Ajouter interactions */
                     Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
+                    if ((*part_it)->getIndice() < (*vois_it)->getIndice()) {
+                        matF((*part_it)->getIndice(), (*vois_it)->getIndice()) = forces;
+                    } else {
+                        matF((*part_it)->getIndice(), (*vois_it)->getIndice()) = -forces;
+                    }
                     (*part_it)->incrForces(forces);
                     (*vois_it)->decrForces(forces);
                     cout << " " << (*part_it)->getIndice() << " " << (*vois_it)->getIndice()
@@ -1330,7 +1491,7 @@ void Fluide<Dim>::schemaIntegration_Traces() {
         } else {
             /* Particule inactive */
             // cout << (*part_it)->getIndice() << " pas active" << endl;
-	    (*part_it)->setEtat(INACTIVE);
+            (*part_it)->setEtat(INACTIVE);
         }
         /* Mise à jour des positions */
         Vecteur<Dim> incr = mat->getPasTemps() * 
@@ -1342,18 +1503,18 @@ void Fluide<Dim>::schemaIntegration_Traces() {
         (*part_it)->incrPosition(incr); 
         
         /* Détection des collisions */
-	if ((*part_it)->getEtat() != INACTIVE) {
+        if ((*part_it)->getEtat() != INACTIVE) {
             /* Uniquement pour les particules actives */
-	    Vecteur<Dim> pos = (*part_it)->getPosition();
-	    Vecteur<Dim> contact;
-	    if (!CASCADE) {
+            Vecteur<Dim> pos = (*part_it)->getPosition();
+            Vecteur<Dim> contact;
+            if (!CASCADE) {
                 contact = collision(pos);
-	    } else {
+            } else {
                 contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
-	    }
+            }
         
-	    /* S'il y a collision, on met à jour la position et la vitesse */
-	    if (contact != pos) {
+            /* S'il y a collision, on met à jour la position et la vitesse */
+            if (contact != pos) {
                 pos = contact - pos;
                 double dist = pos.norme();
                 Vecteur<Dim> normale = pos / dist;
@@ -1367,22 +1528,31 @@ void Fluide<Dim>::schemaIntegration_Traces() {
                 double vitesse = (*part_it)->getVitesse().scalaire(normale);
                 //(*part_it)->setVitessePrec((*part_it)->getVitesse());
                 // cout << (*part_it)->getIndice() << ". maj vitesse" << endl;
-                (*part_it)->incrVitesse(-mat->getCoeffRestitution() * vitesse*normale - vitesse*normale);
+                
+                (*part_it)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
+                /* Technique plus adaptee dans le cas de la vague, qui consiste a empecher 
+                 * Les particules de s'empiler sur un bord */
+                // if (normale(3) < 0.001 && (*part_it)->getVitesse()(3) < 0.0) {
+                //     (*part_it)->incrVitesse(-3 * vitesse * normale);
+                // } else {
+                //     (*part_it)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
+                // }
                 restriction((*part_it)->getVitesse(), rho, drho);
+                   
                 if (rho >= 1) {
-                    // cout << (*part_it)->getIndice() << ". MAJ actives collision" << endl;
+                    cout << (*part_it)->getIndice() << ". MAJ actives collision" << endl;
                     // cout << (*part_it)->getIndice() << ". réinsertion" << endl;
                     reinsertionTable(*part_it);
                     actives.remove(*part_it);
                     (*part_it)->setEtat(INACTIVE);
                 }
-	    }
+            }
         }
     }
     
     cout << endl << "********************************************" << endl;
     afficher_actives();
-    // cout << endl << "********************************************" << endl;
+    cout << endl << "********************************************" << endl;
     // affiche();
 
 }

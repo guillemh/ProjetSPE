@@ -9,7 +9,7 @@
 
 using namespace std;
 
-#define TRACES 1  // 0 si on ne veut aucune trace à l'exécution
+#define TRACES 0  // 0 si on ne veut aucune trace à l'exécution
 
 Scene::Scene()
     : f(),
@@ -34,21 +34,23 @@ void Scene::init() {
     anim = false;
     arps = false;
     
-    
 
+    /* Filet d'eau */
+//    m = new Materiau<3>(EAU);
+//    Vecteur<3> d = Vecteur<3>(2, 2, 50);
+//    double bord = 0.1;
+//    double ecart = 0.05;
+//    f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, bord, 0.);
+    
+    
+    /* Vague */
     m = new Materiau<3>(EAU);
     Vecteur<3> d = Vecteur<3>(11, 11, 20);
-    f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -0.25, 0.25, -0.25, 1.0, 0.0);
+    double bord = 0.25;
+    double ecart = 0.05;
+    f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, 1, 0.);
 
-    // Vecteur<3> d = Vecteur<3>(2, 2, 50);
-    // f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -0.2, 0.2, -0.2, 0.2, 0.0);
-
-    // m = new Materiau<3>(EAU);
-    // Vecteur<3> d = Vecteur<3>(1, 1, 3);
-    // double bord = 0.01;
-    // double ecart = 0.5;
-    // f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, bord, 0.);
-
+    /* Deux particules */
 //      m = new Materiau<3>(EAU);
 //    
 //      Vecteur<3> vInit = Vecteur<3> (0, 0.1, 0);
@@ -76,7 +78,7 @@ void Scene::draw() {
 }
 
 void Scene::animate() {
- //   if (anim) {
+    //if (anim) {
         if (arps) {
             if (TRACES) {
                 f->schemaIntegration_Traces();
@@ -87,9 +89,9 @@ void Scene::animate() {
             f->majDensitePression();
             f->majPositionVitesse();
         }
-        // f->affiche();
- //       anim = false;
- //   }
+        //f->affiche();
+    //    anim = false;
+    //}
 }
 
 void Scene::interact() {

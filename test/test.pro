@@ -23,4 +23,4 @@ INCLUDEPATH += ..
 DEPENDPATH += .. #check si les fichiers ont été modifiés
 
 HEADERS += ../core/metaballs.hpp
-SOURCES += main.cpp test_fluide.cpp test_materiau.cpp test_noyauLissage.cpp test_particules.cpp test_vecteur.cpp test_map.cpp test_premier.cpp ../core/metaballs.cpp
+SOURCES += main.cpp test_fluide.cpp test_materiau.cpp test_noyauLissage.cpp test_particules.cpp test_vecteur.cpp test_map.cpp test_premier.cpp ../core/metaballs.cpp 

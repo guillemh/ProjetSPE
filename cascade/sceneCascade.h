@@ -68,7 +68,13 @@ class SceneCascade {
      * et le SPH traditionnel, ainsi que les seuils de l'ARPS
      */
     void interact();
-    
+
+    /**
+     * @brief Interaction utilisateur
+     *
+     * Méthode permettant de changer interactivement le
+     * mode d'affichage
+     */
     void changerAffichage();
     
 };
