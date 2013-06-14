@@ -13,7 +13,7 @@ using std::pair;
 #define DELTA 50
 #define METABALLS 0 // Mettre a 1 pour dessiner des surfaces, 0 pour des particules
 #define POINT 0     // Mettre a 1 pour dessiner des points, 0 pour des spheres
-#define CASCADE 0   // Mettre a 1 pour les collisions avec la cascade
+#define CASCADE 1   // Mettre a 1 pour les collisions avec la cascade
 
 /* ** Constructeurs ** */
 
@@ -516,7 +516,6 @@ Vecteur<Dim> Fluide<Dim>::collision(const Vecteur<Dim> & v) {
         } else if (v(2) > y_max) {
             res(2) = y_max;
 	}
-
         if (v(3) < z_min)
             res(3) = z_min;
     }
@@ -545,90 +544,118 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
     if (Dim == 2) {
         
     } else {
-	if (v(3)-rayon > -0.025 || (v(3)-rayon < -0.025 && v(3)+rayon > -0.025 && v(1)+rayon < bassin_x/2+rayon)) { // Niveau de la cascade supérieure
+
+	const double v1mr = v(1)-rayon;
+	const double v1pr = v(1)+rayon;
+	const double v2mr = v(2)-rayon;
+	const double v2pr = v(2)+rayon;
+	const double v3mr = v(3)-rayon;
+	const double v3pr = v(3)+rayon;
+
+	if (v3mr > -0.025 || (v3mr < -0.025 && v3pr > -0.025 && v1pr < bassin_x/2+rayon)) { // Niveau de la cascade supérieure
+
+	    const double bassin_xd2 = bassin_x/2;
+	    const double bassin_yd2 = bassin_y/2;
+	    const double bassin_zd5 = bassin_z/5;	    
 	
-	    if (v(3)-rayon < bassin_z/5-0.025) { // Niveau du palier
-		if ((v(3)-rayon > bassin_z/5+rayon-0.025 || v(3)-rayon < bassin_z/5-rayon-0.025) || (v(2)-rayon > -2*rayon && v(2)+rayon < 2*rayon && v(1)-rayon < -bassin_x/2+2*rayon))  { // Au dessus du palier
+	    if (v3mr < bassin_zd5-0.025) { // Niveau du palier
+		if ((v3mr > bassin_zd5+rayon-0.025 || v3mr < bassin_zd5-rayon-0.025) || (v2mr > -2*rayon && v2pr < 2*rayon && v1mr < -bassin_xd2+2*rayon))  { // Au dessus du palier
 		    ;
-		} else if (!(v(2)-rayon > -4*rayon) || !(v(2)+rayon < 4*rayon) || !(v(1)-rayon < -bassin_x+4*rayon)) { // Sur le palier en dehors du sas	
-		    res(3) = bassin_z/5+rayon-0.025;
+		} else if (!(v2mr > -4*rayon) || !(v2pr < 4*rayon) || !(v1mr < -bassin_x+4*rayon)) { // Sur le palier en dehors du sas	
+		    res(3) = bassin_zd5+rayon-0.025;
 		}
 	    }        
 
-	    if (v(1)-rayon < -bassin_x/2) {  // Derrière le bassin
-		res(1) = -bassin_x/2+rayon;
+	    if (v1mr < -bassin_xd2) {  // Derrière le bassin
+		res(1) = -bassin_xd2+rayon;
 	    
-	    } else if ((v(1)+rayon > bassin_x/2) && (!((v(2)-rayon > -bassin_y/5 && v(2)+rayon < bassin_y/5 && v(3)+rayon < bassin_z/5-0.025) || v(1)+rayon>bassin_x/2+rayon))) { // Devant le bassin, en dehors du trou de la face avant	    
-		res(1) = bassin_x/2-rayon;   		
+	    } else if ((v1pr > bassin_xd2) && (!((v2mr > -bassin_y/5 && v2pr < bassin_y/5 && v3pr < bassin_zd5-0.025) || v1pr>bassin_xd2+rayon))) { // Devant le bassin, en dehors du trou de la face avant	    
+		res(1) = bassin_xd2-rayon;   		
 	    }
 	    
-	    if (v(2)-rayon < -bassin_y/2 && !(v(1)-rayon > bassin_x/2)) { // A gauche du bassin
-		res(2) = -bassin_y/2+rayon;
+	    if (v2mr < -bassin_yd2 && !(v1mr > bassin_xd2)) { // A gauche du bassin
+		res(2) = -bassin_yd2+rayon;
 
-	    } else if (v(2)+rayon > bassin_y/2 && !(v(1)-rayon > bassin_x/2)) { // A droite du bassin
-		res(2) = bassin_y/2-rayon;
+	    } else if (v2pr > bassin_yd2 && !(v1mr > bassin_xd2)) { // A droite du bassin
+		res(2) = bassin_yd2-rayon;
 	    }
 
-	    if ((v(3)-rayon < -0.025 && v(3)+rayon > -0.025) && (v(1)+rayon > -bassin_x/2 && v(1)-rayon < bassin_x/2))  // Fond du bassin		
-		    res(3) = rayon-0.025;
+	    if ((v3mr < -0.025 && v3pr > -0.025) && (v1pr > -bassin_xd2 && v1mr < bassin_xd2))  // Fond du bassin		
+		res(3) = rayon-0.025;
 
-	} else if (v(3)-rayon > -1.0 || (v(3)-rayon < -1.0 && v(3)+rayon > -1.0 && v(1)+rayon < 2*bassin_x+rayon)) { // Niveau du bassin intermédiaire
+	} else if (v3mr > -1.0 || (v3mr < -1.0 && v3pr > -1.0 && v1pr < 2*bassin_x+rayon)) { // Niveau du bassin intermédiaire
 
-	    if (v(3)-rayon < -1.0 && v(3)+rayon > -1.0 && v(1)+rayon > bassin_x/2 && v(1)-rayon < 2*bassin_x && v(2)-rayon < bassin_y/3 && v(2)+rayon > -bassin_y/3) // Fond du bassin
+	    const double bassin_xd2 = bassin_x/2;
+	    const double bassin_yd3 = bassin_y/3;
+
+
+	    if (v3mr < -1.0 && v3pr > -1.0 && v1pr > bassin_xd2 && v1mr < 2*bassin_x && v2mr < bassin_yd3 && v2pr > -bassin_yd3) // Fond du bassin
 		res(3) = -1.0+rayon;
 
-	    if ((v(1)+rayon > 2*bassin_x) && !((v(3)-rayon >= -1.0+bassin_z/7 || v(1)+rayon > 2*bassin_x+rayon))) { // Devant de le bassin, sous le niveau de la paroie
+	    if ((v1pr > 2*bassin_x) && !((v3mr >= -1.0+bassin_z/7 || v1pr > 2*bassin_x+rayon))) { // Devant de le bassin, sous le niveau de la paroie
 		res(1) = 2*bassin_x-rayon;
 	    
-	    } else if (v(1)-rayon < bassin_x/2 && v(3)-rayon < -1.0+bassin_z/3) { // Derrière le bassin
-		res(1) = bassin_x/2+rayon;
+	    } else if (v1mr < bassin_xd2 && v3mr < -1.0+bassin_z/3) { // Derrière le bassin
+		res(1) = bassin_xd2+rayon;
 	    }
 
-	    if (v(2)+rayon > bassin_y/3) { // A droite du bassin
-		res(2) = bassin_y/3-rayon;
+	    if (v2pr > bassin_yd3) { // A droite du bassin
+		res(2) = bassin_yd3-rayon;
 
-	    } else if (v(2)-rayon < -bassin_y/3) { // A gauche du bassin
-		res(2) = -bassin_y/3+rayon;	
+	    } else if (v2mr < -bassin_yd3) { // A gauche du bassin
+		res(2) = -bassin_yd3+rayon;	
 	    }
 
-	} else if (v(3)-rayon > -2.0 || (v(3)-rayon < -2.0 && v(3)+rayon > -2.0)) { // Niveau du bassin inférieur 1
-	    if (v(3)-rayon < -2.0 && v(3)+rayon > -2.0 && v(1)+rayon > 2*bassin_x && v(1)-rayon < 4*bassin_x && v(2)-rayon < bassin_y/3 && v(2)+rayon > -bassin_y/3) // Fond du bassin
+	} else if (v3mr > -2.0 || (v3mr < -2.0 && v3pr > -2.0)) { // Niveau du bassin inférieur 1
+
+	    const double bassin_xf2 = 2*bassin_x;
+	    const double bassin_xf4 = 4*bassin_x;
+	    const double bassin_yd2 = bassin_y/2;
+
+	    if (v3mr < -2.0 && v3pr > -2.0 && v1pr > bassin_xf2 && v1mr < bassin_xf4 && v2mr < bassin_yd2 && v2pr > -bassin_yd2) // Fond du bassin
 		res(3) = -2.0+rayon;
 
-	    if (v(1)+rayon > 4*bassin_x && v(3)-rayon < -2.0+bassin_z) { // Devant le bassin 
-		res(1) = 4*bassin_x-rayon;
+	    //if (v1pr > bassin_xf4 && v3mr < -2.0+bassin_z/5) { // Devant le bassin 
+	    if (v1pr > bassin_xf4 &&  && !((v3mr >= -2.0+bassin_z/5 || v1pr > bassin_xf4+rayon))) {
+		res(1) = bassin_xf4-rayon;
 
-	    } else if (v(1)-rayon < 2*bassin_x && v(3)-rayon < -2.0+bassin_z) { // Derrière le bassin
-		res(1) = 2*bassin_x+rayon;
+		//} else if (v1mr < bassin_xf2 && v3mr < -2.0+bassin_z/5) { // Derrière le bassin
+	    } else if (v1mr < bassin_xf2 && !((v3mr >= -2.0+bassin_z/5 || v1mr < bassin_xf2-rayon))) {
+		res(1) = bassin_xf2+rayon;
 	    }
 
-	    if (v(2)+rayon > bassin_y/3) { // A droite du bassin
-		res(2) = bassin_y/3-rayon;
+	    //if (v2pr > bassin_yd2) { // A droite du bassin
+	    if (v2pr > bassin_yd2 && !((v3mr >= -2.0+bassin_z/5 || v2pr > bassin_yd2+rayon))) {
+		res(2) = bassin_yd2-rayon;
 
-	    } else if (v(2)-rayon < -bassin_y/3) { // A gauche du bassin
-		res(2) = -bassin_y/3+rayon;
+		//} else if (v2mr < -bassin_yd2) { // A gauche du bassin
+	    } else if (v2mr < -bassin_yd2 && !((v3mr >= -2.0+bassin_z/5 || v2mr < -bassin_yd2-rayon))) {
+		res(2) = -bassin_yd2+rayon;
 	    }
 	
-	} else if (v(3)-rayon > -3.0 || (v(3)-rayon < -3.0 && v(3)+rayon > -3.0)) { // Niveau du bassin inférieur 2
-	    if (v(3)-rayon < -3.0 && v(3)+rayon > -3.0 && v(1)+rayon > bassin_x && v(1)-rayon < 6*bassin_x && v(2)-rayon < bassin_y && v(2)+rayon > -bassin_y) // Fond du bassin
-		res(3) = -3.0+rayon;
+} else if (v3mr > -3.0 || (v3mr < -3.0 && v3pr > -3.0)) { // Niveau du bassin inférieur 2
 
-	    if (v(1)+rayon > 6*bassin_x) { // Devant le bassin
-		res(1) = 6*bassin_x-rayon;
+    const double bassin_xf6 = 6*bassin_x;
 
-	    } else if (v(1)-rayon < bassin_x && v(3)-rayon < -3.0+bassin_z) {// Derrière le bassin 
-		res(1) = bassin_x+rayon;
-	    }
+    if (v3mr < -3.0 && v3pr > -3.0 && v1pr > bassin_x && v1mr < bassin_xf6 && v2mr < bassin_y && v2pr > -bassin_y) // Fond du bassin
+	res(3) = -3.0+rayon;
 
-	    if (v(2)+rayon > bassin_y) { // A droite du bassin
-		res(2) = bassin_y-rayon;
+    if (v1pr > bassin_xf6) { // Devant le bassin
+	res(1) = bassin_xf6-rayon;
 
-	    } else if (v(2)-rayon < -bassin_y) { // A gauche du bassin
-		res(2) = -bassin_y+rayon;
-	    }
-	}
+    } else if (v1mr < bassin_x && v3mr < -3.0+bassin_z) { // Derrière le bassin 
+	res(1) = bassin_x+rayon;
     }
-    return res;
+
+    if (v2pr > bassin_y) { // A droite du bassin
+	res(2) = bassin_y-rayon;
+
+    } else if (v2mr < -bassin_y) { // A gauche du bassin
+	res(2) = -bassin_y+rayon;
+    }
+ }
+}
+return res;
 }
 
 template<unsigned int Dim>

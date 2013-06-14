@@ -37,7 +37,7 @@ void SceneCascade::init() {
     
     /* On créé la scène, avec les paramètres initiaux */
     Materiau<3> *m = new Materiau<3>(EAU);
-    Vecteur<3> d = Vecteur<3>(9, 9, 5);
+    Vecteur<3> d = Vecteur<3>(9, 9, 50);
     f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression());
     //f->colorationMetaball();
     c1 = new Cascade<3> (f);
