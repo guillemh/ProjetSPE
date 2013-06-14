@@ -595,33 +595,37 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
 	    if (v(3)-rayon < -2.0 && v(3)+rayon > -2.0 && v(1)+rayon > 2*bassin_x && v(1)-rayon < 4*bassin_x && v(2)-rayon < bassin_y/3 && v(2)+rayon > -bassin_y/3) // Fond du bassin
 		res(3) = -2.0+rayon;
 
-	    if (v(1)+rayon > 4*bassin_x && v(3)-rayon < -2.0+bassin_z) // Devant le bassin 
+	    if (v(1)+rayon > 4*bassin_x && v(3)-rayon < -2.0+bassin_z) { // Devant le bassin 
 		res(1) = 4*bassin_x-rayon;
 
-	    if (v(1)-rayon < 2*bassin_x && v(3)-rayon < -2.0+bassin_z) // Derrière le bassin
+	    } else if (v(1)-rayon < 2*bassin_x && v(3)-rayon < -2.0+bassin_z) { // Derrière le bassin
 		res(1) = 2*bassin_x+rayon;
+	    }
 
-	    if (v(2)+rayon > bassin_y/3) // A droite du bassin
+	    if (v(2)+rayon > bassin_y/3) { // A droite du bassin
 		res(2) = bassin_y/3-rayon;
 
-	    if (v(2)-rayon < -bassin_y/3) // A gauche du bassin
+	    } else if (v(2)-rayon < -bassin_y/3) { // A gauche du bassin
 		res(2) = -bassin_y/3+rayon;
+	    }
 	
 	} else if (v(3)-rayon > -3.0 || (v(3)-rayon < -3.0 && v(3)+rayon > -3.0)) { // Niveau du bassin inférieur 2
 	    if (v(3)-rayon < -3.0 && v(3)+rayon > -3.0 && v(1)+rayon > bassin_x && v(1)-rayon < 6*bassin_x && v(2)-rayon < bassin_y && v(2)+rayon > -bassin_y) // Fond du bassin
 		res(3) = -3.0+rayon;
 
-	    if (v(1)+rayon > 6*bassin_x) // Devant le bassin
+	    if (v(1)+rayon > 6*bassin_x) { // Devant le bassin
 		res(1) = 6*bassin_x-rayon;
 
-	    if (v(1)-rayon < bassin_x && v(3)-rayon < -3.0+bassin_z) // Derrière le bassin 
+	    } else if (v(1)-rayon < bassin_x && v(3)-rayon < -3.0+bassin_z) {// Derrière le bassin 
 		res(1) = bassin_x+rayon;
+	    }
 
-	    if (v(2)+rayon > bassin_y) // A droite du bassin
+	    if (v(2)+rayon > bassin_y) { // A droite du bassin
 		res(2) = bassin_y-rayon;
 
-	    if (v(2)-rayon < -bassin_y) // A gauche du bassin
+	    } else if (v(2)-rayon < -bassin_y) { // A gauche du bassin
 		res(2) = -bassin_y+rayon;
+	    }
 	}
     }
     return res;
