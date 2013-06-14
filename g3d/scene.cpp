@@ -35,12 +35,23 @@ void Scene::init() {
     arps = false;
     
     
+    /* Filet d'eau */
+//    m = new Materiau<3>(EAU);
+//    Vecteur<3> d = Vecteur<3>(2, 2, 50);
+//    double bord = 0.1;
+//    double ecart = 0.05;
+//    f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, bord, 0.);
+    
+    
+    /* Vague */
     m = new Materiau<3>(EAU);
-    Vecteur<3> d = Vecteur<3>(2, 2, 50);
-    double bord = 0.1;
+    Vecteur<3> d = Vecteur<3>(11, 11, 20);
+    double bord = 0.25;
     double ecart = 0.05;
-    f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, bord, 0.);
+    f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, 1, 0.);
 
+
+    /* Deux particules */
 //      m = new Materiau<3>(EAU);
 //    
 //      Vecteur<3> vInit = Vecteur<3> (0, 0.1, 0);
