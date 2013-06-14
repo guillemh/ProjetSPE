@@ -493,23 +493,30 @@ Vecteur<Dim> Fluide<Dim>::collision(const Vecteur<Dim> & v) {
     Vecteur<Dim> res = Vecteur<Dim>(v);
 
     if (Dim == 2) {
-        if (v(1) < x_min)
+        if (v(1) < x_min) {
             res(1) = x_min;
-        if (v(1) > x_max)
+        } else if (v(1) > x_max) {
             res(1) = x_max;
-        if (v(2) < y_min)
+	}
+
+        if (v(2) < y_min) {
             res(2) = y_min;
-        if (v(2) > y_max)
+        } else if (v(2) > y_max) {
             res(2) = y_max;
+	}
     } else {
-        if (v(1) < x_min)
+        if (v(1) < x_min) {
             res(1) = x_min;
-        if (v(1) > x_max)
+        } else if (v(1) > x_max) {
             res(1) = x_max;
-        if (v(2) < y_min)
+	}
+
+        if (v(2) < y_min) {
             res(2) = y_min;
-        if (v(2) > y_max)
+        } else if (v(2) > y_max) {
             res(2) = y_max;
+	}
+
         if (v(3) < z_min)
             res(3) = z_min;
     }
