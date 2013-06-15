@@ -101,6 +101,11 @@ EtatParticule Particule<Dim>::getEtat() const {
     return etat;
 }
 
+template<unsigned int Dim>
+set<Particule<Dim>*> Particule<Dim>::getVoisins() const {
+    return voisins;
+}
+
 
 template<unsigned int Dim>
 void Particule<Dim>::setPosition(const Vecteur<Dim> &pos) {
@@ -152,6 +157,16 @@ void Particule<Dim>::setPressionPrec(double p) {
 }
 
 template<unsigned int Dim>
+void Particule<Dim>::setEtat(const EtatParticule &e) {
+    etat = e;
+}
+
+template<unsigned int Dim>
+void Particule<Dim>::setVoisins(const set<Particule<Dim>*> &l) {
+    voisins = l;
+}
+
+template<unsigned int Dim>
 void Particule<Dim>::incrPosition(const Vecteur<Dim> &pos) {
     position += pos;
 }
@@ -174,8 +189,13 @@ void Particule<Dim>::decrForces(const Vecteur<Dim> &f) {
 }
 
 template<unsigned int Dim>
-void Particule<Dim>::setEtat(const EtatParticule &e) {
-    etat = e;
+void Particule<Dim>::incrMasseVolumique(const double &mv) {
+    masse_volumique += mv;
+}
+
+template<unsigned int Dim>
+void Particule<Dim>::decrMasseVolumique(const double &mv) {
+    masse_volumique -= mv;
 }
 
 

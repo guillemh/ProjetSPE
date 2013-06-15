@@ -1402,10 +1402,8 @@ void Fluide<Dim>::integrationForcesBis() {
                     /* Enlever contributions */
                     double majMasseVolPrec = mat->getMasseParticules() *
                     noyau.defaut((*part_it)->getPositionPrec() - (*vois_it)->getPositionPrec());
-                    (*part_it)->setMasseVolumique((*part_it)->getMasseVolumique()
-                                                  - majMasseVolPrec);
-                    (*vois_it)->setMasseVolumique((*vois_it)->getMasseVolumique()
-                                                  - majMasseVolPrec);
+                    (*part_it)->decrMasseVolumique(majMasseVolPrec);
+                    (*vois_it)->decrMasseVolumique(majMasseVolPrec);
 
                     /* Enlever interactions */
                     Vecteur<Dim> forcesPrec = matF((*part_it)->getIndice(), (*vois_it)->getIndice());
@@ -1442,8 +1440,8 @@ void Fluide<Dim>::integrationForcesBis() {
                     /* Ajouts des contributions à la particule et sa voisine */
                     double majMasseVol = mat->getMasseParticules()
                         * noyau.defaut((*part_it)->getPosition() - (*vois_it)->getPosition());
-                    (*part_it)->setMasseVolumique((*part_it)->getMasseVolumique() + majMasseVol);
-                    (*vois_it)->setMasseVolumique((*vois_it)->getMasseVolumique() + majMasseVol);
+                    (*part_it)->incrMasseVolumique(majMasseVol);
+                    (*vois_it)->incrMasseVolumique(majMasseVol);
                     /*
                      * On met la pression à jour à chaque fois pour les voisins,
                      * pour qu'à la fin elle soit bien correcte, quand toutes

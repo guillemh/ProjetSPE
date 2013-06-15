@@ -2,8 +2,11 @@
 #define _PARTICULE_HPP_
 
 #include <iostream>
+#include <set>
 #include "../core/vecteur.hpp"
 #include "../core/materiau.hpp"
+
+using std::set;
 
 /**
  * @enum TypeFluide 
@@ -26,23 +29,24 @@ class Particule {
 
     /* ** Attributs ** */
 private:
-    unsigned int indice;         // Numéro identifiant la particule
-    Vecteur<Dim> position;       // Position de la particule (m)
-    Vecteur<Dim> positionPrec;   // Position de la particule 
-                                 // au pas de temps précédent (m)
-    Vecteur<Dim> vitesse;        // Vitesse de la particule (m.s^-1)
-    Vecteur<Dim> vitessePrec;    // Vitesse de la particule 
-                                 // au pas de temps précédent (m.s^-1)
-    Vecteur<Dim> acceleration;   // Acceleration de la particule (m.s^-2)
-    Vecteur<Dim> forces;         // Forces d'interaction s'exerçant sur la particule (kg.m.s -2)
-    double masse_volumique;      // Masse volumique de la particule (kg.m^-3)
-    double masse_volumique_prec; // Masse volumique de la particule 
-                                 // au pas de temps précédent (kg.m^-3)
-    double pression;             // Pression de la particule (Pa)
-    double pressionPrec;         // Pression de la particule 
-                                 // au pas de temps précédent (Pa) 
-    double masse;                // Masse de la particule (m)
-    EtatParticule etat;          // Etat d'activité de la particule (ARPS)
+    unsigned int indice;          // Numéro identifiant la particule
+    Vecteur<Dim> position;        // Position de la particule (m)
+    Vecteur<Dim> positionPrec;    // Position de la particule 
+                                  // au pas de temps précédent (m)
+    Vecteur<Dim> vitesse;         // Vitesse de la particule (m.s^-1)
+    Vecteur<Dim> vitessePrec;     // Vitesse de la particule 
+                                  // au pas de temps précédent (m.s^-1)
+    Vecteur<Dim> acceleration;    // Acceleration de la particule (m.s^-2)
+    Vecteur<Dim> forces;          // Forces d'interaction s'exerçant sur la particule (kg.m.s -2)
+    double masse_volumique;       // Masse volumique de la particule (kg.m^-3)
+    double masse_volumique_prec;  // Masse volumique de la particule 
+                                  // au pas de temps précédent (kg.m^-3)
+    double pression;              // Pression de la particule (Pa)
+    double pressionPrec;          // Pression de la particule 
+                                  // au pas de temps précédent (Pa) 
+    double masse;                 // Masse de la particule (m)
+    EtatParticule etat;           // Etat d'activité de la particule (ARPS)
+    set<Particule<Dim>*> voisins; // Voisinage de la particule 
 
 
     /* ** Constructeurs ** */
@@ -163,6 +167,13 @@ public:
      */
     EtatParticule getEtat() const;
     
+    /**
+     * @brief Accesseur
+     *
+     * \return Liste des voisins de la particule
+     */
+    set<Particule<Dim>*> getVoisins() const;
+    
 
     /* ** Mutateurs ** */
     /**
@@ -245,6 +256,14 @@ public:
      */
     void setEtat(const EtatParticule &e);
 
+    /**
+     * @brief Mutateur
+     *
+     * Modifie la liste des voisins de la particule
+     * @param l Liste de particules
+     */
+    void setVoisins(const set<Particule<Dim>*> &l);
+
     
     /**
      * @brief Mutateur
@@ -277,6 +296,22 @@ public:
      * @param f Facteur de décrémentation des forces (forces -= f)
      */
     void decrForces(const Vecteur<Dim>& f);
+  
+    /**
+     * @brief Mutateur
+     *
+     * Incrémente la masse volumique
+     * @param mv Facteur d'incrémentation de la masse volumique (masse_vol += mv)
+     */
+    void incrMasseVolumique(const double& mv);
+  
+    /**
+     * @brief Mutateur
+     *
+     * Décrémente la masse volumique
+     * @param mv Facteur de décrémentation de la masse volumique (masse_vol -= mv)
+     */
+    void decrMasseVolumique(const double& mv);
   
     /**
      * @brief Mise à jour de la particule pour un pas de temps
