@@ -37,7 +37,7 @@ MarchingSquares::~MarchingSquares() {
     free(points);
 }
 
-void Metaballs::initColoration(list<Particule<3> *> &particules) {
+void MarchingSquares::initColoration(list<Particule<3> *> &particules) {
     for (int i = 0; i < n; i++) {
          for (int j = 0; j < p; j++) {
          }
