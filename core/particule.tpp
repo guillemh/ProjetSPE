@@ -101,11 +101,6 @@ EtatParticule Particule<Dim>::getEtat() const {
     return etat;
 }
 
-template<unsigned int Dim>
-set<Particule<Dim>*> Particule<Dim>::getVoisins() const {
-    return voisins;
-}
-
 
 template<unsigned int Dim>
 void Particule<Dim>::setPosition(const Vecteur<Dim> &pos) {
@@ -159,11 +154,6 @@ void Particule<Dim>::setPressionPrec(double p) {
 template<unsigned int Dim>
 void Particule<Dim>::setEtat(const EtatParticule &e) {
     etat = e;
-}
-
-template<unsigned int Dim>
-void Particule<Dim>::setVoisins(const set<Particule<Dim>*> &l) {
-    voisins = l;
 }
 
 template<unsigned int Dim>

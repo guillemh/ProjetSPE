@@ -46,8 +46,6 @@ private:
                                   // au pas de temps précédent (Pa) 
     double masse;                 // Masse de la particule (m)
     EtatParticule etat;           // Etat d'activité de la particule (ARPS)
-    set<Particule<Dim>*> voisins; // Voisinage de la particule 
-
 
     /* ** Constructeurs ** */
 public:
@@ -167,13 +165,6 @@ public:
      */
     EtatParticule getEtat() const;
     
-    /**
-     * @brief Accesseur
-     *
-     * \return Liste des voisins de la particule
-     */
-    set<Particule<Dim>*> getVoisins() const;
-    
 
     /* ** Mutateurs ** */
     /**
@@ -255,14 +246,6 @@ public:
      * @param e Etat associé à l'activité de la particule
      */
     void setEtat(const EtatParticule &e);
-
-    /**
-     * @brief Mutateur
-     *
-     * Modifie la liste des voisins de la particule
-     * @param l Liste de particules
-     */
-    void setVoisins(const set<Particule<Dim>*> &l);
 
     
     /**
