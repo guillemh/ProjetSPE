@@ -29,6 +29,8 @@ private:
     double rayon;                /*!< Rayon d'une particule */
     int configurations[128][12]; /*!< Look-up table de toutes les configurations possibles
                                       pour l'algorithme des Marching Cubes */
+    int configurations2d[16][9];  /*!< Look-up table de toutes les configurations possibles
+                                      pour l'algorithme des Marching Squares */
 
     /* ** Constructeurs ** */
 public:
@@ -85,35 +87,68 @@ public:
      *
      * Représente une configuration d'un Marching Cube, à la position et de taille voulue
      * \param pos Position du sommet 0 du cube, d'abscisse, d'ordonnée et de côte minimales
-     * \param cote Dimension du côté du cube
      * \param config Configuration du cube
      */
-    void drawCube(Vecteur<3> pos, double cote, int config);
+    void drawCube(Vecteur<3> pos, int config);
 
     /**
      * \brief Représentation d'un triangle
      *
      * Représente un triangle à l'intérieur d'un cube
      * \param pos Position du sommet 0 du cube, d'abscisse, d'ordonnée et de côte minimales
-     * \param cote Dimension du côté du cube
      * \param a Numéro de la première arête à relier
      * \param b Numéro de la deuxième arête à relier
      * \param c Numéro de la troisième arête à relier
      * \param coef Coefficient d'orientation de la normale, devant valoir 1 ou -1
      */
-    void drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c, int coef);
+    void drawTriangle(Vecteur<3> pos, int a, int b, int c, int coef);
 
     /**
      * \brief Association d'un point
      *
      * Retourne un point au milieu de l'arête a d'un cube, connaissant la position de son
-     * sommet 0 et de son côté.
+     * sommet 0 et son côté.
      * \param pos Position du sommet 0 du cube, d'abscisse, d'ordonnée et de côte minimales
-     * \param cote Dimension du côté du cube
      * \param a Numéro de l'arête considérée
      * \return Le point de l'espace ainsi déterminé
      */
-    Vecteur<3> associerPoint(Vecteur<3> pos, double cote, int a);
+    Vecteur<3> associerPoint(Vecteur<3> pos, int a);
+
+    /**
+     * \brief Représentation d'un carré
+     *
+     * Représente une configuration d'un Marching Square, à la position et de taille voulue
+     * \param pos Position du sommet 0 du carré, d'abscisse, d'ordonnée et de côte minimales
+     * \param direction Indique s'il s'agit d'un bord de type i = cte, j = cte ou k = cte
+     * \param config Configuration du carré
+     * \param coef Coefficient d'orientation de la normale, devant valoir 1 ou -1
+     */
+    void drawCarre(Vecteur<3> pos, Vecteur<3> direction, int config, int coef);
+
+    /**
+     * \brief Représentation d'un triangle
+     *
+     * Représente un triangle à l'intérieur d'un carré
+     * \param pos Position du sommet 0 du carré, d'abscisse, d'ordonnée et de côte minimales
+     * \param direction Indique s'il s'agit d'un bord de type i = cte, j = cte ou k = cte
+     * \param a Numéro de la première arête ou du premier sommet à relier
+     * \param b Numéro de la deuxième arête ou du premier sommet à relier
+     * \param c Numéro de la troisième arête ou du premier sommet à relier
+     * \param coef Coefficient d'orientation de la normale, devant valoir 1 ou -1
+     */
+    void drawTriangleBord(Vecteur<3> pos, Vecteur<3> direction, int a, int b, int c, int coef);
+
+    /**
+     * \brief Association d'un point
+     *
+     * Retourne un point au milieu de l'arête a d'un carré ou le point a du cube, connaissant la
+     * position de son sommet 0 et son côté.
+     * \param pos Position du sommet 0 du carré, d'abscisse, d'ordonnée et de côte minimales
+     * \param direction Indique s'il s'agit d'un bord de type i = cte, j = cte ou k = cte
+     * \param a Numéro de l'arête ou du point considéré
+     * \return Le point de l'espace ainsi déterminé
+     */
+    Vecteur<3> associerPointBord(Vecteur<3> pos, Vecteur<3> direction, int a);
 };
 
 #endif

@@ -179,8 +179,7 @@ void Fluide<Dim>::init() {
     
         /* Initialisation de la metaball */
 
-        // ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1.1);
-        ball = new Metaballs(Vecteur<3>(x_min-0.5, y_min-0.5, z_min-0.5), 0.01, mat->getRayonNoyau(), x_max-x_min+1, y_max-y_min+1, 2);
+        ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1.2);
         if (afficheMetaballs) {
             ball->initColoration(particules);
         }
@@ -892,7 +891,7 @@ void Fluide<Dim>::draw() {
 
         double decalage;
         if (afficheMetaballs)
-            decalage = 0.08;
+            decalage = 0.005;
         else
             decalage = 0.025;
 
@@ -1173,21 +1172,18 @@ void Fluide<Dim>::integrationForces() {
 
     } else {
         /* Au milieu de l'algorithme incrémental */
-        double rho;
-        Vecteur<Dim> drho;
+
         /* On se base sur les anciennes positions pour enlever les anciennes forces */
         for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
             /* On boucle sur les particules actives */
             vois = voisinagePrec(*(*part_it));
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
-                //restriction((*vois_it)->getVitesse(), rho, drho);
                 if ((*vois_it)->getEtat() == INACTIVE  // la particule voisine n'est pas active : il faut quand même
 		    // mettre à jour les forces d'interaction entre elles,
 		    // mais vois_it ne pourra pas le faire
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Enlever interactions */
-                    // Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
                     Vecteur<Dim> forcesPrec = matF((*part_it)->getIndice(), (*vois_it)->getIndice());
                     if ((*part_it)->getIndice() > (*vois_it)->getIndice()) {
                         forcesPrec = -forcesPrec;
@@ -1213,7 +1209,6 @@ void Fluide<Dim>::integrationForces() {
             vois = voisinage(*(*part_it));
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
-                // restriction((*vois_it)->getVitesse(), rho, drho);
                 if ((*vois_it)->getEtat() == INACTIVE  // la particule voisine n'est pas active : il faut quand même
 		    // mettre à jour les forces d'interaction entre elles,
 		    // mais vois_it ne pourra pas le faire
@@ -1396,6 +1391,20 @@ void Fluide<Dim>::integrationForcesBis() {
     
     if (debutAnim) {
         /* Premier pas de l'animation */
+
+        /* Calcul des masses volumiques et pressions */
+        for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
+            /* On boucle sur toutes les particules */
+            vois = voisinage(*(*part_it));
+            double somme = noyau.defaut(Vecteur<Dim>());
+            for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+                somme += noyau.defaut((*part_it)->getPosition() - (*vois_it)->getPosition());
+            }
+            (*part_it)->setMasseVolumique(mat->getMasseParticules() * somme);
+            (*part_it)->majPression(mat->getDensiteRepos());
+        }
+
+        /* Calcul des forces */
         for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
             /* On boucle sur toutes les particules */
             vois = voisinage(*(*part_it));
@@ -1417,21 +1426,30 @@ void Fluide<Dim>::integrationForcesBis() {
 
     } else {
         /* Au milieu de l'algorithme incrémental */
-        double rho;
-        Vecteur<Dim> drho;
-        /* On se base sur les anciennes positions pour enlever les anciennes forces */
+
+        /*
+         * On se base sur les anciennes positions pour enlever les anciennes forces,
+         * et les anciennes contributions pour la masse volumique et la pression
+         */
         for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
             /* On boucle sur les particules actives */
             vois = voisinagePrec(*(*part_it));
+
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
-                //restriction((*vois_it)->getVitesse(), rho, drho);
-                if ((*vois_it)->getEtat() == INACTIVE  // la particule voisine n'est pas active : il faut quand même
-		    // mettre à jour les forces d'interaction entre elles,
-		    // mais vois_it ne pourra pas le faire
+                if ((*vois_it)->getEtat() == INACTIVE
+                    /* La particule voisine n'est pas active : il faut quand même
+                     * mettre à jour les forces d'interaction entre elles,
+                     * et les contributions,
+                     * mais vois_it ne pourra pas le faire */
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
+                    /* Enlever contributions */
+                    double majMasseVolPrec = mat->getMasseParticules() *
+                    noyau.defaut((*part_it)->getPositionPrec() - (*vois_it)->getPositionPrec());
+                    (*part_it)->decrMasseVolumique(majMasseVolPrec);
+                    (*vois_it)->decrMasseVolumique(majMasseVolPrec);
+
                     /* Enlever interactions */
-                    // Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
                     Vecteur<Dim> forcesPrec = matF((*part_it)->getIndice(), (*vois_it)->getIndice());
                     if ((*part_it)->getIndice() > (*vois_it)->getIndice()) {
                         forcesPrec = -forcesPrec;
@@ -1451,16 +1469,48 @@ void Fluide<Dim>::integrationForcesBis() {
             reinsertionTable(*part_it);
         }
 
+        /*
+         * Mise à jour de la densité et de la pression :
+         * il faut le faire avant la mise à jour des forces,
+         * car leur calcul dépend de la densité et de la pression
+         */
+        for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
+            /* On boucle sur les particules actives */
+            vois = voisinage(*(*part_it));
+            for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+                /* Boucle sur les voisins de la particule */
+                if ((*vois_it)->getEtat() == INACTIVE
+                    || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
+                    /* Ajouts des contributions à la particule et sa voisine */
+                    double majMasseVol = mat->getMasseParticules()
+                        * noyau.defaut((*part_it)->getPosition() - (*vois_it)->getPosition());
+                    (*part_it)->incrMasseVolumique(majMasseVol);
+                    (*vois_it)->incrMasseVolumique(majMasseVol);
+                    /*
+                     * On met la pression à jour à chaque fois pour les voisins,
+                     * pour qu'à la fin elle soit bien correcte, quand toutes
+                     * les contributions auront été apportées
+                     */
+                    (*vois_it)->majPression(mat->getDensiteRepos());
+                }
+            }
+            /*
+             * La masse volumique de la particule a fini d'être calculée
+             * on peut mettre à jour la pression
+             */
+            (*part_it)->majPression(mat->getDensiteRepos());
+        }    
+
         /* On ajoute les forces correspondant aux nouvelles positions */
         for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
             /* On boucle sur les particules actives */
             vois = voisinage(*(*part_it));
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
-                // restriction((*vois_it)->getVitesse(), rho, drho);
-                if ((*vois_it)->getEtat() == INACTIVE  // la particule voisine n'est pas active : il faut quand même
-		    // mettre à jour les forces d'interaction entre elles,
-		    // mais vois_it ne pourra pas le faire
+                if ((*vois_it)->getEtat() == INACTIVE
+                    /* La particule voisine n'est pas active : il faut quand même
+                     * mettre à jour les forces d'interaction entre elles,
+                     * mais vois_it ne pourra pas le faire */
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Ajouter interactions */
                     Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
@@ -1481,11 +1531,8 @@ void Fluide<Dim>::integrationForcesBis() {
 template<unsigned int Dim>
 void Fluide<Dim>::schemaIntegrationBis() {
 
-    /* Mise à jour des densité et pression des particules */
-    majDensitePression();
-    
-    /* Mise à jour des forces */
-    integrationForces();
+    /* Mise à jour des forces, et en même temps de la pression et masse volumique */
+    integrationForcesBis();
 
     /* Pour itérer sur les particules */
     typename list<Particule<Dim> *>::iterator part_it;

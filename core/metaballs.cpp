@@ -36,6 +36,24 @@ using std::max;
  * .. x
  */
 
+/*
+ * Convention sur le carré utilisé
+ * Ici, on ne fait pas la différence entre sommet et arête
+ *
+ * ... X
+ * ... ^
+ * ... |
+ * ... 1--------5-------2
+ * ... |                |
+ * ... |                |
+ * ... 4                6
+ * ... |                |
+ * ... |                |
+ * ... |                |
+ * ... 0--------7-------3 --> Y
+ *
+ */
+
 Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon, double x, double y, double z) :
     origine (_origine),
     cote (_cote),
@@ -167,7 +185,23 @@ Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon, double x,
                      {3, 8, 0, 5, 7, 11, 5, 11, 10, -1, -1, -1 },
                      {0, 3, 8, 5, 6, 10, -1, -1, -1, -1, -1, -1},
                      {7, 11, 6, 8, 0, 3, -1, -1, -1, -1, -1, -1 },
-                     {3, 8, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1}})
+                     {3, 8, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1}}),
+    configurations2d({{-1, -1, -1, -1, -1, -1, -1, -1, -1},
+                      {3, 6, 7, -1, -1, -1, -1, -1, -1},
+                      {6, 2, 5, -1, -1, -1, -1, -1, -1},
+                      {3, 2, 7, 7, 2, 5, -1, -1, -1},
+                      {4, 5, 1, -1, -1, -1, -1, -1, -1},
+                      {4, 5, 1, 3, 6, 7, -1, -1, -1},
+                      {4, 6, 1, 1, 6, 2, -1, -1, -1},
+                      {4, 7, 3, 4, 3, 2, 4, 2, 1},
+                      {0, 7, 4, -1, -1, -1, -1, -1, -1},
+                      {0, 3, 4, 4, 3, 6, -1, -1, -1},
+                      {0, 7, 4, 5, 6, 2, -1, -1, -1},
+                      {0, 3, 2, 0, 2, 5, 0, 5, 4},
+                      {0, 7, 5, 0, 5, 1, -1, -1, -1},
+                      {0, 3, 1, 1, 3, 6, 1, 6, 5},
+                      {1, 0, 2, 2, 0, 7, 2, 7, 6},
+                      {0, 3, 1, 1, 3, 2, -1, -1, -1}})
 {
 
     // Calcul des dimensions
@@ -306,36 +340,38 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
 
 
 void Metaballs::draw() {
-    int config = 0 ;
+    int config;
+    bool dedans;
     Vecteur<3> posCour;
-    // glBegin(GL_TRIANGLES);
+    Vecteur<3> direction;
     
-    // On boucle sur l'ensemble des cubes
+    /* On boucle sur l'ensemble des cubes pour appliquer les Marching Cubes */
     for (int i = 0 ; i < n - 1 ; i++) {
         for (int j = 0 ; j < p - 1 ; j++) {
             for (int k = 0 ; k < q - 1 ; k++) {
                 config = 0 ;
+                /*
+                 * On parcourt les 8 sommets du cube dont le sommet 0 est (i, j, k)
+                 * Si un point prend la valeur "vrai" il est considéré comme coloré
+                 * c'est-à-dire à l'intérieur de la surface implicite
+                 */
                 for (int s = 0 ; s < 8 ; s++) {
-                    /*
-                     * La boucle sur s va parcourir les 8 sommets du cube dont le sommet 0
-                     * est (i, j, k)
-                     * Si un point prend la valeur "vrai" il est considéré comme coloré
-                     * c'est-à-dire à l'intérieur de la surface implicite
-                     */
-                    // Isovaleur de la fonction F(x) = 1/x²
-                    // bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 1/(rayon*rayon);
+                    /* Isovaleur de la fonction F(x) = 1/x² */
+                    // dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 1/(rayon*rayon);
                     
-                    // Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391)
-		    // bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 0.9;
-		            
-		    // Isovaleur de la fonction F(x) = a/(1+b*x²)
-		    bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 1.41/9.75;
+                    /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
+                    // dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 0.9;
 
-		    // Isovaleur de la fonction F(x) affine ou de Hermite par morceaux
-		    // bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 0.7;
-		    config <<= 1;
+                    /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
+                    // dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 0.7;
+                            
+                    /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
+                    dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 1.41/9.75;
+                    
+                    config <<= 1;
                     config |= dedans;
                 }
+                
                 // for (int s = 0 ; s < 8 ; s++) {
                 //     if (points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)]) {
                 //         glColor3f (0.0, 1.0, 0.0);
@@ -355,18 +391,136 @@ void Metaballs::draw() {
                 //     glutSolidSphere (0.05, 10, 10);
                 //     glPopMatrix();
                 // }
+                
                 posCour = origine + Vecteur<3>(cote*i, cote*j, cote*k);
-                drawCube(posCour, cote, config);
+                drawCube(posCour, config);
             }
         }
     }
-    // glEnd();
     
-    // TODO : cas limites (bords de la boîte) (éventuellement)
+    
+    /* On boucle sur l'ensemble des carrés du bord pour appliquer les Marching Squares */
+    for (int i = 0 ; i < n - 1 ; i++) {
+        for (int j = 0 ; j < p - 1 ; j++) {
+            config = 0;
+            for (int s = 0; s < 4; s++) {
+                    /* Isovaleur de la fonction F(x) = 1/x² */
+                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][j + ((s >> 1) & 1)][0] > 1/(rayon*rayon);
+                    
+                    /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
+                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][j + ((s >> 1) & 1)][0] > 0.9;
+
+                    /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
+                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][j + ((s >> 1) & 1)][0] > 0.7;
+                    
+                    /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
+                    bool dedans = points[i + ((s + (s >> 1)) & 1)][j + ((s >> 1) & 1)][0] > 1.41/9.75;
+                
+                    config <<= 1;
+                    config |= dedans;
+            }
+            posCour = origine + Vecteur<3>(cote*i, cote*j, 0);
+            direction = Vecteur<3>(1, 1, 0);
+            drawCarre(posCour, direction, config, -1);
+        }
+    }
+    
+    for (int j = 0 ; j < p - 1 ; j++) {
+        for (int k = 0 ; k < q - 1 ; k++) {
+            config = 0;
+            for (int s = 0; s < 4; s++) {
+                    /* Isovaleur de la fonction F(x) = 1/x² */
+                    // bool dedans = points[0][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 1/(rayon*rayon);
+                    
+                    /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
+                    // bool dedans = points[0][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 0.9;
+
+                    /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
+                    // bool dedans = points[0][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 0.7;
+                    
+                    /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
+                    bool dedans = points[0][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 1.41/9.75;
+                
+                    config <<= 1;
+                    config |= dedans;
+            }
+            posCour = origine + Vecteur<3>(0, cote*j, cote*k);
+            direction = Vecteur<3>(0, 1, 1);
+            drawCarre(posCour, direction, config, -1);
+
+            config = 0;
+            for (int s = 0; s < 4; s++) {
+                    /* Isovaleur de la fonction F(x) = 1/x² */
+                    // bool dedans = points[n-1][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 1/(rayon*rayon);
+                    
+                    /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
+                    // bool dedans = points[n-1][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 0.9;
+
+                    /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
+                    // bool dedans = points[n-1][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 0.7;
+                    
+                    /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
+                    bool dedans = points[n-1][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 1.41/9.75;
+                
+                    config <<= 1;
+                    config |= dedans;
+            }
+            posCour = origine + Vecteur<3>(cote*(n-1), cote*j, cote*k);
+            direction = Vecteur<3>(0, 1, 1);
+            drawCarre(posCour, direction, config, 1);
+        }
+    }
+    
+    for (int i = 0 ; i < n - 1 ; i++) {
+        for (int k = 0 ; k < q - 1 ; k++) {
+            config = 0;
+            for (int s = 0; s < 4; s++) {
+                    /* Isovaleur de la fonction F(x) = 1/x² */
+                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][0][k + ((s >> 1) & 1)] > 1/(rayon*rayon);
+                    
+                    /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
+                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][0][k + ((s >> 1) & 1)] > 0.9;
+
+                    /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
+                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][0][k + ((s >> 1) & 1)] > 0.7;
+                    
+                    /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
+                    bool dedans = points[i + ((s + (s >> 1)) & 1)][0][k + ((s >> 1) & 1)] > 1.41/9.75;
+                
+                    config <<= 1;
+                    config |= dedans;
+            }
+            posCour = origine + Vecteur<3>(cote*i, 0, cote*k);
+            direction = Vecteur<3>(1, 0, 1);
+            drawCarre(posCour, direction, config, 1);
+
+            config = 0;
+            for (int s = 0; s < 4; s++) {
+                    /* Isovaleur de la fonction F(x) = 1/x² */
+                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][p-1][k + ((s >> 1) & 1)] > 1/(rayon*rayon);
+                    
+                    /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
+                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][p-1][k + ((s >> 1) & 1)] > 0.9;
+
+                    /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
+                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][p-1][k + ((s >> 1) & 1)] > 0.7;
+                    
+                    /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
+                    bool dedans = points[i + ((s + (s >> 1)) & 1)][p-1][k + ((s >> 1) & 1)] > 1.41/9.75;
+                
+                    config <<= 1;
+                    config |= dedans;
+            }
+            posCour = origine + Vecteur<3>(cote*i, cote*(p-1), cote*k);
+            direction = Vecteur<3>(1, 0, 1);
+            drawCarre(posCour, direction, config, -1);
+        }
+    }
+    
 }
 
 
-void Metaballs::drawCube(Vecteur<3> pos, double cote, int config) {
+void Metaballs::drawCube(Vecteur<3> pos, int config) {
     int coef, numConfig;
     if (config < 128) {
         coef = 1;
@@ -378,16 +532,16 @@ void Metaballs::drawCube(Vecteur<3> pos, double cote, int config) {
     int *listeAretes = configurations[numConfig];
     int i = 0;
     while (i < 4 && listeAretes[3 * i] != -1) {
-        drawTriangle(pos, cote, listeAretes[3*i], listeAretes[3*i + 1], listeAretes[3*i + 2], coef);
+        drawTriangle(pos, listeAretes[3*i], listeAretes[3*i + 1], listeAretes[3*i + 2], coef);
         i++;
     }
 }
 
 
-void Metaballs::drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c, int coef) {
-    Vecteur<3> ptA = associerPoint(pos, cote, a);
-    Vecteur<3> ptB = associerPoint(pos, cote, b);
-    Vecteur<3> ptC = associerPoint(pos, cote, c);
+void Metaballs::drawTriangle(Vecteur<3> pos, int a, int b, int c, int coef) {
+    Vecteur<3> ptA = associerPoint(pos, a);
+    Vecteur<3> ptB = associerPoint(pos, b);
+    Vecteur<3> ptC = associerPoint(pos, c);
     
     // Calcul de la normale
     Vecteur<3> normale = ptC - ptA;
@@ -404,7 +558,7 @@ void Metaballs::drawTriangle(Vecteur<3> pos, double cote, int a, int b, int c, i
 }
 
 
-Vecteur<3> Metaballs::associerPoint(Vecteur<3> pos, double cote, int a) {
+Vecteur<3> Metaballs::associerPoint(Vecteur<3> pos, int a) {
     switch (a) {
     case 0 :
         return Vecteur<3>(pos(1), pos(2)+cote/2.0, pos(3));
@@ -441,6 +595,69 @@ Vecteur<3> Metaballs::associerPoint(Vecteur<3> pos, double cote, int a) {
         break;
     case 11 :
         return Vecteur<3>(pos(1)+cote, pos(2), pos(3)+cote/2.0);
+        break;
+    default :
+        return Vecteur<3>();
+        break;
+    }
+}
+
+
+void Metaballs::drawCarre(Vecteur<3> pos, Vecteur<3> direction, int config, int coef) {
+    int *listeAretes = configurations2d[config];
+    int i = 0;
+    while (i < 3 && listeAretes[3 * i] != -1) {
+        drawTriangleBord(pos, direction, listeAretes[3*i], listeAretes[3*i + 1], listeAretes[3*i + 2], coef);
+        i++;
+    }
+}
+
+
+void Metaballs::drawTriangleBord(Vecteur<3> pos, Vecteur<3> direction, int a, int b, int c, int coef) {
+    Vecteur<3> ptA = associerPointBord(pos, direction, a);
+    Vecteur<3> ptB = associerPointBord(pos, direction, b);
+    Vecteur<3> ptC = associerPointBord(pos, direction, c);
+    
+    // Calcul de la normale
+    Vecteur<3> normale = ptB - ptA;
+    normale = coef*(ptC - ptA).vectoriel(normale);
+    normale /= normale.norme();
+
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.0, 0.2, 0.8);
+    glNormal3f(normale(1), normale(2), normale(3));
+    glVertex3d(ptA(1), ptA(2), ptA(3));
+    glVertex3d(ptB(1), ptB(2), ptB(3));
+    glVertex3d(ptC(1), ptC(2), ptC(3));
+    glEnd();
+}
+
+
+Vecteur<3> Metaballs::associerPointBord(Vecteur<3> pos, Vecteur<3> direction, int a) {
+    switch (a) {
+    case 0 :
+        return pos;
+        break;
+    case 1 :
+        return Vecteur<3>(pos(1) + cote*direction(1), pos(2) + cote*(1-direction(1)), pos(3));
+        break;
+    case 2 :
+        return Vecteur<3>(pos(1) + cote*direction(1), pos(2) + cote*direction(2), pos(3) + cote*direction(3));
+        break;
+    case 3 :
+        return Vecteur<3>(pos(1), pos(2) + cote*(1-direction(3)), pos(3) + cote*direction(3));
+        break;
+    case 4 :
+        return Vecteur<3>(pos(1) + cote*direction(1)/2.0, pos(2) + cote*(1-direction(1))/2.0, pos(3));
+        break;
+    case 5 :
+        return Vecteur<3>(pos(1) + cote*direction(1), pos(2) + cote*(1-direction(1)) + cote*(1-direction(3))/2.0, pos(3) + cote*direction(3)/2.0);
+        break;
+    case 6 :
+        return Vecteur<3>(pos(1) + cote*direction(1)/2.0, pos(2) + cote*(1-direction(1))/2.0 + cote*(1-direction(3)), pos(3) + cote*direction(3));
+        break;
+    case 7 :
+        return Vecteur<3>(pos(1), pos(2) + cote*(1-direction(3))/2.0, pos(3) + cote*direction(3)/2.0);
         break;
     default :
         return Vecteur<3>();
