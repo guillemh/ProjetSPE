@@ -326,11 +326,14 @@ void Metaballs::draw() {
                     // bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 1/(rayon*rayon);
                     
                     // Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391)
-		            // bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 0.9;
+		    // bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 0.9;
 		            
-		            // Isovaleur de la fonction F(x) = a/(1+b*x²)
-		            bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 1.41/9.75;
-					config <<= 1;
+		    // Isovaleur de la fonction F(x) = a/(1+b*x²)
+		    bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 1.41/9.75;
+
+		    // Isovaleur de la fonction F(x) affine ou de Hermite par morceaux
+		    // bool dedans = points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)] > 0.7;
+		    config <<= 1;
                     config |= dedans;
                 }
                 // for (int s = 0 ; s < 8 ; s++) {

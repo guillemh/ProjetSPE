@@ -276,10 +276,6 @@ void Cascade<Dim>::draw() {
     glVertex3f (2*bassin_x, bassin_y/3, -1.0+bassin_z/7+0.1);
 
 
-
-    
-
-
     /* Cascade inferieure 1 */
 
     /* Dessin du bassin */

@@ -32,15 +32,25 @@ void Scene::init() {
 
     /* On créé la scène, avec les paramètres initiaux */
     anim = false;
-    arps = false;
+    arps = true;
     
-    
-    m = new Materiau<3>(EAU);
-    Vecteur<3> d = Vecteur<3>(2, 2, 50);
-    double bord = 0.1;
-    double ecart = 0.05;
-    f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, bord, 0.);
 
+    /* Filet d'eau */
+   // m = new Materiau<3>(EAU);
+   // Vecteur<3> d = Vecteur<3>(2, 2, 50);
+   // double bord = 0.1;
+   // double ecart = 0.05;
+   // f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, bord, 0.);
+    
+    
+    /* Vague */
+    m = new Materiau<3>(EAU);
+    Vecteur<3> d = Vecteur<3>(11, 11, 20);
+    double bord = 0.25;
+    double ecart = 0.05;
+    f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, 1, 0.);
+
+    /* Deux particules */
 //      m = new Materiau<3>(EAU);
 //    
 //      Vecteur<3> vInit = Vecteur<3> (0, 0.1, 0);
@@ -64,24 +74,26 @@ void Scene::draw() {
     glPushMatrix();
     f->draw();
     // f->affiche();
+    // f->afficheHauteur(2);
     glPopMatrix();
 }
 
 void Scene::animate() {
-    // if (anim) {
+    //if (anim) {
         if (arps) {
             if (TRACES) {
                 f->schemaIntegration_Traces();
             } else {
                 f->schemaIntegration();
+                // f->schemaIntegrationBis();
             }
         } else {
             f->majDensitePression();
             f->majPositionVitesse();
         }
-        // f->affiche();
-    //     anim = false;
-    // }
+        //f->affiche();
+    //    anim = false;
+    //}
 }
 
 void Scene::interact() {
