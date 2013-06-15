@@ -13,7 +13,7 @@ using std::pair;
 #define DELTA 50
 #define METABALLS 0 // Mettre a 1 pour dessiner des surfaces, 0 pour des particules
 #define POINT 0     // Mettre a 1 pour dessiner des points, 0 pour des spheres
-#define CASCADE 0   // Mettre a 1 pour les collisions avec la cascade
+#define CASCADE 1   // Mettre a 1 pour les collisions avec la cascade
 
 /* ** Constructeurs ** */
 
@@ -163,7 +163,8 @@ void Fluide<Dim>::init() {
                     double y = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     double z = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     Vecteur<Dim> alea = Vecteur<Dim>(x,y,fabs(z));                    
-                    vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, k*ecart) + alea;
+                     vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, k*ecart) + alea;
+                    //vec = Vecteur<Dim>((i-nb[0]/2)*ecart+2, (j-nb[1]/2)*ecart, k*ecart) + alea;
                     // vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
                     
                     part = new Particule<Dim>(cpt, vec, vitInit, mat->getMasseParticules(), densiteInit, pressionInit);
@@ -611,25 +612,26 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
 	    const double bassin_xf2 = 2*bassin_x;
 	    const double bassin_xf4 = 4*bassin_x;
 	    const double bassin_yd2 = bassin_y/2;
+	    const double bassin_zd5 = bassin_z/5;
 
 	    if (v3mr < -2.0 && v3pr > -2.0 && v1pr > bassin_xf2 && v1mr < bassin_xf4 && v2mr < bassin_yd2 && v2pr > -bassin_yd2) // Fond du bassin
 		res(3) = -2.0+rayon;
 
-	    //if (v1pr > bassin_xf4 && v3mr < -2.0+bassin_z/5) { // Devant le bassin 
-	    if (v1pr > bassin_xf4 && !((v3mr >= -2.0+bassin_z/5 || v1pr > bassin_xf4+rayon))) {
+	    //if (v1pr > bassin_xf4 && v3mr < -2.0+bassin_zd5) { // Devant le bassin 
+	    if (v1pr > bassin_xf4 && !((v3mr >= -2.0+bassin_zd5 || v1pr > bassin_xf4+rayon))) {
 		res(1) = bassin_xf4-rayon;
 
-		//} else if (v1mr < bassin_xf2 && v3mr < -2.0+bassin_z/5) { // Derrière le bassin
-	    } else if (v1mr < bassin_xf2 && !((v3mr >= -2.0+bassin_z/5 || v1mr < bassin_xf2-rayon))) {
+		//} else if (v1mr < bassin_xf2 && v3mr < -2.0+bassin_zd5) { // Derrière le bassin
+	    } else if (v1mr < bassin_xf2 && !((v3mr >= -2.0+bassin_zd5 || v1mr < bassin_xf2-rayon))) {
 		res(1) = bassin_xf2+rayon;
 	    }
 
 	    //if (v2pr > bassin_yd2) { // A droite du bassin
-	    if (v2pr > bassin_yd2 && !((v3mr >= -2.0+bassin_z/5 || v2pr > bassin_yd2+rayon))) {
+	    if (v2pr > bassin_yd2 && !((v3mr >= -2.0+bassin_zd5 || v2pr > bassin_yd2+rayon))) {
 		res(2) = bassin_yd2-rayon;
 
 		//} else if (v2mr < -bassin_yd2) { // A gauche du bassin
-	    } else if (v2mr < -bassin_yd2 && !((v3mr >= -2.0+bassin_z/5 || v2mr < -bassin_yd2-rayon))) {
+	    } else if (v2mr < -bassin_yd2 && !((v3mr >= -2.0+bassin_zd5 || v2mr < -bassin_yd2-rayon))) {
 		res(2) = -bassin_yd2+rayon;
 	    }
 	
