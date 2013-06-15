@@ -149,8 +149,8 @@ void Fluide<Dim>::init() {
         double largeur_x = x_max - x_min;
         double largeur_y = y_max - y_min;
         
-        if (largeur_x < nb[0]*ecart || largeur_y < nb[1]*ecart)
-            cout << "Attention (fluide.tpp) : trop de particules pour les dimensions de la boîte" << endl;
+        //if (largeur_x < nb[0]*ecart || largeur_y < nb[1]*ecart)
+	//cout << "Attention (fluide.tpp) : trop de particules pour les dimensions de la boîte" << endl;
         
         Vecteur<Dim> vec;
         Particule<Dim> *part;
@@ -163,7 +163,8 @@ void Fluide<Dim>::init() {
                     double y = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     double z = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     Vecteur<Dim> alea = Vecteur<Dim>(x,y,fabs(z));                    
-                    vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, k*ecart) + alea;
+		    vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, k*ecart) + alea;
+                    //vec = Vecteur<Dim>((i-nb[0]/2)*ecart+2, (j-nb[1]/2)*ecart, k*ecart) + alea;
                     // vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
                     
                     part = new Particule<Dim>(cpt, vec, vitInit, mat->getMasseParticules(), densiteInit, pressionInit);
@@ -553,10 +554,11 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
         const double v3mr = v(3)-rayon;
         const double v3pr = v(3)+rayon;
 
-        if (v3mr > -0.025 || (v3mr < -0.025 && v3pr > -0.025 && v1pr < bassin_x/2+rayon)) { // Niveau de la cascade supérieure
+        if (v3mr > -0.025 || (v3mr < -0.025 && v3pr > -0.025 && v1pr < bassin_x/2+rayon+0.1)) { // Niveau de la cascade supérieure
 
             const double bassin_xd2 = bassin_x/2;
             const double bassin_yd2 = bassin_y/2;
+	    const double bassin_yd5 = bassin_y/5;
             const double bassin_zd5 = bassin_z/5;            
         
             if (v3mr < bassin_zd5-0.025) { // Niveau du palier
@@ -570,8 +572,15 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
             if (v1mr < -bassin_xd2) {  // Derrière le bassin
                 res(1) = -bassin_xd2+rayon;
             
-            } else if ((v1pr > bassin_xd2) && (!((v2mr > -bassin_y/5 && v2pr < bassin_y/5 && v3pr < bassin_zd5-0.025) || v1pr>bassin_xd2+rayon))) { // Devant le bassin, en dehors du trou de la face avant            
-                res(1) = bassin_xd2-rayon;                   
+	    } else if ((v1pr > bassin_xd2) && (!((v2mr > -bassin_yd5 && v2pr < bassin_yd5 && v3pr < bassin_zd5-0.025) || v1pr>bassin_xd2+rayon))) { // Devant le bassin, en dehors du trou de la face avant            
+                res(1) = bassin_xd2-rayon;   
+	    } else if (v1pr > bassin_xd2) { // Tunnel de la face avant
+		if (v2mr < -bassin_yd5)
+		    res(2) = -bassin_yd5+rayon;
+		else if (v2pr > bassin_yd5)
+		    res(2) = bassin_yd5-rayon;
+		if (v3mr < -0.025 && v3pr > -0.025)
+		    res(3) = rayon-0.025;
             }
             
             if (v2mr < -bassin_yd2 && !(v1mr > bassin_xd2)) { // A gauche du bassin
@@ -581,82 +590,117 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
                 res(2) = bassin_yd2-rayon;
             }
 
-            if ((v3mr < -0.025 && v3pr > -0.025) && (v1pr > -bassin_xd2 && v1mr < bassin_xd2))  // Fond du bassin                
+            if (v3mr < -0.025 && v3pr > -0.025 && v1pr > -bassin_xd2 && v1mr < bassin_xd2)  // Fond du bassin
                 res(3) = rayon-0.025;
 
-        } else if (v3mr > -1.0 || (v3mr < -1.0 && v3pr > -1.0 && v1pr < 2*bassin_x+rayon)) { // Niveau du bassin intermédiaire
+        } else if (v3mr > -1.0 || (v3mr < -1.0 && v3pr > -1.0)) { // Niveau du bassin intermédiaire
 
             const double bassin_xd2 = bassin_x/2;
             const double bassin_yd3 = bassin_y/3;
 
-
-            if (v3mr < -1.0 && v3pr > -1.0 && v1pr > bassin_xd2 && v1mr < 2*bassin_x && v2mr < bassin_yd3 && v2pr > -bassin_yd3) // Fond du bassin
+            if (v3mr < -1.0 && v3pr > -1.0 && v1pr > bassin_xd2 && v1mr < 2*bassin_x && (v2mr) < bassin_yd3 && v2pr > -bassin_yd3) // Fond du bassin
                 res(3) = -1.0+rayon;
 
-            if ((v1pr > 2*bassin_x) && !((v3mr >= -1.0+bassin_z/7 || v1pr > 2*bassin_x+rayon))) { // Devant de le bassin, sous le niveau de la paroie
-                res(1) = 2*bassin_x-rayon;
-            
-            } else if (v1mr < bassin_xd2 && v3mr < -1.0+bassin_z/3) { // Derrière le bassin
-                res(1) = bassin_xd2+rayon;
-            }
-
-            if (v2pr > bassin_yd3) { // A droite du bassin
-                res(2) = bassin_yd3-rayon;
-
-            } else if (v2mr < -bassin_yd3) { // A gauche du bassin
-                res(2) = -bassin_yd3+rayon;        
-            }
-
-        } else if (v3mr > -2.0 || (v3mr < -2.0 && v3pr > -2.0)) { // Niveau du bassin inférieur 1
-
-            const double bassin_xf2 = 2*bassin_x;
-            const double bassin_xf4 = 4*bassin_x;
-            const double bassin_yd2 = bassin_y/2;
-
-            if (v3mr < -2.0 && v3pr > -2.0 && v1pr > bassin_xf2 && v1mr < bassin_xf4 && v2mr < bassin_yd2 && v2pr > -bassin_yd2) // Fond du bassin
-                res(3) = -2.0+rayon;
-
-            //if (v1pr > bassin_xf4 && v3mr < -2.0+bassin_z/5) { // Devant le bassin 
-            if (v1pr > bassin_xf4 && !((v3mr >= -2.0+bassin_z/5 || v1pr > bassin_xf4+rayon))) {
-                res(1) = bassin_xf4-rayon;
-
-                //} else if (v1mr < bassin_xf2 && v3mr < -2.0+bassin_z/5) { // Derrière le bassin
-            } else if (v1mr < bassin_xf2 && !((v3mr >= -2.0+bassin_z/5 || v1mr < bassin_xf2-rayon))) {
-                res(1) = bassin_xf2+rayon;
-            }
-
-            //if (v2pr > bassin_yd2) { // A droite du bassin
-            if (v2pr > bassin_yd2 && !((v3mr >= -2.0+bassin_z/5 || v2pr > bassin_yd2+rayon))) {
-                res(2) = bassin_yd2-rayon;
-
-                //} else if (v2mr < -bassin_yd2) { // A gauche du bassin
-            } else if (v2mr < -bassin_yd2 && !((v3mr >= -2.0+bassin_z/5 || v2mr < -bassin_yd2-rayon))) {
-                res(2) = -bassin_yd2+rayon;
-            }
-        
-        } else if (v3mr > -3.0 || (v3mr < -3.0 && v3pr > -3.0)) { // Niveau du bassin inférieur 2
-
-            const double bassin_xf6 = 6*bassin_x;
-
-            if (v3mr < -3.0 && v3pr > -3.0 && v1pr > bassin_x && v1mr < bassin_xf6 && v2mr < bassin_y && v2pr > -bassin_y) // Fond du bassin
-                res(3) = -3.0+rayon;
-
-            if (v1pr > bassin_xf6) { // Devant le bassin
-                res(1) = bassin_xf6-rayon;
-
-            } else if (v1mr < bassin_x && v3mr < -3.0+bassin_z) { // Derrière le bassin 
-                res(1) = bassin_x+rayon;
-            }
-
-            if (v2pr > bassin_y) { // A droite du bassin
-                res(2) = bassin_y-rayon;
-
-            } else if (v2mr < -bassin_y) { // A gauche du bassin
-                res(2) = -bassin_y+rayon;
-            }
-        }
-    }
-    
+            if (v1pr > 2*bassin_x) { // Devant le bassin 
+		if (v3mr < -1.0+bassin_z/7 && v1pr < 2*bassin_x+rayon)  // Sous le niveau de la paroie
+		    res(1) = 2*bassin_x-rayon;
+		else if (v3mr <= -1.0+bassin_z/7 && v3pr >= -1.0+bassin_z+7 && v1pr > 2*bassin_x+rayon && v1mr < 2*bassin_x-rayon+0.1) // Au dessus du niveau de la paroie
+		    res(3) = -1.0+bassin_z/7+rayon;
+		 
+	    } else if (v1mr < bassin_xd2) { // Derrière le bassin
+		if (v3mr < -1.0+bassin_z/3 && v1mr > bassin_xd2-rayon) // Sous la paroie
+		    res(1) = bassin_xd2+rayon;
+		else if (v3mr < -1.0+bassin_z/3 && v3pr > -1.0+bassin_z/5 && (v1mr) < bassin_xd2-rayon && v1pr > bassin_xd2+rayon-0.1)  // Au dessus du niveau de la paroie
+		    res(3) = -1.0+bassin_z/3+rayon;
+	    }
+	    
+	    if (v2pr > bassin_yd3) { // A droite du bassin
+		if (v3mr < -1.0+bassin_z/3 && v2pr < bassin_yd3+rayon) // Sous la paroie
+		    res(2) = bassin_yd3-rayon;
+		else if ((v3mr) < -1.0+bassin_z/3 && v3pr > -1.0+bassin_z/3 && (v2pr>bassin_yd3+rayon) && (v2mr<bassin_yd3-rayon+0.1)) // Au dessus de la paroie
+		    res(3) = -1.0+bassin_z/3+rayon;
+		
+	    } else if (v2mr < -bassin_yd3) { // A gauche du bassin
+		if (v3mr < -1.0+bassin_z/3 && v2mr > -bassin_yd3-rayon) // Sous la paroie
+		    res(2) = -bassin_yd3+rayon;
+		else if (v3mr < -1.0+bassin_z/3 && v3pr > -1.0+bassin_z/3 && (v2mr) < -bassin_yd3-rayon && v2pr > -bassin_yd3+rayon-0.1) // Au dessus de la paroie
+		    res(3) = -1.0+bassin_z/3+rayon;
+	    }
+	    
+	} else if (v3mr > -2.0 || (v3mr < -2.0 && v3pr > -2.0)) { // Niveau du bassin inférieur 1
+	    
+	    const double bassin_xf2 = 2*bassin_x;
+	    const double bassin_xf4 = 4*bassin_x;
+	    const double bassin_yd2 = bassin_y/2;
+	    
+	    if (v3mr < -2.0 && v3pr > -2.0 && v1pr > bassin_xf2 && v1mr < bassin_xf4 && (v2mr) < bassin_yd2 && v2pr > -bassin_yd2) // Fond du bassin
+		res(3) = -2.0+rayon;
+	    
+	    //if (v1pr > bassin_xf4 && !((v3mr >= -2.0+bassin_z/5 || v1pr > bassin_xf4+rayon))) { // Devant le bassin 
+	    if (v1pr > bassin_xf4) { // Devant le bassin
+		if (v3mr < -2.0+bassin_z/5 && v1pr < bassin_xf4+rayon) // Sous le niveau de la paroie
+		    res(1) = bassin_xf4-rayon;
+		else if ( v3mr < -2.0+bassin_z/5 && v3pr > -2.0+bassin_z/5 && v1pr > bassin_xf4+rayon && v1mr < bassin_xf4-rayon+0.1) //  Au dessus du niveau de la paroie
+		    res(3) = -2.0+bassin_z/5+rayon;
+		
+	    //} else if (v1mr < bassin_xf2 && !((v3mr >= -2.0+bassin_z/5 || v1mr < bassin_xf2-rayon))) { // Derrière le bassin
+	    } else if (v1mr < bassin_xf2) { // Derriere le bassin
+		if (v3mr < -2.0+bassin_z/5 && v1mr > bassin_xf2-rayon) // Sous le niveau de la paroie
+		    res(1) = bassin_xf2+rayon;
+		else if (v3mr < -2.0+bassin_z/5 && v3pr > -2.0+bassin_z/5 && v1mr < bassin_xf2-rayon && v1pr > bassin_xf2+rayon-0.1)
+		    res(3) = -2.0+bassin_z/5+rayon;
+	    }
+	    
+	    //if (v2pr > bassin_yd2 && !((v3mr >= -2.0+bassin_z/5 || v2pr > bassin_yd2+rayon))) { // A droite du bassin
+	    if (v2pr > bassin_yd2) { // A droite du bassin
+		if (v3mr < -2.0+bassin_z/5 && v2pr < bassin_yd2+rayon) // Sous la paroie
+		    res(2) = bassin_yd2-rayon;
+		
+		else if ((v3mr) < (-2.0+bassin_z/5) && (v3pr) > (-2.0+bassin_z/5) && (v2pr) > (bassin_yd2+rayon) && (v2mr) < (bassin_yd2-rayon+0.1)) // Au dessus de la paroie
+		    res(3) = -2.0+bassin_z/5+rayon;
+		//} else if (v2mr < -bassin_yd2 && !((v3mr >= -2.0+bassin_z/5 || v2mr < -bassin_yd2-rayon))) { // A gauche du bassin
+	    } else if (v2mr < -bassin_yd2) { // A gauche du bassin
+		if (v3mr < -2.0+bassin_z/5 && v2mr > -bassin_yd2-rayon) // Sous la paroie
+		    res(2) = -bassin_yd2+rayon;
+		else if (v3mr < -2.0+bassin_z/5 && v3pr > -2.0+bassin_z/5 && (v2mr) < -bassin_yd2-rayon && v2pr > -bassin_yd2+rayon-0.1) // Au dessus de la paroie
+		    res(3) = -2.0+bassin_z/5+rayon;
+	    }
+	    
+	} else if (v3mr > -3.0 || (v3mr < -3.0 && v3pr > -3.0)) { // Niveau du bassin inférieur 2
+	    
+	    const double bassin_xf6 = 6*bassin_x;
+	    
+	    //if (v3mr < -3.0 && v3pr > -3.0 && v1pr > bassin_x && v1mr < bassin_xf6 && v2mr < bassin_y && v2pr > -bassin_y) // Fond du bassin
+	    if (v3mr < -3.0 && v3pr > -3.0)
+		res(3) = -3.0+rayon;
+	    
+	    if (v1pr > bassin_xf6) { // Devant le bassin
+		if (v3mr < -3.0+bassin_z/5 && v1pr < bassin_xf6+rayon) { // Sous le niveau de la paroie
+		    res(1) = bassin_xf6-rayon;
+		} else if (v3mr < -3.0+bassin_z/5 && v3pr > -3.0+bassin_z/5 && v1pr > bassin_xf6+rayon && v1mr < bassin_xf6-rayon+0.1) { //  Au dessus du niveau de la paroie
+		    res(3) = -3.0+bassin_z/5+rayon;
+		}	
+	    } else if (v1mr < bassin_x) { // Derrière le bassin 
+		if (v3mr < -3.0+bassin_z && v1mr > bassin_x-rayon) // Sous le niveau de la paroie
+		    res(1) = bassin_x+rayon;
+		else if (v3mr < -3.0+bassin_z/5 && v3pr > -3.0+bassin_z/5 && v1mr < bassin_x-rayon && v1pr > bassin_x+rayon-0.1) // Au dessus de la paroie
+		    res(3) = -3.0+bassin_z/5+rayon;		  
+	    }
+	    
+	    if (v2pr > bassin_y) { // A droite du bassin
+		if (v3mr < -3.0+bassin_z/5 && v2pr < bassin_y+rayon) // Sous la paroie
+		    res(2) = bassin_y-rayon;
+		else if (v3mr < -3.0+bassin_z/5 && v3pr > -3.0+bassin_z/5 && v2pr > bassin_y+rayon && v2mr < bassin_y-rayon+0.1) // Au dessus de la paroie
+		    res(3) = -3.0+bassin_z/5+rayon;
+		
+	    } else if (v2mr < -bassin_y) { // A gauche du bassin
+		if (v3mr < -3.0+bassin_z/5 && v2mr > -bassin_y-rayon) // Sous la paroie
+		    res(2) = -bassin_y+rayon;
+		else if (v3mr < -3.0+bassin_z/5 && v3pr > -3.0+bassin_z/5 && v2mr < -bassin_y-rayon && v2pr > -bassin_y+rayon-0.1) // Au dessus de la paroie
+		    res(3) = -3.0+bassin_z/5+rayon;	  
+	    } 
+	} 
+    }    
     return res;
 }
 
@@ -1128,21 +1172,18 @@ void Fluide<Dim>::integrationForces() {
 
     } else {
         /* Au milieu de l'algorithme incrémental */
-        double rho;
-        Vecteur<Dim> drho;
+
         /* On se base sur les anciennes positions pour enlever les anciennes forces */
         for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
             /* On boucle sur les particules actives */
             vois = voisinagePrec(*(*part_it));
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
-                //restriction((*vois_it)->getVitesse(), rho, drho);
                 if ((*vois_it)->getEtat() == INACTIVE  // la particule voisine n'est pas active : il faut quand même
-                              // mettre à jour les forces d'interaction entre elles,
-                              // mais vois_it ne pourra pas le faire
+		    // mettre à jour les forces d'interaction entre elles,
+		    // mais vois_it ne pourra pas le faire
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Enlever interactions */
-                    // Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
                     Vecteur<Dim> forcesPrec = matF((*part_it)->getIndice(), (*vois_it)->getIndice());
                     if ((*part_it)->getIndice() > (*vois_it)->getIndice()) {
                         forcesPrec = -forcesPrec;
@@ -1168,10 +1209,9 @@ void Fluide<Dim>::integrationForces() {
             vois = voisinage(*(*part_it));
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
-                // restriction((*vois_it)->getVitesse(), rho, drho);
                 if ((*vois_it)->getEtat() == INACTIVE  // la particule voisine n'est pas active : il faut quand même
-                              // mettre à jour les forces d'interaction entre elles,
-                              // mais vois_it ne pourra pas le faire
+		    // mettre à jour les forces d'interaction entre elles,
+		    // mais vois_it ne pourra pas le faire
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Ajouter interactions */
                     Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
@@ -1291,8 +1331,8 @@ void Fluide<Dim>::schemaIntegration() {
             //     drho = Vecteur<Dim>();
             //     // (*part_it)->setVitesse((*part_it)->getVitessePrec());
             // } else {
-                actives.push_back(*part_it);
-                (*part_it)->setEtat(TRANSITION);
+	    actives.push_back(*part_it);
+	    (*part_it)->setEtat(TRANSITION);
             // }
         } else {
             /* Particule inactive */
@@ -1351,6 +1391,20 @@ void Fluide<Dim>::integrationForcesBis() {
     
     if (debutAnim) {
         /* Premier pas de l'animation */
+
+        /* Calcul des masses volumiques et pressions */
+        for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
+            /* On boucle sur toutes les particules */
+            vois = voisinage(*(*part_it));
+            double somme = noyau.defaut(Vecteur<Dim>());
+            for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+                somme += noyau.defaut((*part_it)->getPosition() - (*vois_it)->getPosition());
+            }
+            (*part_it)->setMasseVolumique(mat->getMasseParticules() * somme);
+            (*part_it)->majPression(mat->getDensiteRepos());
+        }
+
+        /* Calcul des forces */
         for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
             /* On boucle sur toutes les particules */
             vois = voisinage(*(*part_it));
@@ -1372,21 +1426,30 @@ void Fluide<Dim>::integrationForcesBis() {
 
     } else {
         /* Au milieu de l'algorithme incrémental */
-        double rho;
-        Vecteur<Dim> drho;
-        /* On se base sur les anciennes positions pour enlever les anciennes forces */
+
+        /*
+         * On se base sur les anciennes positions pour enlever les anciennes forces,
+         * et les anciennes contributions pour la masse volumique et la pression
+         */
         for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
             /* On boucle sur les particules actives */
             vois = voisinagePrec(*(*part_it));
+
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
-                //restriction((*vois_it)->getVitesse(), rho, drho);
-                if ((*vois_it)->getEtat() == INACTIVE  // la particule voisine n'est pas active : il faut quand même
-                              // mettre à jour les forces d'interaction entre elles,
-                              // mais vois_it ne pourra pas le faire
+                if ((*vois_it)->getEtat() == INACTIVE
+                    /* La particule voisine n'est pas active : il faut quand même
+                     * mettre à jour les forces d'interaction entre elles,
+                     * et les contributions,
+                     * mais vois_it ne pourra pas le faire */
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
+                    /* Enlever contributions */
+                    double majMasseVolPrec = mat->getMasseParticules() *
+                    noyau.defaut((*part_it)->getPositionPrec() - (*vois_it)->getPositionPrec());
+                    (*part_it)->decrMasseVolumique(majMasseVolPrec);
+                    (*vois_it)->decrMasseVolumique(majMasseVolPrec);
+
                     /* Enlever interactions */
-                    // Vecteur<Dim> forcesPrec = calculForcesInteractionPrec(*part_it, *vois_it);
                     Vecteur<Dim> forcesPrec = matF((*part_it)->getIndice(), (*vois_it)->getIndice());
                     if ((*part_it)->getIndice() > (*vois_it)->getIndice()) {
                         forcesPrec = -forcesPrec;
@@ -1406,16 +1469,48 @@ void Fluide<Dim>::integrationForcesBis() {
             reinsertionTable(*part_it);
         }
 
+        /*
+         * Mise à jour de la densité et de la pression :
+         * il faut le faire avant la mise à jour des forces,
+         * car leur calcul dépend de la densité et de la pression
+         */
+        for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
+            /* On boucle sur les particules actives */
+            vois = voisinage(*(*part_it));
+            for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
+                /* Boucle sur les voisins de la particule */
+                if ((*vois_it)->getEtat() == INACTIVE
+                    || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
+                    /* Ajouts des contributions à la particule et sa voisine */
+                    double majMasseVol = mat->getMasseParticules()
+                        * noyau.defaut((*part_it)->getPosition() - (*vois_it)->getPosition());
+                    (*part_it)->incrMasseVolumique(majMasseVol);
+                    (*vois_it)->incrMasseVolumique(majMasseVol);
+                    /*
+                     * On met la pression à jour à chaque fois pour les voisins,
+                     * pour qu'à la fin elle soit bien correcte, quand toutes
+                     * les contributions auront été apportées
+                     */
+                    (*vois_it)->majPression(mat->getDensiteRepos());
+                }
+            }
+            /*
+             * La masse volumique de la particule a fini d'être calculée
+             * on peut mettre à jour la pression
+             */
+            (*part_it)->majPression(mat->getDensiteRepos());
+        }    
+
         /* On ajoute les forces correspondant aux nouvelles positions */
         for (part_it = actives.begin(); part_it != actives.end(); ++part_it) {
             /* On boucle sur les particules actives */
             vois = voisinage(*(*part_it));
             for (vois_it = vois.begin(); vois_it != vois.end(); ++vois_it) {
                 /* Boucle sur tous les voisins de la particule */
-                // restriction((*vois_it)->getVitesse(), rho, drho);
-                if ((*vois_it)->getEtat() == INACTIVE  // la particule voisine n'est pas active : il faut quand même
-                              // mettre à jour les forces d'interaction entre elles,
-                              // mais vois_it ne pourra pas le faire
+                if ((*vois_it)->getEtat() == INACTIVE
+                    /* La particule voisine n'est pas active : il faut quand même
+                     * mettre à jour les forces d'interaction entre elles,
+                     * mais vois_it ne pourra pas le faire */
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Ajouter interactions */
                     Vecteur<Dim> forces = calculForcesInteraction(*part_it, *vois_it);
@@ -1436,11 +1531,8 @@ void Fluide<Dim>::integrationForcesBis() {
 template<unsigned int Dim>
 void Fluide<Dim>::schemaIntegrationBis() {
 
-    /* Mise à jour des densité et pression des particules */
-    majDensitePression();
-    
-    /* Mise à jour des forces */
-    integrationForces();
+    /* Mise à jour des forces, et en même temps de la pression et masse volumique */
+    integrationForcesBis();
 
     /* Pour itérer sur les particules */
     typename list<Particule<Dim> *>::iterator part_it;
@@ -1469,8 +1561,8 @@ void Fluide<Dim>::schemaIntegrationBis() {
             //     drho = Vecteur<Dim>();
             //     // (*part_it)->setVitesse((*part_it)->getVitessePrec());
             // } else {
-                actives.push_back(*part_it);
-                (*part_it)->setEtat(TRANSITION);
+	    actives.push_back(*part_it);
+	    (*part_it)->setEtat(TRANSITION);
             // }
         } else {
             /* Particule inactive */

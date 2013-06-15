@@ -465,7 +465,7 @@ void Metaballs::draw() {
                     config <<= 1;
                     config |= dedans;
             }
-            posCour = origine + Vecteur<3>(n-1, cote*j, cote*k);
+            posCour = origine + Vecteur<3>(cote*(n-1), cote*j, cote*k);
             direction = Vecteur<3>(0, 1, 1);
             drawCarre(posCour, direction, config, 1);
         }
@@ -511,7 +511,7 @@ void Metaballs::draw() {
                     config <<= 1;
                     config |= dedans;
             }
-            posCour = origine + Vecteur<3>(cote*i, p-1, cote*k);
+            posCour = origine + Vecteur<3>(cote*i, cote*(p-1), cote*k);
             direction = Vecteur<3>(1, 0, 1);
             drawCarre(posCour, direction, config, -1);
         }

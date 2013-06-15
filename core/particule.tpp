@@ -152,6 +152,11 @@ void Particule<Dim>::setPressionPrec(double p) {
 }
 
 template<unsigned int Dim>
+void Particule<Dim>::setEtat(const EtatParticule &e) {
+    etat = e;
+}
+
+template<unsigned int Dim>
 void Particule<Dim>::incrPosition(const Vecteur<Dim> &pos) {
     position += pos;
 }
@@ -174,8 +179,13 @@ void Particule<Dim>::decrForces(const Vecteur<Dim> &f) {
 }
 
 template<unsigned int Dim>
-void Particule<Dim>::setEtat(const EtatParticule &e) {
-    etat = e;
+void Particule<Dim>::incrMasseVolumique(const double &mv) {
+    masse_volumique += mv;
+}
+
+template<unsigned int Dim>
+void Particule<Dim>::decrMasseVolumique(const double &mv) {
+    masse_volumique -= mv;
 }
 
 
