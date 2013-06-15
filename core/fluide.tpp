@@ -178,8 +178,7 @@ void Fluide<Dim>::init() {
     
         /* Initialisation de la metaball */
 
-        // ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1.1);
-        ball = new Metaballs(Vecteur<3>(x_min-0.5, y_min-0.5, z_min-0.5), 0.01, mat->getRayonNoyau(), x_max-x_min+1, y_max-y_min+1, 2);
+        ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1.2);
         if (afficheMetaballs) {
             ball->initColoration(particules);
         }
@@ -848,7 +847,7 @@ void Fluide<Dim>::draw() {
 
         double decalage;
         if (afficheMetaballs)
-            decalage = 0.08;
+            decalage = 0.005;
         else
             decalage = 0.025;
 

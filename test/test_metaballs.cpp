@@ -23,14 +23,15 @@ void test_metaballs() {
     Metaballs ball = Metaballs(vec0, 0.01, 0.04);
     
     cout << "Coloration : ";
+    ball.initColoration(particules);
     ball.coloration(particules);
     cout << "OK" << endl;
     
     cout << "Association de point : ";
-    Vecteur<3> test1 = ball.associerPoint(vec0, 0.05, 3);
-    Vecteur<3> test2 = ball.associerPoint(vec1, 0.1, 10);
-    Vecteur<3> comp1 = Vecteur<3>(0.025, 0.0, 0.0);
-    Vecteur<3> comp2 = Vecteur<3>(-0.4, 0.2, 0.55);
+    Vecteur<3> test1 = ball.associerPoint(vec0, 3);
+    Vecteur<3> test2 = ball.associerPoint(vec1, 10);
+    Vecteur<3> comp1 = Vecteur<3>(0.005, 0.0, 0.0);
+    Vecteur<3> comp2 = Vecteur<3>(-0.49, 0.11, 0.505);
     if (test1 == comp1 && test2 == comp2)
         cout << "OK" << endl;
     else
