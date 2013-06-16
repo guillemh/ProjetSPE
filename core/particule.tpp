@@ -152,6 +152,11 @@ void Particule<Dim>::setPressionPrec(double p) {
 }
 
 template<unsigned int Dim>
+void Particule<Dim>::setEtat(const EtatParticule &e) {
+    etat = e;
+}
+
+template<unsigned int Dim>
 void Particule<Dim>::incrPosition(const Vecteur<Dim> &pos) {
     position += pos;
 }
@@ -174,8 +179,13 @@ void Particule<Dim>::decrForces(const Vecteur<Dim> &f) {
 }
 
 template<unsigned int Dim>
-void Particule<Dim>::setEtat(const EtatParticule &e) {
-    etat = e;
+void Particule<Dim>::incrMasseVolumique(const double &mv) {
+    masse_volumique += mv;
+}
+
+template<unsigned int Dim>
+void Particule<Dim>::decrMasseVolumique(const double &mv) {
+    masse_volumique -= mv;
 }
 
 
@@ -216,6 +226,25 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
     
     // Fonction F(x) = a/(1+b*x²) avec a = 1.41 et b = 14000
     return 1.41/(1+14000*r);
+
+    // Fonction F telle que :
+    // 1) F est affine sur [0, d]
+    // 2) F est une courbe de Hermite sur [d, nd]
+    // 3) F est nulle ailleurs
+    // 4) F(d) = iso, F'(d) = alpha/((n - 1)*d)
+    // avec d le rayon de la particule
+    // double d = 0.025;
+    // double iso = 0.7;
+    // double alpha = -2;
+    // int n = 2;
+    // if (r <= d) {
+    // 	return (iso - alpha/(n - 1) + (r*alpha)/((n - 1)*d));
+    // } else if (r <= n*d) {
+    // 	double s = (r - d)/((n - 1)*d);
+    // 	return ((2*iso + alpha)*s*s*s - (3*iso + 2*alpha)*s*s + alpha*s + iso);
+    // } else {
+    // 	return 0.0;
+    // }
 }
 
 

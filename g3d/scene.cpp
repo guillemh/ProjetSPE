@@ -34,7 +34,7 @@ void Scene::init() {
     anim = false;
     arps = true;
     
-    
+
     /* Filet d'eau */
    m = new Materiau<3>(EAU);
    Vecteur<3> d = Vecteur<3>(2, 2, 50);
@@ -49,7 +49,10 @@ void Scene::init() {
     // double bord = 0.25;
     // double ecart = 0.05;
     // f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, 1, 0.);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2b6ca3b86f18f87dab43e1c97a9800e71500caa4
 
     /* Deux particules */
 //      m = new Materiau<3>(EAU);
@@ -75,6 +78,7 @@ void Scene::draw() {
     glPushMatrix();
     f->draw();
     // f->affiche();
+    // f->afficheHauteur(2);
     glPopMatrix();
 }
 
@@ -85,13 +89,14 @@ void Scene::animate() {
                 f->schemaIntegration_Traces();
             } else {
                 f->schemaIntegration();
+                // f->schemaIntegrationBis();
             }
         } else {
             f->majDensitePression();
             f->majPositionVitesse();
         }
-        // f->affiche();
-    //     anim = false;
+        //f->affiche();
+    //    anim = false;
     // }
 }
 
