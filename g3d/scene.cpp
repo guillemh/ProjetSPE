@@ -49,10 +49,6 @@ void Scene::init() {
     // double bord = 0.25;
     // double ecart = 0.05;
     // f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, 1, 0.);
-<<<<<<< HEAD
-
-=======
->>>>>>> 2b6ca3b86f18f87dab43e1c97a9800e71500caa4
 
     /* Deux particules */
 //      m = new Materiau<3>(EAU);

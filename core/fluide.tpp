@@ -13,7 +13,7 @@ using std::pair;
 #define DELTA 2
 #define METABALLS 0 // Mettre a 1 pour dessiner des surfaces, 0 pour des particules
 #define POINT 0     // Mettre a 1 pour dessiner des points, 0 pour des spheres
-#define CASCADE 1   // Mettre a 1 pour les collisions avec la cascade
+#define CASCADE 0   // Mettre a 1 pour les collisions avec la cascade
 
 /* ** Constructeurs ** */
 
@@ -163,8 +163,8 @@ void Fluide<Dim>::init() {
                     double y = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     double z = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     Vecteur<Dim> alea = Vecteur<Dim>(x,y,fabs(z));                    
-		    vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, k*ecart) + alea;
-                    //vec = Vecteur<Dim>((i-nb[0]/2)*ecart+2, (j-nb[1]/2)*ecart, k*ecart) + alea;
+                    vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, k*ecart) + alea;
+                    // vec = Vecteur<Dim>((i-nb[0]/2)*ecart+1, (j-nb[1]/2)*ecart, k*ecart) + alea;
                     // vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
                     
                     part = new Particule<Dim>(cpt, vec, vitInit, mat->getMasseParticules(), densiteInit, pressionInit);
@@ -593,24 +593,25 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
             if (v3mr < -0.025 && v3pr > -0.025 && v1pr > -bassin_xd2 && v1mr < bassin_xd2)  // Fond du bassin
                 res(3) = rayon-0.025;
 
-        } else if (v3mr > -1.0 || (v3mr < -1.0 && v3pr > -1.0)) { // Niveau du bassin intermédiaire
+        } else if (v3mr > -1.0 || (v3mr <= -1.0 && v3pr >= -1.0)) { // Niveau du bassin intermédiaire
 
             const double bassin_xd2 = bassin_x/2;
             const double bassin_yd3 = bassin_y/3;
 
-            if (v3mr < -1.0 && v3pr > -1.0 && v1pr > bassin_xd2 && v1mr < 2*bassin_x && (v2mr) < bassin_yd3 && v2pr > -bassin_yd3) // Fond du bassin
+            if (v3mr < -1.0 && v3pr > -1.0 && v1pr > bassin_xd2 && v1mr < 2*bassin_x && v2mr < bassin_yd3 && v2pr > -bassin_yd3) // Fond du bassin
                 res(3) = -1.0+rayon;
 
             if (v1pr > 2*bassin_x) { // Devant le bassin 
-		if (v3mr < -1.0+bassin_z/7 && v1pr < 2*bassin_x+rayon)  // Sous le niveau de la paroie
+		//if (v3mr < -1.0+bassin_z/7 && v1pr < 2*bassin_x+rayon)  // Sous le niveau de la paroie
+                if (v3mr < -1.0+bassin_z/7 && v1pr <= 2*bassin_x+rayon)  // Sous le niveau de la paroie
 		    res(1) = 2*bassin_x-rayon;
-		else if (v3mr <= -1.0+bassin_z/7 && v3pr >= -1.0+bassin_z+7 && v1pr > 2*bassin_x+rayon && v1mr < 2*bassin_x-rayon+0.1) // Au dessus du niveau de la paroie
+		else if ( !(v3mr > -1.0+bassin_z/7) && v1pr >= 2*bassin_x+rayon && v1pr <= 2*bassin_x+rayon+0.1) // Au dessus du niveau de la paroie
 		    res(3) = -1.0+bassin_z/7+rayon;
 		 
 	    } else if (v1mr < bassin_xd2) { // Derrière le bassin
 		if (v3mr < -1.0+bassin_z/3 && v1mr > bassin_xd2-rayon) // Sous la paroie
 		    res(1) = bassin_xd2+rayon;
-		else if (v3mr < -1.0+bassin_z/3 && v3pr > -1.0+bassin_z/5 && (v1mr) < bassin_xd2-rayon && v1pr > bassin_xd2+rayon-0.1)  // Au dessus du niveau de la paroie
+		else if (v3mr < -1.0+bassin_z/3 && v3pr > -1.0+bassin_z/3 && v1mr < bassin_xd2-rayon && v1pr > bassin_xd2+rayon-0.1)  // Au dessus du niveau de la paroie
 		    res(3) = -1.0+bassin_z/3+rayon;
 	    }
 	    
