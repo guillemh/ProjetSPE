@@ -67,49 +67,50 @@ void Cascade<Dim>::draw() {
     glVertex3f (-bassin_x/2-0.1, -bassin_y/2-0.1, bassin_z+0.1);
 
     // Face avant
+    
 
     glNormal3f (1, 0, 0);
     glVertex3f (bassin_x/2, -bassin_y/2, -0.025);
-    glVertex3f (bassin_x/2, 0-bassin_y/5, -0.025);
-    glVertex3f (bassin_x/2, 0-bassin_y/5, bassin_z-0.025);
+    glVertex3f (bassin_x/2, 0-bassin_y/7, -0.025);
+    glVertex3f (bassin_x/2, 0-bassin_y/7, bassin_z-0.025);
     glVertex3f (bassin_x/2, -bassin_y/2, bassin_z-0.025);  
 
     glNormal3f (1, 0, 0);
-    glVertex3f (bassin_x/2, 0+bassin_y/5, 0-0.025);
+    glVertex3f (bassin_x/2, 0+bassin_y/7, 0-0.025);
     glVertex3f (bassin_x/2, bassin_y/2, 0-0.025);
     glVertex3f (bassin_x/2, bassin_y/2, bassin_z-0.025);
-    glVertex3f (bassin_x/2, 0+bassin_y/5, bassin_z-0.025);  
+    glVertex3f (bassin_x/2, 0+bassin_y/7, bassin_z-0.025);  
 
     glNormal3f (1, 0, 0);
-    glVertex3f (bassin_x/2, 0-bassin_y/5, bassin_z/5-0.025);
-    glVertex3f (bassin_x/2, 0+bassin_y/5, bassin_z/5-0.025);
-    glVertex3f (bassin_x/2, 0+bassin_y/5, bassin_z-0.025);
-    glVertex3f (bassin_x/2, 0-bassin_y/5, bassin_z-0.025); 
+    glVertex3f (bassin_x/2, 0-bassin_y/7, bassin_z/5-0.025);
+    glVertex3f (bassin_x/2, 0+bassin_y/7, bassin_z/5-0.025);
+    glVertex3f (bassin_x/2, 0+bassin_y/7, bassin_z-0.025);
+    glVertex3f (bassin_x/2, 0-bassin_y/7, bassin_z-0.025); 
 
     glNormal3f (1, 0, 0);
     glVertex3f (bassin_x/2+0.1, -bassin_y/2-0.1, -0.1);
-    glVertex3f (bassin_x/2+0.1, 0-bassin_y/5, -0.1);
-    glVertex3f (bassin_x/2+0.1, 0-bassin_y/5, bassin_z-0.025+0.1);
+    glVertex3f (bassin_x/2+0.1, 0-bassin_y/7, -0.1);
+    glVertex3f (bassin_x/2+0.1, 0-bassin_y/7, bassin_z-0.025+0.1);
     glVertex3f (bassin_x/2+0.1, -bassin_y/2-0.1, bassin_z-0.025+0.1);  
 
     glNormal3f (1, 0, 0);
-    glVertex3f (bassin_x/2+0.1, 0+bassin_y/5, -0.1);
+    glVertex3f (bassin_x/2+0.1, 0+bassin_y/7, -0.1);
     glVertex3f (bassin_x/2+0.1, bassin_y/2+0.1, -0.1);
     glVertex3f (bassin_x/2+0.1, bassin_y/2+0.1, bassin_z-0.025+0.1);
-    glVertex3f (bassin_x/2+0.1, 0+bassin_y/5, bassin_z-0.025+0.1);  
+    glVertex3f (bassin_x/2+0.1, 0+bassin_y/7, bassin_z-0.025+0.1);  
 
     glNormal3f (1, 0, 0);
-    glVertex3f (bassin_x/2+0.1, 0-bassin_y/5, bassin_z/5-0.025);
-    glVertex3f (bassin_x/2+0.1, 0+bassin_y/5, bassin_z/5-0.025);
-    glVertex3f (bassin_x/2+0.1, 0+bassin_y/5, bassin_z-0.025+0.1);
-    glVertex3f (bassin_x/2+0.1, 0-bassin_y/5, bassin_z-0.025+0.1);  
+    glVertex3f (bassin_x/2+0.1, 0-bassin_y/7, bassin_z/5-0.025);
+    glVertex3f (bassin_x/2+0.1, 0+bassin_y/7, bassin_z/5-0.025);
+    glVertex3f (bassin_x/2+0.1, 0+bassin_y/7, bassin_z-0.025+0.1);
+    glVertex3f (bassin_x/2+0.1, 0-bassin_y/7, bassin_z-0.025+0.1);  
 
 
     glNormal3f (1, 0, 0);
-    glVertex3f (bassin_x/2+0.1, 0-bassin_y/5, -0.1);
-    glVertex3f (bassin_x/2+0.1, 0+bassin_y/5, -0.1);
-    glVertex3f (bassin_x/2+0.1, 0+bassin_y/5, -0.025);
-    glVertex3f (bassin_x/2+0.1, 0-bassin_y/5, -0.025);  
+    glVertex3f (bassin_x/2+0.1, 0-bassin_y/7, -0.1);
+    glVertex3f (bassin_x/2+0.1, 0+bassin_y/7, -0.1);
+    glVertex3f (bassin_x/2+0.1, 0+bassin_y/7, -0.025);
+    glVertex3f (bassin_x/2+0.1, 0-bassin_y/7, -0.025);  
 
     
     // Face gauche

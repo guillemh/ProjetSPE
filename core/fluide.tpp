@@ -558,7 +558,7 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
 
             const double bassin_xd2 = bassin_x/2;
             const double bassin_yd2 = bassin_y/2;
-	    const double bassin_yd5 = bassin_y/5;
+	    const double bassin_yd7 = bassin_y/7;
             const double bassin_zd5 = bassin_z/5;            
         
             if (v3mr < bassin_zd5-0.025) { // Niveau du palier
@@ -572,13 +572,13 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
             if (v1mr < -bassin_xd2) {  // Derrière le bassin
                 res(1) = -bassin_xd2+rayon;
             
-	    } else if ((v1pr > bassin_xd2) && (!((v2mr > -bassin_yd5 && v2pr < bassin_yd5 && v3pr < bassin_zd5-0.025) || v1pr>bassin_xd2+rayon))) { // Devant le bassin, en dehors du trou de la face avant            
+	    } else if ((v1pr > bassin_xd2) && (!((v2mr > -bassin_yd7 && v2pr < bassin_yd7 && v3pr < bassin_zd5-0.025) || v1pr>bassin_xd2+rayon))) { // Devant le bassin, en dehors du trou de la face avant            
                 res(1) = bassin_xd2-rayon;   
 	    } else if (v1pr > bassin_xd2) { // Tunnel de la face avant
-		if (v2mr < -bassin_yd5)
-		    res(2) = -bassin_yd5+rayon;
-		else if (v2pr > bassin_yd5)
-		    res(2) = bassin_yd5-rayon;
+		if (v2mr < -bassin_yd7)
+		    res(2) = -bassin_yd7+rayon;
+		else if (v2pr > bassin_yd7)
+		    res(2) = bassin_yd7-rayon;
 		if (v3mr < -0.025 && v3pr > -0.025)
 		    res(3) = rayon-0.025;
             }
