@@ -13,7 +13,7 @@ using std::pair;
 #define DELTA 2
 #define METABALLS 0 // Mettre a 1 pour dessiner des surfaces, 0 pour des particules
 #define POINT 0     // Mettre a 1 pour dessiner des points, 0 pour des spheres
-#define CASCADE 0   // Mettre a 1 pour les collisions avec la cascade
+#define CASCADE 1   // Mettre a 1 pour les collisions avec la cascade
 
 /* ** Constructeurs ** */
 
@@ -1433,7 +1433,7 @@ void Fluide<Dim>::integrationForcesBis() {
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Enlever contributions */
                     double majMasseVolPrec = mat->getMasseParticules() *
-                    noyau.defaut((*part_it)->getPositionPrec() - (*vois_it)->getPositionPrec());
+			noyau.defaut((*part_it)->getPositionPrec() - (*vois_it)->getPositionPrec());
                     (*part_it)->decrMasseVolumique(majMasseVolPrec);
                     (*vois_it)->decrMasseVolumique(majMasseVolPrec);
 
