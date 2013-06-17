@@ -24,11 +24,11 @@ class Skybox {
 	TEX_HERBE
     };
  private:
-    std::map<TextureId, GLuint> textures;  /*!< Map des textures */
-    Cascade<3> *c;                         /*!< Pointeur vers la cascade utilisée */
-    double box_x;                          /*!< Coordonnée en x de la skybox */
-    double box_y;                          /*!< Coordonnée en y de la skybox */
-    double box_z;                          /*!< Coordonnée en z de la skybox */
+    std::map<TextureId, GLuint> textures;  /* Map des textures */
+    Cascade<3> *c;                         /* Pointeur vers la cascade utilisée */
+    double box_x;                          /* Coordonnée en x de la skybox */
+    double box_y;                          /* Coordonnée en y de la skybox */
+    double box_z;                          /* Coordonnée en z de la skybox */
 
  public :
 

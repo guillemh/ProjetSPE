@@ -292,7 +292,7 @@ void Fluide<Dim>::integrationForces() {
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Enlever contributions */
                     double majMasseVolPrec = mat->getMasseParticules() *
-                    noyau.defaut((*part_it)->getPositionPrec() - (*vois_it)->getPositionPrec());
+                        noyau.defaut((*part_it)->getPositionPrec() - (*vois_it)->getPositionPrec());
                     (*part_it)->decrMasseVolumique(majMasseVolPrec);
                     (*vois_it)->decrMasseVolumique(majMasseVolPrec);
 
@@ -396,16 +396,20 @@ void Fluide<Dim>::schemaIntegration() {
 
         /* Mise à jour de la liste des particules actives */
         restriction((*part_it)->getVitesse(), rho, drho);
+        /* Seuil rajouté pour inactiver les particules */
+	double eps = 0.05;
         if (rho == 0) {
             /* Particule complètement active */
             actives.push_back(*part_it);
             (*part_it)->setEtat(ACTIVE);
-        } else if (rho < 1) {
+        } else if (rho < 1-eps) {
             /* Particule en transition */
 	    actives.push_back(*part_it);
 	    (*part_it)->setEtat(TRANSITION);
         } else {
             /* Particule inactive */
+	    rho = 1;
+	    drho = Vecteur<Dim>();
             (*part_it)->setEtat(INACTIVE);
         }
 
@@ -543,7 +547,7 @@ void Fluide<Dim>::integrationForces_Traces() {
                     || (*part_it)->getIndice() < (*vois_it)->getIndice()) {
                     /* Enlever contributions */
                     double majMasseVolPrec = mat->getMasseParticules() *
-                    noyau.defaut((*part_it)->getPositionPrec() - (*vois_it)->getPositionPrec());
+                        noyau.defaut((*part_it)->getPositionPrec() - (*vois_it)->getPositionPrec());
                     (*part_it)->decrMasseVolumique(majMasseVolPrec);
                     (*vois_it)->decrMasseVolumique(majMasseVolPrec);
 
@@ -682,14 +686,14 @@ void Fluide<Dim>::schemaIntegration_Traces() {
     double rho;
     Vecteur<Dim> drho;
     for (part_it = particules.begin(); part_it != particules.end(); ++part_it) {
-    /* Mise à jour des vitesses */
+        /* Mise à jour des vitesses */
         (*part_it)->setVitessePrec((*part_it)->getVitesse());
         
         cout << (*part_it)->getIndice() << ".Vitesse " << (*part_it)->getForces()*mat->getPasTemps()/(*part_it)->getMasseVolumique() << endl;
         
         (*part_it)->incrVitesse((*part_it)->getForces()*mat->getPasTemps()/(*part_it)->getMasseVolumique());
 
-    cout << endl << "********************************************" << endl;
+        cout << endl << "********************************************" << endl;
         /* Mise à jour de la liste des particules actives */
         restriction((*part_it)->getVitesse(), rho, drho);
         

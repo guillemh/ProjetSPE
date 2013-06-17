@@ -107,7 +107,7 @@ public:
 	   double rho, 
 	   double p, 
 	   Vecteur<Dim> v0 = Vecteur<Dim>(),
-            double xmin = -0.2, 
+           double xmin = -0.2, 
 	   double xmax = 0.2, 
 	   double ymin = -0.2, 
 	   double ymax = 0.2, 
@@ -276,11 +276,11 @@ private:
      */
     Vecteur<Dim> collision(const Vecteur<Dim> & v);
 
-  /**
-   * Détecte une collision avec les parois de la cascade
-   * @param v 
-   * @return 
-   */
+    /**
+     * Détecte une collision avec les parois de la cascade
+     * @param v 
+     * @return 
+     */
     //Vecteur<Dim> collisionCascade(const Vecteur<Dim> & v, const Cascade<Dim> c);
     Vecteur<Dim> collisionCascade(const Vecteur<Dim> & v,
 				  Materiau<Dim> *mat,

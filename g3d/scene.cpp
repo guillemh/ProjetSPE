@@ -36,11 +36,11 @@ void Scene::init() {
     
 
     /* Filet d'eau */
-   m = new Materiau<3>(EAU);
-   Vecteur<3> d = Vecteur<3>(12, 12, 30);
-   double bord = 0.3;
-   double ecart = 0.05;
-   f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, 3*bord, 0.);
+    m = new Materiau<3>(EAU);
+    Vecteur<3> d = Vecteur<3>(2, 2, 50);
+    double bord = 0.1;
+    double ecart = 0.05;
+    f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, bord, 0.);
     
     
     /* Vague */
@@ -51,17 +51,17 @@ void Scene::init() {
     // f = new Fluide<3>(m, d, ecart, m->getDensiteRepos(), m->getPression(), Vecteur<3>(), -bord, bord, -bord, 1, 0.);
 
     /* Deux particules */
-//      m = new Materiau<3>(EAU);
-//    
-//      Vecteur<3> vInit = Vecteur<3> (0, 0.1, 0);
-//      Vecteur<3> pos1 = Vecteur<3> (0, -0.02, 0);
-//      Vecteur<3> pos2 = Vecteur<3> (0, 0.02, 0);
-//      Particule<3> *p1 = new Particule<3> (1, pos1, Vecteur<3>(), m->getDensiteRepos(), m->getPression(), m->getMasseParticules());
-//      Particule<3> *p2 = new Particule<3> (2, pos2, Vecteur<3>(), m->getDensiteRepos(), m->getPression(), m->getMasseParticules());
-//    
-//      f = new Fluide<3> (m);
-//      f->ajouteParticule(p1);
-//      f->ajouteParticule(p2);
+    //      m = new Materiau<3>(EAU);
+    //    
+    //      Vecteur<3> vInit = Vecteur<3> (0, 0.1, 0);
+    //      Vecteur<3> pos1 = Vecteur<3> (0, -0.02, 0);
+    //      Vecteur<3> pos2 = Vecteur<3> (0, 0.02, 0);
+    //      Particule<3> *p1 = new Particule<3> (1, pos1, Vecteur<3>(), m->getDensiteRepos(), m->getPression(), m->getMasseParticules());
+    //      Particule<3> *p2 = new Particule<3> (2, pos2, Vecteur<3>(), m->getDensiteRepos(), m->getPression(), m->getMasseParticules());
+    //    
+    //      f = new Fluide<3> (m);
+    //      f->ajouteParticule(p1);
+    //      f->ajouteParticule(p2);
 
 }
 
@@ -73,8 +73,6 @@ void Scene::clear() {
 void Scene::draw() {
     glPushMatrix();
     f->draw();
-    // f->affiche();
-    // f->afficheHauteur(2);
     glPopMatrix();
 }
 

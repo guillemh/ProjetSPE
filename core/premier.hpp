@@ -5,7 +5,8 @@
 
 /** 
  * \class Premier
- * @brief Classe contenant les méthodes relatives au calcul du plus petit nombre        premier supérieur
+ * @brief Classe contenant les méthodes relatives au calcul
+ * du plus petit nombre premier supérieur
  */
 template <unsigned int Dim>
 class Premier {
@@ -26,12 +27,12 @@ public:
     ~Premier();
 
    
-    /* ** Methodes ** */
+    /* ** Méthodes ** */
 public:
     /**
      * @brief Accesseur
      * @param x Nombre entier
-     * \return Le nombre premier supérieur ou égal à x
+     * @return Le nombre premier supérieur ou égal à x
      */
     int getPremier(int x) const;
 

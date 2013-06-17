@@ -201,7 +201,6 @@ void Particule<Dim>::decrMasseVolumique(const double &mv) {
 
 template<unsigned int Dim>
 void Particule<Dim>::majPression (double dens) {
-    //void Particule<Dim>::majPression (double son, double dens) {
     /*
      * Calcul de la pression appliquée à une particule selon l'équation de Tait
      * (cf. Becker-Teschner, "Weakly compressible SPH for free surface flows")
@@ -210,10 +209,6 @@ void Particule<Dim>::majPression (double dens) {
     double gamma = 7.0;
     double B = 100;
     pression = B * (pow(masse_volumique / dens, gamma) - 1);
-    
-    //    double B = dens * pow(son, 2.0) / gamma;
-    //    pression = B * (pow(masse_volumique / dens, gamma));
-    //    cout << "B = " << B << ", rho = " << masse_volumique << ", rho_0 = " << dens << ", rho/rho_0 = " << masse_volumique/dens << ", on obtient P = " << pression << endl;
 }
 
 
@@ -223,26 +218,28 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
     Vecteur<Dim> diff = (prec) ? pos - positionPrec : pos - position;
     double r = diff.scalaire(diff);
     
-    // Fonction F(x) = 1/x²
+    /* Fonction F(x) = 1/x² */
     // if (r == 0.0)
     //     return 50000;
     // return 1/r;
 
-    // Fonction F(x) = 0.1^10000x²
+    /* Fonction F(x) = 0.1^10000x² */
     // return pow(0.1, 10000*r*r);
     
-    // Fonction F(x) = exp(-x^4/0.000391)
+    /* Fonction F(x) = exp(-x^4/0.000391) */
     // return exp(-r*r/0.0003910);
     
-    // Fonction F(x) = a/(1+b*x²) avec a = 1.41 et b = 14000
+    /* Fonction F(x) = a/(1+b*x²) avec a = 1.41 et b = 14000 */
     return 1.41/(1+14000*r);
 
-    // Fonction F telle que :
-    // 1) F est affine sur [0, d]
-    // 2) F est une courbe de Hermite sur [d, nd]
-    // 3) F est nulle ailleurs
-    // 4) F(d) = iso, F'(d) = alpha/((n - 1)*d)
-    // avec d le rayon de la particule
+    /*
+     * Fonction F telle que :
+     * 1) F est affine sur [0, d]
+     * 2) F est une courbe de Hermite sur [d, nd]
+     * 3) F est nulle ailleurs
+     * 4) F(d) = iso, F'(d) = alpha/((n - 1)*d)
+     * avec d le rayon de la particule
+     */
     // double d = 0.025;
     // double iso = 0.7;
     // double alpha = -2;
@@ -260,8 +257,6 @@ double Particule<Dim>::isosurface(Vecteur<Dim> &pos, bool prec) {
 
 template<unsigned int Dim>
 void Particule<Dim>::draw(Materiau<Dim> *mat) const {
-    // glPushMatrix();
-    // glTranslatef(position(1), position(2), position(3));
     /* Calcul du rayon de la sphère :
      * r = racine cubique (3 * m / (4 * PI * rho)) 
      *     avec m masse de la particule
@@ -274,7 +269,6 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
     glColor3f (couleur, couleur, 1.0);
     glutSolidSphere(rayon, 12, 12);
     glVertex3f(position(1), position(2), position(3));
-    // glPopMatrix();
 }
 
 
@@ -285,11 +279,14 @@ void Particule<Dim>::draw(bool point) const {
       glColor3f(couleur, couleur, 1.0);
     } else {
       if (etat == ACTIVE) {
-      	  glColor3f(0.0,0.0,1.0);  // Bleu : particule active     
-      } else if (etat == INACTIVE) {     
-      	  glColor3f(1.0,0.0,0.0);  //  Rouge : particule inactive
+          /* Bleu : particule active */
+      	  glColor3f(0.0,0.0,1.0);
+      } else if (etat == INACTIVE) {
+          /* Rouge : particule inactive */
+      	  glColor3f(1.0,0.0,0.0);
       } else if (etat == TRANSITION) {
-	  glColor3f(0.0, 1.0, 0.0);  // Vert : particule en transition
+          /* Vert : particule en transition */
+	  glColor3f(0.0, 1.0, 0.0);
       }
     }
     

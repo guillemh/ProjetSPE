@@ -41,7 +41,12 @@ class Scene {
      * et lors de la réinitialisation de la scène
      */
     void clear();
-    
+
+    /**
+     * @brief Animation
+     *
+     * Appelle les fonctions d'animation des objets de la scène
+     */
     void animate();
 
     /**

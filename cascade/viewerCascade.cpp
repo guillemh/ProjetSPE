@@ -2,21 +2,21 @@
 #include <QColor>
 #include <list>
 
-#include "viewer.h"
+#include "viewerCascade.h"
 #include "sceneCascade.h"
 
 using std::list;
 
-Viewer::Viewer () {}
+ViewerCascade::ViewerCascade () {}
 
 
-Viewer::~Viewer()
+ViewerCascade::~ViewerCascade()
 {
     delete s;
 }
 
 
-void Viewer::init()
+void ViewerCascade::init()
 {  
     //=== VIEWING PARAMETERS
     restoreStateFromFile();
@@ -29,7 +29,6 @@ void Viewer::init()
     if (toogleWireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     
-    //glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_COLOR);
     glEnable(GL_COLOR_MATERIAL);
@@ -41,7 +40,7 @@ void Viewer::init()
 }
 
 
-void Viewer::draw()
+void ViewerCascade::draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
@@ -53,7 +52,7 @@ void Viewer::draw()
 }
 
 
-void Viewer::animate()
+void ViewerCascade::animate()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPushMatrix ();
@@ -62,12 +61,12 @@ void Viewer::animate()
 }
 
 
-void Viewer::interact() {
+void ViewerCascade::interact() {
     cout << endl << "** Modification de la simulation **" << endl;
     s->interact();
 }
 
-void Viewer::keyPressEvent(QKeyEvent *e)
+void ViewerCascade::keyPressEvent(QKeyEvent *e)
 {
     // Get event modifiers key
     const Qt::KeyboardModifiers modifiers = e->modifiers();
@@ -92,9 +91,9 @@ void Viewer::keyPressEvent(QKeyEvent *e)
     } else if (e->key()==Qt::Key_I) {
         stopAnimation();
         interact();
-        updateGL();
+        updateGL();
     } else if (e->key()==Qt::Key_R){
-      toogleRecord = !toogleRecord;
+        toogleRecord = !toogleRecord;
     } else if (e->key()==Qt::Key_V) {
         s->changerAffichage();
         updateGL();
@@ -104,24 +103,24 @@ void Viewer::keyPressEvent(QKeyEvent *e)
 }
 
 
-QString Viewer::helpString() const
+QString ViewerCascade::helpString() const
 {
-	// Some usefull hints...
-	QString text("<h2>V i e w e r</h2>");
-	text += "Use the mouse to move the camera around the object. ";
-	text += "You can respectively revolve around, zoom and translate with the three mouse buttons. ";
-	text += "Left and middle buttons pressed together rotate around the camera view direction axis<br><br>";
-	text += "Pressing <b>Alt</b> and one of the function keys (<b>F1</b>..<b>F12</b>) defines a camera keyFrame. ";
-	text += "Simply press the function key again to restore it. Several keyFrames define a ";
-	text += "camera path. Paths are saved when you quit the application and restored at next start.<br><br>";
-	text += "Press <b>F</b> to display the frame rate, <b>A</b> for the world axis, ";
-	text += "<b>Alt+Return</b> for full screen mode and <b>Control+S</b> to save a snapshot. ";
-	text += "See the <b>Keyboard</b> tab in this window for a complete shortcut list.<br><br>";
-	text += "Double clicks automates single click actions: A left button double click aligns the closer axis with the camera (if close enough). ";
-	text += "A middle button double click fits the zoom of the camera and the right button re-centers the scene.<br><br>";
-	text += "A left button double click while holding right button pressed defines the camera <i>Revolve Around Point</i>. ";
-	text += "See the <b>Mouse</b> tab and the documentation web pages for details.<br><br>";
-	text += "Press <b>Escape</b> to exit the viewer.";
-	return text;
+    // Some usefull hints...
+    QString text("<h2>V i e w e r</h2>");
+    text += "Use the mouse to move the camera around the object. ";
+    text += "You can respectively revolve around, zoom and translate with the three mouse buttons. ";
+    text += "Left and middle buttons pressed together rotate around the camera view direction axis<br><br>";
+    text += "Pressing <b>Alt</b> and one of the function keys (<b>F1</b>..<b>F12</b>) defines a camera keyFrame. ";
+    text += "Simply press the function key again to restore it. Several keyFrames define a ";
+    text += "camera path. Paths are saved when you quit the application and restored at next start.<br><br>";
+    text += "Press <b>F</b> to display the frame rate, <b>A</b> for the world axis, ";
+    text += "<b>Alt+Return</b> for full screen mode and <b>Control+S</b> to save a snapshot. ";
+    text += "See the <b>Keyboard</b> tab in this window for a complete shortcut list.<br><br>";
+    text += "Double clicks automates single click actions: A left button double click aligns the closer axis with the camera (if close enough). ";
+    text += "A middle button double click fits the zoom of the camera and the right button re-centers the scene.<br><br>";
+    text += "A left button double click while holding right button pressed defines the camera <i>Revolve Around Point</i>. ";
+    text += "See the <b>Mouse</b> tab and the documentation web pages for details.<br><br>";
+    text += "Press <b>Escape</b> to exit the viewer.";
+    return text;
 }
 

@@ -7,8 +7,8 @@
  * url: http://www.libqglviewer.com
  */
 
-#ifndef _VIEWER_
-#define _VIEWER_
+#ifndef _VIEWER_CASCADE_
+#define _VIEWER_CASCADE_
 
 #include <QGLViewer/qglviewer.h>
 #include <list>
@@ -17,14 +17,14 @@
 using namespace std;
 
 /**
- * \class Viewer 
+ * \class ViewerCascade
  * @brief Classe interagissant avec OpenGL pour la représentation d'objets
  *
  * Classe du plus haut niveau permettant de représenter une scène et de l'animer,
  * en la créant dans un main
  */
 
-class Viewer : public QGLViewer
+class ViewerCascade : public QGLViewer
 {
  public :
     /**
@@ -32,12 +32,12 @@ class Viewer : public QGLViewer
      * 
      * Constructeur par défaut d'un objet de classe Viewer
      */
-    Viewer ();
+    ViewerCascade();
 
     /**
      * \brief Destructeur
      */
-    virtual ~Viewer ();
+    virtual ~ViewerCascade();
 
  protected :
 

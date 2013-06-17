@@ -99,6 +99,7 @@ void Fluide<Dim>::init() {
     /* On supprime les anciennes particules etc */
     clear();
 
+    /* On commence l'animation */
     debutAnim = true;
     
     /* Initialisation de liste vide */
@@ -156,8 +157,6 @@ void Fluide<Dim>::init() {
                     double z = 0.02 * (rand() / double(RAND_MAX) - 0.5);
                     Vecteur<Dim> alea = Vecteur<Dim>(x,y,fabs(z));                    
                     vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, k*ecart) + alea;
-                    // vec = Vecteur<Dim>((i-nb[0]/2)*ecart+1, (j-nb[1]/2)*ecart, k*ecart) + alea;
-                    // vec = Vecteur<Dim>((i-nb[0]/2)*ecart, (j-nb[1]/2)*ecart, 0.1 + k*ecart);
                     
                     part = new Particule<Dim>(cpt, vec, vitInit, mat->getMasseParticules(), densiteInit, pressionInit);
                     particules.push_back(part);

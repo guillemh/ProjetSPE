@@ -15,7 +15,7 @@ SceneCascade::SceneCascade()
       c2(),
       s(),
       f(),
-      arps(false)
+      arps(true)
 {
     nbBoucles = 0;
     init();
@@ -42,7 +42,6 @@ void SceneCascade::init() {
     Materiau<3> *m = new Materiau<3>(EAU);
     Vecteur<3> d = Vecteur<3>(9, 9, 30);
     f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression());
-    //f->colorationMetaball();
     c1 = new Cascade<3> (f);
     s = new Skybox(c1);
     s->init();

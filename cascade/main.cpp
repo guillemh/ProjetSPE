@@ -1,5 +1,5 @@
 #include <qapplication.h>
-#include "./viewer.h"
+#include "viewerCascade.h"
 #include <GL/glut.h>
 
 
@@ -10,7 +10,7 @@ int main(int argc, char** argv)
     QApplication application(argc,argv);
     glutInit (&argc, argv) ;
     // Instantiate the viewer.
-    Viewer viewer;
+    ViewerCascade viewer;
 
     viewer.setWindowTitle("Fenetre de test");
     // Make the viewer window visible on screen.
