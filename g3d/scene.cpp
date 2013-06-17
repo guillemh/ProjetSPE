@@ -89,8 +89,8 @@ void Scene::animate() {
     } else {
         f->majDensitePression();
         f->majPositionVitesse();
-        }
-        //f->affiche();
+    }
+    // f->affiche();
     //    anim = false;
     // }
 }
@@ -142,8 +142,7 @@ void Scene::interact() {
         f->changerAffichage();
         break;
     case 7:
-        f->init();
-        return;
+        chgt = true;
         break;
     default:
         return;

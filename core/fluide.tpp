@@ -90,6 +90,7 @@ void Fluide<Dim>::clear() {
         delete (*it);
     }
     hash_voisins.clear();
+    actives.clear();
 }
 
 template <unsigned int Dim>
@@ -97,6 +98,8 @@ void Fluide<Dim>::init() {
 
     /* On supprime les anciennes particules etc */
     clear();
+
+    debutAnim = true;
     
     /* Initialisation de liste vide */
     particules = list<Particule<Dim> *>();

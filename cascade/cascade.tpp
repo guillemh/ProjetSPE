@@ -497,19 +497,16 @@ void Cascade<Dim>::animate(bool arps) {
 }
 
 template<unsigned int Dim>
-const double & Cascade<Dim>::getBassinX() const
-{
+const double & Cascade<Dim>::getBassinX() const {
     return bassin_x;
 }
 
 template<unsigned int Dim>
-const double & Cascade<Dim>::getBassinY() const
-{
+const double & Cascade<Dim>::getBassinY() const {
     return bassin_y;
 }
 
 template<unsigned int Dim>
-const double & Cascade<Dim>::getBassinZ() const
-{
+const double & Cascade<Dim>::getBassinZ() const {
     return bassin_z;
 }
