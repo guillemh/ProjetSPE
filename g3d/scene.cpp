@@ -80,16 +80,15 @@ void Scene::draw() {
 
 void Scene::animate() {
     // if (anim) {
-        if (arps) {
-            if (TRACES) {
-                f->schemaIntegration_Traces();
-            } else {
-                f->schemaIntegration();
-                // f->schemaIntegrationBis();
-            }
-        } else {
-            f->majDensitePression();
-            f->majPositionVitesse();
+    if (arps) {
+# if TRACES
+        f->schemaIntegration_Traces();
+# else
+        f->schemaIntegration();
+# endif
+    } else {
+        f->majDensitePression();
+        f->majPositionVitesse();
         }
         //f->affiche();
     //    anim = false;
