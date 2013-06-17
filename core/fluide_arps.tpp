@@ -396,16 +396,19 @@ void Fluide<Dim>::schemaIntegration() {
 
         /* Mise à jour de la liste des particules actives */
         restriction((*part_it)->getVitesse(), rho, drho);
+	double eps = 0.05;
         if (rho == 0) {
             /* Particule complètement active */
             actives.push_back(*part_it);
             (*part_it)->setEtat(ACTIVE);
-        } else if (rho < 1) {
+        } else if (rho < 1-eps) {
             /* Particule en transition */
 	    actives.push_back(*part_it);
 	    (*part_it)->setEtat(TRANSITION);
         } else {
             /* Particule inactive */
+	    rho=1;
+	    drho=Vecteur<Dim>();
             (*part_it)->setEtat(INACTIVE);
         }
 
