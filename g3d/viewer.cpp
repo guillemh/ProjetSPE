@@ -22,7 +22,6 @@ Viewer::~Viewer()
 
 void Viewer::init()
 {
-    //toggleFPSIsDisplayed();
     //=== VIEWING PARAMETERS
     restoreStateFromFile();
     toogleWireframe = true;  // filled faces
@@ -66,7 +65,6 @@ void Viewer::draw()
 void Viewer::animate()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // cout << "FPS : " << currentFPS() << endl;
     glPushMatrix();
     s->animate();
     glPopMatrix();
