@@ -10,6 +10,9 @@ Auteurs:
  GUILLEMAUD Héloïse (MMIS)
 
 
+
+
+
 I. Description de l'archive
    -------------------------
 
@@ -21,28 +24,40 @@ a) À la racine se trouvent :
  - un script de nettoyage de l'archive : mrproper.sh
  - les dossiers contenant le code source
 
+
 b) Dossier core :
    ..............
 dossier contenant le simulateur physique, il sera utilisé par les autres dossiers sous forme d'une librairie (voir son .pro).
 
 Fichiers présents:
  - fluide.hpp et .tpp
-Ensemble de particules, c'est lui que l'on va animer dans la scène
+Ensemble de particules, c'est lui que l'on va animer dans la scène. Ce fichier étant à l'origine très long, nous l'avons découpé en plusieurs bouts de code :
+. fluide_arps.tpp : toutes les méthodes concernant l'implémentation de l'ARPS
+. fluide_collisions.tpp : les 2 méthodes qui permettent la collision avec une boîte ou celles de la cascade
+. fluide_interactions.tpp : les méthodes qui permettent de modifier les paramètres du fluide interactivement prendant la simulation
+
  - materiau.hpp et .tpp
 Description de différents types de matériaux utilisables pour le fluide.
 Nous n'avons effectué nos simulations que pour l'EAU, les autres types n'ont pas de paramètres adaptés.
+
  - matriceForces.hpp et .tpp
 Structure de données pour stocker le calcul des forces d'interaction entre particules
+
  - metaballs.hpp et .tpp
 Méthode de rendu pour les particules
+
  - noyauLissage.hpp et .tpp
 Objet renvoyant les valeurs du noyau et de ses opérateurs de dérivation, pour l'interpolation des grandeurs
+
  - particule.hpp et .tpp
 Objet de base composant le fluide
+
  - premier.hpp et .tpp
 Structure permettant de récupére un nombre premier valable pour une table de hachage
+
  - vecteur.hpp et .tpp
 Classe de base décrivant un vecteur
+
 
 c) Dossier g3d :
    .............
@@ -51,10 +66,13 @@ dossier contenant le viewer OpenGl pour la simulation, ainsi qu'une scène perme
 Fichiers présents:
  - main.cpp
 Ouvre la fenêtre de visualisation QGLviewer : a priori pas de raison de le modifier
+
  - scene.h et .cpp
 Objet contenant tous les éléments à afficher; est instancié par le viewer
+
  - viewer.h et .cpp
 Classe gérant la scène; son dessin, son animation, et les interactions utilisateur
+
 
 d) Dossier cascade :
    .................
@@ -63,20 +81,27 @@ dossier contenant les fichiers de la scène finale
 Fichiers présents:
  - cascade.hpp et .tpp
 Classe permettant de dessiner les bords, les parois de la cascade
+
  - main.cpp et viewer : idem que précédemment
+
  - sceneCascade.h et .tpp
 Contient les objets de la scène finale : un fluide, une cascade, et une skybox
+
  - skybox.h et .tpp
 Classe permettant de dessiner une skybox à notre scène : des textures pour faire un décor de fond
+
 
 e) Dossier test :
    ..............
 dossier contenant les tests unitaires des différentes classes du projet
 Pour chaque classe, les tests unitaires sont écrits dans un fichier .cpp qui définit une fonction, et celle-ci est appelée dans main.cpp.
 
+
 f) Dossier doc : 
    .............
 dossier dans lequel est générée la documentation doxygen, en format html
+
+
 
 
 II. Compilation et exécution du projet
@@ -108,17 +133,27 @@ lance la batterie de test unitaires
 Pour lancer l'animation des scènes, il faut appuyer sur la touche 'Enter'.
 
 
+
+
 III. Interactions utilisateur
      -------------------------
     Il est possible d'interagir avec le viewer avec des événements clavier.
 
- - la touche 'H' ouvre une fenêtre décrivant comment utiliser QglViewer, et les événements déjà définis.
- - la touche 'W' permet de basculer entre affichage plein ou seulement du maillage des primitives
- - la touche 'L' permet d'activer ou désactiver l'éclairage de la scène
+ - la touche 'H'     ouvre une fenêtre décrivant comment utiliser QglViewer, et les événements déjà définis
+
+ - la touche 'W'     permet de basculer entre affichage plein ou seulement du maillage des primitives
+
+ - la touche 'L'     permet d'activer ou désactiver l'éclairage de la scène
+
  - la touche 'Enter' déclenche ou stoppe l'animation
- - la touche 'Z' permet de n'exécuter qu'une boucle d'animation, lorsque les lignes correspondantes sont décommentées dans Scene.draw()
+
+ - la touche 'Z'     permet de n'exécuter qu'une boucle d'animation, lorsque les lignes correspondantes sont décommentées dans Scene.draw()
+
  - la touche 'Début' ou 'Home' permet de recommencer complètement la scène (sans se souvenir des éventuels changements effectués par interaction)
- - la touche 'V' permet de changer de méthode d'affichage du fluide : points, sphères, ou metaballs
- - la touche 'I' permet de lancer dans le terminal l'interface d'interaction avec l'utilisateur, qui permet de modifier en cours de simulation certains paramètres du système; il suffit de suivre les instructions du terminal, en entrant les valeurs demandées.
+
+ - la touche 'V'     permet de changer de méthode d'affichage du fluide : points, sphères, ou metaballs
+
+ - la touche 'I'     permet de lancer dans le terminal l'interface d'interaction avec l'utilisateur, qui permet de modifier en cours de simulation certains paramètres du système; il suffit de suivre les instructions du terminal, en entrant les valeurs demandées.
 Attention, aucune vérification n'est faite sur les valeurs entrées.
- - la touche 'R' permet de lancer un enregistrement image par image de la simulation : celles-ci sont enregistrées là où l'exécutable a été lancé
+
+ - la touche 'R'     permet de lancer un enregistrement image par image de la simulation : celles-ci sont enregistrées là où l'exécutable a été lancé
