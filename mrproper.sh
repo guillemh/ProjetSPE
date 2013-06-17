@@ -33,7 +33,7 @@ cd ..
 
 cd g3d
 make clean
-rm test_cascade
+rm test_*
 rm -f Makefile
 rm -f *~
 cd ..
@@ -46,20 +46,3 @@ rm -f -r release
 rm -f *~
 cd ..
 
-cd metaballs
-make clean
-rm -f test_metaballs
-rm -f Makefile Makefile.Release Makefile.Debug
-rm -f -r debug
-rm -f -r release
-rm -f *~
-cd ..
-
-cd cascade_complexe
-make clean
-rm -f cascade_complexe
-rm -f Makefile Makefile.Release Makefile.Debug
-rm -f -r debug
-rm -f -r release
-rm -f *~
-cd ..

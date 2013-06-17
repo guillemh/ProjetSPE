@@ -1415,6 +1415,11 @@ void Fluide<Dim>::schemaIntegration() {
             }
         }
     }
+    
+    /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
+    if (afficheMetaballs) {
+        ball->coloration(particules);
+    }
 
 }
 
@@ -1717,6 +1722,11 @@ void Fluide<Dim>::schemaIntegration_Traces() {
                 }
             }
         }
+    }
+    
+    /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
+    if (afficheMetaballs) {
+        ball->coloration(particules);
     }
     
     cout << endl << "********************************************" << endl;
