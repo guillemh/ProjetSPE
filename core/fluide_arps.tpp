@@ -396,6 +396,7 @@ void Fluide<Dim>::schemaIntegration() {
 
         /* Mise à jour de la liste des particules actives */
         restriction((*part_it)->getVitesse(), rho, drho);
+        /* Seuil rajouté pour inactiver les particules */
 	double eps = 0.05;
         if (rho == 0) {
             /* Particule complètement active */
@@ -407,8 +408,8 @@ void Fluide<Dim>::schemaIntegration() {
 	    (*part_it)->setEtat(TRANSITION);
         } else {
             /* Particule inactive */
-	    rho=1;
-	    drho=Vecteur<Dim>();
+	    rho = 1;
+	    drho = Vecteur<Dim>();
             (*part_it)->setEtat(INACTIVE);
         }
 
