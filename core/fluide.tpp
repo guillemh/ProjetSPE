@@ -145,13 +145,6 @@ void Fluide<Dim>::init() {
         lgrHash = table.getPremier(2*nbrParticules);
         matF = MatriceForces<Dim>(nbrParticules);
         
-        /* On définit la position des particules */
-        //double largeur_x = x_max - x_min;
-        //double largeur_y = y_max - y_min;
-        
-        //if (largeur_x < nb[0]*ecart || largeur_y < nb[1]*ecart)
-	//cout << "Attention (fluide.tpp) : trop de particules pour les dimensions de la boîte" << endl;
-        
         Vecteur<Dim> vec;
         Particule<Dim> *part;
         for (int i = 0; i < nb[0]; i++) {
@@ -179,7 +172,11 @@ void Fluide<Dim>::init() {
     
         /* Initialisation de la metaball */
 
-        ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1.2);
+	if (CASCADE) 
+	    ball = new Metaballs(Vecteur<3>(-0.6, -0.6, -3.0), 0.01, mat->getRayonNoyau(), 3.7, 1.2, 3.6);
+	else 
+	    ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1.2);
+	
         if (afficheMetaballs) {
             ball->initColoration(particules);
         }
