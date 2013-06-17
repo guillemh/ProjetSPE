@@ -13,7 +13,7 @@ using std::pair;
 #define DELTA 2
 #define METABALLS 0 // Mettre a 1 pour dessiner des surfaces, 0 pour des particules
 #define POINT 0     // Mettre a 1 pour dessiner des points, 0 pour des spheres
-#define CASCADE 0   // Mettre a 1 pour les collisions avec la cascade
+#define CASCADE 1   // Mettre a 1 pour les collisions avec la cascade
 
 /* ** Constructeurs ** */
 
@@ -1415,6 +1415,11 @@ void Fluide<Dim>::schemaIntegration() {
             }
         }
     }
+    
+    /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
+    if (afficheMetaballs) {
+        ball->coloration(particules);
+    }
 
 }
 
@@ -1717,6 +1722,11 @@ void Fluide<Dim>::schemaIntegration_Traces() {
                 }
             }
         }
+    }
+    
+    /* On met à jour la coloration des sommets pour le calcul de la surface implicite */
+    if (afficheMetaballs) {
+        ball->coloration(particules);
     }
     
     cout << endl << "********************************************" << endl;

@@ -2,7 +2,7 @@ X Implémentation des nouvelles forces de pression et viscosité
 X Implémenter le nouveau noyau
 X Trouver les bons paramètres pour le modèle
 X Recherche des plus proches voisins
-- ARPS
+X ARPS
 - Rendu de la scène
 X SHEME
-X Rendu réaliste de la scène : marching cubes, splatting images
+X Rendu réaliste de la scène : marching cubes
