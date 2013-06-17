@@ -47,6 +47,7 @@ private:
     double masse;                 // Masse de la particule (m)
     EtatParticule etat;           // Etat d'activité de la particule (ARPS)
 
+	double couleur;               // Attribut couleur de la particule, varie entre 0 et 1
     /* ** Constructeurs ** */
 public:
     /**
@@ -61,7 +62,7 @@ public:
      * \param p Pression initiale
      * \param e Etat de la particule
      */
-    Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0, double m = 0, EtatParticule e = ACTIVE);
+    Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho = 0, double p = 0, double m = 0, EtatParticule e = ACTIVE, double c = 0);
     
     /**
      * @brief Destructeur
@@ -165,6 +166,12 @@ public:
      */
     EtatParticule getEtat() const;
     
+    /**
+     * @brief Accesseur
+     *
+     * \return Couleur de la particule
+     */
+    double getCouleur() const;
 
     /* ** Mutateurs ** */
     /**
@@ -247,7 +254,14 @@ public:
      */
     void setEtat(const EtatParticule &e);
 
-    
+    /**
+     * @brief Mutateur
+     *
+     * Modifie la couleur de la particule
+     * @param c Nouvel attribut couleur de la particule
+     */
+    void setCouleur (double c);
+   
     /**
      * @brief Mutateur
      *

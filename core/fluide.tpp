@@ -516,6 +516,12 @@ void Fluide<Dim>::majPositionVitesse() {
         double masseVolumique_a = (*it1)->getMasseVolumique();
 
         voisins = voisinage(*(*it1));
+        if (voisins.size() >= 10 || ((*it1)->getVitesse().norme() < 0.1)) {
+            (*it1)->setCouleur(0.0);
+        } else {
+            (*it1)->setCouleur(1 - voisins.size()/10.0);
+        }
+
         for (it2 = voisins.begin(); it2 != voisins.end(); it2++) {
         
             /* Quelques variables locales pour factoriser le calcul */
@@ -556,7 +562,7 @@ void Fluide<Dim>::majPositionVitesse() {
         (*it1)->setAcceleration((fPression + fViscosite + fGravite + fSurface) / masseVolumique_a);
 
     }
-    
+
     /*
      * On boucle une nouvelle fois sur toutes les particules pour mettre leur position
      * et leur vitesse à jour et tester les collisions
@@ -595,14 +601,14 @@ void Fluide<Dim>::majPositionVitesse() {
             /* Mise a jour de la vitesse */
             double vitesse = (*it1)->getVitesse().scalaire(normale);
             
-            (*it1)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse*normale);
+            // (*it1)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse*normale);
             /* Technique plus adaptee dans le cas de la vague, qui consiste a empecher 
              * Les particules de s'empiler sur un bord */
-            // if (normale(3) < 0.001 && (*it1)->getVitesse()(3) < 0.0) {
-            //     (*it1)->incrVitesse(-3 * vitesse * normale);
-            // } else {
-            //     (*it1)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
-            // }
+             if (normale(3) < 0.001 && (*it1)->getVitesse()(3) < 0.0) {
+                 (*it1)->incrVitesse(-3 * vitesse * normale);
+             } else {
+                 (*it1)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
+             }
         }
     }
     debutAnim = false;

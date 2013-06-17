@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 #define PI 3.1415926535
-#define COLORATION 1 // Mettre a 1 pour obtenir une coloration des particules en fonction de leur activité
+#define COLORATION 0 // Mettre a 1 pour obtenir une coloration des particules en fonction de leur activité
 
 using std::endl;
 using std::ostream;
@@ -11,7 +11,7 @@ using std::ostream;
 /* ** Constructeurs ** */
 
 template<unsigned int Dim>
-Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m, EtatParticule e)
+Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, double rho, double p, double m, EtatParticule e, double c)
     : indice(ind),
       position(pos),
       positionPrec(pos),
@@ -22,7 +22,8 @@ Particule<Dim>::Particule(unsigned int ind, Vecteur<Dim> pos, Vecteur<Dim> vit, 
       pression(p),
       pressionPrec(p),
       masse(m),
-      etat(e)
+      etat(e),
+      couleur(c)
 {
 }
 
@@ -101,6 +102,10 @@ EtatParticule Particule<Dim>::getEtat() const {
     return etat;
 }
 
+template<unsigned int Dim>
+double Particule<Dim>::getCouleur() const {
+    return couleur;
+}
 
 template<unsigned int Dim>
 void Particule<Dim>::setPosition(const Vecteur<Dim> &pos) {
@@ -154,6 +159,11 @@ void Particule<Dim>::setPressionPrec(double p) {
 template<unsigned int Dim>
 void Particule<Dim>::setEtat(const EtatParticule &e) {
     etat = e;
+}
+
+template<unsigned int Dim>
+void Particule<Dim>::setCouleur(double c) {
+    couleur = c;
 }
 
 template<unsigned int Dim>
@@ -261,7 +271,7 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
      * ce qui simplifie le calcul
      */
     double rayon = pow((3 * mat->getRigiditeGaz())/(4 * PI * mat->getPression()), 1.0/3.0);
-
+    glColor3f (couleur, couleur, 1.0);
     glutSolidSphere(rayon, 12, 12);
     glVertex3f(position(1), position(2), position(3));
     // glPopMatrix();
@@ -272,7 +282,7 @@ template<unsigned int Dim>
 void Particule<Dim>::draw(bool point) const {
 
     if (!COLORATION) {
-       glColor3f(0.0, 0.0, 1.0);
+      glColor3f(couleur, couleur, 1.0);
     } else {
       if (etat == ACTIVE) {
       	  glColor3f(0.0,0.0,1.0);  // Bleu : particule active     
