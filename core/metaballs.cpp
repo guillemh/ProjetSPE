@@ -204,12 +204,12 @@ Metaballs::Metaballs(Vecteur<3> _origine, double _cote, double _rayon, double x,
                       {0, 3, 1, 1, 3, 2, -1, -1, -1}})
 {
 
-    // Calcul des dimensions
+    /* Calcul des dimensions */
     n = 1 + x / cote;
     p = 1 + y / cote;
     q = 1 + z / cote;
     
-    // Allocation du tableau des points
+    /* Allocation du tableau des points */
     points = (double***) calloc(n, sizeof(double **));
     for (int i = 0 ; i < n ; i++) {
         points[i] = (double**) calloc(p, sizeof(double *));
@@ -231,23 +231,24 @@ Metaballs::~Metaballs() {
 }
 
 
-/* ** Methodes ** */
+/* ** Méthodes ** */
 
 void Metaballs::initColoration(list<Particule<3> *> &particules) {
     for (int i = 0; i < n; i++) {
-         for (int j = 0; j < p; j++) {
-             for (int k = 0; k < q; k++) {
-                 points[i][j][k] = 0;
-             }
-         }
+        for (int j = 0; j < p; j++) {
+            for (int k = 0; k < q; k++) {
+                points[i][j][k] = 0;
+            }
+        }
     }
 
     typename list<Particule<3> *>::iterator it;
-    double d = 0.1; // Rayon du support de la fonction d'influence
+    /* Rayon du support de la fonction d'influence */
+    double d = 0.1; 
 
     for (it = particules.begin(); it != particules.end(); it++) {
             
-        // On selectionne les points influes par la particule
+        /* On sélectionne les points influencés par la particule */
         Vecteur<3> pos = (*it)->getPosition() - origine;
         pos(1) = fabs(pos(1));
         pos(2) = fabs(pos(2));
@@ -260,7 +261,7 @@ void Metaballs::initColoration(list<Particule<3> *> &particules) {
         int k_max = min(q-1, (int) floor((pos(3) + d)/cote));
 
         double ic, jc;
-        // On boucle sur ces points pour ajouter son influence
+        /* On boucle sur ces points pour ajouter son influence */
         for (int i = i_min; i <= i_max; i++) {
             ic = i*cote;
             for (int j = j_min; j <= j_max; j++) {
@@ -278,14 +279,15 @@ void Metaballs::initColoration(list<Particule<3> *> &particules) {
 void Metaballs::coloration(list<Particule<3> *> &particules) {
 
     typename list<Particule<3> *>::iterator it;
-    double d = 0.1; // Rayon du support de la fonction d'influence
+    /* Rayon du support de la fonction d'influence */
+    double d = 0.1; 
 
     for (it = particules.begin(); it != particules.end(); it++) {
         
-        // Si la particule a bougé
+        /* Si la particule a bougé */
         if ((*it)->getPosition() != (*it)->getPositionPrec()) {
     
-            // On selectionne les points influes par l'ancienne position de la particule
+            /* On sélectionne les points influencés par l'ancienne position de la particule */
             Vecteur<3> pos = (*it)->getPositionPrec() - origine;
             pos(1) = fabs(pos(1));
             pos(2) = fabs(pos(2));
@@ -298,7 +300,7 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
             int k_max = min(q-1, (int) floor((pos(3) + d)/cote));
 
             double ic, jc;
-            // On boucle sur ces points pour supprimer son influence
+            /* On boucle sur ces points pour supprimer son influence */
             for (int i = i_min; i <= i_max; i++) {
                 ic = i*cote;
                 for (int j = j_min; j <= j_max; j++) {
@@ -310,7 +312,7 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
                 }
             }
 
-            // On selectionne les points influes par la nouvelle position de la particule
+            /* On sélectionne les points influencés par la nouvelle position de la particule */
             pos = (*it)->getPosition() - origine;
             pos(1) = fabs(pos(1));
             pos(2) = fabs(pos(2));
@@ -322,7 +324,7 @@ void Metaballs::coloration(list<Particule<3> *> &particules) {
             k_min = max(0, (int) ceil((pos(3) - d)/cote));
             k_max = min(q-1, (int) floor((pos(3) + d)/cote));
 
-            // On boucle sur ces points pour ajouter son influence
+            /* On boucle sur ces points pour ajouter son influence */
             for (int i = i_min; i <= i_max; i++) {
                 ic = i*cote;
                 for (int j = j_min; j <= j_max; j++) {
@@ -372,26 +374,6 @@ void Metaballs::draw() {
                     config |= dedans;
                 }
                 
-                // for (int s = 0 ; s < 8 ; s++) {
-                //     if (points[i + ((s >> 1) & 1)][j + ((s + (s >> 1)) & 1)][k + (s >> 2)]) {
-                //         glColor3f (0.0, 1.0, 0.0);
-                //     } else {
-                //         glColor3f (0.0, 0.0, 1.0);
-                //     }
-                //     // glPointSize(5.0f);
-                //     // glBegin(GL_POINTS);
-                //     // glVertex3f (origine(1) + cote*(i + ((s >> 1) & 1)),
-                //     //               origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
-                //     //               origine(3) + cote*(k + (s >> 2)));
-                //     // glEnd();
-                //     glPushMatrix();
-                //     glTranslatef (origine(1) + cote*(i + ((s >> 1) & 1)),
-                //                   origine(2) + cote*(j + ((s + (s >> 1)) & 1)),
-                //                   origine(3) + cote*(k + (s >> 2)));
-                //     glutSolidSphere (0.05, 10, 10);
-                //     glPopMatrix();
-                // }
-                
                 posCour = origine + Vecteur<3>(cote*i, cote*j, cote*k);
                 drawCube(posCour, config);
             }
@@ -404,20 +386,20 @@ void Metaballs::draw() {
         for (int j = 0 ; j < p - 1 ; j++) {
             config = 0;
             for (int s = 0; s < 4; s++) {
-                    /* Isovaleur de la fonction F(x) = 1/x² */
-                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][j + ((s >> 1) & 1)][0] > 1/(rayon*rayon);
+                /* Isovaleur de la fonction F(x) = 1/x² */
+                // bool dedans = points[i + ((s + (s >> 1)) & 1)][j + ((s >> 1) & 1)][0] > 1/(rayon*rayon);
                     
-                    /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
-                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][j + ((s >> 1) & 1)][0] > 0.9;
+                /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
+                // bool dedans = points[i + ((s + (s >> 1)) & 1)][j + ((s >> 1) & 1)][0] > 0.9;
 
-                    /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
-                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][j + ((s >> 1) & 1)][0] > 0.7;
+                /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
+                // bool dedans = points[i + ((s + (s >> 1)) & 1)][j + ((s >> 1) & 1)][0] > 0.7;
                     
-                    /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
-                    bool dedans = points[i + ((s + (s >> 1)) & 1)][j + ((s >> 1) & 1)][0] > 1.41/9.75;
+                /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
+                bool dedans = points[i + ((s + (s >> 1)) & 1)][j + ((s >> 1) & 1)][0] > 1.41/9.75;
                 
-                    config <<= 1;
-                    config |= dedans;
+                config <<= 1;
+                config |= dedans;
             }
             posCour = origine + Vecteur<3>(cote*i, cote*j, 0);
             direction = Vecteur<3>(1, 1, 0);
@@ -429,20 +411,20 @@ void Metaballs::draw() {
         for (int k = 0 ; k < q - 1 ; k++) {
             config = 0;
             for (int s = 0; s < 4; s++) {
-                    /* Isovaleur de la fonction F(x) = 1/x² */
-                    // bool dedans = points[0][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 1/(rayon*rayon);
+                /* Isovaleur de la fonction F(x) = 1/x² */
+                // bool dedans = points[0][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 1/(rayon*rayon);
                     
-                    /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
-                    // bool dedans = points[0][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 0.9;
+                /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
+                // bool dedans = points[0][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 0.9;
 
-                    /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
-                    // bool dedans = points[0][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 0.7;
+                /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
+                // bool dedans = points[0][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 0.7;
                     
-                    /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
-                    bool dedans = points[0][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 1.41/9.75;
+                /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
+                bool dedans = points[0][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 1.41/9.75;
                 
-                    config <<= 1;
-                    config |= dedans;
+                config <<= 1;
+                config |= dedans;
             }
             posCour = origine + Vecteur<3>(0, cote*j, cote*k);
             direction = Vecteur<3>(0, 1, 1);
@@ -450,20 +432,20 @@ void Metaballs::draw() {
 
             config = 0;
             for (int s = 0; s < 4; s++) {
-                    /* Isovaleur de la fonction F(x) = 1/x² */
-                    // bool dedans = points[n-1][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 1/(rayon*rayon);
+                /* Isovaleur de la fonction F(x) = 1/x² */
+                // bool dedans = points[n-1][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 1/(rayon*rayon);
                     
-                    /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
-                    // bool dedans = points[n-1][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 0.9;
+                /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
+                // bool dedans = points[n-1][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 0.9;
 
-                    /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
-                    // bool dedans = points[n-1][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 0.7;
+                /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
+                // bool dedans = points[n-1][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 0.7;
                     
-                    /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
-                    bool dedans = points[n-1][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 1.41/9.75;
+                /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
+                bool dedans = points[n-1][j + ((s + (s >> 1)) & 1)][k + ((s >> 1) & 1)] > 1.41/9.75;
                 
-                    config <<= 1;
-                    config |= dedans;
+                config <<= 1;
+                config |= dedans;
             }
             posCour = origine + Vecteur<3>(cote*(n-1), cote*j, cote*k);
             direction = Vecteur<3>(0, 1, 1);
@@ -475,20 +457,20 @@ void Metaballs::draw() {
         for (int k = 0 ; k < q - 1 ; k++) {
             config = 0;
             for (int s = 0; s < 4; s++) {
-                    /* Isovaleur de la fonction F(x) = 1/x² */
-                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][0][k + ((s >> 1) & 1)] > 1/(rayon*rayon);
+                /* Isovaleur de la fonction F(x) = 1/x² */
+                // bool dedans = points[i + ((s + (s >> 1)) & 1)][0][k + ((s >> 1) & 1)] > 1/(rayon*rayon);
                     
-                    /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
-                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][0][k + ((s >> 1) & 1)] > 0.9;
+                /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
+                // bool dedans = points[i + ((s + (s >> 1)) & 1)][0][k + ((s >> 1) & 1)] > 0.9;
 
-                    /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
-                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][0][k + ((s >> 1) & 1)] > 0.7;
+                /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
+                // bool dedans = points[i + ((s + (s >> 1)) & 1)][0][k + ((s >> 1) & 1)] > 0.7;
                     
-                    /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
-                    bool dedans = points[i + ((s + (s >> 1)) & 1)][0][k + ((s >> 1) & 1)] > 1.41/9.75;
+                /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
+                bool dedans = points[i + ((s + (s >> 1)) & 1)][0][k + ((s >> 1) & 1)] > 1.41/9.75;
                 
-                    config <<= 1;
-                    config |= dedans;
+                config <<= 1;
+                config |= dedans;
             }
             posCour = origine + Vecteur<3>(cote*i, 0, cote*k);
             direction = Vecteur<3>(1, 0, 1);
@@ -496,20 +478,20 @@ void Metaballs::draw() {
 
             config = 0;
             for (int s = 0; s < 4; s++) {
-                    /* Isovaleur de la fonction F(x) = 1/x² */
-                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][p-1][k + ((s >> 1) & 1)] > 1/(rayon*rayon);
+                /* Isovaleur de la fonction F(x) = 1/x² */
+                // bool dedans = points[i + ((s + (s >> 1)) & 1)][p-1][k + ((s >> 1) & 1)] > 1/(rayon*rayon);
                     
-                    /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
-                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][p-1][k + ((s >> 1) & 1)] > 0.9;
+                /* Isovaleur des fonctions F(x) = 0.1^10000x² et F(x) = exp(-x^4/0.000391) */
+                // bool dedans = points[i + ((s + (s >> 1)) & 1)][p-1][k + ((s >> 1) & 1)] > 0.9;
 
-                    /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
-                    // bool dedans = points[i + ((s + (s >> 1)) & 1)][p-1][k + ((s >> 1) & 1)] > 0.7;
+                /* Isovaleur de la fonction F(x) affine ou de Hermite par morceaux */
+                // bool dedans = points[i + ((s + (s >> 1)) & 1)][p-1][k + ((s >> 1) & 1)] > 0.7;
                     
-                    /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
-                    bool dedans = points[i + ((s + (s >> 1)) & 1)][p-1][k + ((s >> 1) & 1)] > 1.41/9.75;
+                /* Isovaleur de la fonction F(x) = a/(1+b*x²) */
+                bool dedans = points[i + ((s + (s >> 1)) & 1)][p-1][k + ((s >> 1) & 1)] > 1.41/9.75;
                 
-                    config <<= 1;
-                    config |= dedans;
+                config <<= 1;
+                config |= dedans;
             }
             posCour = origine + Vecteur<3>(cote*i, cote*(p-1), cote*k);
             direction = Vecteur<3>(1, 0, 1);
@@ -543,7 +525,7 @@ void Metaballs::drawTriangle(Vecteur<3> pos, int a, int b, int c, int coef) {
     Vecteur<3> ptB = associerPoint(pos, b);
     Vecteur<3> ptC = associerPoint(pos, c);
     
-    // Calcul de la normale
+    /* Calcul de la normale */
     Vecteur<3> normale = ptC - ptA;
     normale = coef*(ptB - ptA).vectoriel(normale);
     normale /= normale.norme();
@@ -618,7 +600,7 @@ void Metaballs::drawTriangleBord(Vecteur<3> pos, Vecteur<3> direction, int a, in
     Vecteur<3> ptB = associerPointBord(pos, direction, b);
     Vecteur<3> ptC = associerPointBord(pos, direction, c);
     
-    // Calcul de la normale
+    /* Calcul de la normale */
     Vecteur<3> normale = ptB - ptA;
     normale = coef*(ptC - ptA).vectoriel(normale);
     normale /= normale.norme();

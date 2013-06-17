@@ -36,4 +36,3 @@ bool Premier<Dim>::estPremier(const int x) const
     }
     return true;
 }
-

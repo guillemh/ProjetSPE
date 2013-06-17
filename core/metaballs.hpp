@@ -18,19 +18,19 @@ class Metaballs {
 
     /* ** Attributs ** */
 private:
-    int n;                       /*!< Nombre de cubes selon l'axe (Ox) */
-    int p;                       /*!< Nombre de cubes selon l'axe (Oy) */
-    int q;                       /*!< Nombre de cubes selon l'axe (Oz) */
-    double*** points;            /*!< Tableau de booléens, chaque booléen étant associé à un point de l'espace :
-		                              un booléen indique si le sommet doit être marqué ou non, pour avoir
-		                              la configuration du cube qui sera défini à l'aide de huit points */
-    Vecteur<3> origine;          /*!< Origine spatiale de l'espace rectangulaire considéré dans le maillage */
-    double cote;                 /*!< Côté d'un cube */
-    double rayon;                /*!< Rayon d'une particule */
-    int configurations[128][12]; /*!< Look-up table de toutes les configurations possibles
-                                      pour l'algorithme des Marching Cubes */
-    int configurations2d[16][9];  /*!< Look-up table de toutes les configurations possibles
-                                      pour l'algorithme des Marching Squares */
+    int n;                       /* Nombre de cubes selon l'axe (Ox) */
+    int p;                       /* Nombre de cubes selon l'axe (Oy) */
+    int q;                       /* Nombre de cubes selon l'axe (Oz) */
+    double*** points;            /* Tableau de booléens, chaque booléen étant associé à un point de l'espace :
+                                  * un booléen indique si le sommet doit être marqué ou non, pour avoir
+                                  * la configuration du cube qui sera défini à l'aide de huit points */
+    Vecteur<3> origine;          /* Origine spatiale de l'espace rectangulaire considéré dans le maillage */
+    double cote;                 /* Côté d'un cube */
+    double rayon;                /* Rayon d'une particule */
+    int configurations[128][12]; /* Look-up table de toutes les configurations possibles
+                                  * pour l'algorithme des Marching Cubes */
+    int configurations2d[16][9]; /* Look-up table de toutes les configurations possibles
+                                  * pour l'algorithme des Marching Squares */
 
     /* ** Constructeurs ** */
 public:

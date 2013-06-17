@@ -17,8 +17,8 @@ template <unsigned int Dim>
 class Vecteur {
 
     /* ** Attributs ** */
-    double t[Dim];      /*!< Tableau des coordonnées du vecteur */
-
+    /* Tableau des coordonnées du vecteur */
+    double t[Dim];
 
     /* ** Constructeurs ** */
 public :
@@ -71,7 +71,7 @@ public :
     ~Vecteur();
 
 
-    /* ** Methodes ** */
+    /* ** Méthodes ** */
 public:
     /**
      * @brief Norme euclidienne

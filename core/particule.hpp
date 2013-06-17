@@ -71,7 +71,7 @@ public:
     ~Particule();
 
 
-    /* ** Methodes ** */
+    /* ** Méthodes ** */
 public:
     /* ** Accesseurs ** */
     /**

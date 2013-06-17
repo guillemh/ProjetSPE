@@ -61,24 +61,17 @@ Materiau<Dim>::Materiau(TypeFluide type) {
 
     switch(type) {
     case EAU :
-        //densite_repos = 998.29;
         densite_repos = 160;
         masse_particules = 0.02;
-        //masse_particules = 0.0065;
         coeff_flottabilite = 0;
         viscosite = 3.5;
         tension_surface = 0.0728;
         seuil_surface = 7.065;
         rigidite_gaz = 3;
-        //coeff_restitution = 0;
         coeff_restitution = 0.3;
         nbr_noyau = 20;
-        //rayon_noyau = 0.0457;
         rayon_noyau = 0.03;
-        //celerite_son = 1480;
         celerite_son = 88.5;
-        //alpha = 0.5;
-        //alpha = 1;
         alpha = 0.08;
         break;
     case MUCUS :
