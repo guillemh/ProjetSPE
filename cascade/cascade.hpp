@@ -20,11 +20,11 @@ class Cascade {
 
     /* ** Attributs ** */
 private :
-    Fluide<Dim> *f;       /*!< Pointeur vers le fluide utilisé */
-    double bassin_x;      /*!< Dimensions de la cuve rectangulaire selon l'axe (Ox) */
-    double bassin_y;      /*!< Dimensions de la cuve rectangulaire selon l'axe (Oy) */
-    double bassin_z;      /*!< Dimensions de la cuve rectangulaire selon l'axe (Oz) */
-    bool arps;   /* pour choisir entre l'arps ou pas pour l'animation */
+    Fluide<Dim> *f;       /* Pointeur vers le fluide utilisé */
+    double bassin_x;      /* Dimensions de la cuve rectangulaire selon l'axe (Ox) */
+    double bassin_y;      /* Dimensions de la cuve rectangulaire selon l'axe (Oy) */
+    double bassin_z;      /* Dimensions de la cuve rectangulaire selon l'axe (Oz) */
+    bool arps;            /* pour choisir entre l'arps ou pas pour l'animation */
 
 public :
     
@@ -32,7 +32,6 @@ public :
      * \brief Constructeur
      *
      * Constructeur d'une cascade avec le fluide correspondant
-     *
      * \param _f Pointeur vers un objet de classe Fluide
      */
     Cascade(Fluide<Dim> *_f);
@@ -42,7 +41,6 @@ public :
      *
      * Constructeur d'une cascade à partir du fluide et de
      * la liste des grandeurs représentant les dimensions du bassin
-     *
      * \param _f Pointeur vers un objet de classe Fluide
      * \param _bassin_x Dimension selon l'axe (Ox) du bassin
      * \param _bassin_y Dimension selon l'axe (Oy) du bassin
@@ -88,11 +86,11 @@ public :
      */
     const double & getBassinY() const;
 
-  /**
-   * @brief Accesseur
-   * \return La position en z du bassin
-   */
-  const double & getBassinZ() const;
+    /**
+     * @brief Accesseur
+     * \return La position en z du bassin
+     */
+    const double & getBassinZ() const;
 };
 
 #include "cascade.tpp"

@@ -44,11 +44,11 @@ void Skybox::initSky()
 
 void Skybox::initSol()
 {
-  	if (fopen("cascade/images/herbe.tiff", "rb") != NULL) {
-	    loadTexture(TEX_HERBE, "cascade/images/herbe.tiff");
-	} else {
-	    loadTexture(TEX_HERBE, "images/herbe.tiff");
-	}
+    if (fopen("cascade/images/herbe.tiff", "rb") != NULL) {
+        loadTexture(TEX_HERBE, "cascade/images/herbe.tiff");
+    } else {
+        loadTexture(TEX_HERBE, "images/herbe.tiff");
+    }
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
@@ -87,7 +87,6 @@ void Skybox::draw()
 
 void Skybox::drawSky()
 { 
-    //glEnable(GL_TEXTURE_2D);
 
     glDisable(GL_LIGHTING);
 
@@ -97,7 +96,7 @@ void Skybox::drawSky()
     glBindTexture(GL_TEXTURE_2D, textures[TEX_SKY]);
 
     glBegin(GL_QUADS);
-    // face droite
+    /* face droite */
     glNormal3d(0, 0, 1);
     glTexCoord2f(1,0);
     glVertex3f(-0.5*box_x, 0.5*box_x, 0);
@@ -109,23 +108,9 @@ void Skybox::drawSky()
     glVertex3f(-0.5*box_x, 0.5*box_x, 1*box_x/2);
  
     glEnd();
- 
-    //glBegin(GL_QUADS);
-    // face avant
-    /*glNormal3d(1, 0, 0);
-    glTexCoord2f(0, 0);
-    glVertex3d(0.5*box_x, -0.5*box_x, 0);
-    glTexCoord2f(1, 0);
-    glVertex3d(0.5*box_x, 0.5*box_x, 0);
-    glTexCoord2f(1, 1);
-    glVertex3d(0.5*box_x, 0.5*box_x, box_x);
-    glTexCoord2f(0, 1);
-    glVertex3d(0.5*box_x, -0.5*box_x, box_x);
- 
-    glEnd();*/
- 
+  
     glBegin(GL_QUADS);
-    // face arriere
+    /* face arrière */
     glNormal3d(-1, 0, 0);
     glTexCoord2f(0, 0);
     glVertex3d(-0.5*box_x, -0.5*box_x, 0);
@@ -139,7 +124,7 @@ void Skybox::drawSky()
     glEnd();
  
     glBegin(GL_QUADS);
-    // face gauche
+    /* face gauche */
     glNormal3d(0, -1, 0);
     glTexCoord2f(1, 0);
     glVertex3d(0.5*box_x, -0.5*box_x, 0);
@@ -158,7 +143,6 @@ void Skybox::drawSky()
 
 void Skybox::drawSol() 
 {
-    //glEnable(GL_TEXTURE_2D);
 
     glDisable(GL_LIGHTING);
 
@@ -168,7 +152,7 @@ void Skybox::drawSol()
     glBindTexture(GL_TEXTURE_2D, textures[TEX_HERBE]);   
 
     glBegin(GL_QUADS);
-    // face dessous
+    /* face dessous */
     glNormal3d(0, 0, -1);
     glTexCoord2f(0, 0);
     glVertex3d(0.5*box_x, 0.5*box_x, 0);
