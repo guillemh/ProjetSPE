@@ -37,7 +37,7 @@ class Viewer : public QGLViewer
 
  protected :
 
-     /**
+    /**
      * \brief Initialisation
      *
      * Initialise la scène
