@@ -2,21 +2,21 @@
 #include <QColor>
 #include <list>
 
-#include "viewer.h"
+#include "viewerCascade.h"
 #include "sceneCascade.h"
 
 using std::list;
 
-Viewer::Viewer () {}
+ViewerCascade::ViewerCascade () {}
 
 
-Viewer::~Viewer()
+ViewerCascade::~ViewerCascade()
 {
     delete s;
 }
 
 
-void Viewer::init()
+void ViewerCascade::init()
 {  
     //=== VIEWING PARAMETERS
     restoreStateFromFile();
@@ -40,7 +40,7 @@ void Viewer::init()
 }
 
 
-void Viewer::draw()
+void ViewerCascade::draw()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
@@ -52,7 +52,7 @@ void Viewer::draw()
 }
 
 
-void Viewer::animate()
+void ViewerCascade::animate()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glPushMatrix ();
@@ -61,12 +61,12 @@ void Viewer::animate()
 }
 
 
-void Viewer::interact() {
+void ViewerCascade::interact() {
     cout << endl << "** Modification de la simulation **" << endl;
     s->interact();
 }
 
-void Viewer::keyPressEvent(QKeyEvent *e)
+void ViewerCascade::keyPressEvent(QKeyEvent *e)
 {
     // Get event modifiers key
     const Qt::KeyboardModifiers modifiers = e->modifiers();
@@ -103,7 +103,7 @@ void Viewer::keyPressEvent(QKeyEvent *e)
 }
 
 
-QString Viewer::helpString() const
+QString ViewerCascade::helpString() const
 {
     // Some usefull hints...
     QString text("<h2>V i e w e r</h2>");

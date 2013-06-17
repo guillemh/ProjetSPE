@@ -17,7 +17,11 @@
 using namespace std;
 
 /**
- * \class Viewer Classe interagissant avec OpenGL pour la représentation d'objets
+ * \class Viewer
+ * @brief Classe interagissant avec OpenGL pour la représentation d'objets
+ *
+ * Classe du plus haut niveau permettant de représenter une scène et de l'animer,
+ * en la créant dans un main
  */
 
 class Viewer : public QGLViewer
@@ -66,6 +70,7 @@ class Viewer : public QGLViewer
      * \brief Interaction avec l'utilisateur
      *
      * Méthode interagissant avec l'utilisateur et appliquant un traitement aux touches pressées du clavier
+     * @param e Événement clavier considéré
      */
     virtual void keyPressEvent(QKeyEvent *e);
 
