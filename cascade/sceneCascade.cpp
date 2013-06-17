@@ -7,6 +7,8 @@
 
 using namespace std;
 
+#define NBBOUCLESMAX 10000
+
 
 SceneCascade::SceneCascade()
     : c1(),
@@ -15,6 +17,7 @@ SceneCascade::SceneCascade()
       f(),
       arps(false)
 {
+    nbBoucles = 0;
     init();
 }
 
@@ -37,7 +40,7 @@ void SceneCascade::init() {
     
     /* On créé la scène, avec les paramètres initiaux */
     Materiau<3> *m = new Materiau<3>(EAU);
-    Vecteur<3> d = Vecteur<3>(9, 9, 10);
+    Vecteur<3> d = Vecteur<3>(9, 9, 30);
     f = new Fluide<3>(m, d, 0.05, m->getDensiteRepos(), m->getPression());
     //f->colorationMetaball();
     c1 = new Cascade<3> (f);
@@ -56,6 +59,10 @@ void SceneCascade::draw()
 
 void SceneCascade::animate()
 {
+    if (nbBoucles > NBBOUCLESMAX) {
+        exit(1);
+    }
+    nbBoucles++;
     c1->animate(arps);
 }
 

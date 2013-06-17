@@ -20,6 +20,7 @@ class SceneCascade {
     Fluide<3> *f;    /* Pointeur vers le fluide utilisé */
 
     bool arps;   /* permet de changer entre l'arps ou non */
+    int nbBoucles;
 
  public :
     /**

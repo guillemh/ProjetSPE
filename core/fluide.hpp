@@ -195,7 +195,13 @@ public:
      */
     void affiche();
 
-    void afficheHauteur(double);
+    /**
+     * @brief Trace de debug
+     *
+     * Affichage des particules du fluide qui se trouvent au-dessus d'une certaine hauteur
+     * @param h Hauteur considérée pour l'affichage ou non des particules
+     */
+    void afficheHauteur(double h);
     
     /**
      * @brief Mise à jour des particules pour un pas de temps
@@ -203,7 +209,6 @@ public:
      * Mise à jour du système avec le schéma d'intégration de l'ARPS
      */
     void schemaIntegration();
-    void schemaIntegrationBis();
 
     /**
      * @brief Mise à jour des particules pour un pas de temps
@@ -325,7 +330,6 @@ private:
      * par l'algorithme incrémental de l'ARPS
      */
     void integrationForces();
-    void integrationForcesBis();
     /* Avec des traces de débug */
     void integrationForces_Traces();
 
