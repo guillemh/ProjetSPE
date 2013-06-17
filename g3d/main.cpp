@@ -10,7 +10,7 @@ int main(int argc, char** argv)
     // Instantiate the viewer.
     Viewer viewer;
 
-    viewer.setWindowTitle("Fenetre de test");
+    viewer.setWindowTitle("Animation temps-réel de liquide");
     // Make the viewer window visible on screen.
     viewer.show();
 

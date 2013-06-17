@@ -15,7 +15,7 @@ SceneCascade::SceneCascade()
       c2(),
       s(),
       f(),
-      arps(false)
+      arps(true)
 {
     nbBoucles = 0;
     init();

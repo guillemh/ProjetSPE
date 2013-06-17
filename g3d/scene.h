@@ -45,17 +45,33 @@ class Scene {
     void animate();
 
     /**
-     * Permet une animation pas à pas
+     * Permet une animation pas à pas, à l'appel de la touche 'Z',
+     * lorsque les lignes concernées sont décommentées dans animate()
      */
     void animer() {anim = true;}
 
 
     /* ** Interaction utilisateur ** */
 
+    /**
+     * @brief Interaction utilisateur
+     *
+     * Lance l'interface d'interaction pour les paramètres du système
+     */
     void interact();
 
+    /**
+     * @brief Interaction utilisateur
+     *
+     * Permet de changer de materiau pendant la simulation
+     */
     void changerMateriau();
-    
+
+    /**
+     * @brief Interaction utilisateur
+     *
+     * Permet de changer de méthode d'affichage pendant l'interaction
+     */
     void changerAffichage();
     
  private :
