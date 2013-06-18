@@ -10,6 +10,7 @@
 using namespace std;
 
 #define TRACES 0  // 0 si on ne veut aucune trace à l'exécution
+#define PASAPAS 0 // 1 si on veut exécuter l'animation pas à pas
 
 Scene::Scene()
     : f(),
@@ -77,20 +78,27 @@ void Scene::draw() {
 }
 
 void Scene::animate() {
-    // if (anim) {
-    if (arps) {
-# if TRACES
-        f->schemaIntegration_Traces();
-# else
-        f->schemaIntegration();
+    
+# if PASAPAS
+    if (anim) {
 # endif
-    } else {
-        f->majDensitePression();
-        f->majPositionVitesse();
+        
+        if (arps) {
+# if TRACES
+            f->schemaIntegration_Traces();
+# else
+            f->schemaIntegration();
+# endif
+        } else {
+            f->majDensitePression();
+            f->majPositionVitesse();
+        }
+        
+# if PASAPAS
+        anim = false;
     }
-    // f->affiche();
-    //    anim = false;
-    // }
+# endif
+    
 }
 
 void Scene::interact() {

@@ -275,20 +275,20 @@ void Particule<Dim>::draw(Materiau<Dim> *mat) const {
 template<unsigned int Dim>
 void Particule<Dim>::draw(bool point) const {
 
-    if (!COLORATION) {
-      glColor3f(couleur, couleur, 1.0);
-    } else {
-      if (etat == ACTIVE) {
-          /* Bleu : particule active */
-      	  glColor3f(0.0,0.0,1.0);
-      } else if (etat == INACTIVE) {
-          /* Rouge : particule inactive */
-      	  glColor3f(1.0,0.0,0.0);
-      } else if (etat == TRANSITION) {
-          /* Vert : particule en transition */
-	  glColor3f(0.0, 1.0, 0.0);
-      }
+#if (!COLORATION)
+    glColor3f(couleur, couleur, 1.0);
+#else
+    if (etat == ACTIVE) {
+        /* Bleu : particule active */
+        glColor3f(0.0,0.0,1.0);
+    } else if (etat == INACTIVE) {
+        /* Rouge : particule inactive */
+        glColor3f(1.0,0.0,0.0);
+    } else if (etat == TRANSITION) {
+        /* Vert : particule en transition */
+        glColor3f(0.0, 1.0, 0.0);
     }
+#endif
     
     if (point) {
         glPointSize(3.0f);
