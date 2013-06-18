@@ -7,9 +7,6 @@
 
 using namespace std;
 
-#define NBBOUCLESMAX 10000
-
-
 SceneCascade::SceneCascade()
     : c1(),
       c2(),
@@ -58,10 +55,6 @@ void SceneCascade::draw()
 
 void SceneCascade::animate()
 {
-    if (nbBoucles > NBBOUCLESMAX) {
-        exit(1);
-    }
-    nbBoucles++;
     c1->animate(arps);
 }
 

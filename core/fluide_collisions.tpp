@@ -246,22 +246,22 @@ Vecteur<Dim> Fluide<Dim>::collisionCascade(const Vecteur<Dim> & v,
 		    res(3) = -3.0+bassin_z/5+rayon;		  
 	    }
 	    
-	    if (v2pr > bassin_y) { /* À droite du bassin */
-		if (v3mr < -3.0+bassin_z/5 && v2pr < bassin_y+rayon)
+	    if (v2pr > 3*bassin_x) { /* À droite du bassin */
+		if (v3mr < -3.0+bassin_z/5 && v2pr < 3*bassin_x+rayon)
                     /* Sous la paroi */
-		    res(2) = bassin_y-rayon;
+		    res(2) = 3*bassin_x-rayon;
 		else if (v3mr < -3.0+bassin_z/5 && v3pr > -3.0+bassin_z/5
-                         && v2pr > bassin_y+rayon && v2mr < bassin_y-rayon+0.1)
+                         && v2pr > 3*bassin_x+rayon && v2mr < 3*bassin_x-rayon+0.1)
                     /* Au-dessus de la paroi */
 		    res(3) = -3.0+bassin_z/5+rayon;
 		
-	    } else if (v2mr < -bassin_y) {
+	    } else if (v2mr < -3*bassin_x) {
                 /* À gauche du bassin */
-		if (v3mr < -3.0+bassin_z/5 && v2mr > -bassin_y-rayon)
+		if (v3mr < -3.0+bassin_z/5 && v2mr > -3*bassin_x-rayon)
                     /* Sous la paroi */
-		    res(2) = -bassin_y+rayon;
+		    res(2) = -3*bassin_x+rayon;
 		else if (v3mr < -3.0+bassin_z/5 && v3pr > -3.0+bassin_z/5
-                         && v2mr < -bassin_y-rayon && v2pr > -bassin_y+rayon-0.1)
+                         && v2mr < -3*bassin_x-rayon && v2pr > -3*bassin_x+rayon-0.1)
                     /* Au-dessus de la paroi */
 		    res(3) = -3.0+bassin_z/5+rayon;	  
 	    } 
