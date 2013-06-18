@@ -147,7 +147,7 @@ III. Interactions utilisateur
 
  - la touche 'Enter' déclenche ou stoppe l'animation
 
- - la touche 'Z'     permet de n'exécuter qu'une boucle d'animation, lorsque les lignes correspondantes sont décommentées dans Scene.draw()
+ - la touche 'Z'     permet de n'exécuter qu'une boucle d'animation, dans g3d/test_dessin_fluide, lorsque la macro PASAPAS est égale à 1 dans g3d/scene.cpp
 
  - la touche 'Début' ou 'Home' permet de recommencer complètement la scène (sans se souvenir des éventuels changements effectués par interaction)
 
