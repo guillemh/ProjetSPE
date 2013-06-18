@@ -11,7 +11,7 @@ using std::pair;
 
 #define EPSR 1
 #define DELTA 2
-#define METABALLS 1 // Mettre a 1 pour dessiner des surfaces, 0 pour des particules
+#define METABALLS 0 // Mettre a 1 pour dessiner des surfaces, 0 pour des particules
 #define POINT 0     // Mettre a 1 pour dessiner des points, 0 pour des spheres
 #define CASCADE 1   // Mettre a 1 pour les collisions avec la cascade
 
@@ -600,14 +600,14 @@ void Fluide<Dim>::majPositionVitesse() {
             /* Mise a jour de la vitesse */
             double vitesse = (*it1)->getVitesse().scalaire(normale);
             
-            // (*it1)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse*normale);
+            (*it1)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse*normale);
             /* Technique plus adaptee dans le cas de la vague, qui consiste a empecher 
              * Les particules de s'empiler sur un bord */
-             if (normale(3) < 0.001 && (*it1)->getVitesse()(3) < 0.0) {
-                 (*it1)->incrVitesse(-3 * vitesse * normale);
-             } else {
-                 (*it1)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
-             }
+            // if (normale(3) < 0.001 && (*it1)->getVitesse()(3) < 0.0) {
+            //     (*it1)->incrVitesse(-3 * vitesse * normale);
+            // } else {
+            //     (*it1)->incrVitesse(-(1+mat->getCoeffRestitution()) * vitesse * normale);
+            // }
         }
     }
     debutAnim = false;

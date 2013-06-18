@@ -48,7 +48,7 @@ void ViewerCascade::draw()
     s->draw();
     glPopMatrix();
     if (toogleRecord) {
-		if (select % 40 == 0) {
+		if (select % 40 == 1) {
 			saveSnapshot();
 		}
 		select++;
