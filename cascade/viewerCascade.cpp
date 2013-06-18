@@ -22,6 +22,7 @@ void ViewerCascade::init()
     restoreStateFromFile();
     toogleWireframe = false;  // filled faces
     toogleLight = false;     // light off
+	select = 0;
 
     if (toogleLight == true) glEnable(GL_LIGHTING);
     else glDisable(GL_LIGHTING);
@@ -47,7 +48,13 @@ void ViewerCascade::draw()
     s->draw();
     glPopMatrix();
     if (toogleRecord) {
-	saveSnapshot();
+		if (select == 0) {
+			saveSnapshot();
+		}
+		select++;
+		if (select == 10) {
+			select = 0;
+		}
     }
 }
 
