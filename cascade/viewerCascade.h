@@ -65,6 +65,7 @@ class ViewerCascade : public QGLViewer
     bool toogleWireframe;   /*!< Booléen indiquant ou non si on dessine la scène sous une forme de maillage ou de faces pleines */
     bool toogleLight;       /*!< Booléen indiquant si le modèle d'illumination d'OpenGL (modèle de Phong) doit être respecté */
     bool toogleRecord;      /*!< Enregistrer ou non une vidéo */
+	int select;
 
     /**
      * \brief Interaction avec l'utilisateur
