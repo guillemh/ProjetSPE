@@ -381,7 +381,6 @@ void Metaballs::draw() {
     }
     
     
-    #if 0
 	/* On boucle sur l'ensemble des carrés du bord pour appliquer les Marching Squares */
     for (int i = 0 ; i < n - 1 ; i++) {
         for (int j = 0 ; j < p - 1 ; j++) {
@@ -499,7 +498,6 @@ void Metaballs::draw() {
             drawCarre(posCour, direction, config, -1);
         }
     }
-	#endif
     
 }
 

@@ -9,6 +9,7 @@ using std::cout;
 using std::endl;
 using std::pair;
 
+/* Macros pour initialiser les seuils de l'ARPS */
 #define EPSR 1
 #define DELTA 2
 #define METABALLS 0 // Mettre a 1 pour dessiner des surfaces, 0 pour des particules
@@ -170,10 +171,11 @@ void Fluide<Dim>::init() {
     
         /* Initialisation de la metaball */
 
-	if (CASCADE) 
-	    ball = new Metaballs(Vecteur<3>(-0.6, -0.6, -3.0), 0.01, mat->getRayonNoyau(), 3.7, 1.2, 3.6);
-	else 
-	    ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1.2);
+#if CASCADE
+        ball = new Metaballs(Vecteur<3>(-0.6, -0.6, -3.0), 0.01, mat->getRayonNoyau(), 3.7, 1.2, 3.6);
+#else 
+        ball = new Metaballs(Vecteur<3>(x_min, y_min, z_min), 0.01, mat->getRayonNoyau(), x_max-x_min, y_max-y_min, 1.2);
+#endif
 	
         if (afficheMetaballs) {
             ball->initColoration(particules);
@@ -582,11 +584,11 @@ void Fluide<Dim>::majPositionVitesse() {
         /* Détection des collisions */
         Vecteur<Dim> pos = (*it1)->getPosition();
         Vecteur<Dim> contact;
-        if (!CASCADE) {
-            contact = collision(pos);
-        } else {
-            contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
-        }
+#if (!CASCADE)
+        contact = collision(pos);
+#else
+        contact = collisionCascade(pos, mat, 0.5, 0.5, 0.5);
+#endif
         
         /* S'il y a collision, on met a jour la position et la vitesse */
         if (contact != pos) {
@@ -670,53 +672,53 @@ void Fluide<Dim>::draw() {
     glVertex3f(x_max + 0.025, y_max + 0.025, 1.1);
     glVertex3f(x_min - 0.025, y_max + 0.025, 1.1);
 
-    if (!CASCADE) {
+#if (!CASCADE)
 
-        double decalage;
-        if (afficheMetaballs)
-            decalage = 0.005;
-        else
-            decalage = 0.025;
+    double decalage;
+    if (afficheMetaballs)
+        decalage = 0.005;
+    else
+        decalage = 0.025;
 
-        glPushMatrix();
-        glEnable (GL_BLEND);
-        glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glColor4f(1.0, 1.0, 1.0, 0.1);
-        glBegin(GL_QUADS);
+    glPushMatrix();
+    glEnable (GL_BLEND);
+    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(1.0, 1.0, 1.0, 0.1);
+    glBegin(GL_QUADS);
     
-        glNormal3f(-1, 0, 0);
-        glVertex3f(x_min - decalage, y_min - decalage, z_min - decalage);
-        glVertex3f(x_min - decalage, y_max + decalage, z_min - decalage);
-        glVertex3f(x_min - decalage, y_max + decalage, 1.2);
-        glVertex3f(x_min - decalage, y_min - decalage, 1.2);
+    glNormal3f(-1, 0, 0);
+    glVertex3f(x_min - decalage, y_min - decalage, z_min - decalage);
+    glVertex3f(x_min - decalage, y_max + decalage, z_min - decalage);
+    glVertex3f(x_min - decalage, y_max + decalage, 1.2);
+    glVertex3f(x_min - decalage, y_min - decalage, 1.2);
     
-        glNormal3f(0, -1, 0);
-        glVertex3f(x_min - decalage, y_min - decalage, z_min - decalage);
-        glVertex3f(x_max + decalage, y_min - decalage, z_min - decalage);
-        glVertex3f(x_max + decalage, y_min - decalage, 1.2);
-        glVertex3f(x_min - decalage, y_min - decalage, 1.2);
+    glNormal3f(0, -1, 0);
+    glVertex3f(x_min - decalage, y_min - decalage, z_min - decalage);
+    glVertex3f(x_max + decalage, y_min - decalage, z_min - decalage);
+    glVertex3f(x_max + decalage, y_min - decalage, 1.2);
+    glVertex3f(x_min - decalage, y_min - decalage, 1.2);
     
-        glNormal3f(1, 0, 0);
-        glVertex3f(x_max + decalage, y_min - decalage, z_min - decalage);
-        glVertex3f(x_max + decalage, y_max + decalage, z_min - decalage);
-        glVertex3f(x_max + decalage, y_max + decalage, 1.2);
-        glVertex3f(x_max + decalage, y_min - decalage, 1.2);
+    glNormal3f(1, 0, 0);
+    glVertex3f(x_max + decalage, y_min - decalage, z_min - decalage);
+    glVertex3f(x_max + decalage, y_max + decalage, z_min - decalage);
+    glVertex3f(x_max + decalage, y_max + decalage, 1.2);
+    glVertex3f(x_max + decalage, y_min - decalage, 1.2);
     
-        glNormal3f(0, 1, 0);
-        glVertex3f(x_min - decalage, y_max + decalage, z_min - decalage);
-        glVertex3f(x_max + decalage, y_max + decalage, z_min - decalage);
-        glVertex3f(x_max + decalage, y_max + decalage, 1.2);
-        glVertex3f(x_min - decalage, y_max + decalage, 1.2);
+    glNormal3f(0, 1, 0);
+    glVertex3f(x_min - decalage, y_max + decalage, z_min - decalage);
+    glVertex3f(x_max + decalage, y_max + decalage, z_min - decalage);
+    glVertex3f(x_max + decalage, y_max + decalage, 1.2);
+    glVertex3f(x_min - decalage, y_max + decalage, 1.2);
     
-        glNormal3f(0, 0, -1);
-        glVertex3f(x_min - decalage, y_min - decalage, z_min - decalage);
-        glVertex3f(x_min - decalage, y_max + decalage, z_min - decalage);
-        glVertex3f(x_max + decalage, y_max + decalage, z_min - decalage);
-        glVertex3f(x_max + decalage, y_min - decalage, z_min - decalage);
+    glNormal3f(0, 0, -1);
+    glVertex3f(x_min - decalage, y_min - decalage, z_min - decalage);
+    glVertex3f(x_min - decalage, y_max + decalage, z_min - decalage);
+    glVertex3f(x_max + decalage, y_max + decalage, z_min - decalage);
+    glVertex3f(x_max + decalage, y_min - decalage, z_min - decalage);
     
-        glEnd();
-        glDisable (GL_BLEND);
-    }
+    glEnd();
+    glDisable (GL_BLEND);
+#endif
 }
 
 template<unsigned int Dim>
